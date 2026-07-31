@@ -23,3 +23,4 @@ MemoryCaptures/
 *.sln
 *.slnx
 *.csproj
+Packages/Backups/
