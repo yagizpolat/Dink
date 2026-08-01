@@ -24,6 +24,8 @@ public class SceneTransition : MonoBehaviour
 
     IEnumerator GecisRoutine(int sahneNo)
     {
+        Time.timeScale = 1f;
+        Debug.Log("1 - Coroutine başladı");
         // ADIM 1: Önce ekranı karart (fade başla)
         Cursor.lockState = CursorLockMode.Locked;
         Cursor.visible = false;
@@ -33,6 +35,7 @@ public class SceneTransition : MonoBehaviour
 
         globalFadeGroup.alpha = 0;
         yield return StartCoroutine(Fade(globalFadeGroup, 1, fadeDuration));
+        Debug.Log("2 - Fade bitti");
 
         // --- EKRAN KAPKARA ---
         // ADIM 0: Ekran tamamen karardıktan sonra menüyü kapat
@@ -61,6 +64,7 @@ public class SceneTransition : MonoBehaviour
         // ADIM 5: Kısa karanlık bekle ve sahneyi yükle
         yield return new WaitForSeconds(0.3f);
         SceneManager.LoadScene(sahneNo);
+        Debug.Log("3 - Sahne yükleniyor");
     }
 
     IEnumerator Fade(CanvasGroup cg, float target, float duration)

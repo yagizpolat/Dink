@@ -10,8 +10,6 @@ public class Escmenu : MonoBehaviour
 
     private void Start()
     {
-       
-        
         //KapıSeçme kamerascript = FindAnyObjectByType<KapıSeçme>();
     }
 
@@ -38,12 +36,12 @@ public class Escmenu : MonoBehaviour
         Cursor.visible = false;
         escmenusesbileseni.PlayOneShot(escmenukapanmasesi);
 
-        // SCRİPT KAPATMA KISMI
+        // SCRİPT AÇMA KISMI
         Kamera kamerascript = FindAnyObjectByType<Kamera>();
         kamerascript.enabled = true;
     }
     public void Durdur()
-    {
+    { 
         escmenu.SetActive(true);
         Time.timeScale = 0f;
         oyundurdumu = true;
