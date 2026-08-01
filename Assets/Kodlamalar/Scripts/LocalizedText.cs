@@ -18,7 +18,7 @@ public class LocalizedText : MonoBehaviour
     {
 
         // Bileşen atanmamışsa hata verme, sadece dön
-        if (GetComponent<TMPro.TextMeshProUGUI>() == null && GetComponent<UnityEngine.UI.Text>() == null)
+        if (textElement == null && GetComponent<UnityEngine.UI.Text>() == null)
         {
             Debug.LogWarning(gameObject.name + " üzerinde metin bileşeni bulunamadı!");
             return;

@@ -54,7 +54,7 @@ public class IntroManager : MonoBehaviour
         SetGroupHidden(pressToContinueGroup);
 
         mainMenuUI.SetActive(true);
-        this.gameObject.SetActive(false);
+        //this.gameObject.SetActive(false);
     }
 
     IEnumerator MasterSequence()
