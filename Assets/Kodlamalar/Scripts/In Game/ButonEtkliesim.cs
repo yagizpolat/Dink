@@ -8,4 +8,9 @@ public class ButonEtkliesim : MonoBehaviour
     {
         SceneManager.LoadScene(sahneno);
     }
+
+    public void Quit()
+    {
+        Application.Quit();
+    }
 }

@@ -8,9 +8,14 @@ public class Escmenu : MonoBehaviour
     public AudioClip escmenuacilmasesi;
     public AudioClip escmenukapanmasesi;
 
+    //SCRİPT BAĞLANTILARI
+    FenerKontrol fener;
+    Kamera kamerascript;
+    InventoryManager inventory;
+
     private void Start()
     {
-        //KapıSeçme kamerascript = FindAnyObjectByType<KapıSeçme>();
+        ScriptConnect();
     }
 
     void Update()
@@ -37,8 +42,7 @@ public class Escmenu : MonoBehaviour
         escmenusesbileseni.PlayOneShot(escmenukapanmasesi);
 
         // SCRİPT AÇMA KISMI
-        Kamera kamerascript = FindAnyObjectByType<Kamera>();
-        kamerascript.enabled = true;
+        CloseOpenScript(true);
     }
     public void Durdur()
     { 
@@ -50,8 +54,20 @@ public class Escmenu : MonoBehaviour
         escmenusesbileseni.PlayOneShot(escmenuacilmasesi);
 
         // SCRİPT KAPATMA KISMI
-        Kamera kamerascript = FindAnyObjectByType<Kamera>();
-        kamerascript.enabled = false;
+        CloseOpenScript(false);
     }
 
+    void ScriptConnect()
+    {
+        fener = FindAnyObjectByType<FenerKontrol>();
+        kamerascript = FindAnyObjectByType<Kamera>();
+        inventory = FindAnyObjectByType<InventoryManager>();
+    }
+
+    void CloseOpenScript(bool enable)
+    {
+        fener.enabled = enable;
+        kamerascript.enabled = enable;
+        inventory.enabled = enable;
+    }
 }
