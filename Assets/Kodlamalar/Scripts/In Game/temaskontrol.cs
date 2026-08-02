@@ -25,6 +25,15 @@ public class temaskontrol : MonoBehaviour
                         lettermanager.OpenLetter(letter);
                     }
                 }
+
+                if (hit.collider.CompareTag("Pil"))
+                {
+                    BatteryPickup pil = hit.collider.GetComponent<BatteryPickup>();
+                    if(pil != null)
+                    {
+                        pil.Pickup();
+                    }
+                }
             }
         }
     }

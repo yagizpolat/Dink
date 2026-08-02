@@ -13,6 +13,16 @@ public class LetterManager : MonoBehaviour
     public AudioClip mektupacilis;
     public AudioClip mektupkapanis;
 
+    //SCRİPT BAĞLANTILARI
+    FenerKontrol fener;
+    Kamera kamerascript;
+    InventoryManager inventory;
+
+    private void Start()
+    {
+        ScriptConnect();
+    }
+
     private void Update()
     {
         if(letterpanel.activeSelf)
@@ -40,12 +50,7 @@ public class LetterManager : MonoBehaviour
         sesbombasi.PlayOneShot(mektupacilis);
 
         //SCRİPT KAPATMA KISMI
-        Kamera kamerascript = FindAnyObjectByType<Kamera>();
-        kamerascript.enabled = false;
-
-        FenerKontrol fener = FindAnyObjectByType<FenerKontrol>();
-        fener.enabled = false;
-
+        CloseOpenScript(false);
     }
 
     public void CloseLetter()
@@ -58,10 +63,20 @@ public class LetterManager : MonoBehaviour
         sesbombasi.PlayOneShot(mektupkapanis);
 
         //SCRİPT AÇMA KISMI
-        Kamera kamerascript = FindAnyObjectByType<Kamera>();
-        kamerascript.enabled = true;
+        CloseOpenScript(true);
+    }
 
-        FenerKontrol fener = FindAnyObjectByType<FenerKontrol>();
-        fener.enabled = true;
+    void CloseOpenScript(bool enable)
+    {
+        fener.enabled = enable;
+        kamerascript.enabled = enable;
+        inventory.enabled = enable;
+    }
+
+    void ScriptConnect()
+    {
+        fener = FindAnyObjectByType<FenerKontrol>();
+        kamerascript = FindAnyObjectByType<Kamera>();
+        inventory = FindAnyObjectByType<InventoryManager>();
     }
 }

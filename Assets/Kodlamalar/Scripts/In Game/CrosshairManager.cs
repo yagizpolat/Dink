@@ -24,6 +24,11 @@ public class CrosshairManager : MonoBehaviour
             {
                 targetscale = hoverScale;
             }
+
+            if (hit.collider.CompareTag("Pil"))
+            {
+                targetscale = hoverScale;
+            }
         }
 
         crosshair.localScale = Vector3.Lerp(crosshair.localScale, targetscale, Time.deltaTime * scalespeed);
