@@ -12,6 +12,7 @@ public class Escmenu : MonoBehaviour
     FenerKontrol fener;
     Kamera kamerascript;
     InventoryManager inventory;
+    temaskontrol mektup_pil;
 
     private void Start()
     {
@@ -62,6 +63,8 @@ public class Escmenu : MonoBehaviour
         fener = FindAnyObjectByType<FenerKontrol>();
         kamerascript = FindAnyObjectByType<Kamera>();
         inventory = FindAnyObjectByType<InventoryManager>();
+        mektup_pil = FindAnyObjectByType<temaskontrol>();
+        
     }
 
     void CloseOpenScript(bool enable)
@@ -69,5 +72,6 @@ public class Escmenu : MonoBehaviour
         fener.enabled = enable;
         kamerascript.enabled = enable;
         inventory.enabled = enable;
+        mektup_pil.enabled = enable;
     }
 }

@@ -1,3 +1,5 @@
+
+using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -6,9 +8,22 @@ public class InventoryManager : MonoBehaviour
     [SerializeField] private GameObject Inventory_Panel;
     bool IsPanelOpen = false;
 
+
+    //RENKLER
+    private Color selectedcolor;
+    private Color normalcolor;
+
+    //ITEM INFO EKRANI
+    [SerializeField] private RawImage previewImage;
+    [SerializeField] private TMP_Text titleText;
+    [SerializeField] private TMP_Text descriptionText;
+    [SerializeField] private GameObject itemInfoPanel;
+
     //PİL VE ENVANTER SİSTEMİ
     [SerializeField] private Texture batteryIcon;
-    [SerializeField] private RawImage[] slots;
+    [SerializeField] private InventorySlot[] slots;
+    private InventorySlot selectedSlot;
+
     //CURSOR SİSTEMİ
     [SerializeField] private GameObject CurrentCursorPanel;
     [SerializeField] private GameObject InventoryCursorPanel; 
@@ -26,17 +41,50 @@ public class InventoryManager : MonoBehaviour
     private Escmenu escmenu;
     private temaskontrol mektup;
 
+    private void Awake()
+    {
+        ColorUtility.TryParseHtmlString("#2A3D45", out selectedcolor);
+        ColorUtility.TryParseHtmlString("#7A6C5D", out normalcolor);
+    }
 
     public void AddItem()
     {
-        Debug.Log("Envantere eklendi");
-        slots[0].texture = batteryIcon;
+        for(int i = 0; i < slots.Length; i++)
+        {
+            if (slots[i].icon.texture == null)
+            {
+                slots[i].icon.texture = batteryIcon;
+                break;
+            }
+        }
+        
     }
     
+    public void SelectSlot(InventorySlot slot)
+    {
+        if(selectedSlot != null)
+        {
+            selectedSlot.icon.color = normalcolor;
+            selectedSlot.background.color = normalcolor;
+            itemInfoPanel.SetActive(false);
+        }
+
+        //SEÇİLEN SLOTUN ICONUN TEXTURE'U BOŞ DEĞİLSE 
+        if(slot.icon.texture != null)
+        {
+            previewImage.texture = batteryIcon;
+            titleText.text = "Pil";
+            descriptionText.text = "El fenerini çalıştırmak için kullanılan standart bir pil.";
+            itemInfoPanel.SetActive(true);
+        }
+        selectedSlot = slot;
+        slot.background.color = selectedcolor;
+    }
 
     private void Start()
     {
         FindObject();
+
     }
     void Update()
     {
@@ -53,7 +101,6 @@ public class InventoryManager : MonoBehaviour
             Inventory_Panel.SetActive(IsPanelOpen);
             //SCRİPT AÇMA KAPAMA + SES SİSTEMİ
             GameplayScripts(!IsPanelOpen);
-
          }
     }
 
