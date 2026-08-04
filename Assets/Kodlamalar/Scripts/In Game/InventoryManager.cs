@@ -35,6 +35,10 @@ public class InventoryManager : MonoBehaviour
     [SerializeField] private AudioClip InventoryClose;
     bool IsOpenSound = false;
 
+    //ÇİFT TIKLAMA SİSTEMİ
+    private float lastclick;
+    private float doubleclick = 0.2f;
+
     //SCRİPTLER
     private Kamera kamerascript;
     private FenerKontrol fenerscript;
@@ -57,7 +61,17 @@ public class InventoryManager : MonoBehaviour
                 break;
             }
         }
-        
+    }
+
+    public void UseItem()
+    {
+        if(Time.time - lastclick < doubleclick)
+        {
+            fenerscript.bataryaekle(20);
+            selectedSlot.icon.texture = null;
+            Debug.Log("Çift tıklandı");
+        }
+        lastclick = Time.time;
     }
     
     public void SelectSlot(InventorySlot slot)
@@ -72,10 +86,13 @@ public class InventoryManager : MonoBehaviour
         //SEÇİLEN SLOTUN ICONUN TEXTURE'U BOŞ DEĞİLSE 
         if(slot.icon.texture != null)
         {
+            
             previewImage.texture = batteryIcon;
             titleText.text = "Pil";
             descriptionText.text = "El fenerini çalıştırmak için kullanılan standart bir pil.";
             itemInfoPanel.SetActive(true);
+            UseItem();
+
         }
         selectedSlot = slot;
         slot.background.color = selectedcolor;
@@ -100,8 +117,8 @@ public class InventoryManager : MonoBehaviour
             Cursors(IsPanelOpen);
             Inventory_Panel.SetActive(IsPanelOpen);
             //SCRİPT AÇMA KAPAMA + SES SİSTEMİ
-            GameplayScripts(!IsPanelOpen);
-         }
+            GameplayScripts(!IsPanelOpen);  
+        }
     }
 
     void GameplayScripts(bool enabled)
