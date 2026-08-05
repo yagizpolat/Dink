@@ -34,6 +34,14 @@ public class temaskontrol : MonoBehaviour
                         pil.Pickup();
                     }
                 }
+                if (hit.collider.CompareTag("Kapi"))
+                {
+                    Door door = hit.collider.GetComponent<Door>();
+                    if(door != null)
+                    {
+                        door.Interact();
+                    }
+                }
             }
         }
     }

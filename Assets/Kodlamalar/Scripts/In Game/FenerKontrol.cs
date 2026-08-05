@@ -12,7 +12,6 @@ public class FenerKontrol : MonoBehaviour
     [SerializeField] private float battery = 100f;
     [SerializeField] private float tuketmehizi = 80f;
     public GameObject PilUyarısı;
-    private InventorySlot selectedSlot;
 
     // Update is called once per frame
     void Update()
@@ -22,13 +21,12 @@ public class FenerKontrol : MonoBehaviour
         
     }
 
-    public void bataryaekle(float miktar)
+    public bool bataryaekle(float miktar)
     {
         if(battery == 100)
         {
             StartCoroutine(warning());
-            
-            return;
+            return false;
         }
         else
         {
@@ -37,7 +35,7 @@ public class FenerKontrol : MonoBehaviour
             {
                 battery = 100;
             }
-            selectedSlot.icon.texture = null;
+            return true;
         }
     }
 
