@@ -67,9 +67,15 @@ public class InventoryManager : MonoBehaviour
     {
         if(Time.time - lastclick < doubleclick)
         {
-            fenerscript.bataryaekle(20);
-            selectedSlot.icon.texture = null;
-            Debug.Log("Çift tıklandı");
+            bool eklendimi = fenerscript.bataryaekle(20);
+
+            if (eklendimi)
+            {
+                selectedSlot.icon.texture = null;
+                itemInfoPanel.SetActive(false);
+                Debug.Log("Pil Eklendi");
+            }
+
         }
         lastclick = Time.time;
     }
@@ -91,11 +97,11 @@ public class InventoryManager : MonoBehaviour
             titleText.text = "Pil";
             descriptionText.text = "El fenerini çalıştırmak için kullanılan standart bir pil.";
             itemInfoPanel.SetActive(true);
+            selectedSlot = slot;
+            slot.background.color = selectedcolor;
             UseItem();
 
         }
-        selectedSlot = slot;
-        slot.background.color = selectedcolor;
     }
 
     private void Start()

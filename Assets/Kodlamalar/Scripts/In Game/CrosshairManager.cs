@@ -20,12 +20,7 @@ public class CrosshairManager : MonoBehaviour
 
         if(Physics.Raycast(ray, out hit))
         {
-            if (hit.collider.CompareTag("Mektup"))
-            {
-                targetscale = hoverScale;
-            }
-
-            if (hit.collider.CompareTag("Pil"))
+            if (hit.collider.CompareTag("Mektup") || hit.collider.CompareTag("Pil") ||hit.collider.CompareTag("Kapi"))
             {
                 targetscale = hoverScale;
             }
