@@ -44,6 +44,11 @@ public class IntroManager : MonoBehaviour
 
     void SkipIntro()
     {
+        // Oyun içinden ana menüye dönüldüğünde gameplay kilitlerini temizle.
+        Time.timeScale = 1f;
+        Cursor.lockState = CursorLockMode.None;
+        Cursor.visible = true;
+
         blackFadeGroup.gameObject.SetActive(true);
         blackFadeGroup.alpha = 0;
         blackFadeGroup.blocksRaycasts = false;
