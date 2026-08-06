@@ -6,10 +6,10 @@ EditorBuildSettings:
   serializedVersion: 2
   m_Scenes:
   - enabled: 1
-    path: Assets/Sahne/Scenes/Game.unity
+    path: Assets/_Project/Scenes/Game.unity
     guid: 3a25b3f18e92a504aa8f085ae1b05bed
   - enabled: 1
-    path: Assets/Sahne/Scenes/Game 1.unity
+    path: Assets/_Project/Scenes/Game 1.unity
     guid: 01bf6fdcd6ce3b34e867252844cf1635
   m_configObjects:
     com.unity.dt.app-ui: {fileID: 11400000, guid: 1b1c20d82303e4b5781c3ef50ac1449f, type: 2}
