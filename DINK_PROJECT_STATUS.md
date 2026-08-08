@@ -33,6 +33,10 @@ Demo hedefi yaklaşık 15 dakikalık oynanış. Tam oyun için hedeflenen süre 
 - Kapı seçimi sonrasında gameplay mekaniklerinin kilitlenmesi
 - Doğru kapıda fade ve sonraki sahne geçişi altyapısı
 - Yanlış kapıda UI tabanlı jumpscare ve ana menüye dönüş
+- Yeni bölüm yokken doğru kapıda siyah ekranda kalmayı önleyen Demo Tamamlandı paneli
+- Demo panelinde Ana Menü ve Yeniden Oyna butonları
+- Demo paneli için aktif Canvas arama ve Canvas bulunamadığında gameplay'i kilitlememe fallback'i
+- Unity Input/EventSystem sorunlarına karşı runtime mouse tıklama fallback'i
 
 ## Klasör Yapısı
 
@@ -71,7 +75,9 @@ Oyun başlar
 → Gameplay scriptleri kapanır
 ```
 
-Doğru kapıda fade uygulanır ve sonraki sahne yüklenir. Yanlış kapıda JumpscareController UI panelini açar, sesi oynatır, belirtilen süre kadar bekler ve ana menüye döner.
+Doğru kapıda geçerli bir sonraki bölüm varsa fade uygulanır ve sonraki sahne yüklenir. Yeni bölüm yoksa fade başlatılmaz; gameplay scriptleri kapanır, runtime oluşturulan Demo Tamamlandı paneli açılır ve cursor serbest bırakılır. Panelden Ana Menü (Build Index 0) veya Yeniden Oyna seçilebilir. Yanlış kapıda JumpscareController UI panelini açar, sesi oynatır, belirtilen süre kadar bekler ve ana menüye döner.
+
+`DoorSequenceManager.cs` demo panelini runtime'da oluşturur. Panel, aktif Canvas altına eklenir; başlık ve butonlar `LegacyRuntime.ttf` kullanır. Normal UI tıklaması çalışmazsa panel, mouse konumunu doğrudan kontrol eden runtime fallback ile butonları çalıştırır.
 
 Kapı seçildikten sonra şu scriptler devre dışı bırakılır:
 
@@ -113,10 +119,15 @@ Bu sistem şu an final sinematiğini başlatmıyor; son bölüme gelindiğinde y
 - Unity sahneleri veya scriptleri taşınırken `.meta` dosyaları korunmalı.
 - Ana menüye dönüldüğünde `IntroManager` cursor'ı serbest bırakıyor; bu, intro atlandığında mouse'un kilitli kalmasını önlüyor.
 - `AudioManager` sahneler arasında yaşamaya devam ediyor ve ana menüye dönüldüğünde menü müziğini tekrar başlatıyor.
+- Demo paneli için `Game 1.unity` sahnesine kalıcı UI/prefab eklenmedi; panel oyun çalışırken oluşturulur.
+- Demo paneli doğru kapıda açılır; yanlış kapı jumpscare akışı korunur.
+- Fener pil tüketim katsayısı kullanıcı tarafından özellikle onaylanmıştır ve değiştirilmemelidir.
+- `DoorSequenceManager.cs` içinde runtime panel, Canvas arama ve mouse fallback kodu bulunur; değişiklik sonrası Play Mode'da doğru kapı/panel/butonlar test edilmelidir.
 
 ## Sıradaki İşler
 
-1. Mevcut prototipte kapı ve jumpscare akışını test etmeye devam etmek.
+1. Demo panelini Play Mode'da test etmek: doğru kapı, panel, Ana Menü, Yeniden Oyna.
+2. Mevcut prototipte kapı ve jumpscare akışını test etmeye devam etmek.
 2. Demo için bölüm sayısını ve genel oynanış akışını belirlemek.
 3. Sabit kamera konumuna uygun ilk bölüm level design'ını hazırlamak.
 4. Mektup, pil, ışık ve çevresel ipuçlarının ilk bölümdeki yerlerini planlamak.
