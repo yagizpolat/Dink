@@ -104,13 +104,23 @@ public class InventoryManager : MonoBehaviour
         }
     }
 
+    [Header("Demo Ayarları")]
+    [Tooltip("Demo sürümünde envanterin geçici olarak kapalı tutulmasını sağlar.")]
+    public bool demoModuEnvantersiz = true;
+
     private void Start()
     {
         FindObject();
-
+        if (Inventory_Panel != null)
+        {
+            Inventory_Panel.SetActive(false);
+        }
     }
     void Update()
     {
+        // Demo sürümünde envantersiz oynanış için güncelleme ve TAB tuşunu atla
+        if (demoModuEnvantersiz) return;
+
         if (IsPanelOpen)
         {
             inventoryCursor.position = Input.mousePosition;

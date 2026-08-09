@@ -31,7 +31,7 @@ public class SceneTransition : MonoBehaviour
         Cursor.visible = false;
 
         if (AudioManager.instance != null)
-            AudioManager.instance.ChangeMusicWithFade(AudioManager.instance.gameMusic, 2f);
+            AudioManager.instance.StopMusicWithFade(2f);
 
         globalFadeGroup.alpha = 0;
         yield return StartCoroutine(Fade(globalFadeGroup, 1, fadeDuration));

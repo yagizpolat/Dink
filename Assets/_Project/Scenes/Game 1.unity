@@ -599,7 +599,7 @@ Canvas:
   m_OverridePixelPerfect: 0
   m_SortingBucketNormalizedSize: 0
   m_VertexColorAlwaysGammaSpace: 1
-  m_AdditionalShaderChannelsFlag: 0
+  m_AdditionalShaderChannelsFlag: 25
   m_UpdateRectTransformForStandalone: 0
   m_SortingLayerID: 0
   m_SortingOrder: 0
@@ -1408,6 +1408,7 @@ GameObject:
   - component: {fileID: 295876544}
   - component: {fileID: 295876546}
   - component: {fileID: 295876545}
+  - component: {fileID: 295876547}
   m_Layer: 5
   m_Name: title text
   m_TagString: Untagged
@@ -1534,6 +1535,20 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 295876543}
   m_CullTransparentMesh: 1
+--- !u!114 &295876547
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 295876543}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e968036a0bcfe8e4997a0958d6de4a6c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::LocalizedText
+  trText: Dr.Wilson
+  enText: Dr.Wilson
 --- !u!1 &310761016
 GameObject:
   m_ObjectHideFlags: 0
@@ -1948,6 +1963,7 @@ MonoBehaviour:
   battery: 100
   tuketmehizi: 1
   "PilUyar\u0131s\u0131": {fileID: 884383192}
+  demoModuFenersiz: 1
 --- !u!114 &330585553
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3634,6 +3650,7 @@ GameObject:
   - component: {fileID: 464064205}
   - component: {fileID: 464064207}
   - component: {fileID: 464064206}
+  - component: {fileID: 464064208}
   m_Layer: 5
   m_Name: Text (TMP)
   m_TagString: Untagged
@@ -3760,6 +3777,20 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 464064204}
   m_CullTransparentMesh: 1
+--- !u!114 &464064208
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 464064204}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e968036a0bcfe8e4997a0958d6de4a6c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::LocalizedText
+  trText: Ayarlar
+  enText: Settings
 --- !u!1 &499989849
 GameObject:
   m_ObjectHideFlags: 0
@@ -4603,6 +4634,7 @@ GameObject:
   - component: {fileID: 650084930}
   - component: {fileID: 650084932}
   - component: {fileID: 650084931}
+  - component: {fileID: 650084933}
   m_Layer: 5
   m_Name: content text
   m_TagString: Untagged
@@ -4732,6 +4764,26 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 650084929}
   m_CullTransparentMesh: 1
+--- !u!114 &650084933
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 650084929}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e968036a0bcfe8e4997a0958d6de4a6c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::LocalizedText
+  trText: "\"E\u011Fer bu notu okuyorsan, kap\u0131lar\u0131 kilitledi\u011Fimi \xE7oktan
+    anlam\u0131\u015Fs\u0131n demektir. Buradan ka\xE7man\u0131n tek bir yolu var
+    ama \xF6nce \u0131\u015F\u0131\u011F\u0131 kapatman gerekecek. Unutma, o seni
+    karanl\u0131kta g\xF6remiyor ama sesini duyabiliyor...\""
+  enText: "\"If you\u2019re reading this note, it means you\u2019ve already realised
+    I\u2019ve locked the doors. There\u2019s only one way to escape from here, but
+    first you\u2019ll need to switch off the light. Don\u2019t forget, it can\u2019t
+    see you in the dark, but it can hear you...\""
 --- !u!1 &655764054
 GameObject:
   m_ObjectHideFlags: 0
@@ -4743,6 +4795,7 @@ GameObject:
   - component: {fileID: 655764055}
   - component: {fileID: 655764057}
   - component: {fileID: 655764056}
+  - component: {fileID: 655764058}
   m_Layer: 5
   m_Name: Text (TMP)
   m_TagString: Untagged
@@ -4869,6 +4922,20 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 655764054}
   m_CullTransparentMesh: 1
+--- !u!114 &655764058
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 655764054}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e968036a0bcfe8e4997a0958d6de4a6c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::LocalizedText
+  trText: Devam Et
+  enText: Continue
 --- !u!1 &660883349
 GameObject:
   m_ObjectHideFlags: 0
@@ -5503,11 +5570,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c9f42136d90f15f4c9fd0504f3209c7b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::HorrorLightingRuntime
-  ambientColor:
-    r: 0.055
-    g: 0.065
-    b: 0.085
-    a: 1
 --- !u!1 &838512005
 GameObject:
   m_ObjectHideFlags: 0
@@ -5625,6 +5687,7 @@ GameObject:
   - component: {fileID: 866504928}
   - component: {fileID: 866504930}
   - component: {fileID: 866504929}
+  - component: {fileID: 866504931}
   m_Layer: 5
   m_Name: Text (TMP)
   m_TagString: Untagged
@@ -5751,6 +5814,20 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 866504927}
   m_CullTransparentMesh: 1
+--- !u!114 &866504931
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 866504927}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e968036a0bcfe8e4997a0958d6de4a6c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::LocalizedText
+  trText: "Oyundan \xC7\u0131k"
+  enText: Quit
 --- !u!1 &873024673
 GameObject:
   m_ObjectHideFlags: 0
@@ -5820,6 +5897,7 @@ MonoBehaviour:
   SesBombasi: {fileID: 1108809331}
   InventoryOpen: {fileID: 8300000, guid: f23e243e00109d148be0dea758aeb3e6, type: 3}
   InventoryClose: {fileID: 8300000, guid: d3a317d562a79ea40acfe5cbcffec1aa, type: 3}
+  demoModuEnvantersiz: 1
 --- !u!1 &884383192
 GameObject:
   m_ObjectHideFlags: 0
@@ -5831,6 +5909,7 @@ GameObject:
   - component: {fileID: 884383193}
   - component: {fileID: 884383195}
   - component: {fileID: 884383194}
+  - component: {fileID: 884383196}
   m_Layer: 0
   m_Name: Pil Uyarisi
   m_TagString: Untagged
@@ -5957,6 +6036,20 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 884383192}
   m_CullTransparentMesh: 1
+--- !u!114 &884383196
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 884383192}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e968036a0bcfe8e4997a0958d6de4a6c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::LocalizedText
+  trText: "Pil kullan\u0131lamaz"
+  enText: 
 --- !u!1 &902515377
 GameObject:
   m_ObjectHideFlags: 0
@@ -7285,6 +7378,7 @@ GameObject:
   - component: {fileID: 1148764606}
   - component: {fileID: 1148764608}
   - component: {fileID: 1148764607}
+  - component: {fileID: 1148764609}
   m_Layer: 0
   m_Name: Item_Name
   m_TagString: Untagged
@@ -7411,6 +7505,20 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1148764605}
   m_CullTransparentMesh: 1
+--- !u!114 &1148764609
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1148764605}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e968036a0bcfe8e4997a0958d6de4a6c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::LocalizedText
+  trText: Item Name
+  enText: 
 --- !u!1 &1164586038
 GameObject:
   m_ObjectHideFlags: 0
@@ -8150,7 +8258,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9071cf2a0e6f1364ca975f4ac6833dd9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::LevelProgressionManager
-  levelSceneBuildIndexes: 01000000
+  levelSceneBuildIndexes: 0100000002000000030000000400000005000000
 --- !u!1 &1259731486
 GameObject:
   m_ObjectHideFlags: 0
@@ -8696,6 +8804,7 @@ GameObject:
   - component: {fileID: 1373414113}
   - component: {fileID: 1373414115}
   - component: {fileID: 1373414114}
+  - component: {fileID: 1373414116}
   m_Layer: 0
   m_Name: Item_Description
   m_TagString: Untagged
@@ -8822,6 +8931,20 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1373414112}
   m_CullTransparentMesh: 1
+--- !u!114 &1373414116
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1373414112}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e968036a0bcfe8e4997a0958d6de4a6c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::LocalizedText
+  trText: Item Description
+  enText: 
 --- !u!1 &1385721175
 GameObject:
   m_ObjectHideFlags: 0
@@ -13916,6 +14039,7 @@ GameObject:
   - component: {fileID: 1475535252}
   - component: {fileID: 1475535254}
   - component: {fileID: 1475535253}
+  - component: {fileID: 1475535255}
   m_Layer: 5
   m_Name: Text (TMP)
   m_TagString: Untagged
@@ -14042,6 +14166,20 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1475535251}
   m_CullTransparentMesh: 1
+--- !u!114 &1475535255
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1475535251}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e968036a0bcfe8e4997a0958d6de4a6c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::LocalizedText
+  trText: "Ana Men\xFCye D\xF6n"
+  enText: Back to the Main Menu
 --- !u!1 &1491463772
 GameObject:
   m_ObjectHideFlags: 0
@@ -14174,6 +14312,7 @@ GameObject:
   - component: {fileID: 1495236123}
   - component: {fileID: 1495236125}
   - component: {fileID: 1495236124}
+  - component: {fileID: 1495236126}
   m_Layer: 0
   m_Name: Subtitle_Text
   m_TagString: Untagged
@@ -14300,6 +14439,20 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1495236122}
   m_CullTransparentMesh: 1
+--- !u!114 &1495236126
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1495236122}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e968036a0bcfe8e4997a0958d6de4a6c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::LocalizedText
+  trText: Neredeyim ben...?
+  enText: 
 --- !u!1 &1495932819
 GameObject:
   m_ObjectHideFlags: 0
@@ -15406,6 +15559,10 @@ MonoBehaviour:
   voiceAudioSource: {fileID: 1735806093}
   subtitleText: {fileID: 1495236124}
   subtitleCanvasGroup: {fileID: 571839027}
+  trVoiceClip: {fileID: 8300000, guid: ecd5b33358d0ec248a1621e228b41d3f, type: 3}
+  trSubtitleText: Neredeyim ben...?
+  enVoiceClip: {fileID: 8300000, guid: b191ca3adf4b0564486f0ebdf7d8990d, type: 3}
+  enSubtitleText: Where am I...?
   introVoiceClip: {fileID: 8300000, guid: ecd5b33358d0ec248a1621e228b41d3f, type: 3}
   defaultSubtitleText: Neredeyim ben...?
   displayDuration: 5
@@ -15570,9 +15727,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 81f69e20efc4da349862ebeb8d902688, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Letter
-  title: Dr. Wilson
-  content: "Hasta bug\xFCn yine ayn\u0131 kap\u0131y\u0131 g\xF6rd\xFC\u011F\xFCn\xFC
-    s\xF6yledi."
+  trTitle: Dr.Wilson
+  trContent: "\"E\u011Fer bu notu okuyorsan, kap\u0131lar\u0131 kilitledi\u011Fimi
+    \xE7oktan anlam\u0131\u015Fs\u0131n demektir. Buradan ka\xE7man\u0131n tek bir
+    yolu var ama \xF6nce \u0131\u015F\u0131\u011F\u0131 kapatman gerekecek. Unutma,
+    o seni karanl\u0131kta g\xF6remiyor ama sesini duyabiliyor...\""
+  enTitle: Dr.Wilson
+  enContent: '"If you''re reading this note, it means you''ve already realized that
+    I''ve locked the doors. There''s only one way to escape from here, but first
+    you''ll have to turn off the light. Don''t forget, it can''t see you in the dark,
+    but it can hear you..."'
 --- !u!23 &1777568479
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -16679,6 +16843,7 @@ GameObject:
   - component: {fileID: 2092479299}
   - component: {fileID: 2092479301}
   - component: {fileID: 2092479300}
+  - component: {fileID: 2092479302}
   m_Layer: 5
   m_Name: Close Warning
   m_TagString: Untagged
@@ -16805,6 +16970,20 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2092479298}
   m_CullTransparentMesh: 1
+--- !u!114 &2092479302
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2092479298}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e968036a0bcfe8e4997a0958d6de4a6c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::LocalizedText
+  trText: "kapatmak i\xE7in E tu\u015Funa bas"
+  enText: Press the E key to close
 --- !u!1 &2106523811
 GameObject:
   m_ObjectHideFlags: 0

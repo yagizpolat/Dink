@@ -69,9 +69,9 @@ public class Escmenu : MonoBehaviour
 
     void CloseOpenScript(bool enable)
     {
-        fener.enabled = enable;
-        kamerascript.enabled = enable;
-        inventory.enabled = enable;
-        mektup_pil.enabled = enable;
+        if (fener != null) fener.enabled = enable;
+        if (kamerascript != null) kamerascript.enabled = enable;
+        if (inventory != null) inventory.enabled = enable;
+        if (mektup_pil != null) mektup_pil.enabled = enable;
     }
 }

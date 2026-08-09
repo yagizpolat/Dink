@@ -130,6 +130,7 @@ GameObject:
   - component: {fileID: 19534335}
   - component: {fileID: 19534337}
   - component: {fileID: 19534336}
+  - component: {fileID: 19534338}
   m_Layer: 0
   m_Name: PressAnyKey
   m_TagString: Untagged
@@ -198,6 +199,20 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 19534334}
   m_CullTransparentMesh: 1
+--- !u!114 &19534338
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 19534334}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e968036a0bcfe8e4997a0958d6de4a6c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::LocalizedText
+  trText: "Devam etmek i\xE7in bir tu\u015Fa bas\u0131n"
+  enText: Press any key to continue
 --- !u!1 &29977783
 GameObject:
   m_ObjectHideFlags: 0
@@ -348,6 +363,7 @@ GameObject:
   - component: {fileID: 41935423}
   - component: {fileID: 41935425}
   - component: {fileID: 41935424}
+  - component: {fileID: 41935426}
   m_Layer: 0
   m_Name: Title
   m_TagString: Untagged
@@ -416,6 +432,24 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 41935422}
   m_CullTransparentMesh: 1
+--- !u!114 &41935426
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 41935422}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e968036a0bcfe8e4997a0958d6de4a6c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::LocalizedText
+  trText: "AYARLAR\n\n\xC7ok yak\u0131nda..."
+  enText: 'SETTINGS
+
+    
+
+    Coming soon...'
 --- !u!1 &55922607
 GameObject:
   m_ObjectHideFlags: 0
@@ -804,6 +838,7 @@ GameObject:
   - component: {fileID: 205776756}
   - component: {fileID: 205776758}
   - component: {fileID: 205776757}
+  - component: {fileID: 205776759}
   m_Layer: 0
   m_Name: Text
   m_TagString: Untagged
@@ -873,6 +908,23 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 205776755}
   m_CullTransparentMesh: 1
+--- !u!114 &205776759
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 205776755}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e968036a0bcfe8e4997a0958d6de4a6c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::LocalizedText
+  trText: "BU OYUN RAHATSIZ ED\u0130C\u0130 G\xD6R\xDCNT\xDCLER\nVE AN\u0130 SESLER
+    \u0130\xC7ERMEKTED\u0130R."
+  enText: 'THIS GAME CONTAINS DISTURBING IMAGES
+
+    AND SUDDEN NOISES.'
 --- !u!1 &330585543
 GameObject:
   m_ObjectHideFlags: 0
@@ -1430,6 +1482,7 @@ GameObject:
   - component: {fileID: 526654446}
   - component: {fileID: 526654448}
   - component: {fileID: 526654447}
+  - component: {fileID: 526654449}
   m_Layer: 0
   m_Name: Text
   m_TagString: Untagged
@@ -1498,6 +1551,20 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 526654445}
   m_CullTransparentMesh: 1
+--- !u!114 &526654449
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 526654445}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e968036a0bcfe8e4997a0958d6de4a6c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::LocalizedText
+  trText: "Ge\xE7mek i\xE7in bir tu\u015Fa bas\u0131n..."
+  enText: Press any key to continue...
 --- !u!1 &570255897
 GameObject:
   m_ObjectHideFlags: 0
@@ -1747,6 +1814,7 @@ GameObject:
   - component: {fileID: 623673724}
   - component: {fileID: 623673726}
   - component: {fileID: 623673725}
+  - component: {fileID: 623673727}
   m_Layer: 0
   m_Name: Version
   m_TagString: Untagged
@@ -1806,7 +1874,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: v0.1 - Early Build
+  m_Text: "v0.3 - Erken Eri\u015Fim"
 --- !u!222 &623673726
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -1814,6 +1882,149 @@ CanvasRenderer:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 623673723}
+  m_CullTransparentMesh: 1
+--- !u!114 &623673727
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 623673723}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e968036a0bcfe8e4997a0958d6de4a6c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::LocalizedText
+  trText: "v0.3 - Erken Eri\u015Fim"
+  enText: v0.1 - Early Build
+--- !u!1 &657036314
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 657036315}
+  - component: {fileID: 657036318}
+  - component: {fileID: 657036317}
+  - component: {fileID: 657036316}
+  m_Layer: 0
+  m_Name: Turkish
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!224 &657036315
+RectTransform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 657036314}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1144838625}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_AnchorMin: {x: 0.5, y: 0.5}
+  m_AnchorMax: {x: 0.5, y: 0.5}
+  m_AnchoredPosition: {x: 823, y: -427}
+  m_SizeDelta: {x: 100, y: 100}
+  m_Pivot: {x: 0.5, y: 0.5}
+--- !u!114 &657036316
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 657036314}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4e29b1a8efbd4b44bb3f3716e73f07ff, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.Button
+  m_Navigation:
+    m_Mode: 3
+    m_WrapAround: 0
+    m_SelectOnUp: {fileID: 0}
+    m_SelectOnDown: {fileID: 0}
+    m_SelectOnLeft: {fileID: 0}
+    m_SelectOnRight: {fileID: 0}
+  m_Transition: 1
+  m_Colors:
+    m_NormalColor: {r: 1, g: 1, b: 1, a: 1}
+    m_HighlightedColor: {r: 0.9607843, g: 0.9607843, b: 0.9607843, a: 1}
+    m_PressedColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 1}
+    m_SelectedColor: {r: 0.9607843, g: 0.9607843, b: 0.9607843, a: 1}
+    m_DisabledColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 0.5019608}
+    m_ColorMultiplier: 1
+    m_FadeDuration: 0.1
+  m_SpriteState:
+    m_HighlightedSprite: {fileID: 0}
+    m_PressedSprite: {fileID: 0}
+    m_SelectedSprite: {fileID: 0}
+    m_DisabledSprite: {fileID: 0}
+  m_AnimationTriggers:
+    m_NormalTrigger: Normal
+    m_HighlightedTrigger: Highlighted
+    m_PressedTrigger: Pressed
+    m_SelectedTrigger: Selected
+    m_DisabledTrigger: Disabled
+  m_Interactable: 1
+  m_TargetGraphic: {fileID: 657036317}
+  m_OnClick:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 1425470961}
+        m_TargetAssemblyTypeName: UIManager, Assembly-CSharp
+        m_MethodName: SetTurkish
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+--- !u!114 &657036317
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 657036314}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1344c3c82d62a2a41a3576d8abb8e3ea, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.RawImage
+  m_Material: {fileID: 0}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_RaycastTarget: 1
+  m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
+  m_Maskable: 1
+  m_OnCullStateChanged:
+    m_PersistentCalls:
+      m_Calls: []
+  m_Texture: {fileID: 2800000, guid: 608828f22a2fe8347b1aab7bb8fdcc12, type: 3}
+  m_UVRect:
+    serializedVersion: 2
+    x: 0
+    y: 0
+    width: 1
+    height: 1
+--- !u!222 &657036318
+CanvasRenderer:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 657036314}
   m_CullTransparentMesh: 1
 --- !u!1 &700696688
 GameObject:
@@ -1826,6 +2037,7 @@ GameObject:
   - component: {fileID: 700696689}
   - component: {fileID: 700696691}
   - component: {fileID: 700696690}
+  - component: {fileID: 700696692}
   m_Layer: 0
   m_Name: Text
   m_TagString: Untagged
@@ -1894,6 +2106,20 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 700696688}
   m_CullTransparentMesh: 1
+--- !u!114 &700696692
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 700696688}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e968036a0bcfe8e4997a0958d6de4a6c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::LocalizedText
+  trText: "BA\u015ELA"
+  enText: START
 --- !u!1 &755744954
 GameObject:
   m_ObjectHideFlags: 0
@@ -1905,6 +2131,7 @@ GameObject:
   - component: {fileID: 755744955}
   - component: {fileID: 755744957}
   - component: {fileID: 755744956}
+  - component: {fileID: 755744958}
   m_Layer: 0
   m_Name: Text
   m_TagString: Untagged
@@ -1973,6 +2200,20 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 755744954}
   m_CullTransparentMesh: 1
+--- !u!114 &755744958
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 755744954}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e968036a0bcfe8e4997a0958d6de4a6c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::LocalizedText
+  trText: AYARLAR
+  enText: SETTINGS
 --- !u!1 &799344557
 GameObject:
   m_ObjectHideFlags: 0
@@ -1984,6 +2225,7 @@ GameObject:
   - component: {fileID: 799344558}
   - component: {fileID: 799344560}
   - component: {fileID: 799344559}
+  - component: {fileID: 799344561}
   m_Layer: 0
   m_Name: Text
   m_TagString: Untagged
@@ -2052,6 +2294,20 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 799344557}
   m_CullTransparentMesh: 1
+--- !u!114 &799344561
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 799344557}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e968036a0bcfe8e4997a0958d6de4a6c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::LocalizedText
+  trText: "GER\u0130"
+  enText: BACK
 --- !u!1 &832575517
 GameObject:
   m_ObjectHideFlags: 0
@@ -2312,6 +2568,8 @@ RectTransform:
   - {fileID: 2019094175}
   - {fileID: 2045589226}
   - {fileID: 623673724}
+  - {fileID: 657036315}
+  - {fileID: 1303735466}
   m_Father: {fileID: 33940179}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
@@ -2645,6 +2903,135 @@ Animator:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
+--- !u!1 &1303735465
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1303735466}
+  - component: {fileID: 1303735469}
+  - component: {fileID: 1303735468}
+  - component: {fileID: 1303735467}
+  m_Layer: 0
+  m_Name: English
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!224 &1303735466
+RectTransform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1303735465}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1144838625}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_AnchorMin: {x: 0.5, y: 0.5}
+  m_AnchorMax: {x: 0.5, y: 0.5}
+  m_AnchoredPosition: {x: 667, y: -427}
+  m_SizeDelta: {x: 100, y: 100}
+  m_Pivot: {x: 0.5, y: 0.5}
+--- !u!114 &1303735467
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1303735465}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4e29b1a8efbd4b44bb3f3716e73f07ff, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.Button
+  m_Navigation:
+    m_Mode: 3
+    m_WrapAround: 0
+    m_SelectOnUp: {fileID: 0}
+    m_SelectOnDown: {fileID: 0}
+    m_SelectOnLeft: {fileID: 0}
+    m_SelectOnRight: {fileID: 0}
+  m_Transition: 1
+  m_Colors:
+    m_NormalColor: {r: 1, g: 1, b: 1, a: 1}
+    m_HighlightedColor: {r: 0.9607843, g: 0.9607843, b: 0.9607843, a: 1}
+    m_PressedColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 1}
+    m_SelectedColor: {r: 0.9607843, g: 0.9607843, b: 0.9607843, a: 1}
+    m_DisabledColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 0.5019608}
+    m_ColorMultiplier: 1
+    m_FadeDuration: 0.1
+  m_SpriteState:
+    m_HighlightedSprite: {fileID: 0}
+    m_PressedSprite: {fileID: 0}
+    m_SelectedSprite: {fileID: 0}
+    m_DisabledSprite: {fileID: 0}
+  m_AnimationTriggers:
+    m_NormalTrigger: Normal
+    m_HighlightedTrigger: Highlighted
+    m_PressedTrigger: Pressed
+    m_SelectedTrigger: Selected
+    m_DisabledTrigger: Disabled
+  m_Interactable: 1
+  m_TargetGraphic: {fileID: 1303735468}
+  m_OnClick:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 1425470961}
+        m_TargetAssemblyTypeName: UIManager, Assembly-CSharp
+        m_MethodName: SetEnglish
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+--- !u!114 &1303735468
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1303735465}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1344c3c82d62a2a41a3576d8abb8e3ea, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.RawImage
+  m_Material: {fileID: 0}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_RaycastTarget: 1
+  m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
+  m_Maskable: 1
+  m_OnCullStateChanged:
+    m_PersistentCalls:
+      m_Calls: []
+  m_Texture: {fileID: 2800000, guid: 818804d47e19e4442aea726041873bcf, type: 3}
+  m_UVRect:
+    serializedVersion: 2
+    x: 0
+    y: 0
+    width: 1
+    height: 1
+--- !u!222 &1303735469
+CanvasRenderer:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1303735465}
+  m_CullTransparentMesh: 1
 --- !u!1 &1321519124
 GameObject:
   m_ObjectHideFlags: 0
@@ -2656,6 +3043,7 @@ GameObject:
   - component: {fileID: 1321519125}
   - component: {fileID: 1321519127}
   - component: {fileID: 1321519126}
+  - component: {fileID: 1321519128}
   m_Layer: 0
   m_Name: Text
   m_TagString: Untagged
@@ -2724,6 +3112,20 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1321519124}
   m_CullTransparentMesh: 1
+--- !u!114 &1321519128
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1321519124}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e968036a0bcfe8e4997a0958d6de4a6c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::LocalizedText
+  trText: "KULAKLIK \xD6NER\u0130L\u0130R\n(Headphones Recommended)"
+  enText: Headphones Recommended
 --- !u!1 &1332689325
 GameObject:
   m_ObjectHideFlags: 0
@@ -2735,6 +3137,7 @@ GameObject:
   - component: {fileID: 1332689326}
   - component: {fileID: 1332689328}
   - component: {fileID: 1332689327}
+  - component: {fileID: 1332689329}
   m_Layer: 0
   m_Name: GameTitle
   m_TagString: Untagged
@@ -2803,6 +3206,20 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1332689325}
   m_CullTransparentMesh: 1
+--- !u!114 &1332689329
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1332689325}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e968036a0bcfe8e4997a0958d6de4a6c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::LocalizedText
+  trText: DINK
+  enText: DINK
 --- !u!1 &1349780218
 GameObject:
   m_ObjectHideFlags: 0
@@ -2926,6 +3343,7 @@ GameObject:
   - component: {fileID: 1417152764}
   - component: {fileID: 1417152766}
   - component: {fileID: 1417152765}
+  - component: {fileID: 1417152767}
   m_Layer: 0
   m_Name: JournalText
   m_TagString: Untagged
@@ -2995,6 +3413,23 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1417152763}
   m_CullTransparentMesh: 1
+--- !u!114 &1417152767
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1417152763}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e968036a0bcfe8e4997a0958d6de4a6c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::LocalizedText
+  trText: "Bug\xFCn yine ayn\u0131 koridor...\n\nNe kadar denesem de \xE7\u0131kam\u0131yorum.\nSanki
+    zihnimin i\xE7inde bir labirentteyim.\n\n\u2014 G\xFCnl\xFCk, 3. G\xFCn"
+  enText: "Today, the same hallway again...\r\n\r\nNo matter how hard I try, I can\u2019t
+    get out.\r\nIt\u2019s as if I\u2019m in a maze inside my mind.\r\n\r\n\u2014
+    Diary, Day 3"
 --- !u!1 &1425470960
 GameObject:
   m_ObjectHideFlags: 0
@@ -3703,6 +4138,7 @@ GameObject:
   - component: {fileID: 1770364370}
   - component: {fileID: 1770364372}
   - component: {fileID: 1770364371}
+  - component: {fileID: 1770364373}
   m_Layer: 0
   m_Name: Text
   m_TagString: Untagged
@@ -3771,6 +4207,20 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1770364369}
   m_CullTransparentMesh: 1
+--- !u!114 &1770364373
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1770364369}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e968036a0bcfe8e4997a0958d6de4a6c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::LocalizedText
+  trText: "\xC7IKI\u015E"
+  enText: QUIT
 --- !u!1 &1819130681
 GameObject:
   m_ObjectHideFlags: 0
@@ -4178,6 +4628,7 @@ GameObject:
   - component: {fileID: 2019094175}
   - component: {fileID: 2019094177}
   - component: {fileID: 2019094176}
+  - component: {fileID: 2019094178}
   m_Layer: 0
   m_Name: Subtitle
   m_TagString: Untagged
@@ -4246,6 +4697,20 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2019094174}
   m_CullTransparentMesh: 1
+--- !u!114 &2019094178
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2019094174}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e968036a0bcfe8e4997a0958d6de4a6c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::LocalizedText
+  trText: "Kap\u0131y\u0131 se\xE7. Sonu\xE7lara katlan."
+  enText: Choose a door. Deal with the consequences.
 --- !u!1 &2045589225
 GameObject:
   m_ObjectHideFlags: 0

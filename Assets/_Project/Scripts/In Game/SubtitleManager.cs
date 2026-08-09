@@ -12,10 +12,23 @@ public class SubtitleManager : MonoBehaviour
     public TMP_Text subtitleText;
     public CanvasGroup subtitleCanvasGroup;
 
-    [Header("Intro Voice Settings")]
+    [Header("Intro Voice & Subtitle Settings")]
+    [Header("Türkçe (TR)")]
+    public AudioClip trVoiceClip;
+    [TextArea(2, 4)]
+    public string trSubtitleText = "Neredeyim ben...?";
+
+    [Header("English (EN)")]
+    public AudioClip enVoiceClip;
+    [TextArea(2, 4)]
+    public string enSubtitleText = "Where am I...?";
+
+    [Header("Legacy / Fallback")]
     public AudioClip introVoiceClip;
     [TextArea(2, 4)]
     public string defaultSubtitleText = "Neredeyim ben...?";
+
+    [Header("Timing Settings")]
     public float displayDuration = 10f;
     public float fadeInDuration = 0.4f;
     public float fadeOutDuration = 0.6f;
@@ -40,7 +53,38 @@ public class SubtitleManager : MonoBehaviour
         }
 
         if (otomatikBaslat)
-            ShowSubtitle(defaultSubtitleText, introVoiceClip, displayDuration);
+            ShowIntroSubtitle();
+    }
+
+    public string GetIntroSubtitleText()
+    {
+        string lang = PlayerPrefs.GetString("Language", "TR");
+        if (lang == "TR")
+        {
+            return string.IsNullOrEmpty(trSubtitleText) ? defaultSubtitleText : trSubtitleText;
+        }
+        else
+        {
+            return string.IsNullOrEmpty(enSubtitleText) ? (string.IsNullOrEmpty(trSubtitleText) ? defaultSubtitleText : trSubtitleText) : enSubtitleText;
+        }
+    }
+
+    public AudioClip GetIntroVoiceClip()
+    {
+        string lang = PlayerPrefs.GetString("Language", "TR");
+        if (lang == "TR")
+        {
+            return trVoiceClip != null ? trVoiceClip : introVoiceClip;
+        }
+        else
+        {
+            return enVoiceClip != null ? enVoiceClip : (trVoiceClip != null ? trVoiceClip : introVoiceClip);
+        }
+    }
+
+    public void ShowIntroSubtitle()
+    {
+        ShowSubtitle(GetIntroSubtitleText(), GetIntroVoiceClip(), displayDuration);
     }
 
     public void ShowSubtitle(string text, AudioClip voiceClip = null, float duration = 3.5f)

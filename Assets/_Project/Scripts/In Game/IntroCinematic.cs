@@ -131,11 +131,7 @@ public class IntroCinematic : MonoBehaviour
         // Göz açıldığı an ses ve altyazıyı tetikle!
         if (subtitleManager != null)
         {
-            subtitleManager.ShowSubtitle(
-                subtitleManager.defaultSubtitleText,
-                subtitleManager.introVoiceClip,
-                subtitleManager.displayDuration
-            );
+            subtitleManager.ShowIntroSubtitle();
         }
 
         float elapsed = 0f;

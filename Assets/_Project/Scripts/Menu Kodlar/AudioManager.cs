@@ -60,11 +60,38 @@ public class AudioManager : MonoBehaviour
     }
 
     public void ChangeMusicWithFade(AudioClip newClip, float fadeDuration)
-    {// Eğer zaten o müzik çalıyorsa tekrar başlatma
+    {
+        // Eğer zaten o müzik çalıyorsa tekrar başlatma
         if (musicSource.clip == newClip) return;
 
         StopAllCoroutines(); // Çakışmaları önlemek için eski fade'leri durdur
         StartCoroutine(FadeOutAndIn(newClip, fadeDuration));
+    }
+
+    /// <summary>
+    /// Müziği yumuşakça kısarak (Fade Out) tamamen durdurur. Oyuna geçerken sessizlik sağlamak için kullanılır.
+    /// </summary>
+    public void StopMusicWithFade(float fadeDuration)
+    {
+        StopAllCoroutines();
+        StartCoroutine(FadeOutAndStop(fadeDuration));
+    }
+
+    private IEnumerator FadeOutAndStop(float duration)
+    {
+        float currentTime = 0;
+        float startVolume = musicSource.volume > 0 ? musicSource.volume : 0.5f;
+
+        while (currentTime < duration)
+        {
+            currentTime += Time.deltaTime;
+            musicSource.volume = Mathf.Lerp(startVolume, 0, currentTime / duration);
+            yield return null;
+        }
+
+        musicSource.Stop();
+        musicSource.clip = null;
+        musicSource.volume = 0.5f; // Bir sonraki müzik çalınacağı zaman varsayılan ses seviyesi
     }
 
     private IEnumerator FadeOutAndIn(AudioClip newClip, float duration)

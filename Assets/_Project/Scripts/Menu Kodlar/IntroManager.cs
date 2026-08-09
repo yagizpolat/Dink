@@ -147,7 +147,7 @@ public class IntroManager : MonoBehaviour
         float time = 0;
         while (time < duration)
         {
-            time += Time.deltaTime;
+            time += Time.unscaledDeltaTime;
             cg.alpha = Mathf.Lerp(start, target, time / duration);
             yield return null;
         }
