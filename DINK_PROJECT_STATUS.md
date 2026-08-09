@@ -1,136 +1,71 @@
-# Dink - Proje Durumu
+﻿# DINK Oyun Projesi Durum Raporu
 
-## Genel Bakış
+## Proje Genel Bakisi
 
-Dink, psikolojik korku, puzzle ve first-person türlerini bir araya getiren bir oyun. Oyuncu fiziksel olarak hareket etmiyor; sabit bir noktadan kamerayı çevirerek çevreyi inceliyor ve ekranın merkezindeki crosshair üzerinden objelerle etkileşime giriyor.
+- **Proje Yolu:** C:\Users\engin\OneDrive\Belgeler\Kisisel Dosyalarim\ozel\Oyun Gelistirme\Denemelik projelerim\Dink
+- **Unity Surumu:** Unity 6 (6000.0.14f1) LTS, URP (Universal Render Pipeline)
+- **Hedef:** Birinci sahis (FPS), sabit kamera acili, atmosferik psikolojik korku ve kapi secimi oyunu.
+- **Dil Destegi:** Turkce seslendirme ve altyazi altyapisi (Gelecekteki LocalizedText.cs dil sistemiyle %100 uyumlu).
 
-Demo hedefi yaklaşık 15 dakikalık oynanış. Tam oyun için hedeflenen süre yaklaşık 2-2,5 saat.
+---
 
-## Tasarım Kararları
+## 1. Ana Mimari & Mekanik Ozet
 
-- Oyuncu hareket etmiyor, yalnızca kamerayı kontrol ediyor.
-- Etkileşimler merkezden gönderilen raycast ile yapılıyor.
-- Her bölümde iki kapı bulunuyor.
-- Doğru kapı her oyun başlangıcında rastgele belirleniyor; doğru kapı önceden sabit olarak belirlenmiyor.
-- Yanlış kapı seçimi jumpscare ve ölümle sonuçlanıyor.
-- Harfler dünyada okunuyor, envantere eklenmiyor.
-- Demo kapsamında envanterde yalnızca piller bulunuyor.
-- Level design kesinleşmeden yeni sahneler çoğaltılmayacak.
+- **Ana Sablon Oda (Master Template Room):**
+  - Iki kapili (Sol Mavi / Sag Kirmizi) temel sahne yapisi. Bu sablon mukemmellestirilerek gelecek bolumler icin kopyalanacaktir (Duplicate).
+  - Sol duvarda organik kuf lekesi (Isolated_Mold_TrueAlpha.mat), sag duvarda siva catlagi (Wall_Crack_TrueAlpha.mat) ve havalanan mikro toz zerreleri (Atmospheric_Dust) bulunur.
+- **Gelismis Kapi Isiklari & Suzulme (Door Indicators):**
+  - Sol kapi uzerinde Mavi, Sag kapi uzerinde Kirmizi 3D armatur lambalari bulunur.
+  - Indicator objeleri dogrudan kapi Transform'larina ebeveynlenmistir (SetParent), boylece DoorEffects.cs kapilari havada suzdurdugunde isiklar kapilarla %100 senkronize bicimde hareket eder.
+- **Aydinlatma Felsefesi ("Goldilocks Sweet Spot"):**
+  - Environment Lighting -> Ambient Color koyu gri/mavi tonuna (RGB 45, 50, 60) ayarlanmistir. Ortam oyuncuyu sikacak kadar aydinlik, oyunu oynanamaz kilacak kadar kor karanlik degildir.
+- **Kademeli Mekanik Ogretimi (Progressive Tutorial):**
+  - 1. Oda (Tutorial): Mavi ve Kirmizi kapi isiklari ortami aydinlattigi icin Fener (FenerKontrol.cs) ve Envanter (InventoryManager.cs) pasif tutulur. Yerdeki piller SetActive(false) yapilarak ortam temizlenmistir.
+  - Ileriki Karanlik Odalar: Isiklar sondugunde ekranda *"Fenerini acmak icin [F], Envanter icin [TAB] tusuna bas"* uyarisi cikacak ve mekanikler acilacaktir.
 
-## Tamamlanan Sistemler
+---
 
-- Ana menü ve intro akışı
-- Kulaklık ve içerik uyarıları
-- ESC/Pause menüsü
-- Crosshair sistemi
-- Dünyadaki mektupları okuma
-- El feneri ve pil tüketimi
-- Pil toplama
-- Envanter ve slot seçimi
-- Pil kullanımı ve tam pil uyarısı
-- Kapı etkileşimi
-- Rastgele doğru kapı seçimi
-- Kapı seçimi sonrasında gameplay mekaniklerinin kilitlenmesi
-- Doğru kapıda fade ve sonraki sahne geçişi altyapısı
-- Yanlış kapıda UI tabanlı jumpscare ve ana menüye dönüş
-- Yeni bölüm yokken doğru kapıda siyah ekranda kalmayı önleyen Demo Tamamlandı paneli
-- Demo panelinde Ana Menü ve Yeniden Oyna butonları
-- Demo paneli için aktif Canvas arama ve Canvas bulunamadığında gameplay'i kilitlememe fallback'i
-- Unity Input/EventSystem sorunlarına karşı runtime mouse tıklama fallback'i
+## 2. Son Yapilan Degisiklikler ve Eklenen Sistemler (09.08.2026)
 
-## Klasör Yapısı
+### A. Sinematik Giris Sekansi ve Goz Acilisi ([IntroCinematic.cs](file:///C:/Users/engin/OneDrive/Belgeler/Kisisel%20Dosyalarim/ozel/Oyun%20Gelistirme/Denemelik%20projelerim/Dink/Assets/_Project/Scripts/In%20Game/IntroCinematic.cs))
+- **5 Fazli Coroutine Akisi:**
+  1. **Faz 0 (Hazirlik):** Oyuncudan kamera/fener kontrolu alinir, ekran siyahla kaplanir, kamera yere bakacak sekilde dondurulur (X: 60°).
+  2. **Faz 1 (Goz Acilisi):** Ust ve alt siyah bantlar birbirinden ayrilarak karakterin gozunu acmasi simule edilir. Ayni anda Turkce ses ve altyazi tetiklenir.
+  3. **Faz 2 (Basini Kaldirma):** Quaternion.Slerp ile kamera rotasyonu ground acisindan duz bakis acisina (X: 0°) organik olarak yukseltilir (ayaga kalkma hissi).
+  4. **Faz 3 (Bulanikliktan Netlige):** URP Depth of Field (Gaussian) kullanilarak hicbir renk mudahalesi olmadan saf seffaf bulaniklik kademeli olarak temizlenir.
+  5. **Faz 4 (Kontrol Iadesi):** Oyuncuya kamera ve etkilesim kontrolleri geri verilir.
+- **Dinamik Override Destegi:** Profilde DepthOfField override'i yoksa oyun basladigi an otomatik olarak profili doldurur.
 
-Proje dosyaları `Assets/_Project` altında tutuluyor:
+### B. Turkce Seslendirme & 1:1 Donanimsal Altyazi Sistemi ([SubtitleManager.cs](file:///C:/Users/engin/OneDrive/Belgeler/Kisisel%20Dosyalarim/ozel/Oyun%20Gelistirme/Denemelik%20projelerim/Dink/Assets/_Project/Scripts/In%20Game/SubtitleManager.cs))
+- **Donanimsal Oynatma Takibi (isPlaying):** Matematiksel sure hesaplamalari yerine Unity ses motorunun donanimsal oynatma durumunu (while(!voiceAudioSource.isPlaying) ve while(voiceAudioSource.isPlaying)) takip eder.
+- **Kusursuz Senkronizasyon:** Ses hoparlorden ciktigi ILK KAREDE altyazi belirir (0.2s Fade-In). Ses tamamen sustugu ILK KAREDE altyazi yavasca kaybolur (0.4s Fade-Out). Altyazinin sesten once bitmesi veya uyumsuz kalmasi imkansizlastirilmistir.
+- **Localization Hazirligi:** LocalizedText.cs dili ve dynamic binding bilesenleri ile %100 uyumludur.
 
-```text
-Assets/_Project
-├── Scenes
-├── Scripts
-│   ├── Editor
-│   ├── In Game
-│   └── Menu Kodlar
-└── Settings
-```
+### C. Gercek Alpha Decal Donusturucu ve Material Iyilestirmeleri ([CreateTrueAlphaDecal.cs](file:///C:/Users/engin/OneDrive/Belgeler/Kisisel%20Dosyalarim/ozel/Oyun%20Gelistirme/Denemelik%20projelerim/Dink/Assets/_Project/Scripts/Editor/CreateTrueAlphaDecal.cs))
+- JPG kaynakli kuf ve siva catlagi kaplamalarindaki kirli beyaz kenar halkalarini (halo) gidermek icin dogrudan RGBA PNG ureten editor araci yazildi (isolated_mold_patch_alpha.png, wall_crack_decal_alpha.png).
+- URP Transparent kaplamalardaki plastik parlamayi onlemek icin Smoothness = 0.0 yapildi.
 
-Üçüncü parti ve görsel assetler `Assets/gorseller` altında tutuluyor. Unity dosyalarının `.meta` dosyalarıyla birlikte taşınmasına dikkat edilmeli.
+### D. Yordamsal 3D Model Ureticileri ([ProceduralMeshGenerator.cs](file:///C:/Users/engin/OneDrive/Belgeler/Kisisel%20Dosyalarim/ozel/Oyun%20Gelistirme/Denemelik%20projelerim/Dink/Assets/_Project/Scripts/Editor/ProceduralMeshGenerator.cs))
+- 3D Ahsap Tablo Cercevesi (Frame_Mesh.asset).
+- 3D Kapi Ustu Ikaz Armatur Lambasi (Door_Light_Mesh.asset).
+- 3D Pil (Battery_Mesh.asset) ve Mektup Kagidi (Letter_Mesh.asset).
 
-## Kapı Sistemi
+---
 
-İlgili scriptler:
+## 3. Dikkat Edilmesi Gereken Kurallar & Ayarlar
 
-- `Assets/_Project/Scripts/In Game/Door.cs`
-- `Assets/_Project/Scripts/In Game/DoorChoice.cs`
-- `Assets/_Project/Scripts/In Game/DoorSequenceManager.cs`
-- `Assets/_Project/Scripts/In Game/JumpscareController.cs`
-- `Assets/_Project/Scripts/In Game/LevelProgressionManager.cs`
-- `Assets/_Project/Scripts/In Game/temaskontrol.cs`
+- **Fener Pil Tuketim Katsayisi:** Kullanici talimati geregi Fener pil tuketim hizi kesinlikle degistirilmemelidir.
+- **Dosya Silme Izni:** Kullanicidan izin almadan varsayilan olarak proje dosyasi silinmemelidir.
+- **Turkce Anlasilir Anlatim:** Iletisim sade ve teknik karmasadan uzak Turkce ile surdurulmelidir.
+- **Master Template Korunmasi:** Sahne 1 (Giris/Tutorial) tamamlanmis olup yeni sahneler bu Master sablon duplicate edilerek turetilecektir.
 
-### Akış
+---
 
-```text
-Oyun başlar
-→ DoorChoice sol veya sağ kapıyı rastgele doğru seçer
-→ Oyuncu merkez raycast ile kapıya bakıp tıklar
-→ Door sonucu DoorSequenceManager'a gönderir
-→ Gameplay scriptleri kapanır
-```
+## 4. Siradaki Isler
 
-Doğru kapıda geçerli bir sonraki bölüm varsa fade uygulanır ve sonraki sahne yüklenir. Yeni bölüm yoksa fade başlatılmaz; gameplay scriptleri kapanır, runtime oluşturulan Demo Tamamlandı paneli açılır ve cursor serbest bırakılır. Panelden Ana Menü (Build Index 0) veya Yeniden Oyna seçilebilir. Yanlış kapıda JumpscareController UI panelini açar, sesi oynatır, belirtilen süre kadar bekler ve ana menüye döner.
-
-`DoorSequenceManager.cs` demo panelini runtime'da oluşturur. Panel, aktif Canvas altına eklenir; başlık ve butonlar `LegacyRuntime.ttf` kullanır. Normal UI tıklaması çalışmazsa panel, mouse konumunu doğrudan kontrol eden runtime fallback ile butonları çalıştırır.
-
-Kapı seçildikten sonra şu scriptler devre dışı bırakılır:
-
-- `Kamera`
-- `FenerKontrol`
-- `InventoryManager`
-- `Escmenu`
-- `temaskontrol`
-
-`DoorSequenceManager` açık kalır; çünkü geçiş, jumpscare ve ilerleme akışını yönetir.
-
-## Mevcut Sahneler
-
-- `Game.unity`: Ana menü
-- `Game 1.unity`: Mevcut oynanış prototipi
-
-Build Settings şu anda bu iki sahneyi içeriyor. Yeni bölüm sahneleri level design planı kesinleşmeden oluşturulmamalı.
-
-## LevelProgressionManager Durumu
-
-`LevelProgressionManager` oluşturuldu ancak level design kesinleşmeden aktif bir bölüm listesiyle kullanılmamalı. Amacı, ileride Build Settings içindeki bölüm sahnelerini sırayla yönetmek ve son bölüme gelindiğinde final sinematiğine geçişi hazırlamak.
-
-Örnek bölüm listesi:
-
-```text
-[1, 2, 3, 4]
-```
-
-Bu sistem şu an final sinematiğini başlatmıyor; son bölüme gelindiğinde yalnızca Console'a bilgi yazıyor.
-
-## Dikkat Edilmesi Gerekenler
-
-- Kapı collider'larında `Kapi` tag'i bulunmalı.
-- `Door` component'i raycast'in çarptığı collider üzerinde olmalı.
-- `DoorChoice` içindeki sol ve sağ kapı referansları atanmalı.
-- `DoorSequenceManager` ve `JumpscareController` referansları Inspector'da kontrol edilmeli.
-- Jumpscare paneli başlangıçta pasif olmalı.
-- Ana menü Build Index'i `0`.
-- Unity sahneleri veya scriptleri taşınırken `.meta` dosyaları korunmalı.
-- Ana menüye dönüldüğünde `IntroManager` cursor'ı serbest bırakıyor; bu, intro atlandığında mouse'un kilitli kalmasını önlüyor.
-- `AudioManager` sahneler arasında yaşamaya devam ediyor ve ana menüye dönüldüğünde menü müziğini tekrar başlatıyor.
-- Demo paneli için `Game 1.unity` sahnesine kalıcı UI/prefab eklenmedi; panel oyun çalışırken oluşturulur.
-- Demo paneli doğru kapıda açılır; yanlış kapı jumpscare akışı korunur.
-- Fener pil tüketim katsayısı kullanıcı tarafından özellikle onaylanmıştır ve değiştirilmemelidir.
-- `DoorSequenceManager.cs` içinde runtime panel, Canvas arama ve mouse fallback kodu bulunur; değişiklik sonrası Play Mode'da doğru kapı/panel/butonlar test edilmelidir.
-
-## Sıradaki İşler
-
-1. Demo panelini Play Mode'da test etmek: doğru kapı, panel, Ana Menü, Yeniden Oyna.
-2. Mevcut prototipte kapı ve jumpscare akışını test etmeye devam etmek.
-2. Demo için bölüm sayısını ve genel oynanış akışını belirlemek.
-3. Sabit kamera konumuna uygun ilk bölüm level design'ını hazırlamak.
-4. Mektup, pil, ışık ve çevresel ipuçlarının ilk bölümdeki yerlerini planlamak.
-5. Level design netleşince sahneleri kontrollü şekilde çoğaltmak.
-6. `LevelProgressionManager` bölüm listesine bağlamak.
-7. Son bölüm için final sinematiği ve huzura kavuşma temasını eklemek.
+1. **Unity Play Testi & Ince Ayarlar:**
+   - Sinematik giris sekansi (IntroCinematic) ve altyazi senkronizasyonunun Play modunda son kontrollerini yapmak.
+2. **Sonraki Seviyeler Icin Sahne Cogaltma (Duplicate Level 2/3):**
+   - Sablon sahneyi Game 2 / Game 3 olarak kopyalayip isiklari sondurmek ve karanlik oda mekaniklerini (Fener + Envanter acilis uyarisi) test etmek.
+3. **Hikaye & Mektup Icerikleri:**
+   - Yerde duran mektup kagidinin (LetterManager.cs) iceriklerini ve sonraki odalara yerlestirilecek ipuclarini zenginlestirmek.

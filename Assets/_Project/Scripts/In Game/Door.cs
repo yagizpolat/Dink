@@ -16,6 +16,15 @@ public class Door : MonoBehaviour
 
         hasBeenSelected = true;
 
+        // Efekt scripti varsa görsel efektleri oynat, sahne geçişini ona bırak.
+        DoorEffects effects = GetComponent<DoorEffects>();
+        if (effects != null)
+        {
+            effects.PlayEffects(isCorrectDoor, sequenceManager);
+            return;
+        }
+
+        // Efekt scripti yoksa orijinal davranış.
         if (sequenceManager != null)
         {
             sequenceManager.HandleDoorSelected(isCorrectDoor);
@@ -32,3 +41,4 @@ public class Door : MonoBehaviour
         hasBeenSelected = false;
     }
 }
+
