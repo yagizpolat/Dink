@@ -1,4 +1,3 @@
-using Unity.AppUI.UI;
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
@@ -41,8 +40,8 @@ public class LetterManager : MonoBehaviour
             return;
         }
         letterpanel.SetActive(true);
-        titleText.text = letter.title;
-        contentText.text = letter.content;
+        titleText.text = letter.GetTitle();
+        contentText.text = letter.GetContent();
         escmenu.enabled = false;
         Time.timeScale = 0f;
 
@@ -68,9 +67,9 @@ public class LetterManager : MonoBehaviour
 
     void CloseOpenScript(bool enable)
     {
-        fener.enabled = enable;
-        kamerascript.enabled = enable;
-        inventory.enabled = enable;
+        if (fener != null) fener.enabled = enable;
+        if (kamerascript != null) kamerascript.enabled = enable;
+        if (inventory != null) inventory.enabled = enable;
     }
 
     void ScriptConnect()

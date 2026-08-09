@@ -16,17 +16,28 @@ public class FenerKontrol : MonoBehaviour
     private float flickerTimer;
     private float nextFlickerTime;
 
+    [Header("Demo Ayarları")]
+    [Tooltip("Demo sürümünde fenerin geçici olarak tamamen kapalı tutulmasını sağlar.")]
+    public bool demoModuFenersiz = true;
+
     void Start()
     {
         if (fenerisik != null)
         {
             originalIntensity = fenerisik.intensity;
+            if (demoModuFenersiz)
+            {
+                fenerisik.enabled = false;
+            }
         }
     }
 
     // Update is called once per frame
     void Update()
     {
+        // Demo sürümünde fenersiz oynanış için güncelleme mantığını atla
+        if (demoModuFenersiz) return;
+
         bataryatukenis();
         feneracilis();
         ApplyFlickerAndDecay();
