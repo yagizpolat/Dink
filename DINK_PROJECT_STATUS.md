@@ -91,25 +91,30 @@
 - `ShowIntroSubtitle()` metodu yazılarak oyuncunun seçtiği dile göre hem doğru Türkçe/İngilizce ses klibinin oynatılması hem de doğru dilde altyazı çıkarılması sağlandı.
 
 ### O. Standalone Build Hatası Düzeltmesi (CS0234) ([LetterManager.cs](file:///C:/Users/engin/OneDrive/Belgeler/Kisisel%20Dosyalarim/ozel/Oyun%20Gelistirme/Denemelik%20projelerim/Dink/Assets/_Project/Scripts/In%20Game/LetterManager.cs))
-- Build sırasında kilitlenmeye ve `CS0234: The type or namespace name 'AppUI' does not exist` hatasına yol açan gereksiz `using Unity.AppUI.UI;` satırı `LetterManager.cs`'ten temizlendi. Build derlemesi engelsiz hale getirildi.
+- Build sırasında kilitlenmeye ve `CS0234` hatasına yol açan gereksiz `using Unity.AppUI.UI;` satırı `LetterManager.cs`'ten temizlendi.
+
+### P. Itch.io Mağaza Sayfası Tasarım & Tanıtım Kiti ([dink_itch_banner.jpg](file:///C:/Users/engin/OneDrive/Belgeler/Kisisel%20Dosyalarim/ozel/Oyun%20Gelistirme/Denemelik%20projelerim/Dink/Assets/_Project/Textures/dink_itch_banner.jpg), [itch_io_page_kit.md](file:///C:/Users/engin/.gemini/antigravity/brain/77725bef-f411-4f71-bd3a-a0c9870672d5/itch_io_page_kit.md))
+- Itch.io v0.3 yayını için 35mm film dokusunda `dink_itch_banner.jpg` (16:9 geniş kapak) üretilip `Assets/_Project/Textures/` klasörüne aktarıldı.
+- Oyunun gizemli atmosferini koruyan çift dilli (TR/EN) kopyala-yapıştır tanıtım metinleri, kontroller ve zifiri karanlık tema renk kodları (`#0A0B0E` BG, `#12141C` Container, `#DC2626` Link) içeren mağaza kiti hazırlandı. Sayfa tasarımı ve yayın ayarları kullanıcı ile birlikte başarıyla uygulandı.
 
 ---
 
 ## 3. Dikkat Edilmesi Gereken Kurallar & Ayarlar
 
 - **Fener Pil Tuketim Katsayisi:** Kullanici talimati geregi Fener pil tuketim hizi kesinlikle degistirilmemelidir.
-- **Dosya Silme Izni:** Kullanicidan izin almadan varsayilan olarak proje dosyasi silinmemelidir.
+- **Dosya Silme Izni:** Kullanicidan izin almadan varsayilan olarak proje dosyasi silememelidir.
 - **Turkce Anlasilir Anlatim:** Iletisim sade ve teknik karmasadan uzak Turkce ile surdurulmelidir.
 - **Master Template Korunmasi:** Sahne 1 (Giris/Tutorial) tamamlanmis olup yeni sahneler bu Master sablon duplicate edilerek turetilecektir.
 
 ---
 
-## 4. Siradaki Isler
+## 4. Siradaki Isler (Next Steps)
 
-1. **Sonraki Seviyeler Icin Sahne Cogaltma (Duplicate Level 2/3):**
-   - Sablon sahneyi Game 2 / Game 3 olarak kopyalayip isiklari sondurmek ve karanlik oda mekaniklerini (Fener + Envanter acilis uyarisi) test etmek.
-2. **Etkilesim Ses Efektleri (SFX Integration):**
-   - El feneri acma/kapama, pil toplama, envanter slot secimi ve kapi suzulme/acilma ses efektlerini scriptlere baglamak.
-3. **Hikaye & Mektup Icerikleri:**
+1. **Gelecek Seviyeler İçin Gerçeküstü Renk & Atmosfer Tasarımları:**
+   - 5 farklı gerçeküstü kapı renk paletine (Eldritch Flesh, Biohazard Experiment, Ashen Ember, Abyssal Decay, Cyber Nightmare) göre sonraki odaların atmosferlerini zenginleştirmek.
+2. **Karanlık Seviyelerde Fener & Envanter Sisteminin Açılması:**
+   - İleriki derin seviyelerde ışıklar tamamen söndüğünde `demoModuFenersiz = false` ve `demoModuEnvantersiz = false` yapılarak oyuncuya ekranda pil yönetimi ve fener kullanımını öğretmek.
+3. **Oyuncu Geri Bildirimlerine Göre Demo v0.4 / Tam Sürüm İyileştirmeleri:**
+   - Itch.io v0.3 yayını sonrasında oyunculardan gelecek geri bildirimler doğrultusunda yeni mektup hikayeleri ve işitsel gerilim dinamiklerini eklemek, el feneri açma/kapama, pil toplama, envanter slot secimi ve kapi suzulme/acilma ses efektlerini scriptlere baglamak.
+4. **Hikaye & Mektup Icerikleri:**
    - Yerde duran mektup kagidinin (LetterManager.cs) iceriklerini ve sonraki odalara yerlestirilecek ipuclarini zenginlestirmek.
-
