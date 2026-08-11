@@ -1,120 +1,74 @@
 # DINK Oyun Projesi Durum Raporu
 
-## Proje Genel Bakisi
+## Proje Genel Bakışı
 
 - **Proje Yolu:** C:\Users\engin\OneDrive\Belgeler\Kisisel Dosyalarim\ozel\Oyun Gelistirme\Denemelik projelerim\Dink
-- **Unity Surumu:** Unity 6 (6000.0.14f1) LTS, URP (Universal Render Pipeline)
-- **Hedef:** Birinci sahis (FPS), sabit kamera acili, atmosferik psikolojik korku ve kapi secimi oyunu.
-- **Dil Destegi:** Turkce seslendirme ve altyazi altyapisi (Gelecekteki LocalizedText.cs dil sistemiyle %100 uyumlu).
+- **Unity Sürümü:** Unity 6 (6000.0.14f1) LTS, URP (Universal Render Pipeline)
+- **Hedef:** Birinci şahıs (FPS), sabit kamera açılı, atmosferik psikolojik korku ve kapı seçimi oyunu.
+- **Dil Desteği:** 7 Dilli canlı seslendirme ve altyazı altyapısı (Varsayılan: İngilizce; Desteklenen: İngilizce, Türkçe, Almanca, Fransızca, İspanyolca, Portekizce, Rusça).
 
 ---
 
-## 1. Ana Mimari & Mekanik Ozet
+## 0. Resmî Oyun Hikayesi & Karakter Mimarisi (Lore)
 
-- **Ana Sablon Oda (Master Template Room):**
-  - Iki kapili (Sol Mavi / Sag Kirmizi) temel sahne yapisi. Bu sablon mukemmellestirilerek gelecek bolumler icin kopyalanacaktir (Duplicate).
-  - Sol duvarda organik kuf lekesi (Isolated_Mold_TrueAlpha.mat), sag duvarda siva catlagi (Wall_Crack_TrueAlpha.mat) ve havalanan mikro toz zerreleri (Atmospheric_Dust) bulunur.
-- **Gelismis Kapi Isiklari & Suzulme (Door Indicators):**
-  - Sol kapi uzerinde Mavi, Sag kapi uzerinde Kirmizi 3D armatur lambalari bulunur.
-  - Indicator objeleri dogrudan kapi Transform'larina ebeveynlenmistir (SetParent), boylece DoorEffects.cs kapilari havada suzdurdugunde isiklar kapilarla %100 senkronize bicimde hareket eder.
-- **Aydinlatma Felsefesi ("Goldilocks Sweet Spot"):**
-  - Environment Lighting -> Ambient Color koyu gri/mavi tonuna (RGB 45, 50, 60) ayarlanmistir. Ortam oyuncuyu sikacak kadar aydinlik, oyunu oynanamaz kilacak kadar kor karanlik degildir.
-- **Kademeli Mekanik Ogretimi (Progressive Tutorial):**
-  - 1. Oda (Tutorial): Mavi ve Kirmizi kapi isiklari ortami aydinlattigi icin Fener (FenerKontrol.cs) ve Envanter (InventoryManager.cs) pasif tutulur. Yerdeki piller SetActive(false) yapilarak ortam temizlenmistir.
-  - Ileriki Karanlik Odalar: Isiklar sondugunde ekranda *"Fenerini acmak icin [F], Envanter icin [TAB] tusuna bas"* uyarisi cikacak ve mekanikler acilacaktir.
-
----
-
-## 2. Son Yapilan Degisiklikler ve Eklenen Sistemler (09.08.2026)
-
-### A. Sinematik Giris Sekansi ve Goz Acilisi ([IntroCinematic.cs](file:///C:/Users/engin/OneDrive/Belgeler/Kisisel%20Dosyalarim/ozel/Oyun%20Gelistirme/Denemelik%20projelerim/Dink/Assets/_Project/Scripts/In%20Game/IntroCinematic.cs))
-- **5 Fazli Coroutine Akisi:**
-  1. **Faz 0 (Hazirlik):** Oyuncudan kamera/fener kontrolu alinir, ekran siyahla kaplanir, kamera yere bakacak sekilde dondurulur (X: 60°).
-  2. **Faz 1 (Goz Acilisi):** Ust ve alt siyah bantlar birbirinden ayrilarak karakterin gozunu acmasi simule edilir. Ayni anda Turkce ses ve altyazi tetiklenir.
-  3. **Faz 2 (Basini Kaldirma):** Quaternion.Slerp ile kamera rotasyonu ground acisindan duz bakis acisina (X: 0°) organik olarak yukseltilir (ayaga kalkma hissi).
-  4. **Faz 3 (Bulanikliktan Netlige):** URP Depth of Field (Gaussian) kullanilarak hicbir renk mudahalesi olmadan saf seffaf bulaniklik kademeli olarak temizlenir.
-  5. **Faz 4 (Kontrol Iadesi):** Oyuncuya kamera ve etkilesim kontrolleri geri verilir.
-- **Dinamik Override Destegi:** Profilde DepthOfField override'i yoksa oyun basladigi an otomatik olarak profili doldurur.
-
-### B. Turkce Seslendirme & Donanimsal Altyazi Sistemi ([SubtitleManager.cs](file:///C:/Users/engin/OneDrive/Belgeler/Kisisel%20Dosyalarim/ozel/Oyun%20Gelistirme/Denemelik%20projelerim/Dink/Assets/_Project/Scripts/In%20Game/SubtitleManager.cs))
-- **Clean Code & Yalin Zamanlama:** Performans emen ve tutarsiz davranabilen donanimsal `while(isPlaying)` döngüleri silindi; `displayDuration` ve `clip.length` baglantili yalin `WaitForSeconds` zamanlama yapisina gecildi.
-- **AudioSource Fallback Destegi:** Ses klibi script parametresine atanmadiginda doğrudan `AudioSource.clip` bileseninden ses dosyasini ve uzunlugunu otomatik cekebilen esnek altyapi kuruldu.
-- **Kesin Ekranda Kalma Garantisi (Alpha-Only Hiding):** Erken kapanmalari ve parent obje bağımlılıklarını önlemek icin `SetActive(false)` kullanimi silindi; paneller her zaman aktif tutulup sadece `alpha` saydamligiyla gosterilip gizlenmesi saglandi. `playOnAwake = false` korumasi eklendi.
-- **Localization Hazirligi:** LocalizedText.cs dili ve dynamic binding bilesenleri ile %100 uyumludur.
-
-### C. Gercek Alpha Decal Donusturucu ve Material Iyilestirmeleri ([CreateTrueAlphaDecal.cs](file:///C:/Users/engin/OneDrive/Belgeler/Kisisel%20Dosyalarim/ozel/Oyun%20Gelistirme/Denemelik%20projelerim/Dink/Assets/_Project/Scripts/Editor/CreateTrueAlphaDecal.cs))
-- JPG kaynakli kuf ve siva catlagi kaplamalarindaki kirli beyaz kenar halkalarini (halo) gidermek icin dogrudan RGBA PNG ureten editor araci yazildi (isolated_mold_patch_alpha.png, wall_crack_decal_alpha.png).
-- URP Transparent kaplamalardaki plastik parlamayi onlemek icin Smoothness = 0.0 yapildi.
-
-### D. Yordamsal 3D Model Ureticileri ([ProceduralMeshGenerator.cs](file:///C:/Users/engin/OneDrive/Belgeler/Kisisel%20Dosyalarim/ozel/Oyun%20Gelistirme/Denemelik%20projelerim/Dink/Assets/_Project/Scripts/Editor/ProceduralMeshGenerator.cs))
-- 3D Ahsap Tablo Cercevesi (Frame_Mesh.asset).
-- 3D Kapi Ustu Ikaz Armatur Lambasi (Door_Light_Mesh.asset).
-- 3D Pil (Battery_Mesh.asset) ve Mektup Kagidi (Letter_Mesh.asset).
-
-### E. Oyun Baslangici Sessizlik & Menü Müzik Kesintisi ([AudioManager.cs](file:///C:/Users/engin/OneDrive/Belgeler/Kisisel%20Dosyalarim/ozel/Oyun%20Gelistirme/Denemelik%20projelerim/Dink/Assets/_Project/Scripts/Menu%20Kodlar/AudioManager.cs), [SceneTransition.cs](file:///C:/Users/engin/OneDrive/Belgeler/Kisisel%20Dosyalarim/ozel/Oyun%20Gelistirme/Denemelik%20projelerim/Dink/Assets/_Project/Scripts/Menu%20Kodlar/SceneTransition.cs))
-- Oyuna gecis butonuna basildiginda arka plan menü muziginin yavasca kısılarak (Fade Out) 2 saniye icinde tamamen susmasi saglandi.
-- Oyun ici atmosferik gerilimi artirmak ve psikolojik korku hissiyatini pekitirmek icin oyuna baslandiginda arkada hicbir müzik calmamasi, tam sessizlik saglanmasi kural haline getirildi.
-
-### F. ESC Menüsü Ana Menüye Dönüş & Siyah Ekran Donma Düzeltmesi ([ButonEtkliesim.cs](file:///C:/Users/engin/OneDrive/Belgeler/Kisisel%20Dosyalarim/ozel/Oyun%20Gelistirme/Denemelik%20projelerim/Dink/Assets/_Project/Scripts/In%20Game/ButonEtkliesim.cs), [IntroManager.cs](file:///C:/Users/engin/OneDrive/Belgeler/Kisisel%20Dosyalarim/ozel/Oyun%20Gelistirme/Denemelik%20projelerim/Dink/Assets/_Project/Scripts/Menu%20Kodlar/IntroManager.cs))
-- ESC durdurma menüsünden Ana Menüye dönülürken `Time.timeScale = 0f` (zaman durdurulmuş) kaldığı için menüdeki kararma paneli Coroutine'lerinin kilitlenmesi ve rastgele siyah ekranda kalma sorunu tespit edildi.
-- Tüm buton etkileşimlerini tek çatı altında toplayan `ButonEtkliesim.cs` script'indeki `sahnedegis(int sahneno)` metoduna `Time.timeScale = 1f` ve imleç kilidi açma koruması yerleştirildi (`Escmenu.cs` temiz tutuldu).
-- `IntroManager.cs` içerisindeki kararma döngüsü `Time.unscaledDeltaTime` ile güncellenerek zaman ölçeğinden bağımsız hale getirildi.
-
-### G. Tekli Lamba Isik Kurulumu Editor Araci ([SingleLampLightSetup.cs](file:///C:/Users/engin/OneDrive/Belgeler/Kisisel%20Dosyalarim/ozel/Oyun%20Gelistirme/Denemelik%20projelerim/Dink/Assets/_Project/Scripts/Editor/SingleLampLightSetup.cs))
-- `Hanging_Lamp_Mesh` objesine zemin seviyesinden tavana bakan ideal cılız loş ışığı (`Upward_Lamp_Light`), soft shadow ayarlarını ve `Hanging_Lamp_Material` materyalini tek tıkla otomatik bağlayan Editor aracı yazıldı.
-
-### H. Seviye 3 Sis ve Titreyen Isik Kurulumu ([Room3AtmosphereSetup.cs](file:///C:/Users/engin/OneDrive/Belgeler/Kisisel%20Dosyalarim/ozel/Oyun%20Gelistirme/Denemelik%20projelerim/Dink/Assets/_Project/Scripts/Editor/Room3AtmosphereSetup.cs), [FlickerLight.cs](file:///C:/Users/engin/OneDrive/Belgeler/Kisisel%20Dosyalarim/ozel/Oyun%20Gelistirme/Denemelik%20projelerim/Dink/Assets/_Project/Scripts/Menu%20Kodlar/FlickerLight.cs))
-- Sahneye havadaki ışıklı sis zerrelerini (`Atmospheric_Fog_Motes`) otomatik kuran ve lambaya tekinsiz cızırtılı/titreyen organik ışık sistemini (`FlickerLight.cs`) bağlayan Editor aracı oluşturuldu.
-
-### I. Yavaşça Sallanan Oda Sistemi / Sinüs Salınımı ([RoomRotator.cs](file:///C:/Users/engin/OneDrive/Belgeler/Kisisel%20Dosyalarim/ozel/Oyun%20Gelistirme/Denemelik%20projelerim/Dink/Assets/_Project/Scripts/In%20Game/RoomRotator.cs))
-- Odayı sonsuz dönme yerine belirlenen açı sınırları arasında (örneğin `-25°` ile `+25°` arasında) yumuşak bir sinüs dalgası (Sarkaç/Salınım) ile ileri-geri sallandıran yeni mantık kuruldu. Oda asla kameranın açısından çıkmaz veya ters dönmez.
-
-### J. Demo Sürümü Fenersiz & Envantersiz Oynanış Yapılandırması ([FenerKontrol.cs](file:///C:/Users/engin/OneDrive/Belgeler/Kisisel%20Dosyalarim/ozel/Oyun%20Gelistirme/Denemelik%20projelerim/Dink/Assets/_Project/Scripts/In%20Game/FenerKontrol.cs), [InventoryManager.cs](file:///C:/Users/engin/OneDrive/Belgeler/Kisisel%20Dosyalarim/ozel/Oyun%20Gelistirme/Denemelik%20projelerim/Dink/Assets/_Project/Scripts/In%20Game/InventoryManager.cs), [Escmenu.cs](file:///C:/Users/engin/OneDrive/Belgeler/Kisisel%20Dosyalarim/ozel/Oyun%20Gelistirme/Denemelik%20projelerim/Dink/Assets/_Project/Scripts/In%20Game/Escmenu.cs))
-- Kullanıcı talimatı doğrultusunda demo sürümünde Fener (`[F]`) ve Envanter (`[TAB]`) sistemleri geçici olarak tamamen devre dışı bırakıldı.
-- `FenerKontrol.cs`'e `demoModuFenersiz = true`, `InventoryManager.cs`'e `demoModuEnvantersiz = true` toggle'ları eklendi.
-- Koddaki temel yapılar silinmeden ve pil tüketim katsayısı bozulmadan saf fenersiz/envantersiz oynanış sağlandı.
-
-### K. Demo v0.3 Gerçekçi & Organik Oyun İkonu ([dink_game_icon.jpg](file:///C:/Users/engin/OneDrive/Belgeler/Kisisel%20Dosyalarim/ozel/Oyun%20Gelistirme/Denemelik%20projelerim/Dink/Assets/_Project/Textures/dink_game_icon.jpg))
-- Yapay zeka hissini kıran, 35mm film dokusunda, dökülen boyalar, eski ahşap kapılar ve sinematik karanlık atmosfer içeren 1:1 kare çözünürlüklü gerçekçi organik oyun ikonu oluşturuldu.
-- Projede `Assets/_Project/Textures/dink_game_icon.jpg` konumuna kaydedildi.
-
-### L. Otomatik Dil ve Metin Yerelleştirme Altyapısı ([LocalizedText.cs](file:///C:/Users/engin/OneDrive/Belgeler/Kisisel%20Dosyalarim/ozel/Oyun%20Gelistirme/Denemelik%20projelerim/Dink/Assets/_Project/Scripts/LocalizedText.cs), [LocalizationHelper.cs](file:///C:/Users/engin/OneDrive/Belgeler/Kisisel%20Dosyalarim/ozel/Oyun%20Gelistirme/Denemelik%20projelerim/Dink/Assets/_Project/Scripts/Editor/LocalizationHelper.cs))
-- `LocalizedText.cs` hem TextMeshProUGUI hem Legacy UI Text destekleyecek ve `OnEnable` durumunda kendini otomatik tazeleyecek şekilde güçlendirildi.
-- `LocalizationHelper.cs` adında Editor aracı yazılarak tek tıkla sahnedeki tüm metin bileşenlerine `LocalizedText` eklenmesi ve Türkçe metinlerin otomatik doldurulması sağlandı.
-
-### M. Çok Dilli Mektup Okuma Sistemi ([Letter.cs](file:///C:/Users/engin/OneDrive/Belgeler/Kisisel%20Dosyalarim/ozel/Oyun%20Gelistirme/Denemelik%20projelerim/Dink/Assets/_Project/Scripts/In%20Game/Letter.cs), [LetterManager.cs](file:///C:/Users/engin/OneDrive/Belgeler/Kisisel%20Dosyalarim/ozel/Oyun%20Gelistirme/Denemelik%20projelerim/Dink/Assets/_Project/Scripts/In%20Game/LetterManager.cs))
-- `Letter.cs` içine Türkçe ve İngilizce başlık (`trTitle`, `enTitle`) ile mektup içeriği (`trContent`, `enContent`) alanları eklendi.
-- `LetterManager.cs` mektup okuma ekranını açtığında `GetTitle()` ve `GetContent()` metodlarıyla o an seçili dildeki mektup metnini ekrana dinamik olarak basacak şekilde yapılandırıldı.
-
-### N. Çok Dilli Seslendirme & Altyazı Sistemi ([SubtitleManager.cs](file:///C:/Users/engin/OneDrive/Belgeler/Kisisel%20Dosyalarim/ozel/Oyun%20Gelistirme/Denemelik%20projelerim/Dink/Assets/_Project/Scripts/In%20Game/SubtitleManager.cs), [IntroCinematic.cs](file:///C:/Users/engin/OneDrive/Belgeler/Kisisel%20Dosyalarim/ozel/Oyun%20Gelistirme/Denemelik%20projelerim/Dink/Assets/_Project/Scripts/In%20Game/IntroCinematic.cs))
-- `SubtitleManager.cs` içerisine Türkçe ve İngilizce ses klipleri (`trVoiceClip`, `enVoiceClip`) ve altyazı metinleri (`trSubtitleText`, `enSubtitleText`) tanımlandı.
-- `ShowIntroSubtitle()` metodu yazılarak oyuncunun seçtiği dile göre hem doğru Türkçe/İngilizce ses klibinin oynatılması hem de doğru dilde altyazı çıkarılması sağlandı.
-
-### O. Standalone Build Hatası Düzeltmesi (CS0234) ([LetterManager.cs](file:///C:/Users/engin/OneDrive/Belgeler/Kisisel%20Dosyalarim/ozel/Oyun%20Gelistirme/Denemelik%20projelerim/Dink/Assets/_Project/Scripts/In%20Game/LetterManager.cs))
-- Build sırasında kilitlenmeye ve `CS0234` hatasına yol açan gereksiz `using Unity.AppUI.UI;` satırı `LetterManager.cs`'ten temizlendi.
-
-### P. Itch.io Mağaza Sayfası Tasarım & Tanıtım Kiti ([dink_itch_banner.jpg](file:///C:/Users/engin/OneDrive/Belgeler/Kisisel%20Dosyalarim/ozel/Oyun%20Gelistirme/Denemelik%20projelerim/Dink/Assets/_Project/Textures/dink_itch_banner.jpg), [itch_io_page_kit.md](file:///C:/Users/engin/.gemini/antigravity/brain/77725bef-f411-4f71-bd3a-a0c9870672d5/itch_io_page_kit.md))
-- Itch.io v0.3 yayını için 35mm film dokusunda `dink_itch_banner.jpg` (16:9 geniş kapak) üretilip `Assets/_Project/Textures/` klasörüne aktarıldı.
-- Oyunun gizemli atmosferini koruyan çift dilli (TR/EN) kopyala-yapıştır tanıtım metinleri, kontroller ve zifiri karanlık tema renk kodları (`#0A0B0E` BG, `#12141C` Container, `#DC2626` Link) içeren mağaza kiti hazırlandı. Sayfa tasarımı ve yayın ayarları kullanıcı ile birlikte başarıyla uygulandı.
+- **Karakter:** **Hakan Kaya** (16 Yaşında, Lise Terk)
+  - **Geçmiş & Yaşam:** Annesi ve babası vefat etmiş. Annesinden ve babasından kalan tek evde küçük kız kardeşiyle tek başına yaşıyor. Büyüğü olmadığı için erken yaşta ağır sorumluluklar üstlenmiş, düşük maaşla ağır şartlarda markette çalışarak faturaları ödemeye çalışan, hayattan şimdiden ümidini kesmiş bir genç.
+- **Kapı Cehennemine Giriş:**
+  - Vardiya sonunda iş arkadaşıyla kavga eden ve dayak yiyen Hakan, mesaisi bitmeden kendini sokağa atar. İş arkadaşı öldürme niyetiyle peşine düşer. Dar bir sokakta kaçarken, sokağın ortasında geçişi tamamen kapatan devasa bir kapı görür. Ölüm korkusu ve bu dünyadan kurtulma içgüdüsüyle kapıdan içeri girer.
+- **Mektup Sistemi:**
+  - Bu kapı döngüsüne daha önce düşmüş eski kurbanların notlarıdır. Hem derin bir dram ve duygu sunar hem de doğru kapıyı bulduracak şifre ve ipuçlarını içerir.
+- **Akıl Sağlığı Sistemi (Sanity):**
+  - Akıl sağlığı düştükçe görüş bulanıklaşır, kapı seçerken imleç kendi kendine titremeye başlar ve bulmaca/minioyun zorluğu artar.
+- **Çift Sonlu Hikaye Mimarisi:**
+  - **İyi Son (Kaçış):** Yeterli mektup toplayıp hikayenin tüm parçalarını birleştiren oyuncular kapı cehenneminden kaçar.
+  - **Kötü Son (Sonsuz Döngü):** Eksik mektup ve yarım bilgiyle bitiren oyuncular sonsuz bir kapı açma döngüsüne hapsolur.
 
 ---
 
-## 3. Dikkat Edilmesi Gereken Kurallar & Ayarlar
+## 1. Ana Mimari & Mekanik Özet
 
-- **Fener Pil Tuketim Katsayisi:** Kullanici talimati geregi Fener pil tuketim hizi kesinlikle degistirilmemelidir.
-- **Dosya Silme Izni:** Kullanicidan izin almadan varsayilan olarak proje dosyasi silememelidir.
-- **Turkce Anlasilir Anlatim:** Iletisim sade ve teknik karmasadan uzak Turkce ile surdurulmelidir.
-- **Master Template Korunmasi:** Sahne 1 (Giris/Tutorial) tamamlanmis olup yeni sahneler bu Master sablon duplicate edilerek turetilecektir.
+- **Ana Şablon Oda (Master Template Room):**
+  - İki kapılı (Sol Mavi / Sağ Kırmızı) temel sahne yapısı. Bu şablon mükemmelleştirilerek gelecek bölümler için kopyalanacaktır.
+  - Sol duvarda organik küf lekesi (`Isolated_Mold_TrueAlpha.mat`), sağ duvarda sıva çatlağı (`Wall_Crack_TrueAlpha.mat`) ve havalanan mikro toz zerreleri (`Atmospheric_Dust`) bulunur.
+- **Gelişmiş Kapı Işıkları & Süzülme:**
+  - Sol kapı üzerinde Mavi, Sağ kapı üzerinde Kırmızı 3D armatür lambaları bulunur.
+  - Lambalar doğrudan kapılara ebeveynlenmiştir; kapılar süzüldüğünde ışıklar senkronize hareket eder.
+- **Aydınlatma Felsefesi:**
+  - Ortam ışığı koyu gri/mavi tonuna (RGB 45, 50, 60) ayarlanmıştır. Ortam hem loş hem de oynanabilir seviyededir.
 
 ---
 
-## 4. Siradaki Isler (Next Steps)
+## 2. Son Yapılan Değişiklikler ve Eklenen Sistemler (11.08.2026)
 
-1. **Gelecek Seviyeler İçin Gerçeküstü Renk & Atmosfer Tasarımları:**
-   - 5 farklı gerçeküstü kapı renk paletine (Eldritch Flesh, Biohazard Experiment, Ashen Ember, Abyssal Decay, Cyber Nightmare) göre sonraki odaların atmosferlerini zenginleştirmek.
-2. **Karanlık Seviyelerde Fener & Envanter Sisteminin Açılması:**
-   - İleriki derin seviyelerde ışıklar tamamen söndüğünde `demoModuFenersiz = false` ve `demoModuEnvantersiz = false` yapılarak oyuncuya ekranda pil yönetimi ve fener kullanımını öğretmek.
-3. **Oyuncu Geri Bildirimlerine Göre Demo v0.4 / Tam Sürüm İyileştirmeleri:**
-   - Itch.io v0.3 yayını sonrasında oyunculardan gelecek geri bildirimler doğrultusunda yeni mektup hikayeleri ve işitsel gerilim dinamiklerini eklemek, el feneri açma/kapama, pil toplama, envanter slot secimi ve kapi suzulme/acilma ses efektlerini scriptlere baglamak.
-4. **Hikaye & Mektup Icerikleri:**
-   - Yerde duran mektup kagidinin (LetterManager.cs) iceriklerini ve sonraki odalara yerlestirilecek ipuclarini zenginlestirmek.
+### A. 7 Dilli Canlı Dil Yöneticisi ([LanguageManager.cs](file:///C:/Users/engin/OneDrive/Belgeler/Kisisel%20Dosyalarim/ozel/Oyun%20Gelistirme/Denemelik%20projelerim/Dink/Assets/_Project/Scripts/Menu%20Kodlar/LanguageManager.cs), [LocalizedText.cs](file:///C:/Users/engin/OneDrive/Belgeler/Kisisel%20Dosyalarim/ozel/Oyun%20Gelistirme/Denemelik%20projelerim/Dink/Assets/_Project/Scripts/LocalizedText.cs), [LocalizationHelper.cs](file:///C:/Users/engin/OneDrive/Belgeler/Kisisel%20Dosyalarim/ozel/Oyun%20Gelistirme/Denemelik%20projelerim/Dink/Assets/_Project/Scripts/Editor/LocalizationHelper.cs))
+- **7 Dil Desteği:** İngilizce (Varsayılan / Default), Türkçe, Almanca, Fransızca, İspanyolca, Portekizce ve Rusça dilleri eklendi.
+- **Kalıcı Hafıza Kaydı:** Seçilen dil `PlayerPrefs` (`Dink_Language`) ile saklanır; oyuncu ilk girdiğinde varsayılan dil olarak İngilizce yüklenir.
+- **Canlı Güncelleme:** Dil değiştirildiğinde `OnLanguageChanged` olayı tetiklenerek sahnedeki 2D Canvas ve 3D kapı metinleri anında güncellenir.
+
+### B. 7 Dilli Seslendirme ve Altyazı Altyapısı ([SubtitleManager.cs](file:///C:/Users/engin/OneDrive/Belgeler/Kisisel%20Dosyalarim/ozel/Oyun%20Gelistirme/Denemelik%20projelerim/Dink/Assets/_Project/Scripts/In%20Game/SubtitleManager.cs))
+- Oyun açılışındaki göz açılma sinematiğinde seçilen dile göre doğru ses kaydının çalması ve ilgili dilde altyazının gösterilmesi sağlandı.
+
+### C. 3D Dev Kapılı Ana Menü ve AAA Ayarlar Paneli ([Menu3DDoor.cs](file:///C:/Users/engin/OneDrive/Belgeler/Kisisel%20Dosyalarim/ozel/Oyun%20Gelistirme/Denemelik%20projelerim/Dink/Assets/_Project/Scripts/Menu%20Kodlar/Menu3DDoor.cs), [MainMenu3DController.cs](file:///C:/Users/engin/OneDrive/Belgeler/Kisisel%20Dosyalarim/ozel/Oyun%20Gelistirme/Denemelik%20projelerim/Dink/Assets/_Project/Scripts/Menu%20Kodlar/MainMenu3DController.cs), [SettingsManager.cs](file:///C:/Users/engin/OneDrive/Belgeler/Kisisel%20Dosyalarim/ozel/Oyun%20Gelistirme/Denemelik%20projelerim/Dink/Assets/_Project/Scripts/Menu%20Kodlar/SettingsManager.cs))
+- 3D menü kapıları (BAŞLA, AYARLAR, ÇIKIŞ ve GENEL, DİL, GERİ DÖN) ve 3 bağımsız ses kanalı (Genel, Müzik, SFX) yapılandırıldı.
+
+---
+
+## 3. Dikkat Edilmesi Gereken Temel Kurallar
+
+- **DİL KISITI (EN YÜKSEK ÖNCELİK):** Bütün Markdown dokümanlarında (.md) ve konuşmalarda KESİNLİKLE Türkçe dışında bir dil kullanılmayacaktır.
+- **Fener Pil Tüketim Katsayısı:** Kullanıcı talimatı gereği Fener pil tüketim hızı kesinlikle değiştirilmeyecektir.
+- **Dosya Silme İzni:** Kullanıcıdan izin almadan proje dosyası silinmeyecektir.
+- **Master Şablon Korunması:** Sahne 1 (Giriş/Öğretici) tamamlanmış olup yeni sahneler bu Master şablon kopyalanarak türetilecektir.
+
+---
+
+## 4. Oyuncu Geri Bildirimlerine Göre v0.4 Geliştirme Yol Haritası
+
+1. **✅ ADIM 1: Giriş Sinematiği Hızlandırma & Skip Koruması (TAMAMLANDI)**
+2. **✅ ADIM 2: Bağımsız Ses Sistemleri ve Müzik Yapılandırması (TAMAMLANDI)**
+3. **📌 ADIM 3: Mor Işık (UV) ve Gizli Yazı / İpuçları (Bulmaca Mekaniği - SIRADAKİ ADIM)**
+   - Fener için farenin sağ tuşu ile aktifleşen mor ışık modu.
+   - Duvarlarda ve mektuplarda Hakan'ın ve eski kurbanların izlerini sadece mor ışık altında gösteren tekinsiz semboller.
+4. **📌 ADIM 4: Hakan'ın Akıl Sağlığı (Sanity) & İmleç Titremesi & Anlık Gerilim Dynamics**
+   - Akıl sağlığı düştükçe imlecin sallanması, bulanıklaşma ve anlık korku ögeleri.
+5. **📌 ADIM 5: Mektup Sayımına Göre Çift Sonlu Hikaye Finali & Skor Tablosu**

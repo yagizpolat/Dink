@@ -53,6 +53,14 @@ public class DoorSequenceManager : MonoBehaviour
         {
             choiceMade = true;
             DisableGameplayScripts();
+
+            float elapsedTime = LeaderboardManager.instance != null ? LeaderboardManager.instance.StopTimerAndSaveScore() : 0f;
+            if (LeaderboardManager.instance != null)
+            {
+                LeaderboardManager.instance.ShowLeaderboardUIPanel(elapsedTime);
+                return;
+            }
+
             if (!ShowDemoCompletedPanel())
             {
                 // UI bulunamazsa oyuncuyu kalıcı olarak kilitleme; mevcut gameplay'i geri aç.

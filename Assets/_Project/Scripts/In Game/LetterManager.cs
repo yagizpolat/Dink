@@ -24,7 +24,8 @@ public class LetterManager : MonoBehaviour
 
     private void Update()
     {
-        if(letterpanel.activeSelf)
+        // letterpanel'in null olup olmadığını kontrol ederek her karede (Update) çökmesini engelliyoruz
+        if (letterpanel != null && letterpanel.activeSelf)
         {
             if (Input.GetKeyDown(KeyCode.E))
             {
@@ -35,33 +36,50 @@ public class LetterManager : MonoBehaviour
 
     public void OpenLetter(Letter letter)
     {
+        if (letterpanel == null)
+        {
+            Debug.LogWarning("[LetterManager] 'letterpanel' referansı Unity Inspector üzerinde atanmamış!");
+            return;
+        }
+
         if (letterpanel.activeSelf)
         {
             return;
         }
         letterpanel.SetActive(true);
-        titleText.text = letter.GetTitle();
-        contentText.text = letter.GetContent();
-        escmenu.enabled = false;
+        if (titleText != null) titleText.text = letter.GetTitle();
+        if (contentText != null) contentText.text = letter.GetContent();
+        if (escmenu != null) escmenu.enabled = false;
         Time.timeScale = 0f;
 
-        //MEKTUP AÇMA SESİ
-        sesbombasi.PlayOneShot(mektupacilis);
+        // MEKTUP AÇMA SESİ
+        float sfxVol = AudioManager.instance != null ? AudioManager.instance.GetSFXVolume() : PlayerPrefs.GetFloat("Dink_SFXVolume", 0.8f);
+        if (sesbombasi != null && mektupacilis != null)
+        {
+            sesbombasi.PlayOneShot(mektupacilis, sfxVol);
+        }
 
-        //SCRİPT KAPATMA KISMI
+        // SCRİPT KAPATMA KISMI
         CloseOpenScript(false);
     }
 
     public void CloseLetter()
     {
-        letterpanel.SetActive(false);
-        escmenu.enabled = true;
+        if (letterpanel != null)
+        {
+            letterpanel.SetActive(false);
+        }
+        if (escmenu != null) escmenu.enabled = true;
         Time.timeScale = 1f;
 
-        //MEKTUP KAPAMA SESİ
-        sesbombasi.PlayOneShot(mektupkapanis);
+        // MEKTUP KAPAMA SESİ
+        float sfxVol = AudioManager.instance != null ? AudioManager.instance.GetSFXVolume() : PlayerPrefs.GetFloat("Dink_SFXVolume", 0.8f);
+        if (sesbombasi != null && mektupkapanis != null)
+        {
+            sesbombasi.PlayOneShot(mektupkapanis, sfxVol);
+        }
 
-        //SCRİPT AÇMA KISMI
+        // SCRİPT AÇMA KISMI
         CloseOpenScript(true);
     }
 
@@ -77,5 +95,6 @@ public class LetterManager : MonoBehaviour
         fener = FindAnyObjectByType<FenerKontrol>();
         kamerascript = FindAnyObjectByType<Kamera>();
         inventory = FindAnyObjectByType<InventoryManager>();
+        if (escmenu == null) escmenu = FindAnyObjectByType<Escmenu>();
     }
 }

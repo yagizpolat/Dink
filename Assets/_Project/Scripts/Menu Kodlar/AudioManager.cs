@@ -2,85 +2,194 @@ using System.Collections;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
+/// <summary>
+/// Dink Projesi Otomatik Bağlantılı Ses ve Müzik Yöneticisi (AudioManager).
+/// Bağımsız Müzik (Music), Ses Efekti (SFX) ve Genel Ses (Master) kontrolü sağlar.
+/// </summary>
 public class AudioManager : MonoBehaviour
 {
-    public static AudioManager instance;
+    private static AudioManager _instance;
+    public static AudioManager instance
+    {
+        get
+        {
+            if (_instance == null)
+            {
+                _instance = FindFirstObjectByType<AudioManager>();
+                if (_instance == null)
+                {
+                    GameObject go = new GameObject("[AudioManager]");
+                    _instance = go.AddComponent<AudioManager>();
+                }
+            }
+            return _instance;
+        }
+    }
 
     [Header("Audio Sources")]
     public AudioSource musicSource;
     public AudioSource sfxSource;
 
-    [Header("Audio Clips")]
-    public AudioClip menuMusic;
-    public AudioClip gameMusic;
+    [Header("Müzikler & Ambiyans")]
+    public AudioClip menuMusic;   // in_menu.mp3
+    public AudioClip gameAmbience; // in_game.mp3
+
+    [Header("Ortak Ses Efektleri")]
     public AudioClip buttonClickSFX;
+
+    private bool _isFading = false;
 
     private void Awake()
     {
-        // Singleton Yapısı: Sahneler arası müziğin kopmaması için
-        if (instance == null)
+        if (_instance == null)
         {
-            instance = this;
+            _instance = this;
             DontDestroyOnLoad(gameObject);
             SceneManager.sceneLoaded += OnSceneLoaded;
         }
-        else
+        else if (_instance != this)
         {
             Destroy(gameObject);
         }
     }
 
-    private void OnSceneLoaded(Scene scene, LoadSceneMode mode)
+    private void Start()
     {
-        // Eğer Ana Menüye dönüldüyse (Index 0) ve şu an çalan menü müziği değilse
-        if (scene.buildIndex == 0 && musicSource.clip != menuMusic)
+        SetupAudioSources();
+        AutoLoadAudioClips();
+        LoadVolumeSettings();
+
+        // Sahneye göre müziği başlat
+        AudioClip targetClip = (SceneManager.GetActiveScene().buildIndex == 0) ? menuMusic : gameAmbience;
+        PlayMusic(targetClip);
+    }
+
+    private void SetupAudioSources()
+    {
+        if (musicSource == null)
         {
-            ChangeMusicWithFade(menuMusic, 2f);
+            musicSource = gameObject.AddComponent<AudioSource>();
+            musicSource.loop = true;
+        }
+        if (sfxSource == null)
+        {
+            sfxSource = gameObject.AddComponent<AudioSource>();
         }
     }
 
-    private void Start()
+    private void AutoLoadAudioClips()
     {
-        // Oyun ilk açıldığında menü müziğini başlat
-        PlayMusic(menuMusic);
+        if (menuMusic == null)
+        {
+            menuMusic = Resources.Load<AudioClip>("Audio/in_menu");
+        }
+        if (gameAmbience == null)
+        {
+            gameAmbience = Resources.Load<AudioClip>("Audio/in_game");
+        }
     }
 
-    // --- SES EFEKTLERİ ---
+    public void LoadVolumeSettings()
+    {
+        SetMasterVolume(GetMasterVolume());
+        SetMusicVolume(GetMusicVolume());
+        SetSFXVolume(GetSFXVolume());
+    }
+
+    public float GetMasterVolume() => PlayerPrefs.GetFloat("Dink_MasterVolume", 0.8f);
+    public float GetMusicVolume() => PlayerPrefs.GetFloat("Dink_MusicVolume", 0.5f);
+    public float GetSFXVolume() => PlayerPrefs.GetFloat("Dink_SFXVolume", 0.8f);
+
+    public void SetMasterVolume(float vol)
+    {
+        AudioListener.volume = vol;
+        PlayerPrefs.SetFloat("Dink_MasterVolume", vol);
+    }
+
+    public void SetMusicVolume(float vol)
+    {
+        PlayerPrefs.SetFloat("Dink_MusicVolume", vol);
+        if (musicSource != null && !_isFading)
+        {
+            musicSource.volume = vol;
+        }
+    }
+
+    public void SetSFXVolume(float vol)
+    {
+        PlayerPrefs.SetFloat("Dink_SFXVolume", vol);
+        if (sfxSource != null)
+        {
+            sfxSource.volume = vol;
+        }
+    }
+
+    private void OnSceneLoaded(Scene scene, LoadSceneMode mode)
+    {
+        AutoLoadAudioClips();
+        AudioClip targetClip = (scene.buildIndex == 0) ? menuMusic : gameAmbience;
+
+        if (targetClip != null)
+        {
+            if (musicSource.clip == null || !musicSource.isPlaying || IsSameClip(musicSource.clip, targetClip))
+            {
+                PlayMusic(targetClip);
+            }
+            else
+            {
+                ChangeMusicWithFade(targetClip, 1.2f);
+            }
+        }
+    }
+
+    private bool IsSameClip(AudioClip a, AudioClip b)
+    {
+        if (a == b) return true;
+        if (a != null && b != null && a.name == b.name) return true;
+        return false;
+    }
+
+    // ════════════════════════════════════════════
+    // SES EFEKTİ VE MÜZİK YÖNETİMİ
+    // ════════════════════════════════════════════
+
     public void PlayClickSFX()
     {
-        if (buttonClickSFX != null)
-            sfxSource.PlayOneShot(buttonClickSFX);
+        PlaySFX(buttonClickSFX);
     }
 
-    // --- MÜZİK GEÇİŞ SİSTEMİ ---
+    public void PlaySFX(AudioClip clip)
+    {
+        if (clip != null && sfxSource != null)
+        {
+            sfxSource.PlayOneShot(clip, GetSFXVolume());
+        }
+    }
+
     public void PlayMusic(AudioClip clip)
     {
+        if (clip == null || musicSource == null) return;
+
+        if (musicSource.isPlaying && IsSameClip(musicSource.clip, clip)) return;
+
         musicSource.clip = clip;
+        musicSource.loop = true;
+        musicSource.volume = GetMusicVolume();
         musicSource.Play();
     }
 
-    public void ChangeMusicWithFade(AudioClip newClip, float fadeDuration)
-    {
-        // Eğer zaten o müzik çalıyorsa tekrar başlatma
-        if (musicSource.clip == newClip) return;
-
-        StopAllCoroutines(); // Çakışmaları önlemek için eski fade'leri durdur
-        StartCoroutine(FadeOutAndIn(newClip, fadeDuration));
-    }
-
-    /// <summary>
-    /// Müziği yumuşakça kısarak (Fade Out) tamamen durdurur. Oyuna geçerken sessizlik sağlamak için kullanılır.
-    /// </summary>
     public void StopMusicWithFade(float fadeDuration)
     {
+        if (musicSource == null) return;
         StopAllCoroutines();
         StartCoroutine(FadeOutAndStop(fadeDuration));
     }
 
     private IEnumerator FadeOutAndStop(float duration)
     {
+        _isFading = true;
         float currentTime = 0;
-        float startVolume = musicSource.volume > 0 ? musicSource.volume : 0.5f;
+        float startVolume = musicSource.volume > 0 ? musicSource.volume : GetMusicVolume();
 
         while (currentTime < duration)
         {
@@ -91,15 +200,26 @@ public class AudioManager : MonoBehaviour
 
         musicSource.Stop();
         musicSource.clip = null;
-        musicSource.volume = 0.5f; // Bir sonraki müzik çalınacağı zaman varsayılan ses seviyesi
+        musicSource.volume = GetMusicVolume();
+        _isFading = false;
+    }
+
+    public void ChangeMusicWithFade(AudioClip newClip, float fadeDuration)
+    {
+        if (musicSource == null || newClip == null) return;
+        if (musicSource.isPlaying && IsSameClip(musicSource.clip, newClip)) return;
+
+        StopAllCoroutines();
+        StartCoroutine(FadeOutAndIn(newClip, fadeDuration));
     }
 
     private IEnumerator FadeOutAndIn(AudioClip newClip, float duration)
     {
+        _isFading = true;
         float currentTime = 0;
-        float startVolume = 0.5f;
+        float targetVolume = GetMusicVolume();
+        float startVolume = musicSource.volume;
 
-        // 1. SESİ YAVAŞÇA KIS (Fade Out)
         while (currentTime < duration)
         {
             currentTime += Time.deltaTime;
@@ -110,20 +230,25 @@ public class AudioManager : MonoBehaviour
         musicSource.Stop();
         musicSource.volume = 0;
 
-        // --- TAM SESSİZLİK ANI ---
-        // Burada yeni klibi ata
         musicSource.clip = newClip;
-        musicSource.Play();
+        if (newClip != null)
+        {
+            musicSource.loop = true;
+            musicSource.Play();
+        }
 
-        // 2. YENİ SESİ YAVAŞÇA AÇ (Fade In)
         currentTime = 0;
         while (currentTime < duration)
         {
             currentTime += Time.deltaTime;
-            musicSource.volume = Mathf.Lerp(0, startVolume, currentTime / duration);
+            musicSource.volume = Mathf.Lerp(0, targetVolume, currentTime / duration);
             yield return null;
         }
+
+        musicSource.volume = targetVolume;
+        _isFading = false;
     }
+
     private void OnDestroy()
     {
         SceneManager.sceneLoaded -= OnSceneLoaded;
