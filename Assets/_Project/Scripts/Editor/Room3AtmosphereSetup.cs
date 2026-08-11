@@ -27,23 +27,7 @@ public class Room3AtmosphereSetup
             }
         }
 
-        // 2. FICKER LIGHT (TİTREYEN İŞIK) EKLENTİSİ
-        if (lampLightObj != null)
-        {
-            FlickerLight flicker = lampLightObj.GetComponent<FlickerLight>();
-            if (flicker == null)
-            {
-                flicker = lampLightObj.AddComponent<FlickerLight>();
-                Undo.RegisterCreatedObjectUndo(flicker, "Added FlickerLight");
-            }
-
-            flicker.minIntensity = 0.5f;
-            flicker.maxIntensity = 1.3f;
-            flicker.minFlickerDelay = 0.04f;
-            flicker.maxFlickerDelay = 0.22f;
-
-            Debug.Log($"[Dink] '{lampLightObj.name}' objesine organik titreyen ışık sistemi (FlickerLight) bağlandı.");
-        }
+        // 2. FlickerLight kaldırıldı (script silindi). Gerekirse yeniden oluşturulacak.
 
         // 3. HAVADAKİ SÜZÜLEN IŞIKLI SİS ZERRELERİ (VOLUMETRIC FOG MOTES)
         GameObject fogObj = GameObject.Find("Atmospheric_Fog_Motes");

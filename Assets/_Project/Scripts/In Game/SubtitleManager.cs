@@ -3,32 +3,41 @@ using TMPro;
 using UnityEngine;
 
 /// <summary>
-/// Dink projesi için sinematik Türkçe seslendirme ve altyazı (Subtitle) yönetim bileşeni.
+/// Dink projesi 7 Dilli sinematik seslendirme ve altyazı (Subtitle) yönetim bileşeni.
+/// Varsayılan Dil: İngilizce (EN).
+/// Diller: EN, TR, DE, FR, ES, PT, RU.
 /// </summary>
 public class SubtitleManager : MonoBehaviour
 {
-    [Header("UI & Component Connections")]
+    [Header("UI & Bileşen Bağlantıları")]
     public AudioSource voiceAudioSource;
     public TMP_Text subtitleText;
     public CanvasGroup subtitleCanvasGroup;
 
-    [Header("Intro Voice & Subtitle Settings")]
-    [Header("Türkçe (TR)")]
-    public AudioClip trVoiceClip;
-    [TextArea(2, 4)]
-    public string trSubtitleText = "Neredeyim ben...?";
+    [Header("7 Dil - Ses Kayıtları (AudioClip)")]
+    public AudioClip enVoiceClip; // EN: "Where am I...?" (Varsayılan)
+    public AudioClip trVoiceClip; // TR: "Neredeyim ben...?"
+    public AudioClip deVoiceClip; // DE: "Wo bin ich...?"
+    public AudioClip frVoiceClip; // FR: "Où suis-je...?"
+    public AudioClip esVoiceClip; // ES: "¿Dónde estoy...?"
+    public AudioClip ptVoiceClip; // PT: "Onde estou...?"
+    public AudioClip ruVoiceClip; // RU: "Где я...?"
 
-    [Header("English (EN)")]
-    public AudioClip enVoiceClip;
-    [TextArea(2, 4)]
-    public string enSubtitleText = "Where am I...?";
+    [Header("7 Dil - Altyazı Metinleri (Subtitle)")]
+    [TextArea(2, 4)] public string enSubtitleText = "Where am I...?";
+    [TextArea(2, 4)] public string trSubtitleText = "Neredeyim ben...?";
+    [TextArea(2, 4)] public string deSubtitleText = "Wo bin ich...?";
+    [TextArea(2, 4)] public string frSubtitleText = "Où suis-je...?";
+    [TextArea(2, 4)] public string esSubtitleText = "¿Dónde estoy...?";
+    [TextArea(2, 4)] public string ptSubtitleText = "Onde estou...?";
+    [TextArea(2, 4)] public string ruSubtitleText = "Где я...?";
 
     [Header("Legacy / Fallback")]
     public AudioClip introVoiceClip;
     [TextArea(2, 4)]
-    public string defaultSubtitleText = "Neredeyim ben...?";
+    public string defaultSubtitleText = "Where am I...?";
 
-    [Header("Timing Settings")]
+    [Header("Zamanlama Ayarları")]
     public float displayDuration = 10f;
     public float fadeInDuration = 0.4f;
     public float fadeOutDuration = 0.6f;
@@ -41,11 +50,9 @@ public class SubtitleManager : MonoBehaviour
 
     private void Start()
     {
-        // Sahne açılır açılmaz sesin kendiliğinden çalmasını engelle
         if (voiceAudioSource != null)
             voiceAudioSource.playOnAwake = false;
 
-        // Panel her zaman aktif; sadece alpha ile göster/gizle
         if (subtitleCanvasGroup != null)
         {
             subtitleCanvasGroup.gameObject.SetActive(true);
@@ -58,27 +65,57 @@ public class SubtitleManager : MonoBehaviour
 
     public string GetIntroSubtitleText()
     {
-        string lang = PlayerPrefs.GetString("Language", "TR");
-        if (lang == "TR")
+        LanguageManager.Language lang = GetActiveLanguage();
+
+        switch (lang)
         {
-            return string.IsNullOrEmpty(trSubtitleText) ? defaultSubtitleText : trSubtitleText;
-        }
-        else
-        {
-            return string.IsNullOrEmpty(enSubtitleText) ? (string.IsNullOrEmpty(trSubtitleText) ? defaultSubtitleText : trSubtitleText) : enSubtitleText;
+            case LanguageManager.Language.EN: return !string.IsNullOrEmpty(enSubtitleText) ? enSubtitleText : defaultSubtitleText;
+            case LanguageManager.Language.TR: return !string.IsNullOrEmpty(trSubtitleText) ? trSubtitleText : enSubtitleText;
+            case LanguageManager.Language.DE: return !string.IsNullOrEmpty(deSubtitleText) ? deSubtitleText : enSubtitleText;
+            case LanguageManager.Language.FR: return !string.IsNullOrEmpty(frSubtitleText) ? frSubtitleText : enSubtitleText;
+            case LanguageManager.Language.ES: return !string.IsNullOrEmpty(esSubtitleText) ? esSubtitleText : enSubtitleText;
+            case LanguageManager.Language.PT: return !string.IsNullOrEmpty(ptSubtitleText) ? ptSubtitleText : enSubtitleText;
+            case LanguageManager.Language.RU: return !string.IsNullOrEmpty(ruSubtitleText) ? ruSubtitleText : enSubtitleText;
+            default: return enSubtitleText;
         }
     }
 
     public AudioClip GetIntroVoiceClip()
     {
-        string lang = PlayerPrefs.GetString("Language", "TR");
-        if (lang == "TR")
+        LanguageManager.Language lang = GetActiveLanguage();
+
+        AudioClip clip = null;
+        switch (lang)
         {
-            return trVoiceClip != null ? trVoiceClip : introVoiceClip;
+            case LanguageManager.Language.EN: clip = enVoiceClip; break;
+            case LanguageManager.Language.TR: clip = trVoiceClip; break;
+            case LanguageManager.Language.DE: clip = deVoiceClip; break;
+            case LanguageManager.Language.FR: clip = frVoiceClip; break;
+            case LanguageManager.Language.ES: clip = esVoiceClip; break;
+            case LanguageManager.Language.PT: clip = ptVoiceClip; break;
+            case LanguageManager.Language.RU: clip = ruVoiceClip; break;
+        }
+
+        // Seçilen dilin ses klibi yoksa İngilizce'ye, o da yoksa varsayılana düş
+        if (clip == null) clip = enVoiceClip;
+        if (clip == null) clip = trVoiceClip;
+        if (clip == null) clip = introVoiceClip;
+
+        return clip;
+    }
+
+    private LanguageManager.Language GetActiveLanguage()
+    {
+        if (LanguageManager.instance != null)
+        {
+            return LanguageManager.instance.CurrentLanguage;
         }
         else
         {
-            return enVoiceClip != null ? enVoiceClip : (trVoiceClip != null ? trVoiceClip : introVoiceClip);
+            string saved = PlayerPrefs.GetString("Dink_Language", "EN");
+            if (System.Enum.TryParse(saved, out LanguageManager.Language parsed))
+                return parsed;
+            return LanguageManager.Language.EN;
         }
     }
 
@@ -97,15 +134,12 @@ public class SubtitleManager : MonoBehaviour
 
     private IEnumerator SubtitleSequence(string text, AudioClip voiceClip, float duration)
     {
-        // Ses klibi script alanına değil doğrudan AudioSource'a atanmışsa, oradan al
         if (voiceClip == null && voiceAudioSource != null)
             voiceClip = voiceAudioSource.clip;
 
-        // Metni yaz
         if (subtitleText != null)
             subtitleText.text = text;
 
-        // Sesi çal
         if (voiceClip != null && voiceAudioSource != null)
         {
             voiceAudioSource.Stop();
@@ -124,7 +158,6 @@ public class SubtitleManager : MonoBehaviour
         }
         if (subtitleCanvasGroup != null) subtitleCanvasGroup.alpha = 1f;
 
-        // displayDuration kadar bekle
         yield return new WaitForSeconds(duration);
 
         // Fade-Out
@@ -139,6 +172,5 @@ public class SubtitleManager : MonoBehaviour
 
         if (subtitleCanvasGroup != null)
             subtitleCanvasGroup.alpha = 0f;
-        // SetActive(false) YOK — panel her zaman aktif kalır, sadece alpha=0
     }
 }

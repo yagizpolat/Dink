@@ -89,7 +89,12 @@ public class FenerKontrol : MonoBehaviour
             if (battery > 0)
             {
                 fenerisik.enabled = !fenerisik.enabled;
-                fenersesbilesen.PlayOneShot(fenerses);
+
+                if (fenersesbilesen != null && fenerses != null)
+                {
+                    float sfxVol = AudioManager.instance != null ? AudioManager.instance.GetSFXVolume() : PlayerPrefs.GetFloat("Dink_SFXVolume", 0.8f);
+                    fenersesbilesen.PlayOneShot(fenerses, sfxVol);
+                }
             }
         }
     }
