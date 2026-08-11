@@ -53,8 +53,17 @@
 - **Bir Kereye Mahsus İsim Sorma:** İsim 1 kez girildikten sonra oyun tamamlanana kadar tekrar sorulmaz. Taze başlangıçta tekrar aktif olur.
 - **7 Dilli Otomatik Kurulum Aracı:** Unity üst menüsünden `Dink Tools -> Oyuncu Adi Giris Paneli Kur` seçeneğiyle paneli 7 dilde otomatik oluşturma.
 
-### C. GitHub Reposu Senkronizasyonu
-- Yapılan tüm geliştirmeler, 7 dilli ses ve arayüz dosyaları `origin/main` (`https://github.com/yagizpolat/Dink.git`) deposuna commit edilip pushlandı.
+### D. Kaybetme Zindanı (Rescue Dungeon) & 4 Rastgele Minigame Sistem Mimarisi ([ZindanKurtulmaManager.cs](file:///C:/Users/engin/OneDrive/Belgeler/Kisisel%20Dosyalarim/ozel/Oyun%20Gelistirme/Denemelik%20projelerim/Dink/Assets/_Project/Scripts/In%20Game/ZindanKurtulmaManager.cs))
+- **2 Hak Kurtulma Döngüsü:** Oyuncu her oyuna başladığında 2 kurtulma hakkı tanımlanır. Yanlış kapı seçildiğinde veya süre bittiğinde oyuncu doğrudan ana menüye atılmaz, `Zindan.unity` (Index 6) sahnesine gönderilir.
+- **Zindandan Kurtulup Kaldığı Yerden Devam Etme:** Oyuncu zindandaki bulmacayı başardığında en son kaybettiği odaya/bölüme geri dönüp oyuna kaldığı yerden devam eder. 3. kez kaybettiğinde hakları bittiği için kalıcı olarak elenip Ana Menüye yönlendirilir.
+- **Oturum Sıfırlama:** Ana Menüye dönüldüğünde kurtulma hakları `SceneManager.sceneLoaded` ile otomatik olarak 2/2 olarak sıfırlanır.
+- **4 Rastgele Minigame (`ZindanMinigameSelector.cs`):** Zindana her düşüldüğünde 4 farklı minigame'den biri tamamen rastgele seçilip oyuncuya sunulur:
+  1. *Paslı Kilit Pimleri (`ZindanKilitMinigame.cs`):* Hareket eden 3 pimi doğru anda kilitleme (-3s ceza).
+  2. *Elektrik Kablosu Bağlama (`ZindanKabloMinigame.cs`):* 4 renkli kabloyu eşleşen soketlere bağlama (-4s ceza & kıvılcım).
+  3. *Vana Basınç Dengeleme (`ZindanVanaMinigame.cs`):* 3 paslı vanaya basılı tutarak ibreleri yeşil bölgede 1.5s sabit tutma.
+  4. *Antik Rün Şifresi (`ZindanRunMinigame.cs`):* Rünlerin yanıp sönme sırasını aklında tutup sırayla tıklama.
+- **Dinamik Oyun İçi Crosshair & Sabit Kamera ([CrosshairManager.cs](file:///C:/Users/engin/OneDrive/Belgeler/Kisisel%20Dosyalarim/ozel/Oyun%20Gelistirme/Denemelik%20projelerim/Dink/Assets/_Project/Scripts/In%20Game/CrosshairManager.cs)):** UI ve Zindan modlarında kamera sabit kalırken oyunun kendi UI Crosshair'ının fareyi takip etmesi sağlandı.
+- **1 Tıkla Otomatik Kurulum Aracı ([CreateZindanMinigameSetup.cs](file:///C:/Users/engin/OneDrive/Belgeler/Kisisel%20Dosyalarim/ozel/Oyun%20Gelistirme/Denemelik%20projelerim/Dink/Assets/_Project/Scripts/Editor/CreateZindanMinigameSetup.cs)):** `Dink Tools -> Zindan Minigamelerini Olustur` seçeneğiyle tüm minigame panelleri ve rastgele seçici tek tıkla oluşturulur.
 
 ---
 
@@ -72,10 +81,9 @@
 1. **✅ ADIM 1: Giriş Sinematiği Hızlandırma & Skip Koruması (TAMAMLANDI)**
 2. **✅ ADIM 2: Bağımsız Ses Sistemleri ve Müzik Yapılandırması (TAMAMLANDI)**
 3. **✅ ADIM 3: 7 Dilli İsim Giriş Paneli & LootLocker Küresel Skor Tablosu (TAMAMLANDI)**
-4. **📌 ADIM 4: Mor Işık (UV) ve Gizli Yazı / İpuçları (Bulmaca Mekaniği - SIRADAKİ ADIM)**
-   - `FenerKontrol.cs`: Farenin sağ tıkı (`Input.GetMouseButtonDown(1)`) ile mor ışık modu (`#9D00FF`). Fener pil tüketim hızı değiştirilmeyecektir!
-   - `GizliYazi.cs`: Duvarlarda ve mektuplarda sadece mor UV ışığı altında parlayan gizli semboller ve ipuçları.
-   - `CreateHiddenTextSetup.cs`: `Dink Tools -> Mor Isik Gizli Yazi Olustur` Editor aracı.
-5. **📌 ADIM 5: Hakan'ın Akıl Sağlığı (Sanity) & İmleç Titremesi & Anlık Gerilim Dynamics**
-   - Akıl sağlığı düştükçe imlecin sallanması, bulanıklaşma ve anlık korku ögeleri.
-6. **📌 ADIM 6: Mektup Sayımına Göre Çift Sonlu Hikaye Finali**
+4. **✅ ADIM 4: Kaybetme Zindanı (2 Hak) & 4 Rastgele Minigame Mimarisi (TAMAMLANDI)**
+5. **📌 ADIM 5: Odalarda Dinamik Geri Sayım (Countdown) & İpucu Minigameleri (SIRADAKİ ADIM)**
+   - İlk haritalarda süre sınırı olmayacak, ilerleyen haritalarda geri sayım devreye girecek. Geçilen oda minigamelerinin zorluğuna göre sürenin üzerine +5s veya +10s eklenecek.
+6. **📌 ADIM 6: Mor Işık (UV) ve Gizli Yazı / İpuçları (Bulmaca Mekaniği)**
+7. **📌 ADIM 7: Hakan'ın Akıl Sağlığı (Sanity) & İmleç Titremesi & Anlık Gerilim Dynamics**
+8. **📌 ADIM 8: Mektup Sayımına Göre Çift Sonlu Hikaye Finali**

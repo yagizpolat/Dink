@@ -47,7 +47,9 @@ public class JumpscareController : MonoBehaviour
 
         if (audioSource != null && jumpscareSound != null)
         {
-            audioSource.PlayOneShot(jumpscareSound);
+            // Ses seviyesini SFX ayarına göre kıs (maksimum %50)
+            float sfxVol = AudioManager.instance != null ? AudioManager.instance.GetSFXVolume() : PlayerPrefs.GetFloat("Dink_SFXVolume", 0.8f);
+            audioSource.PlayOneShot(jumpscareSound, sfxVol * 0.5f);
         }
 
         // Jumpscare'in oyun zamanından bağımsız çalışmasını sağlar.
@@ -59,6 +61,20 @@ public class JumpscareController : MonoBehaviour
             mainCamera.transform.localPosition = originalCamPos;
         }
 
+        // Zindan sistemi: Hak varsa zindana gönder, yoksa ana menüye at
+        if (ZindanKurtulmaManager.instance != null)
+        {
+            int mevcutSahne = SceneManager.GetActiveScene().buildIndex;
+            bool zindanaGitti = ZindanKurtulmaManager.instance.KaybetmeyiIsle(mevcutSahne);
+
+            if (zindanaGitti)
+            {
+                // Oyuncu zindana gönderildi, ana menüye geçiş iptal
+                yield break;
+            }
+        }
+
+        // Hak kalmadı veya ZindanKurtulmaManager yok — eski davranış: ana menüye at
         if (mainMenuBuildIndex < 0 ||
             mainMenuBuildIndex >= SceneManager.sceneCountInBuildSettings)
         {
