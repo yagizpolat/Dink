@@ -38,18 +38,23 @@
 
 ---
 
-## 2. Son Yapılan Değişiklikler ve Eklenen Sistemler (11.08.2026)
+## 2. Son Yapılan Değişiklikler ve Eklenen Sistemler (12.08.2026 Oturumu)
 
-### A. 7 Dilli Canlı Dil Yöneticisi ([LanguageManager.cs](file:///C:/Users/engin/OneDrive/Belgeler/Kisisel%20Dosyalarim/ozel/Oyun%20Gelistirme/Denemelik%20projelerim/Dink/Assets/_Project/Scripts/Menu%20Kodlar/LanguageManager.cs), [LocalizedText.cs](file:///C:/Users/engin/OneDrive/Belgeler/Kisisel%20Dosyalarim/ozel/Oyun%20Gelistirme/Denemelik%20projelerim/Dink/Assets/_Project/Scripts/LocalizedText.cs), [LocalizationHelper.cs](file:///C:/Users/engin/OneDrive/Belgeler/Kisisel%20Dosyalarim/ozel/Oyun%20Gelistirme/Denemelik%20projelerim/Dink/Assets/_Project/Scripts/Editor/LocalizationHelper.cs))
-- **7 Dil Desteği:** İngilizce (Varsayılan / Default), Türkçe, Almanca, Fransızca, İspanyolca, Portekizce ve Rusça dilleri eklendi.
-- **Kalıcı Hafıza Kaydı:** Seçilen dil `PlayerPrefs` (`Dink_Language`) ile saklanır; oyuncu ilk girdiğinde varsayılan dil olarak İngilizce yüklenir.
-- **Canlı Güncelleme:** Dil değiştirildiğinde `OnLanguageChanged` olayı tetiklenerek sahnedeki 2D Canvas ve 3D kapı metinleri anında güncellenir.
+### A. LootLocker Bulut Destekli Küresel Skor Tablosu & 7 Dilli Arayüz ([LeaderboardManager.cs](file:///C:/Users/engin/OneDrive/Belgeler/Kisisel%20Dosyalarim/ozel/Oyun%20Gelistirme/Denemelik%20projelerim/Dink/Assets/_Project/Scripts/Menu%20Kodlar/LeaderboardManager.cs))
+- **Doğrudan REST API Entegrasyonu:** Ek eklenti paketine ihtiyaç duymadan doğrudan `UnityWebRequest` ile LootLocker sunucularına bağlanma.
+- **Canlı Bulut Skorları:** Oyuncu oyunu bitirdiğinde tamamlama süresi milisaniye cinsinden LootLocker bulutuna iletilir ve dünyanın her yerinden görülebilecek canlı liderlik tablosunda sıralanır.
+- **Oturum Kurtarma & Çevrimdışı Güvence:** İnternet olmaması durumunda yerel `PlayerPrefs` yedek hafızasına kaydeder. Oturum kapalıysa otomatik yeniden açar.
+- **7 Dilli Tam Yerelleştirme:** Skor Tablosu UI paneli ve Kullanıcı Adı Paneli 7 dilde (EN, TR, DE, FR, ES, PT, RU) canlı olarak gösterilir.
+- **Unity Editor Sıfırlama:** `ContextMenu` üzerinden tek tıkla yerel skorları ve ismi sıfırlama olanağı.
+- **Steamworks Gelecek Mimarisi:** İleride Steam'e çıkıldığında arayüz hiç değişmeden doğrudan resmi Steam Leaderboards API'sine bağlanabilecek modüler altyapı.
 
-### B. 7 Dilli Seslendirme ve Altyazı Altyapısı ([SubtitleManager.cs](file:///C:/Users/engin/OneDrive/Belgeler/Kisisel%20Dosyalarim/ozel/Oyun%20Gelistirme/Denemelik%20projelerim/Dink/Assets/_Project/Scripts/In%20Game/SubtitleManager.cs))
-- Oyun açılışındaki göz açılma sinematiğinde seçilen dile göre doğru ses kaydının çalması ve ilgili dilde altyazının gösterilmesi sağlandı.
+### B. Oyuncu Adı Giriş Paneli & Akıllı Geçiş ([CreateNicknameUISetup.cs](file:///C:/Users/engin/OneDrive/Belgeler/Kisisel%20Dosyalarim/ozel/Oyun%20Gelistirme/Denemelik%20projelerim/Dink/Assets/_Project/Scripts/Editor/CreateNicknameUISetup.cs), [SceneTransition.cs](file:///C:/Users/engin/OneDrive/Belgeler/Kisisel%20Dosyalarim/ozel/Oyun%20Gelistirme/Denemelik%20projelerim/Dink/Assets/_Project/Scripts/Menu%20Kodlar/SceneTransition.cs))
+- **Zamanı Dondurma (`Time.timeScale = 0f`):** 3D kapıdan **BAŞLA** denildiği an zaman anında dondurularak arka plan sesleri ve hareketleri kesilir.
+- **Bir Kereye Mahsus İsim Sorma:** İsim 1 kez girildikten sonra oyun tamamlanana kadar tekrar sorulmaz. Taze başlangıçta tekrar aktif olur.
+- **7 Dilli Otomatik Kurulum Aracı:** Unity üst menüsünden `Dink Tools -> Oyuncu Adi Giris Paneli Kur` seçeneğiyle paneli 7 dilde otomatik oluşturma.
 
-### C. 3D Dev Kapılı Ana Menü ve AAA Ayarlar Paneli ([Menu3DDoor.cs](file:///C:/Users/engin/OneDrive/Belgeler/Kisisel%20Dosyalarim/ozel/Oyun%20Gelistirme/Denemelik%20projelerim/Dink/Assets/_Project/Scripts/Menu%20Kodlar/Menu3DDoor.cs), [MainMenu3DController.cs](file:///C:/Users/engin/OneDrive/Belgeler/Kisisel%20Dosyalarim/ozel/Oyun%20Gelistirme/Denemelik%20projelerim/Dink/Assets/_Project/Scripts/Menu%20Kodlar/MainMenu3DController.cs), [SettingsManager.cs](file:///C:/Users/engin/OneDrive/Belgeler/Kisisel%20Dosyalarim/ozel/Oyun%20Gelistirme/Denemelik%20projelerim/Dink/Assets/_Project/Scripts/Menu%20Kodlar/SettingsManager.cs))
-- 3D menü kapıları (BAŞLA, AYARLAR, ÇIKIŞ ve GENEL, DİL, GERİ DÖN) ve 3 bağımsız ses kanalı (Genel, Müzik, SFX) yapılandırıldı.
+### C. GitHub Reposu Senkronizasyonu
+- Yapılan tüm geliştirmeler, 7 dilli ses ve arayüz dosyaları `origin/main` (`https://github.com/yagizpolat/Dink.git`) deposuna commit edilip pushlandı.
 
 ---
 
@@ -66,9 +71,11 @@
 
 1. **✅ ADIM 1: Giriş Sinematiği Hızlandırma & Skip Koruması (TAMAMLANDI)**
 2. **✅ ADIM 2: Bağımsız Ses Sistemleri ve Müzik Yapılandırması (TAMAMLANDI)**
-3. **📌 ADIM 3: Mor Işık (UV) ve Gizli Yazı / İpuçları (Bulmaca Mekaniği - SIRADAKİ ADIM)**
-   - Fener için farenin sağ tuşu ile aktifleşen mor ışık modu.
-   - Duvarlarda ve mektuplarda Hakan'ın ve eski kurbanların izlerini sadece mor ışık altında gösteren tekinsiz semboller.
-4. **📌 ADIM 4: Hakan'ın Akıl Sağlığı (Sanity) & İmleç Titremesi & Anlık Gerilim Dynamics**
+3. **✅ ADIM 3: 7 Dilli İsim Giriş Paneli & LootLocker Küresel Skor Tablosu (TAMAMLANDI)**
+4. **📌 ADIM 4: Mor Işık (UV) ve Gizli Yazı / İpuçları (Bulmaca Mekaniği - SIRADAKİ ADIM)**
+   - `FenerKontrol.cs`: Farenin sağ tıkı (`Input.GetMouseButtonDown(1)`) ile mor ışık modu (`#9D00FF`). Fener pil tüketim hızı değiştirilmeyecektir!
+   - `GizliYazi.cs`: Duvarlarda ve mektuplarda sadece mor UV ışığı altında parlayan gizli semboller ve ipuçları.
+   - `CreateHiddenTextSetup.cs`: `Dink Tools -> Mor Isik Gizli Yazi Olustur` Editor aracı.
+5. **📌 ADIM 5: Hakan'ın Akıl Sağlığı (Sanity) & İmleç Titremesi & Anlık Gerilim Dynamics**
    - Akıl sağlığı düştükçe imlecin sallanması, bulanıklaşma ve anlık korku ögeleri.
-5. **📌 ADIM 5: Mektup Sayımına Göre Çift Sonlu Hikaye Finali & Skor Tablosu**
+6. **📌 ADIM 6: Mektup Sayımına Göre Çift Sonlu Hikaye Finali**
