@@ -13,14 +13,22 @@ public class DoorChoice : MonoBehaviour
         if (randomDoor == 0)
         {
             Debug.Log("Sol Kapı Doğru");
-            leftDoor.SetCorrectDoor(true);
-            rightDoor.SetCorrectDoor(false);
+            if(leftDoor && rightDoor != null)
+            {
+
+                leftDoor.SetCorrectDoor(true);
+                rightDoor.SetCorrectDoor(false);
+            }
         }
         else
         {
             Debug.Log("Sağ Kapı Doğru");
-            leftDoor.SetCorrectDoor(false);
-            rightDoor.SetCorrectDoor(true);
+            if (leftDoor && rightDoor != null)
+            {
+
+                leftDoor.SetCorrectDoor(false);
+                rightDoor.SetCorrectDoor(true);
+            }
         }
     }
 }

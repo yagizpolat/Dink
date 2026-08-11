@@ -13,19 +13,31 @@ public class CrosshairManager : MonoBehaviour
     {
         Vector3 targetscale = normalscale;
 
-
-        Ray ray = playercamera.ScreenPointToRay(new Vector3(Screen.width / 2, Screen.height / 2));
-
-        RaycastHit hit;
-
-        if(Physics.Raycast(ray, out hit))
+        // İmleç kilitli değilse (UI / Zindan modu), oyun içi crosshair fareyi takip eder
+        if (Cursor.lockState != CursorLockMode.Locked && crosshair != null)
         {
-            if (hit.collider.CompareTag("Mektup") || hit.collider.CompareTag("Pil") ||hit.collider.CompareTag("Kapi"))
+            crosshair.position = Input.mousePosition;
+        }
+
+        Vector3 screenPoint = Cursor.lockState == CursorLockMode.Locked
+            ? new Vector3(Screen.width / 2f, Screen.height / 2f)
+            : Input.mousePosition;
+
+        if (playercamera != null)
+        {
+            Ray ray = playercamera.ScreenPointToRay(screenPoint);
+            if (Physics.Raycast(ray, out RaycastHit hit))
             {
-                targetscale = hoverScale;
+                if (hit.collider.CompareTag("Mektup") || hit.collider.CompareTag("Pil") || hit.collider.CompareTag("Kapi"))
+                {
+                    targetscale = hoverScale;
+                }
             }
         }
 
-        crosshair.localScale = Vector3.Lerp(crosshair.localScale, targetscale, Time.deltaTime * scalespeed);
+        if (crosshair != null)
+        {
+            crosshair.localScale = Vector3.Lerp(crosshair.localScale, targetscale, Time.deltaTime * scalespeed);
+        }
     }
 }
