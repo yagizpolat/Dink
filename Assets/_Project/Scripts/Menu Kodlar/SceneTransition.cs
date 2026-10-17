@@ -79,6 +79,7 @@ public class SceneTransition : MonoBehaviour
         MainMenu3DController controller = FindFirstObjectByType<MainMenu3DController>();
         if (controller != null)
         {
+            controller.HideMenu();
             controller.enabled = false;
         }
 

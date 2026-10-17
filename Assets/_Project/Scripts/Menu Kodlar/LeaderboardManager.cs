@@ -385,12 +385,15 @@ public class LeaderboardManager : MonoBehaviour
 
     public float StopTimerAndSaveScore()
     {
-        float elapsedTime = 0f;
-        if (_isTimerRunning)
+        if (!_isTimerRunning)
         {
-            elapsedTime = Time.time - _gameStartTime;
-            _isTimerRunning = false;
+            // Kronometre hiç başlamadıysa (ör. eski "Yeniden Oyna" akışı) 00:00:00 skor yazma
+            Debug.LogWarning("[DINK] Kronometre çalışmıyordu; skor kaydedilmedi.");
+            return 0f;
         }
+
+        float elapsedTime = Time.time - _gameStartTime;
+        _isTimerRunning = false;
 
         string playerName = GetPlayerName();
         if (string.IsNullOrEmpty(playerName)) playerName = "Anonymous Player";
@@ -476,178 +479,13 @@ public class LeaderboardManager : MonoBehaviour
         Cursor.lockState = CursorLockMode.None;
         Cursor.visible = true;
 
-        GameObject existingCanvas = GameObject.Find("[SKOR TABLOSU (CANVAS)]");
-        if (existingCanvas != null) Destroy(existingCanvas);
-
-        GameObject canvasObj = new GameObject("[SKOR TABLOSU (CANVAS)]");
-        Canvas canvas = canvasObj.AddComponent<Canvas>();
-        canvas.renderMode = RenderMode.ScreenSpaceOverlay;
-        canvas.sortingOrder = 30;
-
-        CanvasScaler scaler = canvasObj.AddComponent<CanvasScaler>();
-        scaler.uiScaleMode = CanvasScaler.ScaleMode.ScaleWithScreenSize;
-        scaler.referenceResolution = new Vector2(1920, 1080);
-        scaler.matchWidthOrHeight = 0.5f;
-
-        canvasObj.AddComponent<GraphicRaycaster>();
-
-        // Arka plan koyu panel
-        GameObject bgPanel = new GameObject("Background");
-        bgPanel.transform.SetParent(canvasObj.transform, false);
-        RectTransform bgRect = bgPanel.AddComponent<RectTransform>();
-        bgRect.anchorMin = Vector2.zero;
-        bgRect.anchorMax = Vector2.one;
-        bgRect.sizeDelta = Vector2.zero;
-        Image bgImg = bgPanel.AddComponent<Image>();
-        bgImg.color = new Color(0.05f, 0.06f, 0.08f, 0.96f);
-
-        // Kutu
-        GameObject boxObj = new GameObject("LeaderboardBox");
-        boxObj.transform.SetParent(bgPanel.transform, false);
-        RectTransform boxRect = boxObj.AddComponent<RectTransform>();
-        boxRect.anchorMin = new Vector2(0.5f, 0.5f);
-        boxRect.anchorMax = new Vector2(0.5f, 0.5f);
-        boxRect.sizeDelta = new Vector2(780, 680);
-        Image boxImg = boxObj.AddComponent<Image>();
-        boxImg.color = new Color(0.1f, 0.12f, 0.15f, 0.98f);
-
-        // Başlık (7 Dilli)
-        GameObject titleObj = new GameObject("Title");
-        titleObj.transform.SetParent(boxObj.transform, false);
-        RectTransform titleRect = titleObj.AddComponent<RectTransform>();
-        titleRect.anchorMin = new Vector2(0f, 1f);
-        titleRect.anchorMax = new Vector2(1f, 1f);
-        titleRect.anchoredPosition = new Vector2(0, -30);
-        titleRect.sizeDelta = new Vector2(0, 50);
-        TextMeshProUGUI titleTMP = titleObj.AddComponent<TextMeshProUGUI>();
-        titleTMP.text = GetLoc("TITLE");
-        titleTMP.fontSize = 24;
-        titleTMP.fontStyle = FontStyles.Bold;
-        titleTMP.alignment = TextAlignmentOptions.Center;
-        titleTMP.color = new Color(0.95f, 0.8f, 0.2f);
-
-        // Mevcut Skor Bilgisi
-        if (currentScoreTime >= 0)
+        // Oyun sonu skor tablosu: giriş defterinin bir sonraki sayfası (LeaderboardLogbookUI)
+        LeaderboardLogbookUI.Show(currentScoreTime, GetPlayerName());
+        StartCoroutine(FetchCloudScoresRoutine(entries =>
         {
-            GameObject curScoreObj = new GameObject("CurrentScoreInfo");
-            curScoreObj.transform.SetParent(boxObj.transform, false);
-            RectTransform csRect = curScoreObj.AddComponent<RectTransform>();
-            csRect.anchorMin = new Vector2(0f, 1f);
-            csRect.anchorMax = new Vector2(1f, 1f);
-            csRect.anchoredPosition = new Vector2(0, -75);
-            csRect.sizeDelta = new Vector2(0, 40);
-            TextMeshProUGUI csTMP = curScoreObj.AddComponent<TextMeshProUGUI>();
-            csTMP.text = $"{GetLoc("YOUR_TIME")} <color=#00FF99>{FormatTime(currentScoreTime)}</color> ({GetPlayerName()})";
-            csTMP.fontSize = 20;
-            csTMP.alignment = TextAlignmentOptions.Center;
-            csTMP.color = Color.white;
-        }
-
-        // Liste Alanı
-        GameObject listObj = new GameObject("ScoreList");
-        listObj.transform.SetParent(boxObj.transform, false);
-        RectTransform listRect = listObj.AddComponent<RectTransform>();
-        listRect.anchorMin = new Vector2(0.5f, 0.5f);
-        listRect.anchorMax = new Vector2(0.5f, 0.5f);
-        listRect.anchoredPosition = new Vector2(0, -20);
-        listRect.sizeDelta = new Vector2(680, 420);
-        TextMeshProUGUI listTMP = listObj.AddComponent<TextMeshProUGUI>();
-        listTMP.fontSize = 19;
-        listTMP.alignment = TextAlignmentOptions.TopLeft;
-
-        // Canlı Bulut Skorlarını Çek ve Göster
-        StartCoroutine(FetchCloudScoresRoutine((entries) =>
-        {
-            string tableText = $"<color=#888888>{GetLoc("HEADER")}</color>\n";
-            tableText += "-----------------------------------------------------\n";
-
-            if (entries == null || entries.Count == 0)
-            {
-                tableText += $"\n           {GetLoc("EMPTY")}";
-            }
-            else
-            {
-                for (int i = 0; i < entries.Count; i++)
-                {
-                    var entry = entries[i];
-                    string rankStr = (i + 1).ToString().PadRight(6);
-                    string nameStr = entry.playerName.PadRight(25);
-                    if (nameStr.Length > 25) nameStr = nameStr.Substring(0, 22) + "...";
-                    string timeStr = FormatTime(entry.timeInSeconds).PadRight(12);
-
-                    string colorTag = (i == 0) ? "<color=#FFD700>" : ((i == 1) ? "<color=#C0C0C0>" : ((i == 2) ? "<color=#CD7F32>" : "<color=#FFFFFF>"));
-                    tableText += $"{colorTag}{rankStr}{nameStr}{timeStr}{entry.dateString}</color>\n";
-                }
-            }
-            if (listTMP != null) listTMP.text = tableText;
+            LeaderboardLogbookUI ui = FindAnyObjectByType<LeaderboardLogbookUI>();
+            if (ui != null) ui.SetEntries(entries);
         }));
-
-        // Butonlar
-        GameObject btnBox = new GameObject("Buttons");
-        btnBox.transform.SetParent(boxObj.transform, false);
-        RectTransform btnBoxRect = btnBox.AddComponent<RectTransform>();
-        btnBoxRect.anchorMin = new Vector2(0f, 0f);
-        btnBoxRect.anchorMax = new Vector2(1f, 0f);
-        btnBoxRect.anchoredPosition = new Vector2(0, 30);
-        btnBoxRect.sizeDelta = new Vector2(0, 50);
-
-        // Ana Menü Butonu
-        GameObject mainBtnObj = new GameObject("MainMenuButton");
-        mainBtnObj.transform.SetParent(btnBox.transform, false);
-        RectTransform mbRect = mainBtnObj.AddComponent<RectTransform>();
-        mbRect.anchorMin = new Vector2(0.2f, 0.5f);
-        mbRect.anchorMax = new Vector2(0.45f, 0.5f);
-        mbRect.sizeDelta = new Vector2(0, 45);
-        Image mbImg = mainBtnObj.AddComponent<Image>();
-        mbImg.color = new Color(0.25f, 0.28f, 0.35f);
-        Button mbBtn = mainBtnObj.AddComponent<Button>();
-        mbBtn.onClick.AddListener(() =>
-        {
-            Time.timeScale = 1f;
-            DinkScenes.LoadMainMenu();
-        });
-
-        GameObject mbTextObj = new GameObject("Text");
-        mbTextObj.transform.SetParent(mainBtnObj.transform, false);
-        RectTransform mbtRect = mbTextObj.AddComponent<RectTransform>();
-        mbtRect.anchorMin = Vector2.zero;
-        mbtRect.anchorMax = Vector2.one;
-        mbtRect.sizeDelta = Vector2.zero;
-        TextMeshProUGUI mbTMP = mbTextObj.AddComponent<TextMeshProUGUI>();
-        mbTMP.text = GetLoc("MAIN_MENU");
-        mbTMP.fontSize = 18;
-        mbTMP.fontStyle = FontStyles.Bold;
-        mbTMP.alignment = TextAlignmentOptions.Center;
-        mbTMP.color = Color.white;
-
-        // Yeniden Oyna Butonu
-        GameObject replayBtnObj = new GameObject("ReplayButton");
-        replayBtnObj.transform.SetParent(btnBox.transform, false);
-        RectTransform rbRect = replayBtnObj.AddComponent<RectTransform>();
-        rbRect.anchorMin = new Vector2(0.55f, 0.5f);
-        rbRect.anchorMax = new Vector2(0.8f, 0.5f);
-        rbRect.sizeDelta = new Vector2(0, 45);
-        Image rbImg = replayBtnObj.AddComponent<Image>();
-        rbImg.color = new Color(0.85f, 0.2f, 0.2f);
-        Button rbBtn = replayBtnObj.AddComponent<Button>();
-        rbBtn.onClick.AddListener(() =>
-        {
-            Time.timeScale = 1f;
-            DinkScenes.LoadNewGame();
-        });
-
-        GameObject rbTextObj = new GameObject("Text");
-        rbTextObj.transform.SetParent(replayBtnObj.transform, false);
-        RectTransform rbtRect = rbTextObj.AddComponent<RectTransform>();
-        rbtRect.anchorMin = Vector2.zero;
-        rbtRect.anchorMax = Vector2.one;
-        rbtRect.sizeDelta = Vector2.zero;
-        TextMeshProUGUI rbTMP = rbTextObj.AddComponent<TextMeshProUGUI>();
-        rbTMP.text = GetLoc("REPLAY");
-        rbTMP.fontSize = 18;
-        rbTMP.fontStyle = FontStyles.Bold;
-        rbTMP.alignment = TextAlignmentOptions.Center;
-        rbTMP.color = Color.white;
     }
 
     // ════════════════════════════════════════════

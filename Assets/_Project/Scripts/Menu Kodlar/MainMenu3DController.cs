@@ -69,6 +69,15 @@ public class MainMenu3DController : MonoBehaviour
         kapiMenusu.Open();
     }
 
+    /// <summary>
+    /// Oyun başlarken menüyü gizler. Menü tuvali (5) intro'nun siyah perdesinden (1) üstte çizildiği için
+    /// gizlenmezse hikaye yazısı menünün üstüne biner.
+    /// </summary>
+    public void HideMenu()
+    {
+        if (kapiMenusu != null && kapiMenusu.Content != null) kapiMenusu.Content.SetActive(false);
+    }
+
     /// <summary>Kapı aralığı tarzı ayarlar ekranını menünün üstünde açar.</summary>
     private void OpenSettings()
     {

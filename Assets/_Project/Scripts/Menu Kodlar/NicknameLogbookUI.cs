@@ -11,22 +11,22 @@ using UnityEngine.UI;
 /// </summary>
 public class NicknameLogbookUI : MonoBehaviour
 {
-    private const float PageW = 1140f, PageH = 740f;
-    private const float PadL = 92f, PadR = 52f, PadT = 44f, PadB = 36f;
+    internal const float PageW = 1140f, PageH = 740f;
+    internal const float PadL = 92f, PadR = 52f, PadT = 44f, PadB = 36f;
     private const float HeaderRowH = 44f, RowH = 70f;
     private const int MaxNameLength = 20;
     private const float NameMaxSize = 34f, NameMinSize = 17f;
 
     private static readonly float[] ColumnShares = { 0.18f, 0.13f, 0.53f, 0.16f };
 
-    private static readonly Color PaperColor = Hex("E3D9C2");
-    private static readonly Color PrintColor = Hex("4E5A58");
-    private static readonly Color RuleColor = Hex("B9BCB1");
-    private static readonly Color BlueInk = Hex("34406A");
-    private static readonly Color BlackInk = Hex("2B2621");
-    private static readonly Color PencilInk = new Color(0.38f, 0.36f, 0.33f, 0.8f);
-    private static readonly Color PlaceholderInk = new Color(0.52f, 0.5f, 0.45f, 0.5f);
-    private static readonly Color StampRed = new Color(0.61f, 0.18f, 0.15f, 0.72f);
+    internal static readonly Color PaperColor = Hex("E3D9C2");
+    internal static readonly Color PrintColor = Hex("4E5A58");
+    internal static readonly Color RuleColor = Hex("B9BCB1");
+    internal static readonly Color BlueInk = Hex("34406A");
+    internal static readonly Color BlackInk = Hex("2B2621");
+    internal static readonly Color PencilInk = new Color(0.38f, 0.36f, 0.33f, 0.8f);
+    internal static readonly Color PlaceholderInk = new Color(0.52f, 0.5f, 0.45f, 0.5f);
+    internal static readonly Color StampRed = new Color(0.61f, 0.18f, 0.15f, 0.72f);
 
     private Canvas canvas;
     private TextMeshProUGUI nameText;
@@ -37,6 +37,7 @@ public class NicknameLogbookUI : MonoBehaviour
 
     private string typed = "";
     private string placeholder;
+    private bool submitRequested;
 
     /// <summary>Defteri açar, oyuncu adını yazıp Enter'a basana kadar bekler, sonra ekranı karartır.</summary>
     public static IEnumerator Run(Action<string> onSubmitted)
@@ -77,6 +78,8 @@ public class NicknameLogbookUI : MonoBehaviour
                 }
             }
 
+            // Editör oynatma testleri klavye simüle edemediği için bu bayrağı reflection ile açar
+            if (submitRequested && typed.Trim().Length > 0) done = true;
             if (done) break;
             blink += Time.unscaledDeltaTime;
             RefreshName(blink % 1.06f < 0.53f);
@@ -135,42 +138,11 @@ public class NicknameLogbookUI : MonoBehaviour
         placeholder = DinkLang.T("write your name", "adınızı yazın", "Namen eintragen", "écrivez votre nom", "escriba su nombre", "escreva seu nome", "впишите имя");
 
         canvas = gameObject.AddComponent<Canvas>();
-        canvas.renderMode = RenderMode.ScreenSpaceOverlay;
-        canvas.sortingOrder = 400;
-        CanvasScaler scaler = gameObject.AddComponent<CanvasScaler>();
-        scaler.uiScaleMode = CanvasScaler.ScaleMode.ScaleWithScreenSize;
-        scaler.referenceResolution = new Vector2(1600, 900);
-        scaler.screenMatchMode = CanvasScaler.ScreenMatchMode.MatchWidthOrHeight;
-        scaler.matchWidthOrHeight = 1f;
-
-        // Masa ve lamba ışığı
-        RawImage desk = NewRaw("Desk", transform, DeskTexture());
-        Stretch(desk.rectTransform);
-
-        // Sayfanın altındaki yaprak kalınlığı + gölge
-        RectTransform shadow = NewImage("PageShadow", transform, new Color(0, 0, 0, 0.55f)).rectTransform;
-        Place(shadow, new Vector2(0, -24), new Vector2(PageW + 40, PageH + 40), -0.8f);
-        for (int i = 3; i >= 1; i--)
-        {
-            float shade = 0.81f - i * 0.05f;
-            RectTransform leaf = NewImage("Leaf" + i, transform, new Color(shade, shade * 0.97f, shade * 0.88f)).rectTransform;
-            Place(leaf, new Vector2(0, -2f * i), new Vector2(PageW, PageH), -0.8f);
-        }
-
-        RawImage page = NewRaw("Page", transform, GrainTexture());
-        page.color = PaperColor;
-        RectTransform pageRect = page.rectTransform;
-        Place(pageRect, Vector2.zero, new Vector2(PageW, PageH), -0.8f);
-
-        BuildBindingHoles(pageRect);
+        RectTransform pageRect = BuildDeskAndPage(gameObject);
         BuildHeader(pageRect);
         float tableBottom = BuildTable(pageRect);
         BuildFooter(pageRect, tableBottom);
-
-        // Lamba düşüşü (sayfa kenarları kararır)
-        RawImage falloff = NewRaw("LampFalloff", pageRect, FalloffTexture());
-        Stretch(falloff.rectTransform);
-        falloff.raycastTarget = false;
+        AddLampFalloff(pageRect);
 
         cueText = NewText("Cue", transform, monoFont, 14, new Color(0.42f, 0.38f, 0.34f), "ENTER");
         cueText.characterSpacing = 25;
@@ -182,6 +154,48 @@ public class NicknameLogbookUI : MonoBehaviour
 
         blackout = NewImage("Blackout", transform, new Color(0, 0, 0, 0));
         Stretch(blackout.rectTransform);
+    }
+
+    /// <summary>Tuvali, masayı, yaprak kalınlığını, sayfayı ve cilt deliklerini kurar; sayfanın RectTransform'unu döner. Skor defteri de bunu kullanır.</summary>
+    internal static RectTransform BuildDeskAndPage(GameObject root)
+    {
+        Canvas canvas = root.GetComponent<Canvas>();
+        canvas.renderMode = RenderMode.ScreenSpaceOverlay;
+        canvas.sortingOrder = 400;
+        CanvasScaler scaler = root.AddComponent<CanvasScaler>();
+        scaler.uiScaleMode = CanvasScaler.ScaleMode.ScaleWithScreenSize;
+        scaler.referenceResolution = new Vector2(1600, 900);
+        scaler.screenMatchMode = CanvasScaler.ScreenMatchMode.MatchWidthOrHeight;
+        scaler.matchWidthOrHeight = 1f;
+        Transform t = root.transform;
+
+        // Masa ve lamba ışığı
+        RawImage desk = NewRaw("Desk", t, DeskTexture());
+        Stretch(desk.rectTransform);
+
+        // Sayfanın altındaki yaprak kalınlığı + gölge
+        RectTransform shadow = NewImage("PageShadow", t, new Color(0, 0, 0, 0.55f)).rectTransform;
+        Place(shadow, new Vector2(0, -24), new Vector2(PageW + 40, PageH + 40), -0.8f);
+        for (int i = 3; i >= 1; i--)
+        {
+            float shade = 0.81f - i * 0.05f;
+            RectTransform leaf = NewImage("Leaf" + i, t, new Color(shade, shade * 0.97f, shade * 0.88f)).rectTransform;
+            Place(leaf, new Vector2(0, -2f * i), new Vector2(PageW, PageH), -0.8f);
+        }
+
+        RawImage page = NewRaw("Page", t, GrainTexture());
+        page.color = PaperColor;
+        RectTransform pageRect = page.rectTransform;
+        Place(pageRect, Vector2.zero, new Vector2(PageW, PageH), -0.8f);
+        BuildBindingHoles(pageRect);
+        return pageRect;
+    }
+
+    /// <summary>Lamba düşüşü (sayfa kenarları kararır); sayfadaki her şeyden sonra eklenmeli.</summary>
+    internal static void AddLampFalloff(RectTransform pageRect)
+    {
+        RawImage falloff = NewRaw("LampFalloff", pageRect, FalloffTexture());
+        Stretch(falloff.rectTransform);
     }
 
     private void BuildHeader(RectTransform page)
@@ -341,7 +355,7 @@ public class NicknameLogbookUI : MonoBehaviour
         stamp.SetActive(false);
     }
 
-    private void BuildBindingHoles(RectTransform page)
+    private static void BuildBindingHoles(RectTransform page)
     {
         Texture2D dot = DotTexture();
         for (int i = 0; i < 5; i++)
@@ -356,7 +370,7 @@ public class NicknameLogbookUI : MonoBehaviour
     // YARDIMCILAR
     // ════════════════════════════════════════════
 
-    private static void Place(RectTransform r, Vector2 pos, Vector2 size, float rotZ)
+    internal static void Place(RectTransform r, Vector2 pos, Vector2 size, float rotZ)
     {
         r.anchorMin = r.anchorMax = r.pivot = new Vector2(0.5f, 0.5f);
         r.anchoredPosition = pos + new Vector2(0, -10);
@@ -365,7 +379,7 @@ public class NicknameLogbookUI : MonoBehaviour
     }
 
     /// <summary>Sayfanın sol-üst köşesine göre piksel konumlandırma (HTML taslağıyla birebir).</summary>
-    private static void TopLeft(RectTransform r, float x, float y, float w, float h)
+    internal static void TopLeft(RectTransform r, float x, float y, float w, float h)
     {
         Vector2 pivot = r.pivot;
         r.anchorMin = r.anchorMax = new Vector2(0, 1);
@@ -373,14 +387,14 @@ public class NicknameLogbookUI : MonoBehaviour
         r.anchoredPosition = new Vector2(x + w * pivot.x, -y - h * (1 - pivot.y));
     }
 
-    private static void Stretch(RectTransform r)
+    internal static void Stretch(RectTransform r)
     {
         r.anchorMin = Vector2.zero;
         r.anchorMax = Vector2.one;
         r.offsetMin = r.offsetMax = Vector2.zero;
     }
 
-    private static Image NewImage(string name, Transform parent, Color color)
+    internal static Image NewImage(string name, Transform parent, Color color)
     {
         GameObject go = new GameObject(name, typeof(RectTransform));
         go.transform.SetParent(parent, false);
@@ -390,7 +404,7 @@ public class NicknameLogbookUI : MonoBehaviour
         return img;
     }
 
-    private static RawImage NewRaw(string name, Transform parent, Texture tex)
+    internal static RawImage NewRaw(string name, Transform parent, Texture tex)
     {
         GameObject go = new GameObject(name, typeof(RectTransform));
         go.transform.SetParent(parent, false);
@@ -401,7 +415,7 @@ public class NicknameLogbookUI : MonoBehaviour
     }
 
     // Not: İsimde "text"/"hint"/"sub" geçmemeli kuralı yalnız oda sahneleri için; bu UI menüde yaşar.
-    private static TextMeshProUGUI NewText(string name, Transform parent, TMP_FontAsset font, float size, Color color, string text)
+    internal static TextMeshProUGUI NewText(string name, Transform parent, TMP_FontAsset font, float size, Color color, string text)
     {
         GameObject go = new GameObject(name, typeof(RectTransform));
         go.transform.SetParent(parent, false);
@@ -415,7 +429,7 @@ public class NicknameLogbookUI : MonoBehaviour
         return t;
     }
 
-    private static TMP_FontAsset LoadFont(string resourcePath)
+    internal static TMP_FontAsset LoadFont(string resourcePath)
     {
         Font font = Resources.Load<Font>(resourcePath);
         if (font == null)
@@ -429,7 +443,7 @@ public class NicknameLogbookUI : MonoBehaviour
         return asset;
     }
 
-    private static Color Hex(string hex)
+    internal static Color Hex(string hex)
     {
         ColorUtility.TryParseHtmlString("#" + hex, out Color c);
         return c;
