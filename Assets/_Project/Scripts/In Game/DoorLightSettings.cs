@@ -125,9 +125,9 @@ public class DoorLightSettings : MonoBehaviour
         });
         tabs.Add(new List<Row>
         {
-            new Row { label = DinkLang.T("LANGUAGE", "DİL", "SPRACHE", "LANGUE", "IDIOMA", "IDIOMA", "ЯЗЫК"), desc = DinkLang.T("Interface and letter language.", "Arayüz ve mektup dili.", "Sprache von Oberfläche und Briefen.", "Langue de l'interface et des lettres.", "Idioma de la interfaz y las cartas.", "Idioma da interface e das cartas.", "Язык интерфейса и писем."), kind = RowKind.Toggle,
+            new Row { label = DinkLang.T("LANGUAGE", "DİL", "SPRACHE", "LANGUE", "IDIOMA", "IDIOMA", "ЯЗЫК"), desc = DinkLang.T("Interface and letter language.", "Arayüz ve mektup dili.", "Sprache von Oberfläche und Briefen.", "Langue de l'interface et des lettres.", "Idioma de la interfaz y las cartas.", "Idioma da interface e das cartas.", "Язык интерфейса и писем."), kind = RowKind.Cycle,
                 value = () => LanguageManager.instance != null ? LanguageManager.instance.GetCurrentLanguageName().ToUpperInvariant() : "-",
-                change = d => { if (LanguageManager.instance != null) LanguageManager.instance.NextLanguage(); } },
+                change = d => { if (LanguageManager.instance != null) { int n = System.Enum.GetValues(typeof(LanguageManager.Language)).Length; LanguageManager.instance.SetLanguage((LanguageManager.Language)(((int)LanguageManager.instance.CurrentLanguage + (d < 0 ? -1 : 1) + n) % n)); } } },
             new Row { label = DinkLang.T("RESTORE DEFAULTS", "VARSAYILANA DÖN", "STANDARD", "PAR DÉFAUT", "RESTABLECER", "PADRÃO", "ПО УМОЛЧАНИЮ"), desc = DinkLang.T("Resets every setting.", "Tüm ayarları sıfırlar.", "Setzt alle Einstellungen zurück.", "Réinitialise tous les réglages.", "Restablece todos los ajustes.", "Redefine todas as configurações.", "Сбрасывает все настройки."), kind = RowKind.Action,
                 value = () => "", change = d => SM?.ResetToDefaults() },
             new Row { label = DinkLang.T("BACK", "GERİ", "ZURÜCK", "RETOUR", "VOLVER", "VOLTAR", "НАЗАД"), desc = DinkLang.T("Returns to the previous menu.", "Önceki menüye döner.", "Zurück zum vorherigen Menü.", "Retour au menu précédent.", "Vuelve al menú anterior.", "Volta ao menu anterior.", "Возврат в предыдущее меню."), kind = RowKind.Action,
