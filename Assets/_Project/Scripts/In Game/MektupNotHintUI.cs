@@ -225,18 +225,11 @@ public class MektupNotHintUI : MonoBehaviour
     /// </summary>
     private void TogglePlayerScripts(bool enable)
     {
-        Kamera k = FindAnyObjectByType<Kamera>();
-        if (k != null) k.enabled = enable;
+        PlayerControls.SetEnabled(enable);
 
-        temaskontrol t = FindAnyObjectByType<temaskontrol>();
-        if (t != null) t.enabled = enable;
-
-        CrosshairManager cm = FindAnyObjectByType<CrosshairManager>();
-        if (cm != null)
-        {
-            cm.enabled = enable;
-            cm.SetCrosshairVisible(enable);
-        }
+        // Mektup açıkken ESC menüsü de kapalı: yoksa ESC → "Devam" kamerayı mektubun arkasında açıyordu
+        Escmenu esc = FindAnyObjectByType<Escmenu>();
+        if (esc != null) esc.enabled = enable;
     }
 
     /// <summary>

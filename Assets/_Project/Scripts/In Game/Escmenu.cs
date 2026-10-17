@@ -14,16 +14,6 @@ public class Escmenu : MonoBehaviour
     public AudioClip escmenuacilmasesi;
     public AudioClip escmenukapanmasesi;
 
-    // SCRİPT BAĞLANTILARI
-    Kamera kamerascript;
-    temaskontrol mektup_pil;
-    CrosshairManager crosshairManager;
-
-    private void Start()
-    {
-        ScriptConnect();
-    }
-
     void Update()
     {
         // Eğer ayarlar paneli ekranda açıksa ESC tuşu basımını SettingsManager yönetir
@@ -104,21 +94,8 @@ public class Escmenu : MonoBehaviour
         }
     }
 
-    void ScriptConnect()
-    {
-        kamerascript = FindAnyObjectByType<Kamera>();
-        mektup_pil = FindAnyObjectByType<temaskontrol>();
-        crosshairManager = FindAnyObjectByType<CrosshairManager>();
-    }
-
     void CloseOpenScript(bool enable)
     {
-        if (kamerascript != null) kamerascript.enabled = enable;
-        if (mektup_pil != null) mektup_pil.enabled = enable;
-        if (crosshairManager != null)
-        {
-            crosshairManager.enabled = enable;
-            crosshairManager.SetCrosshairVisible(enable);
-        }
+        PlayerControls.SetEnabled(enable);
     }
 }

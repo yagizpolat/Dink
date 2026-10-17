@@ -18,19 +18,7 @@ public class DoorSequenceManager : MonoBehaviour
 
     private bool choiceMade;
 
-    private Kamera kamera;
-    private Escmenu escMenu;
-    private temaskontrol temasKontrol;
     private GameObject demoCompletedPanel;
-    private Button mainMenuButton;
-    private Button replayButton;
-
-    private void Awake()
-    {
-        kamera = FindAnyObjectByType<Kamera>();
-        escMenu = FindAnyObjectByType<Escmenu>();
-        temasKontrol = FindAnyObjectByType<temaskontrol>();
-    }
 
     /// <summary>
     /// Kapı seçildiğinde çağrılır.
@@ -68,20 +56,13 @@ public class DoorSequenceManager : MonoBehaviour
 
     private void DisableGameplayScripts()
     {
-        SetScriptEnabled(kamera, false);
-        SetScriptEnabled(escMenu, false);
-        SetScriptEnabled(temasKontrol, false);
+        PlayerControls.SetEnabled(false);
+
+        Escmenu escMenu = FindAnyObjectByType<Escmenu>();
+        if (escMenu != null) escMenu.enabled = false;
 
         Cursor.lockState = CursorLockMode.Locked;
         Cursor.visible = false;
-    }
-
-    private void SetScriptEnabled(MonoBehaviour script, bool enabled)
-    {
-        if (script != null)
-        {
-            script.enabled = enabled;
-        }
     }
 
     private void HandleCorrectDoor(bool isLeftDoor)
