@@ -1534,6 +1534,7 @@ GameObject:
   - component: {fileID: 136154589}
   - component: {fileID: 136154588}
   - component: {fileID: 136154590}
+  - component: {fileID: 136154591}
   m_Layer: 0
   m_Name: Btn_Right
   m_TagString: Untagged
@@ -1643,6 +1644,20 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls: []
+--- !u!114 &136154591
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 136154586}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c1ffed1e62db88947bfb176695416fd3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::UIButtonJuice
+  hoverScale: 1.06
+  duration: 0.12
 --- !u!1 &139783028
 GameObject:
   m_ObjectHideFlags: 0
@@ -3284,6 +3299,7 @@ GameObject:
   - component: {fileID: 276299380}
   - component: {fileID: 276299379}
   - component: {fileID: 276299381}
+  - component: {fileID: 276299382}
   m_Layer: 0
   m_Name: Btn_Left
   m_TagString: Untagged
@@ -3393,6 +3409,20 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls: []
+--- !u!114 &276299382
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 276299377}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c1ffed1e62db88947bfb176695416fd3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::UIButtonJuice
+  hoverScale: 1.06
+  duration: 0.12
 --- !u!1 &291240554
 GameObject:
   m_ObjectHideFlags: 0
@@ -3405,6 +3435,7 @@ GameObject:
   - component: {fileID: 291240557}
   - component: {fileID: 291240556}
   - component: {fileID: 291240558}
+  - component: {fileID: 291240559}
   m_Layer: 0
   m_Name: Btn_Left
   m_TagString: Untagged
@@ -3514,6 +3545,20 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls: []
+--- !u!114 &291240559
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 291240554}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c1ffed1e62db88947bfb176695416fd3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::UIButtonJuice
+  hoverScale: 1.06
+  duration: 0.12
 --- !u!1 &305203757
 GameObject:
   m_ObjectHideFlags: 0
@@ -4161,6 +4206,7 @@ GameObject:
   - component: {fileID: 360505116}
   - component: {fileID: 360505115}
   - component: {fileID: 360505114}
+  - component: {fileID: 360505118}
   m_Layer: 0
   m_Name: Btn_Back
   m_TagString: Untagged
@@ -4270,6 +4316,20 @@ RectTransform:
   m_AnchoredPosition: {x: -10, y: 0}
   m_SizeDelta: {x: 160, y: 45}
   m_Pivot: {x: 0.5, y: 0.5}
+--- !u!114 &360505118
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 360505113}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c1ffed1e62db88947bfb176695416fd3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::UIButtonJuice
+  hoverScale: 1.06
+  duration: 0.12
 --- !u!1 &367824289
 GameObject:
   m_ObjectHideFlags: 0
@@ -6111,6 +6171,7 @@ GameObject:
   - component: {fileID: 526449968}
   - component: {fileID: 526449967}
   - component: {fileID: 526449969}
+  - component: {fileID: 526449970}
   m_Layer: 0
   m_Name: Btn_Left
   m_TagString: Untagged
@@ -6220,6 +6281,20 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls: []
+--- !u!114 &526449970
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 526449965}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c1ffed1e62db88947bfb176695416fd3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::UIButtonJuice
+  hoverScale: 1.06
+  duration: 0.12
 --- !u!1 &531284375
 GameObject:
   m_ObjectHideFlags: 0
@@ -6900,6 +6975,7 @@ GameObject:
   - component: {fileID: 613885082}
   - component: {fileID: 613885081}
   - component: {fileID: 613885083}
+  - component: {fileID: 613885084}
   m_Layer: 0
   m_Name: Btn_Right
   m_TagString: Untagged
@@ -7009,6 +7085,20 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls: []
+--- !u!114 &613885084
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 613885079}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c1ffed1e62db88947bfb176695416fd3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::UIButtonJuice
+  hoverScale: 1.06
+  duration: 0.12
 --- !u!1 &615409013
 GameObject:
   m_ObjectHideFlags: 0
@@ -8416,6 +8506,7 @@ GameObject:
   - component: {fileID: 820180835}
   - component: {fileID: 820180834}
   - component: {fileID: 820180836}
+  - component: {fileID: 820180837}
   m_Layer: 0
   m_Name: Btn_Left
   m_TagString: Untagged
@@ -8525,6 +8616,20 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls: []
+--- !u!114 &820180837
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 820180832}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c1ffed1e62db88947bfb176695416fd3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::UIButtonJuice
+  hoverScale: 1.06
+  duration: 0.12
 --- !u!1 &832575517
 GameObject:
   m_ObjectHideFlags: 0
@@ -8674,6 +8779,7 @@ GameObject:
   - component: {fileID: 837066227}
   - component: {fileID: 837066226}
   - component: {fileID: 837066228}
+  - component: {fileID: 837066229}
   m_Layer: 0
   m_Name: Btn_Right
   m_TagString: Untagged
@@ -8783,6 +8889,20 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls: []
+--- !u!114 &837066229
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 837066224}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c1ffed1e62db88947bfb176695416fd3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::UIButtonJuice
+  hoverScale: 1.06
+  duration: 0.12
 --- !u!1 &838618456
 GameObject:
   m_ObjectHideFlags: 0
@@ -13699,6 +13819,7 @@ GameObject:
   - component: {fileID: 1492238275}
   - component: {fileID: 1492238274}
   - component: {fileID: 1492238276}
+  - component: {fileID: 1492238277}
   m_Layer: 0
   m_Name: Btn_Right
   m_TagString: Untagged
@@ -13808,6 +13929,20 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls: []
+--- !u!114 &1492238277
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1492238272}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c1ffed1e62db88947bfb176695416fd3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::UIButtonJuice
+  hoverScale: 1.06
+  duration: 0.12
 --- !u!1 &1495716961
 GameObject:
   m_ObjectHideFlags: 0
@@ -14556,6 +14691,7 @@ GameObject:
   - component: {fileID: 1611842373}
   - component: {fileID: 1611842372}
   - component: {fileID: 1611842374}
+  - component: {fileID: 1611842375}
   m_Layer: 0
   m_Name: Btn_Left
   m_TagString: Untagged
@@ -14665,6 +14801,20 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls: []
+--- !u!114 &1611842375
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1611842370}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c1ffed1e62db88947bfb176695416fd3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::UIButtonJuice
+  hoverScale: 1.06
+  duration: 0.12
 --- !u!1 &1613985646
 GameObject:
   m_ObjectHideFlags: 0
@@ -17294,6 +17444,7 @@ GameObject:
   - component: {fileID: 1899321391}
   - component: {fileID: 1899321390}
   - component: {fileID: 1899321392}
+  - component: {fileID: 1899321393}
   m_Layer: 0
   m_Name: Btn_Reset
   m_TagString: Untagged
@@ -17403,6 +17554,20 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls: []
+--- !u!114 &1899321393
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1899321388}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c1ffed1e62db88947bfb176695416fd3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::UIButtonJuice
+  hoverScale: 1.06
+  duration: 0.12
 --- !u!1 &1909808324
 GameObject:
   m_ObjectHideFlags: 0
@@ -19020,7 +19185,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a6b3ca0169283154eab627bfc8ee6324, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::ZindanKurtulmaManager
-  zindanSahnesiIndex: 6
+  zindanSahneAdi: Zindan
   maksimumKurtulmaHakki: 2
 --- !u!1 &2051836925
 GameObject:
@@ -19235,6 +19400,7 @@ GameObject:
   - component: {fileID: 2077699364}
   - component: {fileID: 2077699363}
   - component: {fileID: 2077699365}
+  - component: {fileID: 2077699366}
   m_Layer: 0
   m_Name: Btn_Right
   m_TagString: Untagged
@@ -19344,6 +19510,20 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls: []
+--- !u!114 &2077699366
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2077699361}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c1ffed1e62db88947bfb176695416fd3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::UIButtonJuice
+  hoverScale: 1.06
+  duration: 0.12
 --- !u!1 &2100349077
 GameObject:
   m_ObjectHideFlags: 0

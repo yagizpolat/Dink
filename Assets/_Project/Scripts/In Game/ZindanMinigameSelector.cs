@@ -2,13 +2,13 @@ using UnityEngine;
 
 /// <summary>
 /// Zindan sahnesinde (Zindan.unity) oyuncu her düştüğünde
-/// 4 farklı minigame panelinden birini RASTGELE seçip aktifleştirir.
+/// 9 farklı zorlu minigame panelinden birini RASTGELE seçip aktifleştirir.
 /// </summary>
 public class ZindanMinigameSelector : MonoBehaviour
 {
-    [Header("Zindan Minigame Panelleri")]
-    [Tooltip("0: Kilit Pimleri, 1: Kablo Bağlama, 2: Vana Basıncı, 3: Antik Rün")]
-    [SerializeField] private GameObject[] minigamePanelleri = new GameObject[4];
+    [Header("Zindan Minigame Panelleri (9 Adet)")]
+    [Tooltip("0: Antik Rün, 1: Kasa Kadranı, 2: Sigorta Şalteri, 3: Radyo Frekansı, 4: Asit Nötrleme, 5: Boru Hattı, 6: Antik Terazi, 7: İğne Yakalama, 8: Çip Devresi")]
+    [SerializeField] private GameObject[] minigamePanelleri = new GameObject[9];
 
     private void Start()
     {
@@ -36,7 +36,7 @@ public class ZindanMinigameSelector : MonoBehaviour
         if (minigamePanelleri[secilenIndex] != null)
         {
             minigamePanelleri[secilenIndex].SetActive(true);
-            Debug.Log($"[ZindanSelector] Rastgele Minigame Seçildi: Index {secilenIndex} ({minigamePanelleri[secilenIndex].name})");
+            Debug.Log($"[ZindanSelector] 9 Minigame arasından rastgele seçildi: Index {secilenIndex} ({minigamePanelleri[secilenIndex].name})");
         }
     }
 }

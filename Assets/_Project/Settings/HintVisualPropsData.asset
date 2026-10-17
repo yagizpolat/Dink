@@ -1,0 +1,120 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: efc1104ec04b4eb499363c32b1b9d247, type: 3}
+  m_Name: HintVisualPropsData
+  m_EditorClassIdentifier: Assembly-CSharp::HintVisualPropsData
+  hintProps:
+  - hintType: 0
+    hintName: "Pasl\u0131 Mektup & Not"
+    propPrefab: {fileID: 2773339001278531794, guid: 6e964048913d4d647a017ea0c386d8c3, type: 3}
+    propMaterial: {fileID: 2100000, guid: da84db861ed57f844b74ac88dd9d6992, type: 2}
+    localPositionOffset: {x: 0, y: 0.5, z: 1}
+    leftDirectionRotation: {x: 0, y: -45, z: 0}
+    rightDirectionRotation: {x: 0, y: 45, z: 0}
+  - hintType: 1
+    hintName: "UV Mor I\u015F\u0131k Y\xF6n\xFC"
+    propPrefab: {fileID: 7979051791324546466, guid: 6c546d6960f8ac146b9d53c4bac0cee7, type: 3}
+    propMaterial: {fileID: 2100000, guid: 56a6ad1e7337d3f42bb99a6e7f983e59, type: 2}
+    localPositionOffset: {x: 0, y: 1.5, z: 2.5}
+    leftDirectionRotation: {x: 0, y: -45, z: 0}
+    rightDirectionRotation: {x: 0, y: 45, z: 0}
+  - hintType: 2
+    hintName: "Duvar K\xFCf\xFC & \xC7atla\u011F\u0131"
+    propPrefab: {fileID: 19840045481933363, guid: 9543951fb5825544f8a178cc8016d87f, type: 3}
+    propMaterial: {fileID: 2100000, guid: 57dface3abdcecd4baba6e5240f933b1, type: 2}
+    localPositionOffset: {x: 0, y: 0.5, z: 1}
+    leftDirectionRotation: {x: 0, y: -45, z: 0}
+    rightDirectionRotation: {x: 0, y: 45, z: 0}
+  - hintType: 3
+    hintName: "Telsiz F\u0131s\u0131lt\u0131s\u0131"
+    propPrefab: {fileID: 3167862239142806517, guid: 472ae4f339c2b644987bd5cd4b66ecf5, type: 3}
+    propMaterial: {fileID: 2100000, guid: 1b71a29ef7aef9f489d4fe9f845ff231, type: 2}
+    localPositionOffset: {x: 0, y: 0.5, z: 1}
+    leftDirectionRotation: {x: 0, y: -45, z: 0}
+    rightDirectionRotation: {x: 0, y: 45, z: 0}
+  - hintType: 4
+    hintName: "Bu\u011Fulu Ayna & Metal Kaz\u0131mas\u0131"
+    propPrefab: {fileID: 578028277286820803, guid: 4e9f03974cfed6249b828f96312cda70, type: 3}
+    propMaterial: {fileID: 2100000, guid: c181fa0676288f440b3c7b9841406c5c, type: 2}
+    localPositionOffset: {x: 0, y: 0.5, z: 1}
+    leftDirectionRotation: {x: 0, y: -45, z: 0}
+    rightDirectionRotation: {x: 0, y: 45, z: 0}
+  - hintType: 5
+    hintName: "Zeynep'in Pelu\u015F Oyunca\u011F\u0131"
+    propPrefab: {fileID: 5659674366643450994, guid: 691f3cb236f567a4085445ffb94a71f4, type: 3}
+    propMaterial: {fileID: 2100000, guid: 9b647a914081d654ca5774ac6ba200e5, type: 2}
+    localPositionOffset: {x: 0, y: 0.5, z: 1}
+    leftDirectionRotation: {x: 0, y: -45, z: 0}
+    rightDirectionRotation: {x: 0, y: 45, z: 0}
+  - hintType: 6
+    hintName: "Durmu\u015F Duvar Saati"
+    propPrefab: {fileID: 7684371874312735934, guid: 067577523c31f2f48806ee174c1fab9b, type: 3}
+    propMaterial: {fileID: 2100000, guid: 344d76964d8e84e48bf565c801ff01f3, type: 2}
+    localPositionOffset: {x: 0, y: 0.5, z: 1}
+    leftDirectionRotation: {x: 0, y: -45, z: 0}
+    rightDirectionRotation: {x: 0, y: 45, z: 0}
+  - hintType: 7
+    hintName: "Titreyen Mum & G\xF6lge"
+    propPrefab: {fileID: 8357361391374445850, guid: 86c6d465272482e458051b7d69c6a160, type: 3}
+    propMaterial: {fileID: 2100000, guid: 68d15e1617a21084f8d49d7389ec69eb, type: 2}
+    localPositionOffset: {x: 0, y: 0.5, z: 1}
+    leftDirectionRotation: {x: 0, y: -45, z: 0}
+    rightDirectionRotation: {x: 0, y: 45, z: 0}
+  - hintType: 8
+    hintName: "R\xF6ntgen Panosu & Film"
+    propPrefab: {fileID: 7157407635869863826, guid: be32cd16de3659f4dbe93d09ff120a24, type: 3}
+    propMaterial: {fileID: 2100000, guid: 9073b7f2380501c4c80e3fad619857ca, type: 2}
+    localPositionOffset: {x: 0, y: 0.5, z: 1}
+    leftDirectionRotation: {x: 0, y: -45, z: 0}
+    rightDirectionRotation: {x: 0, y: 45, z: 0}
+  - hintType: 9
+    hintName: "Tersten \xC7alan Gramofon"
+    propPrefab: {fileID: 2643807791215285112, guid: 4579afc86f8afa940908db44aa51dd53, type: 3}
+    propMaterial: {fileID: 2100000, guid: 0ca92f0fdd5f3ca41bd3793b7817e9e6, type: 2}
+    localPositionOffset: {x: 0, y: 0.5, z: 1}
+    leftDirectionRotation: {x: 0, y: -45, z: 0}
+    rightDirectionRotation: {x: 0, y: 45, z: 0}
+  - hintType: 10
+    hintName: "Pasl\u0131 Pusula \u0130\u011Fnesi"
+    propPrefab: {fileID: 1089629565122163236, guid: 96249c1a7434dac488f16b491e64fcfb, type: 3}
+    propMaterial: {fileID: 2100000, guid: dd9c227a7e81db64db667145a48a2b53, type: 2}
+    localPositionOffset: {x: 0, y: 0.5, z: 1}
+    leftDirectionRotation: {x: 0, y: -45, z: 0}
+    rightDirectionRotation: {x: 0, y: 45, z: 0}
+  - hintType: 11
+    hintName: "Portre Tablo Bak\u0131\u015F\u0131"
+    propPrefab: {fileID: 6867697872212515929, guid: da752a4973f6edd43b276f52b87416a0, type: 3}
+    propMaterial: {fileID: 2100000, guid: 78f7c63bd65651f499a7ecf116e5ffc3, type: 2}
+    localPositionOffset: {x: 0, y: 0.5, z: 1}
+    leftDirectionRotation: {x: 0, y: -45, z: 0}
+    rightDirectionRotation: {x: 0, y: 45, z: 0}
+  - hintType: 12
+    hintName: "Tozlu Zemindeki Ayak \u0130zi"
+    propPrefab: {fileID: 4136417198788550323, guid: ff7b2aa7fc602e84ab7bb8029805aec1, type: 3}
+    propMaterial: {fileID: 2100000, guid: 527d73b3bd2ced04696cc41f2f9d9b37, type: 2}
+    localPositionOffset: {x: 0, y: 0.02, z: 0.5}
+    leftDirectionRotation: {x: 0, y: -45, z: 0}
+    rightDirectionRotation: {x: 0, y: 45, z: 0}
+  - hintType: 13
+    hintName: "Satran\xE7 Tahtas\u0131 Ta\u015F Y\xF6n\xFC"
+    propPrefab: {fileID: 5703735942586371839, guid: 883afd66b16f6d04f80bd60d59d66a05, type: 3}
+    propMaterial: {fileID: 2100000, guid: 864a68a576ade2d459a08ab063174164, type: 2}
+    localPositionOffset: {x: 0, y: 0.5, z: 1}
+    leftDirectionRotation: {x: 0, y: -45, z: 0}
+    rightDirectionRotation: {x: 0, y: 45, z: 0}
+  - hintType: 14
+    hintName: "Damlayan Su Yans\u0131mas\u0131"
+    propPrefab: {fileID: 6131487013035439269, guid: 0f76de5915a79b848a26b61fe5e1869b, type: 3}
+    propMaterial: {fileID: 2100000, guid: fdc3c18d22a808e4f9aa2dd00bfefce4, type: 2}
+    localPositionOffset: {x: 0, y: 0.5, z: 1}
+    leftDirectionRotation: {x: 0, y: -45, z: 0}
+    rightDirectionRotation: {x: 0, y: 45, z: 0}

@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
+using PrimeTween;
 
 /// <summary>
 /// Dink Projesi AAA Seviyesi Ayarlar Yöneticisi:
@@ -138,19 +139,27 @@ public class SettingsManager : MonoBehaviour
         _previousMenuToReturn = previousMenu;
         if (previousMenu != null) previousMenu.SetActive(false);
 
+        transform.localScale = Vector3.zero;
         gameObject.SetActive(true);
+
+        Tween.Scale(transform, endValue: 1f, duration: 0.25f, ease: Ease.OutBack);
         LoadAndApplySettings();
     }
 
     public void OpenSettings()
     {
         _previousMenuToReturn = null;
+
+        transform.localScale = Vector3.zero;
         gameObject.SetActive(true);
+        Tween.Scale(transform, endValue: 1f, duration: 0.25f, ease: Ease.OutBack);
+
         LoadAndApplySettings();
     }
 
     public void GoBack()
     {
+        PlayClickSFX();
         gameObject.SetActive(false);
 
         if (_previousMenuToReturn != null)
@@ -208,6 +217,11 @@ public class SettingsManager : MonoBehaviour
         PlayerPrefs.Save();
         UpdateQualityText();
         PlayClickSFX();
+
+        if(qualityValueText != null)
+        {
+            Tween.PunchScale(qualityValueText.transform, strength: new Vector3(0.2f, 0.2f, 0f), duration: 0.15f);
+        }
     }
 
     public void ChangeResolution(int delta)
@@ -221,6 +235,11 @@ public class SettingsManager : MonoBehaviour
         PlayerPrefs.Save();
         UpdateResolutionText();
         PlayClickSFX();
+
+        if (resolutionValueText != null)
+        {
+            Tween.PunchScale(resolutionValueText.transform, strength: new Vector3(0.2f, 0.2f, 0f), duration: 0.15f);
+        }
     }
 
     public void ToggleFullscreen()
@@ -231,6 +250,11 @@ public class SettingsManager : MonoBehaviour
         PlayerPrefs.Save();
         UpdateDisplayModeText();
         PlayClickSFX();
+
+        if (displayModeValueText != null)
+        {
+            Tween.PunchScale(displayModeValueText.transform, strength: new Vector3(0.2f, 0.2f, 0f), duration: 0.15f);
+        }
     }
 
     public void ToggleVSync()
@@ -241,6 +265,11 @@ public class SettingsManager : MonoBehaviour
         PlayerPrefs.Save();
         UpdateVSyncText();
         PlayClickSFX();
+
+        if(vsyncValueText != null)
+        {
+            Tween.PunchScale(vsyncValueText.transform, strength: new Vector3(0.2f, 0.2f, 0f), duration: 0.15f);
+        }
     }
 
     public void ChangeFrameRate(int delta)
@@ -251,19 +280,92 @@ public class SettingsManager : MonoBehaviour
         PlayerPrefs.Save();
         UpdateFrameRateText();
         PlayClickSFX();
+
+        if(frameRateValueText != null)
+        {
+            Tween.PunchScale(frameRateValueText.transform, strength: new Vector3(0.2f, 0.2f, 0f), duration: 0.15f);
+        }
     }
 
-    // Metin Güncelleyicileri
-    private void UpdateQualityText() { if (qualityValueText != null) qualityValueText.text = qualityNames[currentQualityIndex]; }
-    private void UpdateDisplayModeText() { if (displayModeValueText != null) displayModeValueText.text = isFullscreen ? "TAM EKRAN" : "PENCERELİ"; }
+    // ════════════════════════════════════════════
+    // 🌐 7 DİLLİ METİN GÜNCELLEYİCİLERİ
+    // ════════════════════════════════════════════
+
+    private LanguageManager.Language GetCurrentLang()
+    {
+        return LanguageManager.instance != null ? LanguageManager.instance.CurrentLanguage : LanguageManager.Language.EN;
+    }
+
+    private void UpdateQualityText()
+    {
+        if (qualityValueText == null) return;
+        var lang = GetCurrentLang();
+
+        string[][] localizedQuality = new string[][]
+        {
+            new string[] { "LOW", "MEDIUM", "HIGH", "ULTRA" },         // EN
+            new string[] { "DÜŞÜK", "ORTA", "YÜKSEK", "ULTRA" },       // TR
+            new string[] { "NIEDRIG", "MITTEL", "HOCH", "ULTRA" },     // DE
+            new string[] { "BAS", "MOYEN", "ÉLEVÉ", "ULTRA" },         // FR
+            new string[] { "BAJO", "MEDIO", "ALTO", "ULTRA" },         // ES
+            new string[] { "BAIXO", "MÉDIO", "ALTO", "ULTRA" },       // PT
+            new string[] { "НИЗКО", "СРЕДНЕ", "ВЫСОКО", "УЛЬТРА" }     // RU
+        };
+        qualityValueText.text = localizedQuality[(int)lang][currentQualityIndex];
+
+    }
+    private void UpdateDisplayModeText()
+    {
+        if (displayModeValueText == null) return;
+        var lang = GetCurrentLang();
+        if (isFullscreen)
+        {
+            string[] full = { "FULLSCREEN", "TAM EKRAN", "VOLLBILD", "PLEIN ÉCRAN", "PANTALLA COMPLETA", "TELA CHEIA", "ПОЛНЫЙ ЭКРАН" };
+            displayModeValueText.text = full[(int)lang];
+        }
+        else
+        {
+            string[] win = { "WINDOWED", "PENCERELİ", "FENSTERMODUS", "FENÊTRÉ", "VENTANA", "JANELA", "В ОКНЕ" };
+            displayModeValueText.text = win[(int)lang];
+        }
+    }
     private void UpdateResolutionText()
     {
         if (resolutionValueText != null && resolutions != null && resolutions.Length > currentResIndex)
+        {
             resolutionValueText.text = $"{resolutions[currentResIndex].width} x {resolutions[currentResIndex].height}";
+        }
     }
-    private void UpdateFrameRateText() { if (frameRateValueText != null) frameRateValueText.text = frameRateOptions[currentFrameRateIndex]; }
-    private void UpdateVSyncText() { if (vsyncValueText != null) vsyncValueText.text = isVSync ? "AÇIK" : "KAPALI"; }
+    private void UpdateFrameRateText()
+    {
+        if (frameRateValueText == null) return;
+        var lang = GetCurrentLang();
+        if (currentFrameRateIndex == 3) // Sınırsız / Unlimited seçeneği
+        {
+            string[] unlimited = { "UNLIMITED", "SINIRSIZ", "UNBEGRENZT", "ILLIMITÉ", "ILIMITADO", "ILIMITADO", "БЕЗ ЛИМИТА" };
+            frameRateValueText.text = unlimited[(int)lang];
+        }
+        else
+        {
+            frameRateValueText.text = frameRateOptions[currentFrameRateIndex];
+        }
+    }
 
+    private void UpdateVSyncText()
+    {
+        if (vsyncValueText == null) return;
+        var lang = GetCurrentLang();
+        if (isVSync)
+        {
+            string[] on = { "ON", "AÇIK", "EIN", "ACTIVÉ", "ACTIVADO", "LIGADO", "ВКЛ" };
+            vsyncValueText.text = on[(int)lang];
+        }
+        else
+        {
+            string[] off = { "OFF", "KAPALI", "AUS", "DÉSACTIVÉ", "DESACTIVADO", "DESLIGADO", "ВЫКЛ" };
+            vsyncValueText.text = off[(int)lang];
+        }
+    }
     // ════════════════════════════════════════════
     // 🔊 SES AYARLARI
     // ════════════════════════════════════════════
@@ -272,21 +374,38 @@ public class SettingsManager : MonoBehaviour
     {
         if (AudioManager.instance != null) AudioManager.instance.SetMasterVolume(vol);
         else AudioListener.volume = vol;
-        if (masterVolumePercentText != null) masterVolumePercentText.text = $"{(int)(vol * 100)}%";
+
+        if (masterVolumePercentText != null)
+        {
+            masterVolumePercentText.text = vol<= 0.01f ? "Sessiz" : $"{(int)(vol * 100)}%";
+            Tween.PunchScale(masterVolumePercentText.transform, new Vector3(0.15f, 0.15f, 0f), 0.1f);
+        }
+            
     }
 
     public void SetMusicVolume(float vol)
     {
         if (AudioManager.instance != null) AudioManager.instance.SetMusicVolume(vol);
         else PlayerPrefs.SetFloat(PREF_MUSIC_VOL, vol);
-        if (musicVolumePercentText != null) musicVolumePercentText.text = $"{(int)(vol * 100)}%";
+        if (musicVolumePercentText != null)
+        {
+            musicVolumePercentText.text = vol <= 0.01f ? "Sessiz" : $"{(int)(vol * 100)}%";
+            Tween.PunchScale(musicVolumePercentText.transform, new Vector3(0.15f, 0.15f, 0f), 0.1f);
+        }
     }
 
     public void SetSFXVolume(float vol)
     {
         if (AudioManager.instance != null) AudioManager.instance.SetSFXVolume(vol);
         else PlayerPrefs.SetFloat(PREF_SFX_VOL, vol);
-        if (sfxVolumePercentText != null) sfxVolumePercentText.text = $"{(int)(vol * 100)}%";
+        if (sfxVolumePercentText != null)
+        {
+            sfxVolumePercentText.text = vol <= 0.01f ? "Sessiz" : $"{(int)(vol * 100)}%";
+            Tween.PunchScale(sfxVolumePercentText.transform, new Vector3(0.15f, 0.15f, 0f), 0.1f);
+        }
+
+        
+        
     }
 
     // ════════════════════════════════════════════
@@ -295,6 +414,7 @@ public class SettingsManager : MonoBehaviour
 
     public void ResetToDefaults()
     {
+        PlayClickSFX();
         PlayerPrefs.DeleteKey(PREF_QUALITY); PlayerPrefs.DeleteKey(PREF_FULLSCREEN);
         PlayerPrefs.DeleteKey(PREF_VSYNC); PlayerPrefs.DeleteKey(PREF_FRAMERATE);
         PlayerPrefs.DeleteKey(PREF_MASTER_VOL); PlayerPrefs.DeleteKey(PREF_MUSIC_VOL);

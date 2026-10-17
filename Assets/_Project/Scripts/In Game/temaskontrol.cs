@@ -4,7 +4,6 @@ using UnityEngine.EventSystems;
 public class temaskontrol : MonoBehaviour
 {
     public Camera oyuncukamera;
-    public LetterManager lettermanager;
 
     // Update is called once per frame
     void Update()
@@ -17,23 +16,6 @@ public class temaskontrol : MonoBehaviour
 
             if(Physics.Raycast(ray, out hit))
             {
-                if (hit.collider.CompareTag("Mektup"))
-                {
-                    Letter letter = hit.collider.GetComponent<Letter>();
-                    if(letter != null)
-                    {
-                        lettermanager.OpenLetter(letter);
-                    }
-                }
-
-                if (hit.collider.CompareTag("Pil"))
-                {
-                    BatteryPickup pil = hit.collider.GetComponent<BatteryPickup>();
-                    if(pil != null)
-                    {
-                        pil.Pickup();
-                    }
-                }
                 if (hit.collider.CompareTag("Kapi"))
                 {
                     Door door = hit.collider.GetComponent<Door>();
@@ -41,6 +23,12 @@ public class temaskontrol : MonoBehaviour
                     {
                         door.Interact();
                     }
+                }
+
+                HintPropComponent hintProp = hit.collider.GetComponentInParent<HintPropComponent>();
+                if (hintProp != null)
+                {
+                    hintProp.Interact();
                 }
             }
         }

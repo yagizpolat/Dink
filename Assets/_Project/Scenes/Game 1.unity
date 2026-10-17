@@ -8766,76 +8766,6 @@ MonoBehaviour:
   esText: 
   ptText: 
   ruText: 
---- !u!1 &873024673
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 873024674}
-  - component: {fileID: 873024675}
-  m_Layer: 0
-  m_Name: Inventory Manager
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &873024674
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 873024673}
-  serializedVersion: 2
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 1026066519}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &873024675
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 873024673}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 07dfc74cea760f7469cf265b788571f7, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::InventoryManager
-  Inventory_Panel: {fileID: 427308047}
-  previewImage: {fileID: 1385721177}
-  titleText: {fileID: 1148764607}
-  descriptionText: {fileID: 1373414114}
-  itemInfoPanel: {fileID: 169407303}
-  batteryIcon: {fileID: 2800000, guid: 693dfa0d27b6b9949beea5e54726cb19, type: 3}
-  slots:
-  - {fileID: 1164586042}
-  - {fileID: 1026197219}
-  - {fileID: 1491463775}
-  - {fileID: 1853390174}
-  - {fileID: 446433990}
-  - {fileID: 1929834636}
-  - {fileID: 5425667}
-  - {fileID: 89373175}
-  - {fileID: 441900085}
-  - {fileID: 400053150}
-  - {fileID: 406689934}
-  - {fileID: 754615912}
-  CurrentCursorPanel: {fileID: 838512005}
-  InventoryCursorPanel: {fileID: 1369310027}
-  inventoryCursor: {fileID: 1803178846}
-  SesBombasi: {fileID: 1108809331}
-  InventoryOpen: {fileID: 8300000, guid: f23e243e00109d148be0dea758aeb3e6, type: 3}
-  InventoryClose: {fileID: 8300000, guid: d3a317d562a79ea40acfe5cbcffec1aa, type: 3}
-  demoModuEnvantersiz: 1
 --- !u!1 &875937112
 GameObject:
   m_ObjectHideFlags: 0
@@ -10051,7 +9981,6 @@ Transform:
   m_Children:
   - {fileID: 1294251888}
   - {fileID: 2049058199}
-  - {fileID: 873024674}
   - {fileID: 820657664}
   - {fileID: 1256303688}
   - {fileID: 1735806092}
@@ -12541,7 +12470,6 @@ GameObject:
   - component: {fileID: 1256303689}
   - component: {fileID: 1256303690}
   - component: {fileID: 1256303691}
-  - component: {fileID: 1256303692}
   m_Layer: 0
   m_Name: Door Manager
   m_TagString: Untagged
@@ -12576,8 +12504,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ecdee431c2ecc044188f85fd6a658e37, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::DoorChoice
+  isTutorialMap: 0
   leftDoor: {fileID: 962304541}
   rightDoor: {fileID: 625905360}
+  dynamicHintSystem: {fileID: 0}
 --- !u!114 &1256303690
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -12590,8 +12520,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: adc952b50a4cf384483eece1562ba5ef, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::DoorSequenceManager
-  nextSceneBuildIndex: 1
-  levelProgressionManager: {fileID: 1256303692}
   fadeGroup: {fileID: 1133340218}
   fadeDuration: 1
   jumpscareController: {fileID: 1256303691}
@@ -12615,19 +12543,6 @@ MonoBehaviour:
   fenerKontrol: {fileID: 330585552}
   shakeMagnitude: 0.5
   mainMenuBuildIndex: 0
---- !u!114 &1256303692
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1256303687}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 9071cf2a0e6f1364ca975f4ac6833dd9, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::LevelProgressionManager
-  levelSceneBuildIndexes: 0100000002000000030000000400000005000000
 --- !u!1 &1259731486
 GameObject:
   m_ObjectHideFlags: 0

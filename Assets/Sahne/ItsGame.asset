@@ -1,0 +1,120 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ef6da5a6c97434846a21cdbf84034e78, type: 3}
+  m_Name: ItsGame
+  m_EditorClassIdentifier: Assembly-CSharp::RoomGraphData
+  roomNodes:
+  - roomIndex: 1
+    roomName: "Giri\u015F Sokak (Tutorial)"
+    isTutorial: 1
+    isMilestoneFlashRoom: 0
+    leftTargetRoomIndex: 2
+    rightTargetRoomIndex: 2
+    loreObjectDescription: "Korku Atmosferi \xD6\u011Fretimi"
+  - roomIndex: 2
+    roomName: "\u0130lk Koridor (Tutorial)"
+    isTutorial: 1
+    isMilestoneFlashRoom: 0
+    leftTargetRoomIndex: 3
+    rightTargetRoomIndex: 3
+    loreObjectDescription: "Mekanik ve Kap\u0131 \xD6\u011Fretimi"
+  - roomIndex: 3
+    roomName: Gizemli Hol (Tutorial)
+    isTutorial: 1
+    isMilestoneFlashRoom: 0
+    leftTargetRoomIndex: 4
+    rightTargetRoomIndex: 4
+    loreObjectDescription: "Atmosfer \u0130lerlemesi"
+  - roomIndex: 4
+    roomName: "Market Vardiyas\u0131"
+    isTutorial: 1
+    isMilestoneFlashRoom: 0
+    leftTargetRoomIndex: 8
+    rightTargetRoomIndex: 5
+    loreObjectDescription: "Hakan'\u0131n Market \xD6nl\xFC\u011F\xFC"
+  - roomIndex: 5
+    roomName: "Kavga An\u0131s\u0131 (Loop)"
+    isTutorial: 0
+    isMilestoneFlashRoom: 0
+    leftTargetRoomIndex: 6
+    rightTargetRoomIndex: 4
+    loreObjectDescription: "\u0130\u015F Arkada\u015F\u0131yla Kavga Yaz\u0131s\u0131"
+  - roomIndex: 6
+    roomName: "\u0130\u015Fyeri Kasas\u0131"
+    isTutorial: 0
+    isMilestoneFlashRoom: 0
+    leftTargetRoomIndex: 7
+    rightTargetRoomIndex: 8
+    loreObjectDescription: "Kasa ve Ge\xE7im Kayg\u0131s\u0131 Notu"
+  - roomIndex: 7
+    roomName: Market Sonu (Milestone Flash)
+    isTutorial: 0
+    isMilestoneFlashRoom: 1
+    leftTargetRoomIndex: 8
+    rightTargetRoomIndex: 9
+    loreObjectDescription: "Maa\u015F Kesintisi An\u0131s\u0131"
+  - roomIndex: 8
+    roomName: "Zeynep'in Oyun Odas\u0131"
+    isTutorial: 0
+    isMilestoneFlashRoom: 0
+    leftTargetRoomIndex: 12
+    rightTargetRoomIndex: 9
+    loreObjectDescription: "Zeynep'in Pelu\u015F Ay\u0131s\u0131"
+  - roomIndex: 9
+    roomName: "Hastane Odas\u0131"
+    isTutorial: 0
+    isMilestoneFlashRoom: 0
+    leftTargetRoomIndex: 10
+    rightTargetRoomIndex: 11
+    loreObjectDescription: "Re\xE7ete ve \u0130la\xE7 \u015Ei\u015Feleri"
+  - roomIndex: 10
+    roomName: "Zaman \xC7arp\u0131lmas\u0131 (Loop)"
+    isTutorial: 0
+    isMilestoneFlashRoom: 0
+    leftTargetRoomIndex: 11
+    rightTargetRoomIndex: 8
+    loreObjectDescription: "Zaman Alg\u0131s\u0131 Bozulma An\u0131s\u0131"
+  - roomIndex: 11
+    roomName: "Yeti\u015Fkin K\u0131z Karde\u015F Sil\xFCeti (Milestone Flash)"
+    isTutorial: 0
+    isMilestoneFlashRoom: 1
+    leftTargetRoomIndex: 12
+    rightTargetRoomIndex: 13
+    loreObjectDescription: "Yeti\u015Fkin K\u0131z Karde\u015F G\xF6lge An\u0131s\u0131"
+  - roomIndex: 12
+    roomName: "Terk Edilmi\u015F Ev"
+    isTutorial: 0
+    isMilestoneFlashRoom: 0
+    leftTargetRoomIndex: 13
+    rightTargetRoomIndex: 14
+    loreObjectDescription: "Ailenin Eski Foto\u011Fraf\u0131"
+  - roomIndex: 13
+    roomName: "Ayr\u0131m Noktas\u0131"
+    isTutorial: 0
+    isMilestoneFlashRoom: 0
+    leftTargetRoomIndex: 14
+    rightTargetRoomIndex: 15
+    loreObjectDescription: "\xD6denmemi\u015F Elektrik Faturas\u0131"
+  - roomIndex: 14
+    roomName: Son Koridor
+    isTutorial: 0
+    isMilestoneFlashRoom: 0
+    leftTargetRoomIndex: 15
+    rightTargetRoomIndex: 15
+    loreObjectDescription: "Annesinin Vefat \u0130lan\u0131"
+  - roomIndex: 15
+    roomName: "Son Kap\u0131 (Final)"
+    isTutorial: 0
+    isMilestoneFlashRoom: 0
+    leftTargetRoomIndex: 16
+    rightTargetRoomIndex: 16
+    loreObjectDescription: "Son Karar Numaras\u0131"

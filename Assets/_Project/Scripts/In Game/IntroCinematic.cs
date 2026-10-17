@@ -20,9 +20,6 @@ public class IntroCinematic : MonoBehaviour
     [Tooltip("Ana kamera objesi (Kamera.cs içindeki cam referansı)")]
     public Transform cameraTransform;
 
-    [Tooltip("Fener kontrolü (giriş sırasında kapatılacak)")]
-    public FenerKontrol fenerScript;
-
     [Tooltip("Altyazı yöneticisi (göz açıldıktan sonra ses tetiklenecek)")]
     public SubtitleManager subtitleManager;
 
@@ -134,7 +131,6 @@ public class IntroCinematic : MonoBehaviour
 
         // Kontrolleri aç
         if (kameraScript != null) kameraScript.enabled = true;
-        if (fenerScript != null) fenerScript.enabled = true;
 
         this.enabled = false;
     }
@@ -160,7 +156,6 @@ public class IntroCinematic : MonoBehaviour
     {
         // ===== FAZ 0: HAZIRLIK =====
         if (kameraScript != null) kameraScript.enabled = false;
-        if (fenerScript != null) fenerScript.enabled = false;
 
         if (cameraTransform != null)
         {
@@ -290,7 +285,6 @@ public class IntroCinematic : MonoBehaviour
         }
 
         if (kameraScript != null) kameraScript.enabled = true;
-        if (fenerScript != null) fenerScript.enabled = true;
 
         // Sinematik tamamlandı, 1 kere gösterildi olarak işaretle
         PlayerPrefs.SetInt(INTRO_SEEN_KEY, 1);

@@ -42,11 +42,21 @@ public class SubtitleManager : MonoBehaviour
     public float fadeInDuration = 0.4f;
     public float fadeOutDuration = 0.6f;
 
+    public static SubtitleManager instance;
+
     [Header("Başlatma Modu")]
     [Tooltip("True ise sahne başında otomatik çalar. False ise IntroCinematic veya başka bir script tetikler.")]
     public bool otomatikBaslat = false;
 
     private Coroutine activeSubtitleCoroutine;
+
+    private void Awake()
+    {
+        if (instance == null)
+        {
+            instance = this;
+        }
+    }
 
     private void Start()
     {

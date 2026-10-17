@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.UI;
 
 public class CrosshairManager : MonoBehaviour
 {
@@ -8,7 +9,28 @@ public class CrosshairManager : MonoBehaviour
     [SerializeField] private Vector3 hoverScale = new Vector3(2f, 2f, 2f);
     [SerializeField] private float scalespeed = 8f;
 
-    // Update is called once per frame
+    private void Awake()
+    {
+        // Crosshair'ın fareyi takip ederken altındaki UI tıklamalarını engellemesini engelle (raycastTarget = false)
+        KapatsanaRaycastTarget();
+    }
+
+    private void OnEnable()
+    {
+        KapatsanaRaycastTarget();
+    }
+
+    private void KapatsanaRaycastTarget()
+    {
+        if (crosshair != null)
+        {
+            foreach (Graphic g in crosshair.GetComponentsInChildren<Graphic>(true))
+            {
+                g.raycastTarget = false;
+            }
+        }
+    }
+
     void Update()
     {
         Vector3 targetscale = normalscale;
@@ -38,6 +60,14 @@ public class CrosshairManager : MonoBehaviour
         if (crosshair != null)
         {
             crosshair.localScale = Vector3.Lerp(crosshair.localScale, targetscale, Time.deltaTime * scalespeed);
+        }
+    }
+
+    public void SetCrosshairVisible(bool isVisible)
+    {
+        if (crosshair != null)
+        {
+            crosshair.gameObject.SetActive(isVisible);
         }
     }
 }

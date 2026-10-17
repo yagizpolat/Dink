@@ -12,7 +12,6 @@ public class JumpscareController : MonoBehaviour
 
     [Header("Görsel Efektler (Ambiyans)")]
     [SerializeField] private Camera mainCamera;
-    [SerializeField] private FenerKontrol fenerKontrol;
     [SerializeField] private float shakeMagnitude = 0.5f;
 
     [Header("Sonuç")]
@@ -25,11 +24,6 @@ public class JumpscareController : MonoBehaviour
 
     private IEnumerator PlayRoutine()
     {
-        // 1. Feneri Şiddetle Devre Dışı Bırakma
-        if (fenerKontrol != null && fenerKontrol.fenerisik != null)
-        {
-            fenerKontrol.fenerisik.enabled = false;
-        }
 
         // 2. Kamera Sarsıntısı Başlatma
         Vector3 originalCamPos = Vector3.zero;

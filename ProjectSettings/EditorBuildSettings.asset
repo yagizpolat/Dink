@@ -24,6 +24,36 @@ EditorBuildSettings:
     path: Assets/_Project/Scenes/Game 5.unity
     guid: 4a16c687247b62846a8948e696dcd4d8
   - enabled: 1
+    path: Assets/_Project/Scenes/Game 6.unity
+    guid: 9a7bbd5857f922346be1d9f74e838400
+  - enabled: 1
+    path: Assets/_Project/Scenes/Game 7.unity
+    guid: fb2af14b0b69d04488b2a018cf6580ba
+  - enabled: 1
+    path: Assets/_Project/Scenes/Game 8.unity
+    guid: 1b71b730778deb940bab2d992d925a18
+  - enabled: 1
+    path: Assets/_Project/Scenes/Game 9.unity
+    guid: 12f00814adaa0704c80d8b0264b08c37
+  - enabled: 1
+    path: Assets/_Project/Scenes/Game 10.unity
+    guid: 2b9d6b5bf1cffe647a39e57b9a1bcad3
+  - enabled: 1
+    path: Assets/_Project/Scenes/Game 11.unity
+    guid: ea6c8cc60c1082145a958f0300d6f3c3
+  - enabled: 1
+    path: Assets/_Project/Scenes/Game 12.unity
+    guid: 846655d21678f404ab3b93d9151a4458
+  - enabled: 1
+    path: Assets/_Project/Scenes/Game 13.unity
+    guid: e89a7b1a408b84f499ffea02ae3b01b2
+  - enabled: 1
+    path: Assets/_Project/Scenes/Game 14.unity
+    guid: 5845804c4bb20bc42843fa5249d88061
+  - enabled: 1
+    path: Assets/_Project/Scenes/Game 15.unity
+    guid: 62e23ca5ffccbb7478c138c18c63907d
+  - enabled: 1
     path: Assets/_Project/Scenes/Zindan.unity
     guid: c0ca3274c833ffd4eab67a1118df0f4f
   m_configObjects:

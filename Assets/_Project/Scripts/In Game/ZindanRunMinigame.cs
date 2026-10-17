@@ -8,12 +8,13 @@ using UnityEngine.UI;
 /// <summary>
 /// Zindan Minigame 4: Antik Rün Şifresi (Memory Sequence)
 /// Rünlerin yanıp sönme sırasını aklında tutup sırayla tıklama minigame'i.
+/// (5 adımlı hızlı sekans ile zorlaştırıldı).
 /// </summary>
 public class ZindanRunMinigame : MonoBehaviour
 {
     [Header("Geri Sayım Ayarları")]
     [SerializeField] private float toplamSure = 20f;
-    [SerializeField] private float cezaSuresi = 3f;
+    [SerializeField] private float cezaSuresi = 4f;
 
     [Header("UI Elemanları")]
     [SerializeField] private TextMeshProUGUI sayaçMetni;
@@ -53,9 +54,9 @@ public class ZindanRunMinigame : MonoBehaviour
             }
         }
 
-        // Rastgele 4 adımlı sekans oluştur
+        // Rastgele 5 adımlı zor sekans oluştur
         runSekansi.Clear();
-        for (int i = 0; i < 4; i++)
+        for (int i = 0; i < 5; i++)
         {
             runSekansi.Add(Random.Range(0, 4));
         }
@@ -85,25 +86,25 @@ public class ZindanRunMinigame : MonoBehaviour
         sekansGosteriliyor = true;
         if (durumMetni != null)
         {
-            durumMetni.text = "RÜN SIRASINI İZLE!";
+            durumMetni.text = "5 ADIMLI RÜN SIRASINI HIZLICA İZLE!";
             durumMetni.color = Color.magenta;
         }
 
-        yield return new WaitForSecondsRealtime(0.8f);
+        yield return new WaitForSecondsRealtime(0.6f);
 
         foreach (int runIndex in runSekansi)
         {
             if (runGorselleri[runIndex] != null) runGorselleri[runIndex].color = parlayanRenk;
             SesCal(runSesi);
-            yield return new WaitForSecondsRealtime(0.5f);
+            yield return new WaitForSecondsRealtime(0.35f);
             if (runGorselleri[runIndex] != null) runGorselleri[runIndex].color = normalRenk;
-            yield return new WaitForSecondsRealtime(0.2f);
+            yield return new WaitForSecondsRealtime(0.12f);
         }
 
         sekansGosteriliyor = false;
         if (durumMetni != null)
         {
-            durumMetni.text = "ŞİMDİ SIRAYLA RÜNLERE TIKLA!";
+            durumMetni.text = "ŞİMDİ SIRAYLA 5 RÜNE TIKLA!";
             durumMetni.color = Color.yellow;
         }
     }
@@ -122,7 +123,7 @@ public class ZindanRunMinigame : MonoBehaviour
 
             if (durumMetni != null)
             {
-                durumMetni.text = $"ADIM {oyuncuAdimIndex} / 4 DOĞRU!";
+                durumMetni.text = $"ADIM {oyuncuAdimIndex} / 5 DOĞRU!";
                 durumMetni.color = Color.green;
             }
 
@@ -140,7 +141,7 @@ public class ZindanRunMinigame : MonoBehaviour
 
             if (durumMetni != null)
             {
-                durumMetni.text = $"YANLIŞ RÜN! -{cezaSuresi}s CEZA!";
+                durumMetni.text = $"YANLIŞ RÜN! SIFIRLANDI (-{cezaSuresi}s)!";
                 durumMetni.color = Color.red;
             }
 
@@ -151,7 +152,7 @@ public class ZindanRunMinigame : MonoBehaviour
     private IEnumerator RunParlat(int index)
     {
         if (runGorselleri[index] != null) runGorselleri[index].color = Color.green;
-        yield return new WaitForSecondsRealtime(0.25f);
+        yield return new WaitForSecondsRealtime(0.2f);
         if (runGorselleri[index] != null) runGorselleri[index].color = normalRenk;
     }
 

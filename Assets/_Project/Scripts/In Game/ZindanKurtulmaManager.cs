@@ -10,8 +10,8 @@ public class ZindanKurtulmaManager : MonoBehaviour
     public static ZindanKurtulmaManager instance { get; private set; }
 
     [Header("Zindan Ayarları")]
-    [Tooltip("Zindan sahnesinin Build Settings'teki index numarası.")]
-    [SerializeField] private int zindanSahnesiIndex = 6;
+    [Tooltip("Zindan sahnesinin adı.")]
+    [SerializeField] private string zindanSahneAdi = "Zindan";
 
     [Tooltip("Oyun başına verilen toplam kurtulma hakkı.")]
     [SerializeField] private int maksimumKurtulmaHakki = 2;
@@ -93,7 +93,7 @@ public class ZindanKurtulmaManager : MonoBehaviour
 
         Debug.Log($"[Zindan] Oyuncu zindana düşüyor. Kalan hak: {kalanHak}, Dönüş sahnesi: {kayipSahneIndex}");
 
-        SceneManager.LoadScene(zindanSahnesiIndex);
+        SceneManager.LoadScene(zindanSahneAdi);
         return true;
     }
 

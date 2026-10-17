@@ -15,10 +15,9 @@ public class Escmenu : MonoBehaviour
     public AudioClip escmenukapanmasesi;
 
     // SCRİPT BAĞLANTILARI
-    FenerKontrol fener;
     Kamera kamerascript;
-    InventoryManager inventory;
     temaskontrol mektup_pil;
+    CrosshairManager crosshairManager;
 
     private void Start()
     {
@@ -107,17 +106,19 @@ public class Escmenu : MonoBehaviour
 
     void ScriptConnect()
     {
-        fener = FindAnyObjectByType<FenerKontrol>();
         kamerascript = FindAnyObjectByType<Kamera>();
-        inventory = FindAnyObjectByType<InventoryManager>();
         mektup_pil = FindAnyObjectByType<temaskontrol>();
+        crosshairManager = FindAnyObjectByType<CrosshairManager>();
     }
 
     void CloseOpenScript(bool enable)
     {
-        if (fener != null) fener.enabled = enable;
         if (kamerascript != null) kamerascript.enabled = enable;
-        if (inventory != null) inventory.enabled = enable;
         if (mektup_pil != null) mektup_pil.enabled = enable;
+        if (crosshairManager != null)
+        {
+            crosshairManager.enabled = enable;
+            crosshairManager.SetCrosshairVisible(enable);
+        }
     }
 }
