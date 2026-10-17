@@ -47,6 +47,7 @@ public class SceneTransition : MonoBehaviour
     {
         PlayerPrefs.DeleteKey(INTRO_SEEN_KEY);
         PlayerPrefs.Save();
+        TutorialProgress.Reset();
 
         if (LeaderboardManager.instance != null)
         {
@@ -56,6 +57,7 @@ public class SceneTransition : MonoBehaviour
         Debug.Log("<color=green>[DINK] Intro & Hikaye & İsim hafızası sıfırlandı!</color>");
     }
 
+    /// <param name="sahneNo">Açılacak oda numarası ("Game N" sahnesi).</param>
     public void ButonlaSahneyeGit(int sahneNo)
     {
         StartCoroutine(GecisRoutine(sahneNo));
@@ -118,7 +120,7 @@ public class SceneTransition : MonoBehaviour
         }
 
         Time.timeScale = 1f;
-        SceneManager.LoadScene(sahneNo);
+        DinkScenes.LoadRoom(sahneNo);
     }
 
     private GameObject FindNicknamePanelInScene()

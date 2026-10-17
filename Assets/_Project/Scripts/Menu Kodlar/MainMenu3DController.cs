@@ -184,11 +184,11 @@ public class MainMenu3DController : MonoBehaviour
     {
         if (sceneTransition != null)
         {
-            sceneTransition.ButonlaSahneyeGit(1);
+            sceneTransition.ButonlaSahneyeGit(TutorialProgress.NewGameRoom);
         }
         else
         {
-            DinkScenes.LoadRoom(DinkScenes.FirstRoom);
+            DinkScenes.LoadNewGame();
         }
     }
 

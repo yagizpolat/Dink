@@ -633,7 +633,7 @@ public class LeaderboardManager : MonoBehaviour
         rbBtn.onClick.AddListener(() =>
         {
             Time.timeScale = 1f;
-            DinkScenes.LoadRoom(DinkScenes.FirstRoom);
+            DinkScenes.LoadNewGame();
         });
 
         GameObject rbTextObj = new GameObject("Text");

@@ -133,7 +133,7 @@ public class ZindanIgneMinigame : MonoBehaviour
     {
         yield return new WaitForSecondsRealtime(1.2f);
         if (ZindanKurtulmaManager.instance != null) ZindanKurtulmaManager.instance.ZindandanKurtul();
-        else DinkScenes.LoadRoom(DinkScenes.FirstRoom);
+        else DinkScenes.LoadNewGame();
     }
 
     private void Basarisiz()
