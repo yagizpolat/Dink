@@ -180,8 +180,14 @@ public class MektupNotHintUI : MonoBehaviour
         string template = isTR ? letterPoolTR[index] : letterPoolEN[index];
         string finalText = ApplyDirectionTags(template, shownDirLeft, isTR);
 
+        LetterForm form = FormFor(index);
+        ApplyForm(form);
         letterBodyText.text = finalText;
+        if (animating != null) StopCoroutine(animating);
         letterCanvas.gameObject.SetActive(true);
+        JitterHandwriting(form);
+        animating = StartCoroutine(AnimateOpen());
+        PlayRustle();
         isPanelOpen = true;
 
         // Zamanı dondur
@@ -207,7 +213,9 @@ public class MektupNotHintUI : MonoBehaviour
     {
         if (!isPanelOpen) return;
 
-        letterCanvas.gameObject.SetActive(false);
+        if (animating != null) StopCoroutine(animating);
+        animating = StartCoroutine(AnimateClose());
+        PlayRustle();
         isPanelOpen = false;
 
         // Zamanı geri yükle
@@ -254,149 +262,367 @@ public class MektupNotHintUI : MonoBehaviour
         return template;
     }
 
+    // =========================================================================
+    // Mektubun fiziksel biçimi: her mektup ne olduğuna göre görünür
+    // (market fişi, çizgili defter sayfası, Zeynep'in pastel notu, fotoğraf arkası)
+    // =========================================================================
+    private enum LetterForm { RuledPage, Receipt, ZeynepNote, PhotoBack }
+
+    private static LetterForm FormFor(int index)
+    {
+        switch (index)
+        {
+            case 1: case 6: case 13: case 17: return LetterForm.Receipt;   // market, fiş, bozuk para, depo
+            case 8: return LetterForm.PhotoBack;                           // anne ile babanın fotoğrafı
+            case 12: return LetterForm.ZeynepNote;                         // "Abi, dolaptaki süt bitti"
+            default: return LetterForm.RuledPage;
+        }
+    }
+
+    private const float OpenDuration = 0.45f;
+    private const float CloseDuration = 0.25f;
+    private const float EscHintDelay = 1.2f;
+
+    private CanvasGroup overlayGroup;
+    private RawImage paperImage;
+    private RectTransform paperRect;
+    private TextMeshProUGUI escHint;
+    private TMP_FontAsset handFont, handFontBold, monoFont;
+    private readonly System.Collections.Generic.Dictionary<LetterForm, Texture2D> paperTextures =
+        new System.Collections.Generic.Dictionary<LetterForm, Texture2D>();
+    private AudioSource rustleSource;
+    private AudioClip rustleClip;
+    private Coroutine animating;
+
     /// <summary>
-    /// Mektup okuma panelinin tüm UI hiyerarşisini runtime'da oluşturur.
-    /// Sahne YAML dosyasına dokunulmaz.
+    /// Mektup okuma ekranının UI hiyerarşisini runtime'da oluşturur. Sahne YAML dosyasına dokunulmaz.
+    /// Panel, başlık ya da X butonu yok: oda kararır ve kağıt Hakan'ın elinde gibi alttan kalkar.
     /// </summary>
     private void BuildRuntimeUI()
     {
         EnsureEventSystem();
 
-        // === Canvas ===
         GameObject canvasGO = new GameObject("MektupNotCanvas");
         canvasGO.transform.SetParent(transform);
         letterCanvas = canvasGO.AddComponent<Canvas>();
         letterCanvas.renderMode = RenderMode.ScreenSpaceOverlay;
-        letterCanvas.sortingOrder = 150;
+        letterCanvas.sortingOrder = 300; // oda girişinin karartmasının (200) üstünde
 
         CanvasScaler scaler = canvasGO.AddComponent<CanvasScaler>();
         scaler.uiScaleMode = CanvasScaler.ScaleMode.ScaleWithScreenSize;
         scaler.referenceResolution = new Vector2(1920f, 1080f);
-        scaler.matchWidthOrHeight = 0.5f;
-
+        scaler.matchWidthOrHeight = 1f;
         canvasGO.AddComponent<GraphicRaycaster>();
 
-        // === Karanlık Arka Plan (Overlay) ===
+        // Odayı karartan katman ve kenar gölgesi; tıklanınca mektup kapanır
         GameObject overlayGO = new GameObject("DarkOverlay");
         overlayGO.transform.SetParent(canvasGO.transform, false);
-        Image overlayImg = overlayGO.AddComponent<Image>();
-        overlayImg.color = new Color(0f, 0f, 0f, 0.75f);
-
-        // Overlay'e tıklanınca paneli kapat
+        Stretch(overlayGO.AddComponent<RectTransform>());
+        RawImage overlayImg = overlayGO.AddComponent<RawImage>();
+        overlayImg.texture = VignetteTexture();
         Button overlayBtn = overlayGO.AddComponent<Button>();
         overlayBtn.transition = Selectable.Transition.None;
         overlayBtn.onClick.AddListener(CloseLetterPanel);
+        overlayGroup = overlayGO.AddComponent<CanvasGroup>();
 
-        RectTransform overlayRect = overlayGO.GetComponent<RectTransform>();
-        overlayRect.anchorMin = Vector2.zero;
-        overlayRect.anchorMax = Vector2.one;
-        overlayRect.offsetMin = Vector2.zero;
-        overlayRect.offsetMax = Vector2.zero;
-
-        // === Kağıt Paneli (Buruşuk, Eskimiş Kağıt Görünümü) ===
-        GameObject paperGO = new GameObject("PaperPanel");
+        // Kağıt (biçimi her açılışta değişir)
+        GameObject paperGO = new GameObject("Paper");
         paperGO.transform.SetParent(overlayGO.transform, false);
-        Image paperImg = paperGO.AddComponent<Image>();
-        // Eskimiş, sararmış kağıt rengi
-        paperImg.color = new Color(0.82f, 0.74f, 0.58f, 1f);
+        paperRect = paperGO.AddComponent<RectTransform>();
+        paperRect.anchorMin = paperRect.anchorMax = new Vector2(0.5f, 0.5f);
+        paperImage = paperGO.AddComponent<RawImage>();
+        paperImage.raycastTarget = true; // kağıda tıklamak mektubu kapatmasın
 
-        RectTransform paperRect = paperGO.GetComponent<RectTransform>();
-        paperRect.anchorMin = new Vector2(0.18f, 0.08f);
-        paperRect.anchorMax = new Vector2(0.82f, 0.92f);
-        paperRect.offsetMin = Vector2.zero;
-        paperRect.offsetMax = Vector2.zero;
-
-        // === Başlık: "Paslı Mektup" ===
-        GameObject titleGO = new GameObject("TitleText");
-        titleGO.transform.SetParent(paperGO.transform, false);
-        TextMeshProUGUI titleText = titleGO.AddComponent<TextMeshProUGUI>();
-
-        bool isTR = LanguageManager.instance != null &&
-                     LanguageManager.instance.CurrentLanguage == LanguageManager.Language.TR;
-        titleText.text = isTR ? "— Paslı Mektup —" : "— Rusty Letter —";
-        titleText.fontSize = 28f;
-        titleText.fontStyle = FontStyles.Bold | FontStyles.Italic;
-        titleText.color = new Color(0.25f, 0.18f, 0.1f, 0.85f);
-        titleText.alignment = TextAlignmentOptions.Center;
-
-        RectTransform titleRect = titleGO.GetComponent<RectTransform>();
-        titleRect.anchorMin = new Vector2(0.05f, 0.88f);
-        titleRect.anchorMax = new Vector2(0.95f, 0.97f);
-        titleRect.offsetMin = Vector2.zero;
-        titleRect.offsetMax = Vector2.zero;
-
-        // === Mektup Gövde Metni ===
-        GameObject bodyGO = new GameObject("LetterBodyText");
+        GameObject bodyGO = new GameObject("LetterBody");
         bodyGO.transform.SetParent(paperGO.transform, false);
         letterBodyText = bodyGO.AddComponent<TextMeshProUGUI>();
-        letterBodyText.fontSize = 22f;
-        letterBodyText.fontStyle = FontStyles.Italic;
-        letterBodyText.color = new Color(0.15f, 0.1f, 0.05f, 1f);
-        letterBodyText.alignment = TextAlignmentOptions.TopLeft;
-        letterBodyText.enableWordWrapping = true;
+        letterBodyText.textWrappingMode = TextWrappingModes.Normal;
         letterBodyText.overflowMode = TextOverflowModes.Overflow;
-        letterBodyText.lineSpacing = 8f;
+        letterBodyText.raycastTarget = false;
 
-        RectTransform bodyRect = bodyGO.GetComponent<RectTransform>();
-        bodyRect.anchorMin = new Vector2(0.08f, 0.12f);
-        bodyRect.anchorMax = new Vector2(0.92f, 0.85f);
-        bodyRect.offsetMin = Vector2.zero;
-        bodyRect.offsetMax = Vector2.zero;
+        // Küçük, geç beliren kapatma ipucu
+        GameObject cueGO = new GameObject("EscCue");
+        cueGO.transform.SetParent(overlayGO.transform, false);
+        RectTransform cueRect = cueGO.AddComponent<RectTransform>();
+        cueRect.anchorMin = cueRect.anchorMax = new Vector2(0.5f, 0f);
+        cueRect.pivot = new Vector2(0.5f, 0f);
+        cueRect.anchoredPosition = new Vector2(0f, 26f);
+        cueRect.sizeDelta = new Vector2(300f, 30f);
+        escHint = cueGO.AddComponent<TextMeshProUGUI>();
+        escHint.text = "Esc";
+        escHint.fontSize = 17f;
+        escHint.characterSpacing = 12f;
+        escHint.alignment = TextAlignmentOptions.Bottom;
+        escHint.color = new Color(0.85f, 0.82f, 0.75f, 0.5f);
+        escHint.raycastTarget = false;
 
-        // === Kapatma Butonu (Sağ Üst "X") ===
-        GameObject closeBtnGO = new GameObject("CloseButton");
-        closeBtnGO.transform.SetParent(paperGO.transform, false);
-        Image closeBtnImg = closeBtnGO.AddComponent<Image>();
-        closeBtnImg.color = new Color(0.45f, 0.3f, 0.2f, 0.6f);
+        handFont = LoadFont("Fonts/Caveat-Regular");
+        handFontBold = LoadFont("Fonts/Caveat-SemiBold");
+        monoFont = LoadFont("Fonts/PTMono-Regular");
 
-        Button closeBtn = closeBtnGO.AddComponent<Button>();
-        closeBtn.onClick.AddListener(CloseLetterPanel);
+        rustleSource = gameObject.AddComponent<AudioSource>();
+        rustleSource.playOnAwake = false;
+        rustleSource.spatialBlend = 0f;
+        rustleSource.ignoreListenerPause = true;
+        rustleClip = MakeRustleClip();
 
-        // Hover efekti
-        ColorBlock colors = closeBtn.colors;
-        colors.highlightedColor = new Color(0.6f, 0.35f, 0.2f, 0.9f);
-        colors.pressedColor = new Color(0.3f, 0.15f, 0.1f, 1f);
-        closeBtn.colors = colors;
-
-        RectTransform closeBtnRect = closeBtnGO.GetComponent<RectTransform>();
-        closeBtnRect.anchorMin = new Vector2(0.9f, 0.9f);
-        closeBtnRect.anchorMax = new Vector2(0.98f, 0.98f);
-        closeBtnRect.offsetMin = Vector2.zero;
-        closeBtnRect.offsetMax = Vector2.zero;
-
-        // X yazısı
-        GameObject closeTextGO = new GameObject("CloseText");
-        closeTextGO.transform.SetParent(closeBtnGO.transform, false);
-        TextMeshProUGUI closeText = closeTextGO.AddComponent<TextMeshProUGUI>();
-        closeText.text = "X";
-        closeText.fontSize = 24f;
-        closeText.fontStyle = FontStyles.Bold;
-        closeText.color = new Color(0.9f, 0.85f, 0.7f, 1f);
-        closeText.alignment = TextAlignmentOptions.Center;
-
-        RectTransform closeTextRect = closeTextGO.GetComponent<RectTransform>();
-        closeTextRect.anchorMin = Vector2.zero;
-        closeTextRect.anchorMax = Vector2.one;
-        closeTextRect.offsetMin = Vector2.zero;
-        closeTextRect.offsetMax = Vector2.zero;
-
-        // === Alt Bilgi: "[ESC] Kapat" ===
-        GameObject footerGO = new GameObject("FooterText");
-        footerGO.transform.SetParent(paperGO.transform, false);
-        TextMeshProUGUI footerText = footerGO.AddComponent<TextMeshProUGUI>();
-        footerText.text = isTR ? "[ESC] Kapat" : "[ESC] Close";
-        footerText.fontSize = 16f;
-        footerText.color = new Color(0.35f, 0.28f, 0.18f, 0.6f);
-        footerText.alignment = TextAlignmentOptions.Center;
-
-        RectTransform footerRect = footerGO.GetComponent<RectTransform>();
-        footerRect.anchorMin = new Vector2(0.3f, 0.02f);
-        footerRect.anchorMax = new Vector2(0.7f, 0.09f);
-        footerRect.offsetMin = Vector2.zero;
-        footerRect.offsetMax = Vector2.zero;
-
-        // Başlangıçta gizli
         letterCanvas.gameObject.SetActive(false);
+    }
+
+    /// <summary>
+    /// Kağıdı mektubun biçimine göre boyutlandırır, döndürür ve yazısını ayarlar (1080p referansı).
+    /// </summary>
+    private void ApplyForm(LetterForm form)
+    {
+        Vector2 size; float tilt; Rect textArea; // textArea: kağıt içinde 0-1 aralığında
+        TMP_FontAsset font; float fontSize; Color ink; float lineSpacing = 0f;
+        switch (form)
+        {
+            case LetterForm.Receipt:
+                size = new Vector2(500f, 680f); tilt = 1.5f; textArea = new Rect(0.1f, 0.14f, 0.8f, 0.68f);
+                font = monoFont; fontSize = 25f; ink = new Color32(0x3A, 0x36, 0x31, 0xFF);
+                break;
+            case LetterForm.PhotoBack:
+                size = new Vector2(780f, 585f); tilt = 2f; textArea = new Rect(0.1f, 0.1f, 0.8f, 0.62f);
+                font = handFont; fontSize = 38f; ink = new Color32(0x4A, 0x46, 0x3F, 0xFF);
+                break;
+            case LetterForm.ZeynepNote:
+                size = new Vector2(806f, 756f); tilt = -2f; textArea = new Rect(0.2f, 0.08f, 0.72f, 0.84f);
+                font = handFontBold; fontSize = 50f; ink = new Color32(0xA8, 0x39, 0x2E, 0xFF); lineSpacing = 8f;
+                break;
+            default:
+                size = new Vector2(806f, 756f); tilt = -2f; textArea = new Rect(0.17f, 0.08f, 0.76f, 0.84f);
+                font = handFont; fontSize = 38f; ink = new Color32(0x3B, 0x3A, 0x44, 0xFF); lineSpacing = 12f;
+                break;
+        }
+
+        paperRect.sizeDelta = size;
+        paperRect.localEulerAngles = new Vector3(0f, 0f, tilt);
+        paperImage.texture = PaperTexture(form);
+
+        RectTransform bodyRect = letterBodyText.rectTransform;
+        bodyRect.anchorMin = new Vector2(textArea.xMin, textArea.yMin);
+        bodyRect.anchorMax = new Vector2(textArea.xMax, textArea.yMax);
+        bodyRect.offsetMin = bodyRect.offsetMax = Vector2.zero;
+
+        if (font != null) letterBodyText.font = font;
+        letterBodyText.fontStyle = FontStyles.Normal;
+        letterBodyText.enableAutoSizing = true;
+        letterBodyText.fontSizeMax = fontSize;
+        letterBodyText.fontSizeMin = fontSize * 0.7f; // okunabilirlik sınırı
+        letterBodyText.color = ink;
+        letterBodyText.lineSpacing = lineSpacing;
+        letterBodyText.alignment = TextAlignmentOptions.TopLeft;
+    }
+
+    /// <summary>
+    /// El yazısı biçimlerde her harfi biraz döndürüp kaydırır; harfler bir fontun düzgün dizilişi gibi durmasın.
+    /// Aynı mektup her açıldığında aynı titreme çıkar (sabit tohum).
+    /// </summary>
+    private void JitterHandwriting(LetterForm form)
+    {
+        if (form == LetterForm.Receipt) return;
+
+        float maxAngle = form == LetterForm.ZeynepNote ? 5f : 2.5f;
+        float maxShift = form == LetterForm.ZeynepNote ? 0.08f : 0.04f;
+
+        letterBodyText.ForceMeshUpdate();
+        TMP_TextInfo info = letterBodyText.textInfo;
+        var random = new System.Random(letterBodyText.text.Length);
+        for (int i = 0; i < info.characterCount; i++)
+        {
+            TMP_CharacterInfo c = info.characterInfo[i];
+            if (!c.isVisible) continue;
+
+            Vector3[] v = info.meshInfo[c.materialReferenceIndex].vertices;
+            int vi = c.vertexIndex;
+            Vector3 center = (v[vi] + v[vi + 2]) * 0.5f;
+            float angle = ((float)random.NextDouble() * 2f - 1f) * maxAngle;
+            float shift = ((float)random.NextDouble() * 2f - 1f) * maxShift * c.pointSize;
+            Quaternion rot = Quaternion.Euler(0f, 0f, angle);
+            for (int k = 0; k < 4; k++)
+            {
+                v[vi + k] = rot * (v[vi + k] - center) + center + new Vector3(0f, shift, 0f);
+            }
+        }
+        letterBodyText.UpdateVertexData(TMP_VertexDataUpdateFlags.Vertices);
+    }
+
+    private IEnumerator AnimateOpen()
+    {
+        overlayGroup.alpha = 0f;
+        escHint.alpha = 0f;
+        float rise = 1080f * 0.12f;
+        for (float t = 0f; t < OpenDuration; t += Time.unscaledDeltaTime)
+        {
+            float k = 1f - Mathf.Pow(1f - t / OpenDuration, 3f); // ease-out cubic
+            overlayGroup.alpha = Mathf.Clamp01(t / 0.3f);
+            paperRect.anchoredPosition = new Vector2(0f, Mathf.Lerp(-rise, 0f, k));
+            paperRect.localScale = Vector3.one * Mathf.Lerp(0.94f, 1f, k);
+            yield return null;
+        }
+        overlayGroup.alpha = 1f;
+        paperRect.anchoredPosition = Vector2.zero;
+        paperRect.localScale = Vector3.one;
+
+        yield return new WaitForSecondsRealtime(EscHintDelay - OpenDuration);
+        for (float t = 0f; t < 0.4f; t += Time.unscaledDeltaTime)
+        {
+            escHint.alpha = 0.5f * t / 0.4f;
+            yield return null;
+        }
+        escHint.alpha = 0.5f;
+        animating = null;
+    }
+
+    private IEnumerator AnimateClose()
+    {
+        float rise = 1080f * 0.12f;
+        for (float t = 0f; t < CloseDuration; t += Time.unscaledDeltaTime)
+        {
+            float k = t / CloseDuration;
+            overlayGroup.alpha = 1f - k;
+            paperRect.anchoredPosition = new Vector2(0f, Mathf.Lerp(0f, -rise, k * k));
+            yield return null;
+        }
+        letterCanvas.gameObject.SetActive(false);
+        animating = null;
+    }
+
+    private void PlayRustle()
+    {
+        float sfx = AudioManager.instance != null ? AudioManager.instance.GetSFXVolume() : PlayerPrefs.GetFloat("Dink_SFXVolume", 0.8f);
+        rustleSource.PlayOneShot(rustleClip, sfx * 0.45f);
+    }
+
+    // ------------------------------------------------------------------
+    // Prosedürel dokular ve ses
+    // ------------------------------------------------------------------
+
+    private Texture2D PaperTexture(LetterForm form)
+    {
+        if (paperTextures.TryGetValue(form, out Texture2D cached)) return cached;
+
+        int w, h; Color baseColor;
+        switch (form)
+        {
+            case LetterForm.Receipt: w = 300; h = 408; baseColor = new Color32(0xE2, 0xDD, 0xD0, 0xFF); break;
+            case LetterForm.PhotoBack: w = 468; h = 351; baseColor = new Color32(0xCF, 0xC8, 0xB2, 0xFF); break;
+            default: w = 484; h = 454; baseColor = new Color32(0xD9, 0xD0, 0xB8, 0xFF); break;
+        }
+
+        var random = new System.Random((int)form + 3);
+        Color[] px = new Color[w * h];
+        for (int y = 0; y < h; y++)
+        {
+            for (int x = 0; x < w; x++)
+            {
+                float u = (float)x / w, v = (float)y / h;
+                float grain = (float)random.NextDouble() * 0.035f + Mathf.PerlinNoise(u * 18f, v * 18f) * 0.04f;
+                float edge = Mathf.Clamp01(Mathf.Min(Mathf.Min(u, 1f - u), Mathf.Min(v, 1f - v)) * 14f);
+                Color c = Color.Lerp(baseColor * new Color(0.86f, 0.8f, 0.68f, 1f), baseColor, edge) * (1f - grain);
+                c.a = 1f;
+
+                if (form == LetterForm.Receipt)
+                {
+                    // Termal kağıtta soluk yatay şeritler, altı yırtık
+                    c *= 1f - Mathf.PerlinNoise(0.5f, v * 40f) * 0.05f;
+                    c.a = 1f;
+                    float tear = 6f + 5f * Mathf.Abs(Mathf.Sin(x * 0.55f)) + (float)random.NextDouble() * 2f;
+                    if (y < tear) c.a = 0f;
+                    // Üstte ve altta kesik çizgili ayraç
+                    if ((Mathf.Abs(v - 0.9f) < 0.002f || Mathf.Abs(v - 0.1f) < 0.002f) && (x / 6) % 2 == 0 && u > 0.08f && u < 0.92f)
+                        c = Color.Lerp(c, new Color(0.23f, 0.21f, 0.19f, c.a), 0.6f);
+                }
+                else if (form == LetterForm.PhotoBack)
+                {
+                    // Fotoğraf kağıdının arkasındaki soluk çapraz baskı deseni
+                    if (((x + y) % 46) < 1) { c *= 0.965f; c.a = 1f; }
+                }
+                else
+                {
+                    // Defter sayfası: mavi-gri satır çizgileri ve kırmızı kenar boşluğu çizgisi
+                    float lineGap = 30f;
+                    float fromTop = h - y;
+                    if (fromTop > 40f && (fromTop % lineGap) < 1.1f) c = Color.Lerp(c, new Color(0.48f, 0.55f, 0.66f, 1f), 0.45f);
+                    if (Mathf.Abs(x - w * 0.13f) < 1f) c = Color.Lerp(c, new Color(0.72f, 0.33f, 0.3f, 1f), 0.5f);
+                }
+
+                px[y * w + x] = c;
+            }
+        }
+
+        Texture2D tex = new Texture2D(w, h, TextureFormat.RGBA32, true);
+        tex.wrapMode = TextureWrapMode.Clamp;
+        tex.SetPixels(px);
+        tex.Apply();
+        paperTextures[form] = tex;
+        return tex;
+    }
+
+    private static Texture2D VignetteTexture()
+    {
+        const int size = 128;
+        Texture2D tex = new Texture2D(size, size, TextureFormat.RGBA32, false);
+        tex.wrapMode = TextureWrapMode.Clamp;
+        for (int y = 0; y < size; y++)
+        {
+            for (int x = 0; x < size; x++)
+            {
+                float dx = (x + 0.5f) / size * 2f - 1f, dy = (y + 0.5f) / size * 2f - 1f;
+                float d = Mathf.Clamp01(Mathf.Sqrt(dx * dx + dy * dy) / 1.414f);
+                tex.SetPixel(x, y, new Color(0f, 0f, 0f, Mathf.Lerp(0.68f, 0.92f, d * d)));
+            }
+        }
+        tex.Apply();
+        return tex;
+    }
+
+    /// <summary>
+    /// Kağıt hışırtısı: zarfı düzensiz, yüksek frekanslı kısa gürültü.
+    /// </summary>
+    private static AudioClip MakeRustleClip()
+    {
+        const int rate = 44100;
+        int length = (int)(rate * 0.32f);
+        float[] data = new float[length];
+        var random = new System.Random(11);
+        float prev = 0f;
+        for (int i = 0; i < length; i++)
+        {
+            float t = (float)i / rate;
+            float noise = (float)(random.NextDouble() * 2.0 - 1.0);
+            float high = noise - prev * 0.6f; // alçak frekansları kıs
+            prev = noise;
+            float envelope = Mathf.Sin(Mathf.PI * t / 0.32f) * (0.6f + 0.4f * Mathf.PerlinNoise(t * 60f, 0.3f));
+            data[i] = Mathf.Clamp(high * envelope * 0.35f, -1f, 1f);
+        }
+        AudioClip clip = AudioClip.Create("LetterRustle", length, 1, rate, false);
+        clip.SetData(data, 0);
+        return clip;
+    }
+
+    private static TMP_FontAsset LoadFont(string resourcePath)
+    {
+        Font font = Resources.Load<Font>(resourcePath);
+        if (font == null)
+        {
+            Debug.LogError($"[MektupNotHintUI] Font bulunamadı: Resources/{resourcePath}");
+            return null;
+        }
+        TMP_FontAsset asset = TMP_FontAsset.CreateFontAsset(font);
+        if (asset != null && TMP_Settings.defaultFontAsset != null)
+        {
+            asset.fallbackFontAssetTable = new System.Collections.Generic.List<TMP_FontAsset> { TMP_Settings.defaultFontAsset };
+        }
+        return asset;
+    }
+
+    private static void Stretch(RectTransform rect)
+    {
+        rect.anchorMin = Vector2.zero;
+        rect.anchorMax = Vector2.one;
+        rect.offsetMin = rect.offsetMax = Vector2.zero;
     }
 
     /// <summary>
