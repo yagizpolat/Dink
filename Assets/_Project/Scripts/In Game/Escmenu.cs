@@ -43,8 +43,13 @@ public class Escmenu : MonoBehaviour
             return;
         }
 
-        if (Input.GetKeyDown(KeyCode.Escape))
+        // Mektup açıkken ESC mektubu kapatır; intro oynarken ESC introyu atlar
+        if (MektupNotHintUI.instance != null && MektupNotHintUI.instance.IsPanelOpen) return;
+        if (IntroCinematic.IsPlaying) return;
+
+        if (DinkInput.EscapeDown)
         {
+            DinkInput.ConsumeEscape();
             if (oyundurdumu)
             {
                 Devamet();

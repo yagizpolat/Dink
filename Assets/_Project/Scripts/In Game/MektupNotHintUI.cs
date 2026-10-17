@@ -32,6 +32,7 @@ public class MektupNotHintUI : MonoBehaviour
     private Canvas letterCanvas;
     private TextMeshProUGUI letterBodyText;
     private bool isPanelOpen;
+    public bool IsPanelOpen => isPanelOpen;
     private float previousTimeScale;
     private CursorLockMode previousCursorLock;
     private bool previousCursorVisible;
@@ -153,8 +154,9 @@ public class MektupNotHintUI : MonoBehaviour
     private void Update()
     {
         // ESC tuşu ile mektup panelini kapat
-        if (isPanelOpen && Input.GetKeyDown(KeyCode.Escape))
+        if (isPanelOpen && DinkInput.EscapeDown)
         {
+            DinkInput.ConsumeEscape();
             CloseLetterPanel();
         }
     }

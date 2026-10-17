@@ -81,6 +81,15 @@ public class IntroCinematic : MonoBehaviour
         Debug.Log("<color=green>[DINK] Tüm Intro & Hikaye hafızası sıfırlandı!</color>");
     }
 
+    private static IntroCinematic aktifIntro;
+
+    /// <summary>Sinematik giriş oynuyor mu? (ESC menüsü bu sırada açılmaz)</summary>
+    public static bool IsPlaying => aktifIntro != null && aktifIntro.isActiveAndEnabled;
+
+    private void OnEnable() { aktifIntro = this; }
+
+    private void OnDisable() { if (aktifIntro == this) aktifIntro = null; }
+
     private void Start()
     {
         // Volume'dan DepthOfField override'ını al, yoksa otomatik ekle!
@@ -137,8 +146,9 @@ public class IntroCinematic : MonoBehaviour
 
     private bool CheckSkipInput()
     {
-        if (tuslaAtlamayaIzinVer && (Input.GetKeyDown(KeyCode.Space) || Input.GetKeyDown(KeyCode.E) || Input.GetKeyDown(KeyCode.Escape)))
+        if (tuslaAtlamayaIzinVer && (Input.GetKeyDown(KeyCode.Space) || Input.GetKeyDown(KeyCode.E) || DinkInput.EscapeDown))
         {
+            DinkInput.ConsumeEscape();
             MarkAsSeenAndSkip();
             return true;
         }

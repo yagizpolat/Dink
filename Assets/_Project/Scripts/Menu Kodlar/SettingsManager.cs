@@ -128,8 +128,9 @@ public class SettingsManager : MonoBehaviour
 
     private void Update()
     {
-        if (Input.GetKeyDown(KeyCode.Escape) && gameObject.activeSelf)
+        if (DinkInput.EscapeDown && gameObject.activeSelf)
         {
+            DinkInput.ConsumeEscape();
             GoBack();
         }
     }
