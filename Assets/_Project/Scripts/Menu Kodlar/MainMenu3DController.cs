@@ -36,6 +36,12 @@ public class MainMenu3DController : MonoBehaviour
     [Header("Kamera Geçiş Hızı")]
     public float cameraLerpSpeed = 2.5f;
 
+    [Header("Kapı Aralığı Menüsü")]
+    [Tooltip("İşaretliyse 3D kapılar yerine karanlıkta aralık kapı ışığı menüsü gösterilir")]
+    [SerializeField] private bool kapiAraligiMenusu = true;
+    private DoorLightMenu kapiMenusu;
+    private bool oyunBasliyor;
+
     // ─── İç Durum ───
     private Menu3DDoor _currentHover;
     private Coroutine _cameraRoutine;
@@ -56,10 +62,55 @@ public class MainMenu3DController : MonoBehaviour
 
         // Başlangıçta ana kapılar görünsün
         ShowMainDoors();
+
+        if (kapiAraligiMenusu)
+        {
+            BuildDoorLightMenu();
+        }
+    }
+
+    private void BuildDoorLightMenu()
+    {
+        bool isTR = LanguageManager.instance == null || LanguageManager.instance.CurrentLanguage == LanguageManager.Language.TR;
+        string[] labels = isTR
+            ? new[] { "YENİ OYUN", "AYARLAR", "ÇIKIŞ" }
+            : new[] { "NEW GAME", "SETTINGS", "QUIT" };
+
+        kapiMenusu = gameObject.AddComponent<DoorLightMenu>();
+        kapiMenusu.Build(labels, new System.Action[]
+        {
+            () => { oyunBasliyor = true; StartGame(); },
+            () => OpenPanel(graphicsPanel),
+            QuitGame
+        }, new DoorLightMenu.Layout
+        {
+            title = "DINK",
+            darkness = 1f,          // 3D kapı sahnesi arkada hiç görünmesin
+            stripHeight = 980f,
+            stripX = -380f,
+            itemsCenterY = -150f,
+            sortingOrder = 0,       // ayarlar (10) ve isim girişi (15) panelleri bunun üstünde açılır
+            openDuration = 1.1f
+        });
+
+        // Oyun başlarken ya da üstte ayarlar paneli açıkken menü tuşları çalışmasın
+        kapiMenusu.IsInputBlocked = () => oyunBasliyor || IsAnySettingsPanelOpen();
+        kapiMenusu.Open();
+    }
+
+    private bool IsAnySettingsPanelOpen()
+    {
+        return (graphicsPanel != null && graphicsPanel.activeInHierarchy) ||
+               (audioPanel != null && audioPanel.activeInHierarchy) ||
+               (languagePanel != null && languagePanel.activeInHierarchy) ||
+               (SettingsManager.instance != null && SettingsManager.instance.gameObject.activeInHierarchy);
     }
 
     private void Update()
     {
+        // Kapı aralığı menüsü açıkken 3D kapılar fareye tepki vermesin
+        if (kapiMenusu != null) return;
+
         HandleRaycast();
     }
 

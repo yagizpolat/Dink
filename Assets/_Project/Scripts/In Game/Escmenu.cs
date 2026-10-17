@@ -17,13 +17,13 @@ public class Escmenu : MonoBehaviour
     [Header("Kapı Aralığı Menüsü")]
     [Tooltip("İşaretliyse eski buton panelinin yerine karanlıkta aralık kapı ışığı menüsü açılır")]
     [SerializeField] private bool kapiAraligiMenusu = true;
-    private DoorLightPauseMenu kapiMenusu;
+    private DoorLightMenu kapiMenusu;
 
     private void Start()
     {
         if (kapiAraligiMenusu)
         {
-            kapiMenusu = gameObject.AddComponent<DoorLightPauseMenu>();
+            kapiMenusu = gameObject.AddComponent<DoorLightMenu>();
             bool isTR = LanguageManager.instance == null || LanguageManager.instance.CurrentLanguage == LanguageManager.Language.TR;
             string[] labels = isTR
                 ? new[] { "DEVAM ET", "AYARLAR", "ANA MENÜ", "OYUNDAN ÇIK" }

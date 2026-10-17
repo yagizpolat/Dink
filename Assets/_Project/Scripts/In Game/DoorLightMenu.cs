@@ -6,23 +6,38 @@ using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
 /// <summary>
-/// "Kapı Aralığı" duraklatma menüsü.
-/// Ekran kararır, ortada aralık bir kapıdan sızan dikey ışık şeridi açılır; seçenekler ışığın yanında,
+/// "Kapı Aralığı" menüsü (ESC duraklatma menüsü ve ana menü).
+/// Ekran kararır, aralık bir kapıdan sızan dikey ışık şeridi açılır; seçenekler ışığın yanında,
 /// karanlıkta durur. Seçili satır ışığa yaklaşır ve aydınlanır, diğerleri karanlıkta kalır.
-/// Arayüz çalışma anında kurulur; Escmenu tarafından açılıp kapatılır.
+/// Arayüz çalışma anında kurulur.
 /// </summary>
-public class DoorLightPauseMenu : MonoBehaviour
+public class DoorLightMenu : MonoBehaviour
 {
+    /// <summary>Menünün görünüm ayarları. Varsayılanlar ESC menüsü içindir.</summary>
+    public class Layout
+    {
+        public string title;                 // null ise başlık yok
+        public float darkness = 0.985f;      // 1 = arkadaki sahne hiç görünmez
+        public float stripHeight = 760f;
+        public float stripX = -170f;         // ekran merkezine göre ışık şeridinin konumu
+        public float itemsCenterY = 0f;      // seçeneklerin dikey ortası
+        public int sortingOrder = 150;
+        public float openDuration = 0.45f;
+    }
+
     private static readonly Color lightColor = new Color(1f, 0.86f, 0.64f);
     private static readonly Color textLit = new Color(0.95f, 0.9f, 0.82f, 1f);
     private static readonly Color textDark = new Color(0.55f, 0.5f, 0.45f, 0.35f);
+    private static readonly Color titleColor = new Color(0.86f, 0.8f, 0.71f, 0.92f);
 
     private const float StripWidth = 10f;
-    private const float StripHeight = 760f;
-    private const float StripX = -170f;          // ekran merkezine göre ışık şeridinin konumu
     private const float ItemX = 70f;             // şeridin sağına göre ilk harf
     private const float ItemSpacing = 74f;
-    private const float OpenDuration = 0.45f;
+
+    private Layout layout = new Layout();
+    private float StripHeight => layout.stripHeight;
+    private float StripX => layout.stripX;
+    private RectTransform title;
 
     private Canvas canvas;
     private CanvasGroup group;
@@ -34,22 +49,27 @@ public class DoorLightPauseMenu : MonoBehaviour
     private int selected;
     private float flickerSeed;
 
+    /// <summary>Üstte başka bir panel (ayarlar, isim girişi) açıkken menünün tuş ve tıklamaları yok sayılsın diye.</summary>
+    public Func<bool> IsInputBlocked;
+    private bool InputBlocked => IsInputBlocked != null && IsInputBlocked();
+
     public GameObject Root => canvas != null ? canvas.gameObject : null;
     public bool IsOpen => canvas != null && canvas.gameObject.activeSelf;
 
     /// <summary>
     /// Menüyü kurar. Etiketler ve eylemler aynı sırada verilir.
     /// </summary>
-    public void Build(string[] labels, Action[] itemActions)
+    public void Build(string[] labels, Action[] itemActions, Layout menuLayout = null)
     {
         actions = itemActions;
+        if (menuLayout != null) layout = menuLayout;
         flickerSeed = UnityEngine.Random.value * 100f;
 
-        GameObject canvasObj = new GameObject("DoorLightPauseMenu");
+        GameObject canvasObj = new GameObject("DoorLightMenu");
         canvasObj.transform.SetParent(transform, false);
         canvas = canvasObj.AddComponent<Canvas>();
         canvas.renderMode = RenderMode.ScreenSpaceOverlay;
-        canvas.sortingOrder = 150;
+        canvas.sortingOrder = layout.sortingOrder;
         CanvasScaler scaler = canvasObj.AddComponent<CanvasScaler>();
         scaler.uiScaleMode = CanvasScaler.ScaleMode.ScaleWithScreenSize;
         scaler.referenceResolution = new Vector2(1920, 1080);
@@ -58,7 +78,7 @@ public class DoorLightPauseMenu : MonoBehaviour
         group = canvasObj.AddComponent<CanvasGroup>();
 
         // Karanlık: oyun dünyası arkada çok hafif seçilir
-        Image dark = CreateImage(canvasObj.transform, "Dark", null, new Color(0f, 0f, 0f, 0.985f));
+        Image dark = CreateImage(canvasObj.transform, "Dark", null, new Color(0f, 0f, 0f, layout.darkness));
         Stretch(dark.rectTransform);
 
         Sprite soft = CreateSoftSprite();
@@ -80,8 +100,28 @@ public class DoorLightPauseMenu : MonoBehaviour
         strip.anchoredPosition = new Vector2(StripX, 0f);
         strip.sizeDelta = new Vector2(StripWidth, StripHeight);
 
+        // Başlık: ışığın yanında, geniş aralıklı harfler
+        if (!string.IsNullOrEmpty(layout.title))
+        {
+            GameObject titleObj = new GameObject("Title");
+            titleObj.transform.SetParent(canvasObj.transform, false);
+            title = titleObj.AddComponent<RectTransform>();
+            title.anchorMin = title.anchorMax = new Vector2(0.5f, 0.5f);
+            title.pivot = new Vector2(0f, 0.5f);
+            title.anchoredPosition = new Vector2(StripX + ItemX - 12f, StripHeight / 2f - 150f);
+            title.sizeDelta = new Vector2(900f, 200f);
+            TextMeshProUGUI titleText = titleObj.AddComponent<TextMeshProUGUI>();
+            titleText.text = layout.title;
+            titleText.fontSize = 170;
+            titleText.characterSpacing = 46f;
+            titleText.fontStyle = FontStyles.Bold;
+            titleText.alignment = TextAlignmentOptions.MidlineLeft;
+            titleText.color = titleColor;
+            titleText.raycastTarget = false;
+        }
+
         // Seçenekler
-        float startY = (labels.Length - 1) * ItemSpacing / 2f;
+        float startY = layout.itemsCenterY + (labels.Length - 1) * ItemSpacing / 2f;
         for (int i = 0; i < labels.Length; i++)
         {
             int index = i;
@@ -120,7 +160,7 @@ public class DoorLightPauseMenu : MonoBehaviour
         group.alpha = 0f;
         strip.sizeDelta = new Vector2(0f, StripHeight);
         Tween.Alpha(group, 1f, 0.2f, useUnscaledTime: true);
-        Tween.UISizeDelta(strip, new Vector2(StripWidth, StripHeight), OpenDuration, Ease.OutCubic, useUnscaledTime: true);
+        Tween.UISizeDelta(strip, new Vector2(StripWidth, StripHeight), layout.openDuration, Ease.OutCubic, useUnscaledTime: true);
     }
 
     public void Close()
@@ -132,9 +172,12 @@ public class DoorLightPauseMenu : MonoBehaviour
     {
         if (!IsOpen) return;
 
-        if (Input.GetKeyDown(KeyCode.DownArrow) || Input.GetKeyDown(KeyCode.S)) Select((selected + 1) % items.Count);
-        if (Input.GetKeyDown(KeyCode.UpArrow) || Input.GetKeyDown(KeyCode.W)) Select((selected - 1 + items.Count) % items.Count);
-        if (Input.GetKeyDown(KeyCode.Return) || Input.GetKeyDown(KeyCode.KeypadEnter) || Input.GetKeyDown(KeyCode.Space)) Activate(selected);
+        if (!InputBlocked)
+        {
+            if (Input.GetKeyDown(KeyCode.DownArrow) || Input.GetKeyDown(KeyCode.S)) Select((selected + 1) % items.Count);
+            if (Input.GetKeyDown(KeyCode.UpArrow) || Input.GetKeyDown(KeyCode.W)) Select((selected - 1 + items.Count) % items.Count);
+            if (Input.GetKeyDown(KeyCode.Return) || Input.GetKeyDown(KeyCode.KeypadEnter) || Input.GetKeyDown(KeyCode.Space)) Activate(selected);
+        }
 
         // Eski ampul gibi hafif titreme (oyun duraklatıldığı için gerçek zaman kullanılır)
         float t = Time.unscaledTime;
@@ -172,6 +215,7 @@ public class DoorLightPauseMenu : MonoBehaviour
 
     private void Activate(int index)
     {
+        if (InputBlocked) return;
         if (actions != null && index >= 0 && index < actions.Length)
         {
             actions[index]?.Invoke();
