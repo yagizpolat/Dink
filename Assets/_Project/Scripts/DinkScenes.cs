@@ -34,4 +34,9 @@ public static class DinkScenes
     public static void LoadMainMenu() => SceneManager.LoadScene(MainMenu);
 
     public static void LoadRoom(int roomIndex) => SceneManager.LoadScene(RoomSceneName(roomIndex));
+
+    /// <summary>
+    /// Yeni oyun başlatır: ilk oyunda Oda 1 (tutorial), sonrakilerde tutorial olmayan ilk oda.
+    /// </summary>
+    public static void LoadNewGame() => LoadRoom(TutorialProgress.NewGameRoom);
 }
