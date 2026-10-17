@@ -31,21 +31,27 @@ public class DoorChoice : MonoBehaviour
             Door[] doors = FindObjectsByType<Door>(FindObjectsSortMode.None);
             foreach (var d in doors)
             {
-                if (leftDoor == null && d.gameObject.name.ToLower().Contains("left") || d.gameObject.name.ToLower().Contains("sol") || d.gameObject.name.ToLower().Contains("l_"))
+                string doorName = d.gameObject.name.ToLower();
+                bool looksLeft = doorName.Contains("left") || doorName.Contains("sol") || doorName.Contains("l_");
+                bool looksRight = doorName.Contains("right") || doorName.Contains("sag") || doorName.Contains("r_");
+
+                // Parentheses matter: without them "a && b || c" also overwrote an already assigned door
+                if (leftDoor == null && looksLeft && d != rightDoor)
                 {
                     leftDoor = d;
                 }
-                else if (rightDoor == null && d.gameObject.name.ToLower().Contains("right") || d.gameObject.name.ToLower().Contains("sag") || d.gameObject.name.ToLower().Contains("r_"))
+                else if (rightDoor == null && looksRight && d != leftDoor)
                 {
                     rightDoor = d;
                 }
             }
 
-            // Isimle ayırt edilemediyse dizideki ilk ikiyi ata
-            if (doors.Length >= 2)
+            // Isimle ayırt edilemediyse kalan kapılardan ata (aynı kapı iki tarafa atanmasın)
+            foreach (var d in doors)
             {
-                if (leftDoor == null) leftDoor = doors[0];
-                if (rightDoor == null) rightDoor = doors[1];
+                if (d == leftDoor || d == rightDoor) continue;
+                if (leftDoor == null) leftDoor = d;
+                else if (rightDoor == null) rightDoor = d;
             }
         }
 
