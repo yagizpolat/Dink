@@ -45,6 +45,11 @@ public class DoorSequenceManager : MonoBehaviour
         choiceMade = true;
         DisableGameplayScripts();
 
+        if (RoomCountdown.instance != null)
+        {
+            RoomCountdown.instance.Stop();
+        }
+
         // Speedrunner Motoruna Oda Çıkışını Bildir
         if (SpeedrunnerDetector.instance != null)
         {
