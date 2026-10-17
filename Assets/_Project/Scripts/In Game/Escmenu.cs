@@ -25,15 +25,23 @@ public class Escmenu : MonoBehaviour
         if (kapiAraligiMenusu)
         {
             kapiMenusu = gameObject.AddComponent<DoorLightMenu>();
-            bool isTR = LanguageManager.instance == null || LanguageManager.instance.CurrentLanguage == LanguageManager.Language.TR;
-            string[] labels = isTR
-                ? new[] { "DEVAM ET", "AYARLAR", "ANA MENÜ", "OYUNDAN ÇIK" }
-                : new[] { "RESUME", "SETTINGS", "MAIN MENU", "QUIT" };
-            kapiMenusu.Build(labels, new System.Action[] { Devamet, AyarlariAc, AnaMenuyeDon, OyundanCik });
+            kapiMenusu.Build(MenuYazilari(), new System.Action[] { Devamet, AyarlariAc, AnaMenuyeDon, OyundanCik });
             // Ayarlar açıkken (içerik gizli) W/S/Enter menüyü tetiklemesin
             kapiMenusu.IsInputBlocked = () => kapiMenusu.Content != null && !kapiMenusu.Content.activeSelf;
         }
     }
+
+    private static string[] MenuYazilari() => new[]
+    {
+        DinkLang.T("RESUME", "DEVAM ET", "FORTSETZEN", "REPRENDRE", "CONTINUAR", "CONTINUAR", "ПРОДОЛЖИТЬ"),
+        DinkLang.T("SETTINGS", "AYARLAR", "EINSTELLUNGEN", "PARAMÈTRES", "AJUSTES", "CONFIGURAÇÕES", "НАСТРОЙКИ"),
+        DinkLang.T("MAIN MENU", "ANA MENÜ", "HAUPTMENÜ", "MENU PRINCIPAL", "MENÚ PRINCIPAL", "MENU PRINCIPAL", "ГЛАВНОЕ МЕНЮ"),
+        DinkLang.T("QUIT", "OYUNDAN ÇIK", "BEENDEN", "QUITTER", "SALIR", "SAIR", "ВЫЙТИ")
+    };
+
+    private void OnEnable() { LanguageManager.OnLanguageChanged += DilDegisti; }
+    private void OnDisable() { LanguageManager.OnLanguageChanged -= DilDegisti; }
+    private void DilDegisti() { if (kapiMenusu != null) kapiMenusu.SetLabels(MenuYazilari()); }
 
     /// <summary>Aktif duraklatma menüsünün kökü (kapı menüsü ya da eski buton paneli).</summary>
     private GameObject AktifMenu => kapiMenusu != null ? kapiMenusu.Root : escmenu;

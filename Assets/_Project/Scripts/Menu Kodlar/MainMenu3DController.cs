@@ -34,15 +34,21 @@ public class MainMenu3DController : MonoBehaviour
         BuildDoorLightMenu();
     }
 
+    private static string[] MenuYazilari() => new[]
+    {
+        DinkLang.T("NEW GAME", "YENİ OYUN", "NEUES SPIEL", "NOUVELLE PARTIE", "NUEVA PARTIDA", "NOVO JOGO", "НОВАЯ ИГРА"),
+        DinkLang.T("SETTINGS", "AYARLAR", "EINSTELLUNGEN", "PARAMÈTRES", "AJUSTES", "CONFIGURAÇÕES", "НАСТРОЙКИ"),
+        DinkLang.T("QUIT", "ÇIKIŞ", "BEENDEN", "QUITTER", "SALIR", "SAIR", "ВЫЙТИ")
+    };
+
+    private void OnEnable() { LanguageManager.OnLanguageChanged += DilDegisti; }
+    private void OnDisable() { LanguageManager.OnLanguageChanged -= DilDegisti; }
+    private void DilDegisti() { if (kapiMenusu != null) kapiMenusu.SetLabels(MenuYazilari()); }
+
     private void BuildDoorLightMenu()
     {
-        bool isTR = LanguageManager.instance == null || LanguageManager.instance.CurrentLanguage == LanguageManager.Language.TR;
-        string[] labels = isTR
-            ? new[] { "YENİ OYUN", "AYARLAR", "ÇIKIŞ" }
-            : new[] { "NEW GAME", "SETTINGS", "QUIT" };
-
         kapiMenusu = gameObject.AddComponent<DoorLightMenu>();
-        kapiMenusu.Build(labels, new System.Action[]
+        kapiMenusu.Build(MenuYazilari(), new System.Action[]
         {
             () => { oyunBasliyor = true; StartGame(); },
             OpenSettings,

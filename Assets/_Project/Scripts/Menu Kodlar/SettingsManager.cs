@@ -61,8 +61,8 @@ public class SettingsManager : MonoBehaviour
     private readonly int[] frameRateValues = { 30, 60, 120, -1 };
 
     // Kapı aralığı ayarlar ekranı (DoorLightSettings) değerleri buradan okur
-    public string QualityName => qualityNames[currentQualityIndex];
-    public string FrameRateName => frameRateOptions[currentFrameRateIndex];
+    public int QualityIndex => currentQualityIndex;
+    public int FrameRateIndex => currentFrameRateIndex;
     public bool IsFullscreen => isFullscreen;
     public bool IsVSync => isVSync;
     public string ResolutionName => resolutions != null && resolutions.Length > 0

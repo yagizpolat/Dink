@@ -166,6 +166,12 @@ public class DoorLightMenu : MonoBehaviour
         canvasObj.SetActive(false);
     }
 
+    /// <summary>Dil değişince seçenek yazılarını günceller.</summary>
+    public void SetLabels(string[] labels)
+    {
+        for (int i = 0; i < items.Count && i < labels.Length; i++) items[i].text = labels[i];
+    }
+
     public void Open()
     {
         if (canvas == null) return;
