@@ -29,15 +29,10 @@ public class DynamicHintSystem : MonoBehaviour
         SuDamlasıYansima = 15      // 15. Damlayan Su & Yansıma
     }
 
-    [Header("Odadaki Rastgele İpucu Konumları")]
-    [SerializeField] private Transform[] hintSpawnPoints;
+    // İpucu doğma noktaları odalara HintSpawnPoint bileşeniyle konur (bu obje sahneler arası yaşadığı için
+    // burada sahne referansı tutulamaz).
 
-    [Header("İpucu Obje Referansları")]
-    [SerializeField] private GameObject mektupObj;
-    [SerializeField] private GameObject uvIsikYazisiObj;
-    [SerializeField] private GameObject pelusOyuncakObj;
-    [SerializeField] private GameObject saatObj;
-    [SerializeField] private GameObject mumObj;
+    [Header("Tek Satır İpucu Metni (henüz özel paneli olmayan ipucu tipleri için)")]
     [SerializeField] private TextMeshProUGUI ipucuMetni;
     [Header("3D İpucu Obje Verisi")]
     [SerializeField] private HintVisualPropsData hintPropsData;
@@ -155,12 +150,16 @@ public class DynamicHintSystem : MonoBehaviour
         if (ipucuMetni == null)
         {
             // "true" parametresi, hiyerarşide kapalı (SetActive(false)) olan UI objelerini de bulur.
-            TextMeshProUGUI[] texts = FindObjectsOfType<TextMeshProUGUI>(true);
+            TextMeshProUGUI[] texts = FindObjectsByType<TextMeshProUGUI>(FindObjectsInactive.Include, FindObjectsSortMode.None);
             foreach (var t in texts)
             {
+                // Sahneler arası yaşayan objelerin (geri sayım, altyazı panelleri) yazılarını asla alma
+                if (t.gameObject.scene.name == "DontDestroyOnLoad") continue;
+
+                // Sadece açıkça ipucu metni olarak adlandırılmış yazıyı al.
+                // ("text"/"sub" geçen her yazıyı almak başka arayüzleri gizliyordu.)
                 string tName = t.gameObject.name.ToLower();
-                // Olası isimlere göre sahnede ipucu metnini otomatik bul:
-                if (tName.Contains("ipucu") || tName.Contains("hint") || tName.Contains("sub") || tName.Contains("text"))
+                if (tName.Contains("ipucu") || tName.Contains("hint"))
                 {
                     ipucuMetni = t;
                     break;
@@ -176,13 +175,6 @@ public class DynamicHintSystem : MonoBehaviour
     {
         UnityEngine.SceneManagement.Scene activeScene = UnityEngine.SceneManagement.SceneManager.GetActiveScene();
         string sceneName = activeScene.name;
-
-        // Zindan, Menü, Lore veya Ending sahnelerinde ipucu üretme
-        if (sceneName.Contains("Zindan") || sceneName.Contains("Menu") || sceneName.Contains("Lore") || sceneName.Contains("Ending"))
-        {
-            Debug.Log($"[DynamicHint] Oyun dışı sahne ('{sceneName}') algılandı. İpucu üretilmedi.");
-            return;
-        }
 
         // Sahne adından gerçek Oda Index'ini hesapla (Zindandan dönüldüğünde hatalı tutorial algısını çözer)
         // "Game" = ana menü, "Game N" = Oda N
@@ -320,36 +312,16 @@ public class DynamicHintSystem : MonoBehaviour
     /// </summary>
     private Vector3 GetRandomSpawnPosition()
     {
-        // 1. Inspector'da veya sahneden atanmış hintSpawnPoints dizisi varsa içinden rastgele seç
-        if (hintSpawnPoints != null && hintSpawnPoints.Length > 0)
+        // 1. Odaya HintSpawnPoint bileşeniyle işaretlenmiş noktalar konduysa içlerinden rastgele seç
+        HintSpawnPoint[] points = FindObjectsByType<HintSpawnPoint>(FindObjectsSortMode.None);
+        if (points.Length > 0)
         {
-            int validCount = 0;
-            foreach (var p in hintSpawnPoints) if (p != null) validCount++;
-            if (validCount > 0)
-            {
-                int rIdx = Random.Range(0, hintSpawnPoints.Length);
-                if (hintSpawnPoints[rIdx] != null) return hintSpawnPoints[rIdx].position;
-            }
+            return points[Random.Range(0, points.Length)].transform.position;
         }
 
-        // 2. Sahnedeki "HintSpawnPoint" isimli GameObjects varsa bul ve rastgele seç
-        GameObject[] scenePoints = GameObject.FindGameObjectsWithTag("Untagged");
-        System.Collections.Generic.List<Vector3> foundPositions = new System.Collections.Generic.List<Vector3>();
-        foreach (var go in scenePoints)
-        {
-            if (go.name.ToLower().Contains("hint") || go.name.ToLower().Contains("spawn"))
-            {
-                foundPositions.Add(go.transform.position);
-            }
-        }
-        if (foundPositions.Count > 0)
-        {
-            return foundPositions[Random.Range(0, foundPositions.Count)];
-        }
-
-        // 3. Varsayılan Konum (Kameraya / Oyuncuya Göre Bağıl)
+        // 2. Varsayılan Konum (Kameraya / Oyuncuya Göre Bağıl)
         // Odanın koordinatı veya rotasyonu ne olursa olsun obje oyuncunun görüş alanına yakın spawn olur.
-        Kamera oyuncuKamera = FindObjectOfType<Kamera>();
+        Kamera oyuncuKamera = FindAnyObjectByType<Kamera>();
         if (oyuncuKamera != null && oyuncuKamera.cam != null)
         {
             Transform camT = oyuncuKamera.cam.transform;
