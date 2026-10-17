@@ -51,6 +51,23 @@ public class DynamicHintSystem : MonoBehaviour
     public static DynamicHintSystem instance { get; private set; }
 
     private GameObject currentSpawnedProp;
+    private GameObject currentSpawnedTable;
+
+    [Header("İpucu Masası")]
+    [Tooltip("İpucu objesi havada doğarsa altına loş ışıklı paslı masa kurulur")]
+    [SerializeField] private bool useHintTable = true;
+
+    /// <summary>
+    /// Nokta zeminden belirgin yüksekteyse (bir mobilyanın üstünde değilse) true döner.
+    /// </summary>
+    private static bool IsFloating(Vector3 position)
+    {
+        if (Physics.Raycast(position + Vector3.up * 0.05f, Vector3.down, out RaycastHit hit, 5f, ~0, QueryTriggerInteraction.Ignore))
+        {
+            return hit.distance > 0.5f;
+        }
+        return true;
+    }
 
     [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.BeforeSceneLoad)]
     private static void OtomatikOlustur()
@@ -212,6 +229,11 @@ public class DynamicHintSystem : MonoBehaviour
             Destroy(currentSpawnedProp);
             currentSpawnedProp = null;
         }
+        if (currentSpawnedTable != null)
+        {
+            Destroy(currentSpawnedTable);
+            currentSpawnedTable = null;
+        }
 
         // İpucunun gösterdiği görünür yön (Fake Hint ise gerçeğin tersi gösterilir)
         bool shownDirectionLeft = isFakeHint ? !isLeftDoorCorrect : isLeftDoorCorrect;
@@ -239,8 +261,25 @@ public class DynamicHintSystem : MonoBehaviour
             if (entry != null && entry.propPrefab != null)
             {
                 Vector3 spawnPos = GetRandomSpawnPosition();
+                Quaternion propRotation = Quaternion.Euler(shownDirectionLeft ? entry.leftDirectionRotation : entry.rightDirectionRotation);
 
-                currentSpawnedProp = Instantiate(entry.propPrefab, spawnPos + entry.localPositionOffset, Quaternion.Euler(shownDirectionLeft ? entry.leftDirectionRotation : entry.rightDirectionRotation));
+                // Obje havada kalıyorsa altına loş ışıklı paslı bir masa kur ve objeyi üstüne koy
+                if (useHintTable && IsFloating(spawnPos))
+                {
+                    Quaternion facePlayer = Quaternion.identity;
+                    Kamera oyuncuKamera = FindAnyObjectByType<Kamera>();
+                    if (oyuncuKamera != null && oyuncuKamera.cam != null)
+                    {
+                        Vector3 toPlayer = oyuncuKamera.cam.transform.position - spawnPos;
+                        toPlayer.y = 0f;
+                        if (toPlayer.sqrMagnitude > 0.001f) facePlayer = Quaternion.LookRotation(toPlayer);
+                    }
+
+                    currentSpawnedTable = HintTable.Create(spawnPos, facePlayer, out Vector3 tableTop).gameObject;
+                    spawnPos = tableTop;
+                }
+
+                currentSpawnedProp = Instantiate(entry.propPrefab, spawnPos + entry.localPositionOffset, propRotation);
                 HintPropComponent hpc = currentSpawnedProp.GetComponent<HintPropComponent>();
                 if (hpc == null)
                 {
