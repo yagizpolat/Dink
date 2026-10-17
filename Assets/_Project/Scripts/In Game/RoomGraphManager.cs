@@ -10,6 +10,8 @@ public class RoomGraphManager : MonoBehaviour
 {
     public static RoomGraphManager instance;
 
+    private const string RoomGraphResourcePath = "Dink/RoomGraph";
+
     [Header("ScriptableObject Oda Ağı Verisi")]
     [SerializeField] private RoomGraphData roomGraphData;
 
@@ -69,27 +71,13 @@ public class RoomGraphManager : MonoBehaviour
     {
         if (roomGraphData != null) return roomGraphData;
 
-        RoomGraphData[] found = Resources.FindObjectsOfTypeAll<RoomGraphData>();
-        if (found != null && found.Length > 0)
+        // Resources klasöründe olduğu için build'e de girer (AssetDatabase sadece editörde çalışır)
+        roomGraphData = Resources.Load<RoomGraphData>(RoomGraphResourcePath);
+        if (roomGraphData == null)
         {
-            roomGraphData = found[0];
-            return roomGraphData;
+            Debug.LogError($"[RoomGraphManager] Oda ağı bulunamadı: Resources/{RoomGraphResourcePath}.asset");
         }
-
-#if UNITY_EDITOR
-        string[] guids = UnityEditor.AssetDatabase.FindAssets("t:RoomGraphData");
-        if (guids.Length > 0)
-        {
-            string path = UnityEditor.AssetDatabase.GUIDToAssetPath(guids[0]);
-            roomGraphData = UnityEditor.AssetDatabase.LoadAssetAtPath<RoomGraphData>(path);
-            if (roomGraphData != null)
-            {
-                return roomGraphData;
-            }
-        }
-#endif
-
-        return null;
+        return roomGraphData;
     }
 
     public RoomGraphData.RoomNode GetCurrentNode()

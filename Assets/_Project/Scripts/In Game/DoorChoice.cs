@@ -87,7 +87,7 @@ public class DoorChoice : MonoBehaviour
             RoomGraphManager.instance.currentRoomIndex = derivedRoomIndex;
         }
 
-        // ItsGame (RoomGraphData) dosyasından ilgili odanın node verisini oku
+        // RoomGraph (Resources/Dink) dosyasından ilgili odanın node verisini oku
         RoomGraphData graphData = RoomGraphManager.instance != null ? RoomGraphManager.instance.GetRoomGraphData() : null;
         bool isGraphTutorial = false;
         if (graphData != null)
@@ -102,7 +102,7 @@ public class DoorChoice : MonoBehaviour
         bool isTutorial = isTutorialMap || isGraphTutorial;
 
         int elementIndex = derivedRoomIndex - 1;
-        Debug.Log($"[DoorChoice] Sahne: '{sceneName}' -> ItsGame Inspector: Element {elementIndex} (Room Index {derivedRoomIndex}), IsTutorial: {isGraphTutorial}, Sahne Inspector: {isTutorialMap} -> SONUÇ: {(isTutorial ? "TUTORIAL (İki Kapı da Doğru)" : "NORMAL OYUN (Yanlış Kapı Jumpscare)")}");
+        Debug.Log($"[DoorChoice] Sahne: '{sceneName}' -> RoomGraph Element {elementIndex} (Room Index {derivedRoomIndex}), IsTutorial: {isGraphTutorial}, Sahne Inspector: {isTutorialMap} -> SONUÇ: {(isTutorial ? "TUTORIAL (İki Kapı da Doğru)" : "NORMAL OYUN (Yanlış Kapı Jumpscare)")}");
 
         if (isTutorial)
         {

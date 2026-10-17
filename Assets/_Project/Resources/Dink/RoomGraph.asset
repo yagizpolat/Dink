@@ -10,7 +10,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: ef6da5a6c97434846a21cdbf84034e78, type: 3}
-  m_Name: ItsGame
+  m_Name: RoomGraph
   m_EditorClassIdentifier: Assembly-CSharp::RoomGraphData
   roomNodes:
   - roomIndex: 1

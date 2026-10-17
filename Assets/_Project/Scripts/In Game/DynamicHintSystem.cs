@@ -124,24 +124,13 @@ public class DynamicHintSystem : MonoBehaviour
     {
         if (hintPropsData != null) return hintPropsData;
 
-        HintVisualPropsData[] found = Resources.FindObjectsOfTypeAll<HintVisualPropsData>();
-        if (found != null && found.Length > 0)
+        // Resources klasöründe olduğu için build'e de girer (AssetDatabase sadece editörde çalışır)
+        hintPropsData = Resources.Load<HintVisualPropsData>("Dink/HintVisualPropsData");
+        if (hintPropsData == null)
         {
-            hintPropsData = found[0];
-            return hintPropsData;
+            Debug.LogError("[DynamicHint] İpucu obje verisi bulunamadı: Resources/Dink/HintVisualPropsData.asset");
         }
-
-#if UNITY_EDITOR
-        string[] guids = UnityEditor.AssetDatabase.FindAssets("t:HintVisualPropsData");
-        if (guids.Length > 0)
-        {
-            string path = UnityEditor.AssetDatabase.GUIDToAssetPath(guids[0]);
-            hintPropsData = UnityEditor.AssetDatabase.LoadAssetAtPath<HintVisualPropsData>(path);
-            if (hintPropsData != null) return hintPropsData;
-        }
-#endif
-
-        return null;
+        return hintPropsData;
     }
 
     private void AutoFindSceneReferences()
