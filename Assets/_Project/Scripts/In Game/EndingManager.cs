@@ -1,6 +1,8 @@
 using System.Collections;
+using TMPro;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using UnityEngine.UI;
 
 /// <summary>
 /// Çift Son & Kötü Döngü Yöneticisi (Ending Manager).
@@ -16,8 +18,8 @@ public class EndingManager : MonoBehaviour
     [SerializeField] private string badLoopSceneName = "BadLoopScene";
     [SerializeField] private string goodEndingSceneName = "GoodEndingScene";
 
-    [Tooltip("Kötü Döngü sahnesi yoksa oyuncunun hapsolacağı oda (sonsuz döngü)")]
-    [SerializeField] private string badLoopFallbackSceneName = "Game 1";
+    [Tooltip("Kötü Döngü sahnesi yoksa, oyuncu ilk gerçek odaya atılmadan önce 'Yine buradasın...' yazısının ekranda kalma süresi")]
+    [SerializeField] private float badLoopMessageSeconds = 2.5f;
 
     /// <summary>
     /// Sahnede elle eklemeye gerek kalmadan oyun açılışında otomatik oluşur.
@@ -78,10 +80,65 @@ public class EndingManager : MonoBehaviour
         }
         else
         {
-            // Özel sahne henüz yok: oyuncuyu baştaki odaya geri at, döngü hissi korunur
-            Debug.LogWarning($"[EndingManager] '{badLoopSceneName}' sahnesi Build Settings'te bulunamadı! '{badLoopFallbackSceneName}' odasına döngüye sokuluyor.");
-            SceneManager.LoadScene(badLoopFallbackSceneName);
+            // Özel sahne henüz yok: oyuncuyu tutorial olmayan ilk odaya geri at, döngü hissi korunur.
+            // İstatistikler sıfırlanmaz; bu turda daha çok ipucu okursa kaçabilir.
+            int loopRoom = TutorialProgress.FirstPlayableRoom;
+            Debug.LogWarning($"[EndingManager] '{badLoopSceneName}' sahnesi Build Settings'te bulunamadı! Oda {loopRoom}'e döngüye sokuluyor.");
+            StartCoroutine(BadLoopFallbackRoutine(loopRoom));
         }
+    }
+
+    private IEnumerator BadLoopFallbackRoutine(int loopRoom)
+    {
+        GameObject overlay = CreateLoopMessageOverlay();
+
+        yield return new WaitForSecondsRealtime(badLoopMessageSeconds);
+
+        Time.timeScale = 1f;
+        DinkScenes.LoadRoom(loopRoom);
+
+        // Yeni oda yüklenip kararmadan çıkana kadar mesajı kısa bir süre daha tut
+        yield return new WaitForSecondsRealtime(0.4f);
+        Destroy(overlay);
+    }
+
+    private GameObject CreateLoopMessageOverlay()
+    {
+        GameObject canvasObj = new GameObject("BadLoopMessageCanvas");
+        canvasObj.transform.SetParent(transform, false);
+        Canvas canvas = canvasObj.AddComponent<Canvas>();
+        canvas.renderMode = RenderMode.ScreenSpaceOverlay;
+        canvas.sortingOrder = 200;
+        CanvasScaler scaler = canvasObj.AddComponent<CanvasScaler>();
+        scaler.uiScaleMode = CanvasScaler.ScaleMode.ScaleWithScreenSize;
+        scaler.referenceResolution = new Vector2(1920, 1080);
+
+        GameObject bg = new GameObject("Black");
+        bg.transform.SetParent(canvasObj.transform, false);
+        RectTransform bgRect = bg.AddComponent<RectTransform>();
+        bgRect.anchorMin = Vector2.zero;
+        bgRect.anchorMax = Vector2.one;
+        bgRect.offsetMin = Vector2.zero;
+        bgRect.offsetMax = Vector2.zero;
+        bg.AddComponent<Image>().color = Color.black;
+
+        GameObject msg = new GameObject("LoopMessage");
+        msg.transform.SetParent(canvasObj.transform, false);
+        RectTransform msgRect = msg.AddComponent<RectTransform>();
+        msgRect.anchorMin = new Vector2(0.1f, 0.4f);
+        msgRect.anchorMax = new Vector2(0.9f, 0.6f);
+        msgRect.offsetMin = Vector2.zero;
+        msgRect.offsetMax = Vector2.zero;
+        TextMeshProUGUI tmp = msg.AddComponent<TextMeshProUGUI>();
+        bool isTR = LanguageManager.instance != null && LanguageManager.instance.CurrentLanguage == LanguageManager.Language.TR;
+        tmp.text = isTR ? "Yine buradasın..." : "You're here again...";
+        tmp.fontSize = 56;
+        tmp.fontStyle = FontStyles.Italic;
+        tmp.alignment = TextAlignmentOptions.Center;
+        tmp.color = new Color(0.8f, 0.75f, 0.68f);
+        tmp.raycastTarget = false;
+
+        return canvasObj;
     }
 
     private void TriggerGoodEnding()
