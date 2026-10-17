@@ -149,22 +149,12 @@ public class DynamicHintSystem : MonoBehaviour
         }
 
         // Sahne adından gerçek Oda Index'ini hesapla (Zindandan dönüldüğünde hatalı tutorial algısını çözer)
-        int derivedRoomIndex = 1;
-        if (sceneName.StartsWith("Game "))
+        // "Game" = ana menü, "Game N" = Oda N
+        int derivedRoomIndex = RoomGraphManager.GetRoomIndexFromScene(activeScene);
+        if (derivedRoomIndex <= 0)
         {
-            string numStr = sceneName.Replace("Game ", "").Trim();
-            if (int.TryParse(numStr, out int num))
-            {
-                derivedRoomIndex = num + 1;
-            }
-        }
-        else if (sceneName.Equals("Game"))
-        {
-            derivedRoomIndex = 1;
-        }
-        else
-        {
-            derivedRoomIndex = activeScene.buildIndex + 1;
+            Debug.Log($"[DynamicHint] Oda olmayan sahne ('{sceneName}') algılandı. İpucu üretilmedi.");
+            return;
         }
 
         if (RoomGraphManager.instance != null)

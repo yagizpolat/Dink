@@ -67,25 +67,9 @@ public class DoorChoice : MonoBehaviour
         // Tutorial Tespiti ve Oda Index Senkronizasyonu
         Scene activeScene = SceneManager.GetActiveScene();
         string sceneName = activeScene.name;
-        int sceneIndex = activeScene.buildIndex;
 
-        int derivedRoomIndex = 1;
-        if (sceneName.StartsWith("Game "))
-        {
-            string numStr = sceneName.Replace("Game ", "").Trim();
-            if (int.TryParse(numStr, out int num))
-            {
-                derivedRoomIndex = num + 1;
-            }
-        }
-        else if (sceneName.Equals("Game"))
-        {
-            derivedRoomIndex = 1;
-        }
-        else
-        {
-            derivedRoomIndex = sceneIndex + 1;
-        }
+        // "Game N" = Oda N (Build Index N); "Game" ana menüdür
+        int derivedRoomIndex = Mathf.Max(1, RoomGraphManager.GetRoomIndexFromScene(activeScene));
 
         if (RoomGraphManager.instance == null)
         {
