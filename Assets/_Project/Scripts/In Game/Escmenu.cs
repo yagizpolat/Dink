@@ -18,6 +18,7 @@ public class Escmenu : MonoBehaviour
     [Tooltip("İşaretliyse eski buton panelinin yerine karanlıkta aralık kapı ışığı menüsü açılır")]
     [SerializeField] private bool kapiAraligiMenusu = true;
     private DoorLightMenu kapiMenusu;
+    private DoorLightSettings kapiAyarlari;
 
     private void Start()
     {
@@ -51,6 +52,8 @@ public class Escmenu : MonoBehaviour
         // Mektup açıkken ESC mektubu kapatır; intro oynarken ESC introyu atlar
         if (MektupNotHintUI.instance != null && MektupNotHintUI.instance.IsPanelOpen) return;
         if (IntroCinematic.IsPlaying) return;
+        // Kapı ayarları açıkken ESC'yi o ekran işler (geri döner)
+        if (kapiAyarlari != null && kapiAyarlari.IsOpen) return;
 
         if (DinkInput.EscapeDown)
         {
@@ -119,6 +122,16 @@ public class Escmenu : MonoBehaviour
     /// </summary>
     public void AyarlariAc()
     {
+        // Kapı menüsü kullanılıyorsa ayarlar da aynı tarzda açılır (eski panel kullanılmaz)
+        if (kapiMenusu != null)
+        {
+            if (kapiAyarlari == null) kapiAyarlari = gameObject.AddComponent<DoorLightSettings>();
+            GameObject icerik = kapiMenusu.Content;
+            if (icerik != null) icerik.SetActive(false);
+            kapiAyarlari.Open(160, () => { if (icerik != null) icerik.SetActive(true); });
+            return;
+        }
+
         SettingsManager sm = SettingsManager.instance;
         if (sm == null)
         {

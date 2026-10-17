@@ -16,6 +16,7 @@ public class MainMenu3DController : MonoBehaviour
     public SceneTransition sceneTransition;
 
     private DoorLightMenu kapiMenusu;
+    private DoorLightSettings kapiAyarlari;
     private bool oyunBasliyor;
 
     // ════════════════════════════════════════════
@@ -44,7 +45,7 @@ public class MainMenu3DController : MonoBehaviour
         kapiMenusu.Build(labels, new System.Action[]
         {
             () => { oyunBasliyor = true; StartGame(); },
-            () => OpenPanel(graphicsPanel),
+            OpenSettings,
             QuitGame
         }, new DoorLightMenu.Layout
         {
@@ -62,9 +63,19 @@ public class MainMenu3DController : MonoBehaviour
         kapiMenusu.Open();
     }
 
+    /// <summary>Kapı aralığı tarzı ayarlar ekranını menünün üstünde açar.</summary>
+    private void OpenSettings()
+    {
+        if (kapiAyarlari == null) kapiAyarlari = gameObject.AddComponent<DoorLightSettings>();
+        GameObject icerik = kapiMenusu != null ? kapiMenusu.Content : null;
+        if (icerik != null) icerik.SetActive(false);
+        kapiAyarlari.Open(10, () => { if (icerik != null) icerik.SetActive(true); });
+    }
+
     private bool IsAnySettingsPanelOpen()
     {
-        return (graphicsPanel != null && graphicsPanel.activeInHierarchy) ||
+        return (kapiAyarlari != null && kapiAyarlari.IsOpen) ||
+               (graphicsPanel != null && graphicsPanel.activeInHierarchy) ||
                (audioPanel != null && audioPanel.activeInHierarchy) ||
                (languagePanel != null && languagePanel.activeInHierarchy) ||
                (SettingsManager.instance != null && SettingsManager.instance.gameObject.activeInHierarchy);

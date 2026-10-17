@@ -60,6 +60,14 @@ public class SettingsManager : MonoBehaviour
     private readonly string[] frameRateOptions = { "30 FPS", "60 FPS", "120 FPS", "SINIRSIZ" };
     private readonly int[] frameRateValues = { 30, 60, 120, -1 };
 
+    // Kapı aralığı ayarlar ekranı (DoorLightSettings) değerleri buradan okur
+    public string QualityName => qualityNames[currentQualityIndex];
+    public string FrameRateName => frameRateOptions[currentFrameRateIndex];
+    public bool IsFullscreen => isFullscreen;
+    public bool IsVSync => isVSync;
+    public string ResolutionName => resolutions != null && resolutions.Length > 0
+        ? $"{resolutions[currentResIndex].width}×{resolutions[currentResIndex].height}" : $"{Screen.width}×{Screen.height}";
+
     // PlayerPrefs Sabitleri
     private const string PREF_QUALITY = "Dink_QualityLevel";
     private const string PREF_FULLSCREEN = "Dink_Fullscreen";
@@ -83,6 +91,13 @@ public class SettingsManager : MonoBehaviour
             Destroy(gameObject);
             return;
         }
+    }
+
+    /// <summary>Panel hiç açılmamış olsa da (Start çalışmamış olabilir) değerleri yükler.</summary>
+    public void PrepareForExternalUI()
+    {
+        if (resolutions == null) SetupResolutions();
+        LoadAndApplySettings();
     }
 
     private void Start()

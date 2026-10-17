@@ -51,7 +51,8 @@ public class DoorLightMenu : MonoBehaviour
 
     /// <summary>Üstte başka bir panel (ayarlar, isim girişi) açıkken menünün tuş ve tıklamaları yok sayılsın diye.</summary>
     public Func<bool> IsInputBlocked;
-    private bool InputBlocked => IsInputBlocked != null && IsInputBlocked();
+    // Ayarlar ekranı Enter ile kapandığı karede aynı tuş menüde ikinci kez işlenmesin
+    private bool InputBlocked => (IsInputBlocked != null && IsInputBlocked()) || Time.frameCount == DoorLightSettings.LastClosedFrame;
 
     public GameObject Root => canvas != null ? canvas.gameObject : null;
 
