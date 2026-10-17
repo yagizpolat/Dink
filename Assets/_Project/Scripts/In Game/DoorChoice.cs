@@ -69,7 +69,7 @@ public class DoorChoice : MonoBehaviour
         string sceneName = activeScene.name;
 
         // "Game N" = Oda N (Build Index N); "Game" ana menüdür
-        int derivedRoomIndex = Mathf.Max(1, RoomGraphManager.GetRoomIndexFromScene(activeScene));
+        int derivedRoomIndex = Mathf.Max(1, DinkScenes.GetRoomIndex(activeScene));
 
         if (RoomGraphManager.instance == null)
         {

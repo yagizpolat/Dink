@@ -60,7 +60,7 @@ public class AudioManager : MonoBehaviour
         LoadVolumeSettings();
 
         // Sahneye göre müziği başlat
-        AudioClip targetClip = (SceneManager.GetActiveScene().buildIndex == 0) ? menuMusic : gameAmbience;
+        AudioClip targetClip = DinkScenes.IsMainMenu(SceneManager.GetActiveScene()) ? menuMusic : gameAmbience;
         PlayMusic(targetClip);
     }
 
@@ -127,7 +127,7 @@ public class AudioManager : MonoBehaviour
     private void OnSceneLoaded(Scene scene, LoadSceneMode mode)
     {
         AutoLoadAudioClips();
-        AudioClip targetClip = (scene.buildIndex == 0) ? menuMusic : gameAmbience;
+        AudioClip targetClip = DinkScenes.IsMainMenu(scene) ? menuMusic : gameAmbience;
 
         if (targetClip != null)
         {

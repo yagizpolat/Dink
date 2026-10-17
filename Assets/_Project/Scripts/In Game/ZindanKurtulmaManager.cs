@@ -51,8 +51,8 @@ public class ZindanKurtulmaManager : MonoBehaviour
 
     private void OnSceneLoaded(Scene scene, LoadSceneMode mode)
     {
-        // Ana Menüye (Build Index 0) dönüldüğünde kurtulma haklarını otomatik sıfırla
-        if (scene.buildIndex == 0)
+        // Ana Menüye dönüldüğünde kurtulma haklarını otomatik sıfırla
+        if (DinkScenes.IsMainMenu(scene))
         {
             HaklariSifirla();
         }

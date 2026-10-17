@@ -186,7 +186,7 @@ public class DynamicHintSystem : MonoBehaviour
 
         // Sahne adından gerçek Oda Index'ini hesapla (Zindandan dönüldüğünde hatalı tutorial algısını çözer)
         // "Game" = ana menü, "Game N" = Oda N
-        int derivedRoomIndex = RoomGraphManager.GetRoomIndexFromScene(activeScene);
+        int derivedRoomIndex = DinkScenes.GetRoomIndex(activeScene);
         if (derivedRoomIndex <= 0)
         {
             Debug.Log($"[DynamicHint] Oda olmayan sahne ('{sceneName}') algılandı. İpucu üretilmedi.");

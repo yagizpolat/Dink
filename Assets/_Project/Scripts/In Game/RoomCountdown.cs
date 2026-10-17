@@ -69,7 +69,7 @@ public class RoomCountdown : MonoBehaviour
     {
         Stop();
 
-        int roomIndex = RoomGraphManager.GetRoomIndexFromScene(scene);
+        int roomIndex = DinkScenes.GetRoomIndex(scene);
         if (roomIndex < firstTimedRoom) return;
 
         // Tutorial odalarında iki kapı da doğru, sayaç anlamsız

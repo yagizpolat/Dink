@@ -604,7 +604,7 @@ public class LeaderboardManager : MonoBehaviour
         mbBtn.onClick.AddListener(() =>
         {
             Time.timeScale = 1f;
-            SceneManager.LoadScene(0);
+            DinkScenes.LoadMainMenu();
         });
 
         GameObject mbTextObj = new GameObject("Text");
@@ -633,7 +633,7 @@ public class LeaderboardManager : MonoBehaviour
         rbBtn.onClick.AddListener(() =>
         {
             Time.timeScale = 1f;
-            SceneManager.LoadScene(1);
+            DinkScenes.LoadRoom(DinkScenes.FirstRoom);
         });
 
         GameObject rbTextObj = new GameObject("Text");

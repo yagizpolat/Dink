@@ -14,9 +14,6 @@ public class JumpscareController : MonoBehaviour
     [SerializeField] private Camera mainCamera;
     [SerializeField] private float shakeMagnitude = 0.5f;
 
-    [Header("Sonuç")]
-    [SerializeField] private int mainMenuBuildIndex = 0;
-
     public void Play()
     {
         StartCoroutine(PlayRoutine());
@@ -68,15 +65,8 @@ public class JumpscareController : MonoBehaviour
             }
         }
 
-        // Hak kalmadı veya ZindanKurtulmaManager yok — eski davranış: ana menüye at
-        if (mainMenuBuildIndex < 0 ||
-            mainMenuBuildIndex >= SceneManager.sceneCountInBuildSettings)
-        {
-            Debug.LogError($"Geçersiz ana menü Build Index'i: {mainMenuBuildIndex}");
-            yield break;
-        }
-
-        SceneManager.LoadScene(mainMenuBuildIndex);
+        // Hak kalmadı veya ZindanKurtulmaManager yok — ana menüye at
+        DinkScenes.LoadMainMenu();
     }
 
     private IEnumerator ShakeCamera(Vector3 originalPos)

@@ -61,7 +61,7 @@ public class SpeedrunnerDetector : MonoBehaviour
 
     private void OnSceneLoaded(Scene scene, LoadSceneMode mode)
     {
-        int roomIndex = RoomGraphManager.GetRoomIndexFromScene(scene);
+        int roomIndex = DinkScenes.GetRoomIndex(scene);
 
         // Ana menüye dönüldüğünde yeni oyun için istatistikleri sıfırla
         if (roomIndex == 0)

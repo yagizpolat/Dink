@@ -65,21 +65,6 @@ public class RoomGraphManager : MonoBehaviour
         LoadRoomScene(currentRoomIndex);
     }
 
-    /// <summary>
-    /// Sahne adından oda numarasını çıkarır. "Game" = Ana Menü (0), "Game N" = Oda N (Build Index N).
-    /// Oda sahnesi değilse -1 döner.
-    /// </summary>
-    public static int GetRoomIndexFromScene(Scene scene)
-    {
-        string sceneName = scene.name;
-        if (sceneName == "Game") return 0;
-        if (sceneName.StartsWith("Game ") && int.TryParse(sceneName.Substring(5).Trim(), out int num))
-        {
-            return num;
-        }
-        return -1;
-    }
-
     public RoomGraphData GetRoomGraphData()
     {
         if (roomGraphData != null) return roomGraphData;
@@ -139,14 +124,13 @@ public class RoomGraphManager : MonoBehaviour
     private void LoadRoomScene(int roomIndex)
     {
         // Speedrunner veya Final kontrolü
-        if (roomIndex > 15 && EndingManager.instance != null)
+        if (roomIndex > DinkScenes.LastRoom && EndingManager.instance != null)
         {
             EndingManager.instance.CheckEndingAndTransition();
             return;
         }
 
-        // Oda N = "Game N" sahnesi (Build Index 0 = "Game" ana menü)
-        string sceneName = $"Game {roomIndex}";
+        string sceneName = DinkScenes.RoomSceneName(roomIndex);
         if (Application.CanStreamedLevelBeLoaded(sceneName))
         {
             Debug.Log($"[RoomGraphManager] Oda {roomIndex} Sahnesine Geçiliyor... (Sahne Adı: {sceneName})");
@@ -155,7 +139,7 @@ public class RoomGraphManager : MonoBehaviour
         else
         {
             Debug.LogError($"[RoomGraphManager] '{sceneName}' sahnesi Build Settings'te yok! Ana menüye dönülüyor.");
-            SceneManager.LoadScene(0);
+            DinkScenes.LoadMainMenu();
         }
     }
 }

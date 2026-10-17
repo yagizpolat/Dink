@@ -188,7 +188,7 @@ public class MainMenu3DController : MonoBehaviour
         }
         else
         {
-            SceneManager.LoadScene(1);
+            DinkScenes.LoadRoom(DinkScenes.FirstRoom);
         }
     }
 

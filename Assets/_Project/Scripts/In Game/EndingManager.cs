@@ -99,7 +99,7 @@ public class EndingManager : MonoBehaviour
             Cursor.visible = true;
             if (LeaderboardManager.instance == null)
             {
-                SceneManager.LoadScene(0);
+                DinkScenes.LoadMainMenu();
             }
         }
     }

@@ -155,7 +155,7 @@ public class ZindanKasaMinigame : MonoBehaviour
     {
         yield return new WaitForSecondsRealtime(1.2f);
         if (ZindanKurtulmaManager.instance != null) ZindanKurtulmaManager.instance.ZindandanKurtul();
-        else SceneManager.LoadScene(1);
+        else DinkScenes.LoadRoom(DinkScenes.FirstRoom);
     }
 
     private void Basarisiz()
@@ -173,7 +173,7 @@ public class ZindanKasaMinigame : MonoBehaviour
     {
         yield return new WaitForSecondsRealtime(2f);
         if (ZindanKurtulmaManager.instance != null) ZindanKurtulmaManager.instance.HaklariSifirla();
-        SceneManager.LoadScene(0);
+        DinkScenes.LoadMainMenu();
     }
 
     private void SesCal(AudioClip clip)
