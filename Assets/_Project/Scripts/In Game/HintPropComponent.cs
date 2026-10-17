@@ -11,6 +11,7 @@ public class HintPropComponent : MonoBehaviour
     private bool shownDirLeft;
     private bool isFakeHint;
     private bool hasBeenInteracted;
+    private bool hasCountedLore;
 
     private void Awake()
     {
@@ -58,6 +59,16 @@ public class HintPropComponent : MonoBehaviour
     public void Interact()
     {
         Debug.Log($"[HintPropComponent] 🖱️ İpucu Objeksiyonuna Tıklandı! -> Tarz: {assignedType}, Gösterilen Yön: {(shownDirLeft ? "SOL" : "SAĞ")}, Fake: {isFakeHint}");
+
+        // İyi/Kötü son kararı için her ipucu objesi yalnızca bir kez lore etkileşimi sayılır
+        if (!hasCountedLore)
+        {
+            hasCountedLore = true;
+            if (SpeedrunnerDetector.instance != null)
+            {
+                SpeedrunnerDetector.instance.RegisterLoreInteraction();
+            }
+        }
 
         switch (assignedType)
         {

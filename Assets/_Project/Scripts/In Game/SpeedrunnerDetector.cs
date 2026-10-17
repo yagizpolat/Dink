@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 /// <summary>
 /// Speedrunner Hibrit Tespit Motoru (Speedrunner Detector Engine).
@@ -23,6 +24,18 @@ public class SpeedrunnerDetector : MonoBehaviour
 
     private float currentRoomStartTime;
 
+    /// <summary>
+    /// Sahnede elle eklemeye gerek kalmadan oyun açılışında otomatik oluşur.
+    /// </summary>
+    [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.BeforeSceneLoad)]
+    private static void OtomatikOlustur()
+    {
+        if (instance != null) return;
+
+        GameObject go = new GameObject("[SpeedrunnerDetector]");
+        go.AddComponent<SpeedrunnerDetector>();
+    }
+
     private void Awake()
     {
         if (instance == null)
@@ -33,6 +46,31 @@ public class SpeedrunnerDetector : MonoBehaviour
         else
         {
             Destroy(gameObject);
+        }
+    }
+
+    private void OnEnable()
+    {
+        SceneManager.sceneLoaded += OnSceneLoaded;
+    }
+
+    private void OnDisable()
+    {
+        SceneManager.sceneLoaded -= OnSceneLoaded;
+    }
+
+    private void OnSceneLoaded(Scene scene, LoadSceneMode mode)
+    {
+        int roomIndex = RoomGraphManager.GetRoomIndexFromScene(scene);
+
+        // Ana menüye dönüldüğünde yeni oyun için istatistikleri sıfırla
+        if (roomIndex == 0)
+        {
+            ResetStats();
+        }
+        else if (roomIndex > 0)
+        {
+            OnRoomEntered();
         }
     }
 

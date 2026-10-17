@@ -16,6 +16,22 @@ public class EndingManager : MonoBehaviour
     [SerializeField] private string badLoopSceneName = "BadLoopScene";
     [SerializeField] private string goodEndingSceneName = "GoodEndingScene";
 
+    [Tooltip("Kötü Döngü sahnesi yoksa oyuncunun hapsolacağı oda (sonsuz döngü)")]
+    [SerializeField] private string badLoopFallbackSceneName = "Game 1";
+
+    /// <summary>
+    /// Sahnede elle eklemeye gerek kalmadan oyun açılışında otomatik oluşur.
+    /// Aksi halde 15. odadan sonra final kararı hiç verilmiyordu.
+    /// </summary>
+    [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.BeforeSceneLoad)]
+    private static void OtomatikOlustur()
+    {
+        if (instance != null) return;
+
+        GameObject go = new GameObject("[EndingManager]");
+        go.AddComponent<EndingManager>();
+    }
+
     private void Awake()
     {
         if (instance == null)
@@ -62,7 +78,9 @@ public class EndingManager : MonoBehaviour
         }
         else
         {
-            Debug.LogWarning($"[EndingManager] '{badLoopSceneName}' sahnesi Build Settings'te bulunamadı!");
+            // Özel sahne henüz yok: oyuncuyu baştaki odaya geri at, döngü hissi korunur
+            Debug.LogWarning($"[EndingManager] '{badLoopSceneName}' sahnesi Build Settings'te bulunamadı! '{badLoopFallbackSceneName}' odasına döngüye sokuluyor.");
+            SceneManager.LoadScene(badLoopFallbackSceneName);
         }
     }
 
@@ -75,7 +93,14 @@ public class EndingManager : MonoBehaviour
         }
         else
         {
-            Debug.LogWarning($"[EndingManager] '{goodEndingSceneName}' sahnesi Build Settings'te bulunamadı!");
+            // Özel sahne henüz yok: skor panelindeki Ana Menü / Yeniden Oyna butonları kullanılabilsin
+            Debug.LogWarning($"[EndingManager] '{goodEndingSceneName}' sahnesi Build Settings'te bulunamadı! Skor paneli gösteriliyor.");
+            Cursor.lockState = CursorLockMode.None;
+            Cursor.visible = true;
+            if (LeaderboardManager.instance == null)
+            {
+                SceneManager.LoadScene(0);
+            }
         }
     }
 }
