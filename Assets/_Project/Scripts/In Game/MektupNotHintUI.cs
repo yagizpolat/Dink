@@ -226,6 +226,7 @@ public class MektupNotHintUI : MonoBehaviour
     private void TogglePlayerScripts(bool enable)
     {
         PlayerControls.SetEnabled(enable);
+        if (RoomCountdown.instance != null) RoomCountdown.instance.SetHidden(!enable);
 
         // Mektup açıkken ESC menüsü de kapalı: yoksa ESC → "Devam" kamerayı mektubun arkasında açıyordu
         Escmenu esc = FindAnyObjectByType<Escmenu>();

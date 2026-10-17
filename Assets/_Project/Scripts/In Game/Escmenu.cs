@@ -14,6 +14,27 @@ public class Escmenu : MonoBehaviour
     public AudioClip escmenuacilmasesi;
     public AudioClip escmenukapanmasesi;
 
+    [Header("Kapı Aralığı Menüsü")]
+    [Tooltip("İşaretliyse eski buton panelinin yerine karanlıkta aralık kapı ışığı menüsü açılır")]
+    [SerializeField] private bool kapiAraligiMenusu = true;
+    private DoorLightPauseMenu kapiMenusu;
+
+    private void Start()
+    {
+        if (kapiAraligiMenusu)
+        {
+            kapiMenusu = gameObject.AddComponent<DoorLightPauseMenu>();
+            bool isTR = LanguageManager.instance == null || LanguageManager.instance.CurrentLanguage == LanguageManager.Language.TR;
+            string[] labels = isTR
+                ? new[] { "DEVAM ET", "AYARLAR", "ANA MENÜ", "OYUNDAN ÇIK" }
+                : new[] { "RESUME", "SETTINGS", "MAIN MENU", "QUIT" };
+            kapiMenusu.Build(labels, new System.Action[] { Devamet, AyarlariAc, AnaMenuyeDon, OyundanCik });
+        }
+    }
+
+    /// <summary>Aktif duraklatma menüsünün kökü (kapı menüsü ya da eski buton paneli).</summary>
+    private GameObject AktifMenu => kapiMenusu != null ? kapiMenusu.Root : escmenu;
+
     void Update()
     {
         // Eğer ayarlar paneli ekranda açıksa ESC tuşu basımını SettingsManager yönetir
@@ -38,6 +59,8 @@ public class Escmenu : MonoBehaviour
     public void Devamet()
     {
         if (escmenu != null) escmenu.SetActive(false);
+        if (kapiMenusu != null) kapiMenusu.Close();
+        if (RoomCountdown.instance != null) RoomCountdown.instance.SetHidden(false);
         Time.timeScale = 1f;
         oyundurdumu = false;
         Cursor.lockState = CursorLockMode.Locked;
@@ -55,7 +78,16 @@ public class Escmenu : MonoBehaviour
 
     public void Durdur()
     {
-        if (escmenu != null) escmenu.SetActive(true);
+        if (kapiMenusu != null)
+        {
+            if (escmenu != null) escmenu.SetActive(false);
+            kapiMenusu.Open();
+        }
+        else if (escmenu != null)
+        {
+            escmenu.SetActive(true);
+        }
+        if (RoomCountdown.instance != null) RoomCountdown.instance.SetHidden(true);
         Time.timeScale = 0f;
         oyundurdumu = true;
         Cursor.visible = true;
@@ -85,13 +117,31 @@ public class Escmenu : MonoBehaviour
 
         if (sm != null)
         {
-            sm.OpenSettingsFromPauseMenu(escmenu);
+            sm.OpenSettingsFromPauseMenu(AktifMenu);
         }
         else if (settingsMenuPanel != null)
         {
             settingsMenuPanel.SetActive(true);
-            if (escmenu != null) escmenu.SetActive(false);
+            if (AktifMenu != null) AktifMenu.SetActive(false);
         }
+    }
+
+    /// <summary>
+    /// Ana menüye döner. (Eski paneldeki buton, silinmiş ButonEtkliesim scriptine bağlı olduğu için çalışmıyordu.)
+    /// </summary>
+    public void AnaMenuyeDon()
+    {
+        Time.timeScale = 1f;
+        DinkScenes.LoadMainMenu();
+    }
+
+    public void OyundanCik()
+    {
+#if UNITY_EDITOR
+        UnityEditor.EditorApplication.isPlaying = false;
+#else
+        Application.Quit();
+#endif
     }
 
     void CloseOpenScript(bool enable)

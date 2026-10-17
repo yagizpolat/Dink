@@ -103,6 +103,14 @@ public class RoomCountdown : MonoBehaviour
         if (canvas != null) canvas.gameObject.SetActive(false);
     }
 
+    /// <summary>
+    /// Mektup paneli veya ESC menüsü açıkken sayacı gizler (süre o sırada zaten durur).
+    /// </summary>
+    public void SetHidden(bool hidden)
+    {
+        if (canvas != null) canvas.gameObject.SetActive(running && !hidden);
+    }
+
     private void Update()
     {
         if (!running) return;
