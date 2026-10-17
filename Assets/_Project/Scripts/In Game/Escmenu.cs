@@ -29,11 +29,16 @@ public class Escmenu : MonoBehaviour
                 ? new[] { "DEVAM ET", "AYARLAR", "ANA MENÜ", "OYUNDAN ÇIK" }
                 : new[] { "RESUME", "SETTINGS", "MAIN MENU", "QUIT" };
             kapiMenusu.Build(labels, new System.Action[] { Devamet, AyarlariAc, AnaMenuyeDon, OyundanCik });
+            // Ayarlar açıkken (içerik gizli) W/S/Enter menüyü tetiklemesin
+            kapiMenusu.IsInputBlocked = () => kapiMenusu.Content != null && !kapiMenusu.Content.activeSelf;
         }
     }
 
     /// <summary>Aktif duraklatma menüsünün kökü (kapı menüsü ya da eski buton paneli).</summary>
     private GameObject AktifMenu => kapiMenusu != null ? kapiMenusu.Root : escmenu;
+
+    /// <summary>Ayarlar açılırken gizlenecek kısım: kapı menüsünde yalnızca içerik, karartı kalır.</summary>
+    private GameObject AyarlardaGizlenecek => kapiMenusu != null ? kapiMenusu.Content : escmenu;
 
     void Update()
     {
@@ -122,12 +127,12 @@ public class Escmenu : MonoBehaviour
 
         if (sm != null)
         {
-            sm.OpenSettingsFromPauseMenu(AktifMenu);
+            sm.OpenSettingsFromPauseMenu(AyarlardaGizlenecek);
         }
         else if (settingsMenuPanel != null)
         {
             settingsMenuPanel.SetActive(true);
-            if (AktifMenu != null) AktifMenu.SetActive(false);
+            if (AyarlardaGizlenecek != null) AyarlardaGizlenecek.SetActive(false);
         }
     }
 

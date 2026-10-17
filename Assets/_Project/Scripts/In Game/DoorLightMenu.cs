@@ -54,6 +54,10 @@ public class DoorLightMenu : MonoBehaviour
     private bool InputBlocked => IsInputBlocked != null && IsInputBlocked();
 
     public GameObject Root => canvas != null ? canvas.gameObject : null;
+
+    /// <summary>Karartı hariç menü içeriği. Ayarlar açılırken bu gizlenir, karartı yerinde kalır.</summary>
+    public GameObject Content => content;
+    private GameObject content;
     public bool IsOpen => canvas != null && canvas.gameObject.activeSelf;
 
     /// <summary>
@@ -80,22 +84,33 @@ public class DoorLightMenu : MonoBehaviour
         // Karanlık: oyun dünyası arkada çok hafif seçilir
         Image dark = CreateImage(canvasObj.transform, "Dark", null, new Color(0f, 0f, 0f, layout.darkness));
         Stretch(dark.rectTransform);
+        // Karartı kendi alt canvas'ında en altta çizilir: menü yazıları gizlenip ayarlar açılınca
+        // oyun dünyası karanlık kalır, ayarlar paneli (sorting 10) karartının üstünde görünür
+        Canvas darkCanvas = dark.gameObject.AddComponent<Canvas>();
+        darkCanvas.overrideSorting = true;
+        darkCanvas.sortingOrder = Mathf.Min(layout.sortingOrder, 0);
+
+        // Işık, başlık ve seçenekler ayrı bir kökte: ayarlar açıkken yalnızca bu gizlenir
+        GameObject contentObj = new GameObject("Content", typeof(RectTransform));
+        contentObj.transform.SetParent(canvasObj.transform, false);
+        Stretch((RectTransform)contentObj.transform);
+        content = contentObj;
 
         Sprite soft = CreateSoftSprite();
 
         // Işığın duvara/havaya yayılan geniş, soluk parlaması
-        glow = CreateImage(canvasObj.transform, "Glow", soft, new Color(lightColor.r, lightColor.g, lightColor.b, 0.16f)).rectTransform;
+        glow = CreateImage(contentObj.transform, "Glow", soft, new Color(lightColor.r, lightColor.g, lightColor.b, 0.16f)).rectTransform;
         glow.anchoredPosition = new Vector2(StripX, 0f);
         glow.sizeDelta = new Vector2(420f, StripHeight + 120f);
 
         // Kapı altından yere vuran ışık
-        spill = CreateImage(canvasObj.transform, "FloorSpill", soft, new Color(lightColor.r, lightColor.g, lightColor.b, 0.22f)).rectTransform;
+        spill = CreateImage(contentObj.transform, "FloorSpill", soft, new Color(lightColor.r, lightColor.g, lightColor.b, 0.22f)).rectTransform;
         spill.anchoredPosition = new Vector2(StripX + 40f, -StripHeight / 2f - 10f);
         spill.sizeDelta = new Vector2(520f, 70f);
         spill.localRotation = Quaternion.Euler(0f, 0f, -4f);
 
         // Kapı aralığı: keskin, parlak dikey şerit
-        Image stripImg = CreateImage(canvasObj.transform, "DoorGap", null, lightColor);
+        Image stripImg = CreateImage(contentObj.transform, "DoorGap", null, lightColor);
         strip = stripImg.rectTransform;
         strip.anchoredPosition = new Vector2(StripX, 0f);
         strip.sizeDelta = new Vector2(StripWidth, StripHeight);
@@ -104,7 +119,7 @@ public class DoorLightMenu : MonoBehaviour
         if (!string.IsNullOrEmpty(layout.title))
         {
             GameObject titleObj = new GameObject("Title");
-            titleObj.transform.SetParent(canvasObj.transform, false);
+            titleObj.transform.SetParent(contentObj.transform, false);
             title = titleObj.AddComponent<RectTransform>();
             title.anchorMin = title.anchorMax = new Vector2(0.5f, 0.5f);
             title.pivot = new Vector2(0f, 0.5f);
@@ -126,7 +141,7 @@ public class DoorLightMenu : MonoBehaviour
         {
             int index = i;
             GameObject itemObj = new GameObject($"Item_{i}");
-            itemObj.transform.SetParent(canvasObj.transform, false);
+            itemObj.transform.SetParent(contentObj.transform, false);
             RectTransform rt = itemObj.AddComponent<RectTransform>();
             rt.anchorMin = rt.anchorMax = new Vector2(0.5f, 0.5f);
             rt.pivot = new Vector2(0f, 0.5f);
