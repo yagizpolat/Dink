@@ -138,51 +138,18 @@ public class SceneTransition : MonoBehaviour
     /// </summary>
     private IEnumerator OynatIsimSormaPaneli()
     {
+        // Sahnedeki eski panel artık kullanılmıyor; ad, kapıcı masasındaki giriş defterine yazılır
         nicknamePanel = FindNicknamePanelInScene();
+        if (nicknamePanel != null) nicknamePanel.SetActive(false);
 
-        if (nicknamePanel != null)
+        yield return StartCoroutine(NicknameLogbookUI.Run(name =>
         {
-            nicknamePanel.SetActive(true);
+            if (LeaderboardManager.instance != null) LeaderboardManager.instance.SetPlayerName(name);
+        }));
 
-            if (nicknameInputField == null)
-                nicknameInputField = nicknamePanel.GetComponentInChildren<TMP_InputField>();
-
-            if (nicknameSubmitButton == null)
-                nicknameSubmitButton = nicknamePanel.GetComponentInChildren<UnityEngine.UI.Button>();
-
-            bool submitted = false;
-
-            UnityEngine.Events.UnityAction submitAction = () =>
-            {
-                if (nicknameInputField != null && !string.IsNullOrWhiteSpace(nicknameInputField.text))
-                {
-                    LeaderboardManager.instance.SetPlayerName(nicknameInputField.text);
-                    submitted = true;
-                }
-            };
-
-            if (nicknameSubmitButton != null)
-                nicknameSubmitButton.onClick.AddListener(submitAction);
-
-            // Fare ile butona tıklanmasını veya Klavyeden ENTER tuşuna basılmasını bekle
-            while (!submitted)
-            {
-                if (Input.GetKeyDown(KeyCode.Return) || Input.GetKeyDown(KeyCode.KeypadEnter))
-                {
-                    if (nicknameInputField != null && !string.IsNullOrWhiteSpace(nicknameInputField.text))
-                    {
-                        LeaderboardManager.instance.SetPlayerName(nicknameInputField.text);
-                        submitted = true;
-                    }
-                }
-                yield return null;
-            }
-
-            if (nicknameSubmitButton != null)
-                nicknameSubmitButton.onClick.RemoveListener(submitAction);
-
-            nicknamePanel.SetActive(false);
-        }
+        // Defter siyaha kararıp bitti; aynı siyahı global fade devralsın, sonra defteri kaldır
+        if (globalFadeGroup != null) globalFadeGroup.alpha = 1f;
+        NicknameLogbookUI.CloseAll();
     }
 
     /// <summary>
