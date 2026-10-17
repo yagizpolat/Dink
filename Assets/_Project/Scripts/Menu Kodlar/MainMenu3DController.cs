@@ -53,7 +53,7 @@ public class MainMenu3DController : MonoBehaviour
             stripHeight = 980f,
             stripX = -380f,
             itemsCenterY = -150f,
-            sortingOrder = 0,       // ayarlar (10) ve isim girişi (15) panelleri bunun üstünde açılır
+            sortingOrder = 5,       // intro Canvas (1) tıklamaları yutmasın; ayarlar (10) ve isim girişi (15) yine üstte açılır
             openDuration = 1.1f
         });
 
