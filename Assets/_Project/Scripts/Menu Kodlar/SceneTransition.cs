@@ -82,12 +82,6 @@ public class SceneTransition : MonoBehaviour
             controller.enabled = false;
         }
 
-        Menu3DDoor[] doors = FindObjectsByType<Menu3DDoor>(FindObjectsSortMode.None);
-        foreach (var door in doors)
-        {
-            door.HoverExit();
-        }
-
         // Arka plan menü müziğini yumuşakça sustur
         if (AudioManager.instance != null)
         {
