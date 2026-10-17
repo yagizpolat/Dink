@@ -158,7 +158,8 @@ public class RoomCountdown : MonoBehaviour
         scaler.uiScaleMode = CanvasScaler.ScaleMode.ScaleWithScreenSize;
         scaler.referenceResolution = new Vector2(1920, 1080);
 
-        GameObject textObj = new GameObject("CountdownText");
+        // Not: İsimde "text"/"hint"/"sub" geçmemeli, yoksa DynamicHintSystem bunu ipucu metni sanıp gizler
+        GameObject textObj = new GameObject("CountdownTimer");
         textObj.transform.SetParent(canvasObj.transform, false);
         RectTransform rect = textObj.AddComponent<RectTransform>();
         rect.anchorMin = new Vector2(0.5f, 1f);

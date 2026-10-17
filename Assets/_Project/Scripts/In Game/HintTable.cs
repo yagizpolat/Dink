@@ -7,13 +7,13 @@ using UnityEngine;
 /// </summary>
 public class HintTable : MonoBehaviour
 {
-    private const float TableHeight = 0.78f;
-    private const float TopWidth = 0.9f;
-    private const float TopDepth = 0.6f;
+    private const float TableHeight = 0.72f;
+    private const float TopWidth = 0.7f;
+    private const float TopDepth = 0.5f;
     private const float TopThickness = 0.05f;
     private const float LegSize = 0.05f;
 
-    private static readonly Color woodColor = new Color(0.22f, 0.15f, 0.10f);
+    private static readonly Color woodColor = new Color(0.36f, 0.25f, 0.16f);
     private static readonly Color rustColor = new Color(0.30f, 0.16f, 0.08f);
     private static readonly Color lightColor = new Color(1f, 0.82f, 0.58f);
 
@@ -113,7 +113,7 @@ public class HintTable : MonoBehaviour
         spot.range = 3.5f;
         spot.spotAngle = 55f;
         spot.innerSpotAngle = 25f;
-        spot.intensity = 2.2f;
+        spot.intensity = 4f;
         spot.shadows = LightShadows.Soft;
 
         baseIntensity = spot.intensity;

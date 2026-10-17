@@ -58,6 +58,25 @@ public class DynamicHintSystem : MonoBehaviour
     [SerializeField] private bool useHintTable = true;
 
     /// <summary>
+    /// Objeyi, görsel sınırlarının alt-ortası verilen yüzey noktasına gelecek şekilde taşır.
+    /// </summary>
+    private static void PlaceOnSurface(GameObject obj, Vector3 surfacePoint)
+    {
+        Renderer[] renderers = obj.GetComponentsInChildren<Renderer>();
+        if (renderers.Length == 0)
+        {
+            obj.transform.position = surfacePoint;
+            return;
+        }
+
+        Bounds bounds = renderers[0].bounds;
+        for (int i = 1; i < renderers.Length; i++) bounds.Encapsulate(renderers[i].bounds);
+
+        Vector3 bottomCenter = new Vector3(bounds.center.x, bounds.min.y, bounds.center.z);
+        obj.transform.position += surfacePoint - bottomCenter;
+    }
+
+    /// <summary>
     /// Nokta zeminden belirgin yüksekteyse (bir mobilyanın üstünde değilse) true döner.
     /// </summary>
     private static bool IsFloating(Vector3 position)
@@ -260,26 +279,28 @@ public class DynamicHintSystem : MonoBehaviour
             var entry = data.GetPropEntry(activeHintType);
             if (entry != null && entry.propPrefab != null)
             {
-                Vector3 spawnPos = GetRandomSpawnPosition();
+                Vector3 propPos = GetRandomSpawnPosition() + entry.localPositionOffset;
                 Quaternion propRotation = Quaternion.Euler(shownDirectionLeft ? entry.leftDirectionRotation : entry.rightDirectionRotation);
 
-                // Obje havada kalıyorsa altına loş ışıklı paslı bir masa kur ve objeyi üstüne koy
-                if (useHintTable && IsFloating(spawnPos))
+                // Havada mı kontrolü objeyi oluşturmadan önce yapılır, yoksa ışın objenin kendi collider'ına çarpar
+                bool needsTable = useHintTable && IsFloating(propPos);
+                currentSpawnedProp = Instantiate(entry.propPrefab, propPos, propRotation);
+
+                // Obje havada kalıyorsa altına loş ışıklı paslı bir masa kur ve objeyi üstüne oturt
+                if (needsTable)
                 {
                     Quaternion facePlayer = Quaternion.identity;
                     Kamera oyuncuKamera = FindAnyObjectByType<Kamera>();
                     if (oyuncuKamera != null && oyuncuKamera.cam != null)
                     {
-                        Vector3 toPlayer = oyuncuKamera.cam.transform.position - spawnPos;
+                        Vector3 toPlayer = oyuncuKamera.cam.transform.position - propPos;
                         toPlayer.y = 0f;
                         if (toPlayer.sqrMagnitude > 0.001f) facePlayer = Quaternion.LookRotation(toPlayer);
                     }
 
-                    currentSpawnedTable = HintTable.Create(spawnPos, facePlayer, out Vector3 tableTop).gameObject;
-                    spawnPos = tableTop;
+                    currentSpawnedTable = HintTable.Create(propPos, facePlayer, out Vector3 tableTop).gameObject;
+                    PlaceOnSurface(currentSpawnedProp, tableTop);
                 }
-
-                currentSpawnedProp = Instantiate(entry.propPrefab, spawnPos + entry.localPositionOffset, propRotation);
                 HintPropComponent hpc = currentSpawnedProp.GetComponent<HintPropComponent>();
                 if (hpc == null)
                 {
