@@ -170,6 +170,16 @@ public class SceneTransition : MonoBehaviour
         PrepareGroupForFade(quoteTextGroup);
         PrepareGroupForFade(dateandpressTextGroup);
 
+        // Panel açılınca LocalizedText yazıyı sadece tarihle yeniler; oyuncu ne beklendiğini bilsin diye
+        // devam ipucu ondan sonra eklenir. Kenar boşluğu tarihin ekranın köşesine yapışmasını önler.
+        if (dateText != null)
+        {
+            string devam = DinkLang.T("[ Click to continue ]", "[ Devam Etmek İçin Tıklayın ]", "[ Zum Fortfahren klicken ]",
+                "[ Cliquez pour continuer ]", "[ Haz clic para continuar ]", "[ Clique para continuar ]", "[ Нажмите, чтобы продолжить ]");
+            if (!dateText.text.Contains(devam)) dateText.text += "\n" + devam;
+            dateText.margin = new Vector4(dateText.margin.x, dateText.margin.y, 60f, 40f);
+        }
+
         StartCoroutine(FadeCanvasGroup(quoteTextGroup, 1f, fadeDuration));
         yield return StartCoroutine(FadeCanvasGroup(dateandpressTextGroup, 1f, fadeDuration));
 
