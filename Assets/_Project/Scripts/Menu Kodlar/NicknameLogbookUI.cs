@@ -431,14 +431,16 @@ public class NicknameLogbookUI : MonoBehaviour
 
     internal static TMP_FontAsset LoadFont(string resourcePath)
     {
-        Font font = Resources.Load<Font>(resourcePath);
-        if (font == null)
+        // Hazır TMP font dosyası (Resources/Fonts/TMP/<ad> SDF). Fontu oyun içinde
+        // CreateFontAsset ile üretmek build'de Unity'yi çökertiyordu.
+        string fileName = resourcePath.Substring(resourcePath.LastIndexOf('/') + 1);
+        TMP_FontAsset asset = Resources.Load<TMP_FontAsset>($"Fonts/TMP/{fileName} SDF");
+        if (asset == null)
         {
-            Debug.LogError($"[NicknameLogbookUI] Font bulunamadı: Resources/{resourcePath}");
-            return null;
+            Debug.LogError($"[NicknameLogbookUI] TMP font bulunamadı: Resources/Fonts/TMP/{fileName} SDF");
+            return TMP_Settings.defaultFontAsset;
         }
-        TMP_FontAsset asset = TMP_FontAsset.CreateFontAsset(font);
-        if (asset != null && TMP_Settings.defaultFontAsset != null)
+        if (TMP_Settings.defaultFontAsset != null && (asset.fallbackFontAssetTable == null || asset.fallbackFontAssetTable.Count == 0))
             asset.fallbackFontAssetTable = new System.Collections.Generic.List<TMP_FontAsset> { TMP_Settings.defaultFontAsset };
         return asset;
     }
