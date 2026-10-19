@@ -179,7 +179,11 @@ public class DynamicHintSystem : MonoBehaviour
             RoomGraphManager.instance.currentRoomIndex = derivedRoomIndex;
         }
 
-        bool isTutorial = (derivedRoomIndex <= 3);
+        // Tutorial bilgisi DoorChoice ile aynı kaynaktan (RoomGraph) okunur; ikisi ayrı karar verirse
+        // iki kapının da doğru olduğu odada boşuna ipucu çıkıyordu
+        bool isTutorial = RoomGraphManager.instance != null
+            ? RoomGraphManager.instance.IsCurrentRoomTutorial()
+            : derivedRoomIndex <= 3;
 
         // 1. Doğru Kapı Yönünü Rastgele Seç
         isLeftDoorCorrect = Random.value > 0.5f;

@@ -36,7 +36,7 @@ MonoBehaviour:
     loreObjectDescription: "Atmosfer \u0130lerlemesi"
   - roomIndex: 4
     roomName: "Market Vardiyas\u0131"
-    isTutorial: 1
+    isTutorial: 0
     isMilestoneFlashRoom: 0
     leftTargetRoomIndex: 8
     rightTargetRoomIndex: 5
