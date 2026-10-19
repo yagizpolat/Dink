@@ -114,6 +114,20 @@ public class TelsizFisiltiController : MonoBehaviour
         BuildSubtitleUI();
     }
 
+    private void OnEnable() { UnityEngine.SceneManagement.SceneManager.sceneLoaded += OnSceneLoaded; }
+    private void OnDisable() { UnityEngine.SceneManagement.SceneManager.sceneLoaded -= OnSceneLoaded; }
+
+    /// <summary>
+    /// Telsiz konuşurken oda değişirse (yanlış kapı -> zindan) altyazı yeni sahnede asılı kalmasın.
+    /// </summary>
+    private void OnSceneLoaded(UnityEngine.SceneManagement.Scene scene, UnityEngine.SceneManagement.LoadSceneMode mode)
+    {
+        if (activeSequence != null) StopCoroutine(activeSequence);
+        activeSequence = null;
+        isRadioActive = false;
+        HideSubtitle();
+    }
+
     /// <summary>
     /// Telsiz etkileşimini başlatır. LED yanıp sönme, ses çalma ve altyazı gösterimini tetikler.
     /// </summary>
