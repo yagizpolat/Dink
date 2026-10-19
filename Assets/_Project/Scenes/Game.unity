@@ -7049,19 +7049,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c8688f0eaa9865c4cb48fe234b383efc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::MainMenu3DController
-  mainCamera: {fileID: 330585545}
-  mainViewPos: {x: 0, y: 0.6, z: 0}
-  mainViewRot: {x: -10, y: 0, z: 0}
-  settingsViewPos: {x: 0, y: 0.6, z: 15}
-  settingsViewRot: {x: -10, y: 0, z: 0}
-  mainDoorsGroup: {fileID: 0}
-  settingsDoorsGroup: {fileID: 0}
   graphicsPanel: {fileID: 249004680}
   audioPanel: {fileID: 0}
   languagePanel: {fileID: 0}
   sceneTransition: {fileID: 0}
-  cameraLerpSpeed: 2.5
-  kapiAraligiMenusu: 1
 --- !u!4 &1210415684
 Transform:
   m_ObjectHideFlags: 0
