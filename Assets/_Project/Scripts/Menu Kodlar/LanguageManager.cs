@@ -21,6 +21,12 @@ public class LanguageManager : MonoBehaviour
                     GameObject go = new GameObject("[LanguageManager]");
                     _instance = go.AddComponent<LanguageManager>();
                 }
+                else
+                {
+                    // Sahnedeki yönetici Awake'inden önce sorulduysa kayıtlı dili henüz yüklememiştir;
+                    // yüklenmezse metinler (hikaye yazısı, defter) her dilde İngilizce çıkıyordu
+                    _instance.LoadSavedLanguage();
+                }
             }
             return _instance;
         }
@@ -57,7 +63,7 @@ public class LanguageManager : MonoBehaviour
 
     private void Awake()
     {
-        if (_instance == null)
+        if (_instance == null || _instance == this)
         {
             _instance = this;
             DontDestroyOnLoad(gameObject);
