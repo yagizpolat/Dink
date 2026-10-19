@@ -160,8 +160,11 @@ public class LeaderboardManager : MonoBehaviour
 
         if (!useCloudLeaderboard) return;
 
-        StartCoroutine(LootLockerSubmitScoreSequence(playerName, timeInSeconds));
+        pendingSubmit = StartCoroutine(LootLockerSubmitScoreSequence(playerName, timeInSeconds));
     }
+
+    // Skor gönderimi sürerken tablo çekilirse oyuncunun kendi satırı listede çıkmıyordu; tablo bunu bekler
+    private Coroutine pendingSubmit;
 
     private IEnumerator LootLockerSubmitScoreSequence(string playerName, float timeInSeconds)
     {
@@ -481,7 +484,15 @@ public class LeaderboardManager : MonoBehaviour
 
         // Oyun sonu skor tablosu: giriş defterinin bir sonraki sayfası (LeaderboardLogbookUI)
         LeaderboardLogbookUI.Show(currentScoreTime, GetPlayerName());
-        StartCoroutine(FetchCloudScoresRoutine(entries =>
+        StartCoroutine(FetchAfterSubmitRoutine());
+    }
+
+    private IEnumerator FetchAfterSubmitRoutine()
+    {
+        if (pendingSubmit != null) yield return pendingSubmit;
+        pendingSubmit = null;
+
+        yield return StartCoroutine(FetchCloudScoresRoutine(entries =>
         {
             LeaderboardLogbookUI ui = FindAnyObjectByType<LeaderboardLogbookUI>();
             if (ui != null) ui.SetEntries(entries);
