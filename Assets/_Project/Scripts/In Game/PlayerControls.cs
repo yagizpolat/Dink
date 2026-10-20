@@ -11,6 +11,9 @@ public static class PlayerControls
         Kamera kamera = Object.FindAnyObjectByType<Kamera>();
         if (kamera != null) kamera.enabled = enable;
 
+        PlayerWalker walker = Object.FindAnyObjectByType<PlayerWalker>();
+        if (walker != null) walker.enabled = enable;
+
         temaskontrol tiklama = Object.FindAnyObjectByType<temaskontrol>();
         if (tiklama != null) tiklama.enabled = enable;
 
