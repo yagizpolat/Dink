@@ -3,7 +3,22 @@ guid: 1486828964ba2a545b796473a4e31287
 ModelImporter:
   serializedVersion: 24200
   internalIDToNameTable: []
-  externalObjects: {}
+  externalObjects:
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: KapiAhsap
+    second: {fileID: 2100000, guid: 836b091f998b8f7439ef5c9fdd747ceb, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: KapiDemir
+    second: {fileID: 2100000, guid: 26f91def1fc4f94408bd588b4fbeb994, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: KapiTas
+    second: {fileID: 2100000, guid: 41d37e6c709f28040a5c7e34ade4b371, type: 2}
   materials:
     materialImportMode: 1
     materialName: 0

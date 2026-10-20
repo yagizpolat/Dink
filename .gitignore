@@ -24,3 +24,5 @@ MemoryCaptures/
 *.slnx
 *.csproj
 Packages/Backups/
+# Blender otomatik yedekleri
+*.blend1

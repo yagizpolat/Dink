@@ -7,8 +7,23 @@ ModelImporter:
   - first:
       type: UnityEngine:Material
       assembly: UnityEngine.CoreModule
+      name: Beton
+    second: {fileID: 2100000, guid: 97fde660f60f4b647bbb2bbbfae04e00, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
       name: CamSicak
     second: {fileID: 2100000, guid: e7436d909309bc64cb7c950567df6800, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Korkuluk
+    second: {fileID: 2100000, guid: 26f91def1fc4f94408bd588b4fbeb994, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Siva
+    second: {fileID: 2100000, guid: 3bb21a4c5319f0749a90be2bc795e07d, type: 2}
   materials:
     materialImportMode: 1
     materialName: 0
