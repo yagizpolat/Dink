@@ -53,14 +53,30 @@ public class GlassReflection : MonoBehaviour
         RenderPipelineManager.beginCameraRendering -= OnBeginCamera;
         RenderPipelineManager.endCameraRendering -= OnEndCamera;
 
+        // Sahne kapanırken camlar bu bileşenden önce yok edilmiş olabilir
         if (originalMaterials != null)
-            for (int i = 0; i < glassRenderers.Length; i++) glassRenderers[i].sharedMaterials = originalMaterials[i];
-        if (mirrorCam != null) Destroy(mirrorCam.gameObject);
-        if (rt != null) rt.Release();
+            for (int i = 0; i < glassRenderers.Length; i++)
+                if (glassRenderers[i] != null) glassRenderers[i].sharedMaterials = originalMaterials[i];
+        originalMaterials = null;
+
+        if (mirrorCam != null)
+        {
+            mirrorCam.targetTexture = null;
+            Destroy(mirrorCam.gameObject);
+        }
+        if (rt != null)
+        {
+            reflectiveGlass.SetTexture(ReflTexId, null);
+            rt.Release();
+            Destroy(rt);
+            rt = null;
+        }
     }
 
     private void LateUpdate()
     {
+        if (mirrorCam == null || mainCam == null) return;
+
         Vector3 pos = transform.position;
         Vector3 normal = transform.forward;
 
