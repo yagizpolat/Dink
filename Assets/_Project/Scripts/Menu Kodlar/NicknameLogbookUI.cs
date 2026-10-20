@@ -46,6 +46,19 @@ public class NicknameLogbookUI : MonoBehaviour
         yield return ui.Play(onSubmitted);
     }
 
+    /// <summary>
+    /// Giriş katındaki masada imzalama: karartma yerine defter yavaşça kaybolur ve oyuncu holde kalır.
+    /// </summary>
+    public static IEnumerator RunAtDesk(Action<string> onSubmitted)
+    {
+        NicknameLogbookUI ui = new GameObject("[NicknameLogbook]").AddComponent<NicknameLogbookUI>();
+        ui.fadeToBlack = false;
+        yield return ui.Play(onSubmitted);
+        Destroy(ui.gameObject);
+    }
+
+    private bool fadeToBlack = true;
+
     /// <summary>Karartma tamamlandıktan sonra çağrılır; arkadaki geçiş kendi siyahını devraldığında defteri siler.</summary>
     public static void CloseAll()
     {
@@ -94,6 +107,17 @@ public class NicknameLogbookUI : MonoBehaviour
         yield return WaitUnscaled(0.35f);
         stamp.SetActive(true);
         yield return WaitUnscaled(1.0f);
+
+        if (!fadeToBlack)
+        {
+            CanvasGroup group = gameObject.AddComponent<CanvasGroup>();
+            for (float f = 0f; f < 0.9f; f += Time.unscaledDeltaTime)
+            {
+                group.alpha = 1f - f / 0.9f;
+                yield return null;
+            }
+            yield break;
+        }
 
         float t = 0f;
         while (t < 1.6f)
