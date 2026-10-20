@@ -62,6 +62,21 @@ ModelImporter:
   - first:
       type: UnityEngine:Material
       assembly: UnityEngine.CoreModule
+      name: L_PostaKapak
+    second: {fileID: 2100000, guid: 0a08c74ed73556943ac146a2113cb113, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: L_PostaKasa
+    second: {fileID: 2100000, guid: 77219d60a54ec1540920e412b3ffbf76, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: L_PostaKrom
+    second: {fileID: 2100000, guid: d92def4d31dab1e4ca16b553f8165156, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
       name: L_Siva
     second: {fileID: 2100000, guid: 45709b2ee4a0c2645a5266d1f48faece, type: 2}
   - first:
