@@ -54,8 +54,18 @@ public class DoorLightSettings : MonoBehaviour
 
     public bool IsOpen => canvas != null && canvas.gameObject.activeSelf;
 
-    private static SettingsManager SM => SettingsManager.instance != null ? SettingsManager.instance
-        : FindAnyObjectByType<SettingsManager>(FindObjectsInactive.Include);
+    // Ana menüden geçilmeden (editörde doğrudan bir kattan) açılınca SettingsManager hiç kurulmamış olur;
+    // menü arayüzü olmadan da çalıştığı için burada kurulur
+    private static SettingsManager SM
+    {
+        get
+        {
+            if (SettingsManager.instance != null) return SettingsManager.instance;
+            SettingsManager found = FindAnyObjectByType<SettingsManager>(FindObjectsInactive.Include);
+            if (found != null) return found;
+            return new GameObject("[SettingsManager]").AddComponent<SettingsManager>();
+        }
+    }
 
     /// <summary>Ekranı açar; geri dönülünce onBack çağrılır.</summary>
     private void OnEnable() { LanguageManager.OnLanguageChanged += OnLanguageChanged; }
