@@ -26,3 +26,7 @@ MemoryCaptures/
 Packages/Backups/
 # Blender otomatik yedekleri
 *.blend1
+
+# Blender kaynak dosyalari yalniz yerelde tutulur (oyun FBX ile calisir)
+*.blend
+Kaynak/Blender/
