@@ -3998,6 +3998,9 @@ MonoBehaviour:
   - {fileID: 1544656946}
   crowdSource: {fileID: 5480819}
   humSource: {fileID: 1031563668}
+  classroomLights:
+  - {fileID: 1735631155}
+  - {fileID: 88134245}
   nextFloorLight: {fileID: 1246876214}
   nextFloorDing: {fileID: 175913019}
 --- !u!4 &1915078528

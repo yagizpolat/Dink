@@ -25,6 +25,7 @@ public class Kat3Yoklama : MonoBehaviour
     [SerializeField] private AudioSource[] bellSources;
     [SerializeField] private AudioSource crowdSource;
     [SerializeField] private AudioSource humSource;
+    [SerializeField] private Light[] classroomLights;
 
     [Header("Asansör")]
     [SerializeField] private GameObject nextFloorLight;
@@ -89,7 +90,17 @@ public class Kat3Yoklama : MonoBehaviour
 
         while (MektupNotHintUI.instance != null && MektupNotHintUI.instance.IsPanelOpen) yield return null;
 
-        // Floresan susar, sınıf sessizleşir
+        // Floresanlar iki kez tökezleyip söner, uğultu kesilir; sınıfa yalnız koridordan ışık sızar
+        float[] intensity = new float[classroomLights.Length];
+        for (int i = 0; i < classroomLights.Length; i++) intensity[i] = classroomLights[i].intensity;
+        foreach (float wait in new[] { 0.08f, 0.15f, 0.06f, 0.3f })
+        {
+            SetLights(intensity, 0f);
+            yield return new WaitForSeconds(wait);
+            SetLights(intensity, 1f);
+            yield return new WaitForSeconds(0.1f);
+        }
+        SetLights(intensity, 0f);
         if (humSource != null) humSource.Stop();
         yield return new WaitForSeconds(2.5f);
         yield return Tapping();
@@ -138,6 +149,11 @@ public class Kat3Yoklama : MonoBehaviour
             float d = Vector3.Distance(player.position, tapSource.transform.position);
             yield return new WaitForSeconds(Mathf.Lerp(0.38f, 0.95f, Mathf.InverseLerp(1f, 4.5f, d)));
         }
+    }
+
+    private void SetLights(float[] intensity, float k)
+    {
+        for (int i = 0; i < classroomLights.Length; i++) classroomLights[i].intensity = intensity[i] * k;
     }
 
     private bool Watched()

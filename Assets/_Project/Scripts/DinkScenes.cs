@@ -31,6 +31,10 @@ public static class DinkScenes
 
     public static bool IsMainMenu(Scene scene) => scene.name == MainMenu;
 
+    /// <summary>Karanfil Apt. bölümü: prolog, giriş katı ve "KatN" sahneleri. Bu sahnelerde müzik çalmaz.</summary>
+    public static bool IsApartment(Scene scene) =>
+        scene.name == Prologue || scene.name == "GirisKati" || (scene.name.StartsWith("Kat") && scene.name.Length > 3 && char.IsDigit(scene.name[3]));
+
     public static void LoadMainMenu() => SceneManager.LoadScene(MainMenu);
 
     public const string Prologue = "Prolog";

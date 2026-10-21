@@ -60,8 +60,29 @@ public class AudioManager : MonoBehaviour
         LoadVolumeSettings();
 
         // Sahneye göre müziği başlat
-        AudioClip targetClip = DinkScenes.IsMainMenu(SceneManager.GetActiveScene()) ? menuMusic : gameAmbience;
-        PlayMusic(targetClip);
+        PlayMusic(MusicFor(SceneManager.GetActiveScene()));
+    }
+
+    // Apartman, ESC menüsü dahil, müziksizdir: oradaki her şey dünyanın kendi sesi
+    private AudioClip MusicFor(Scene scene)
+    {
+        if (DinkScenes.IsApartment(scene)) return null;
+        return DinkScenes.IsMainMenu(scene) ? menuMusic : gameAmbience;
+    }
+
+    // Apartman sahnelerinde ses kaynakları sahneye dağılmış durumda (asansör, floresan, kalem...);
+    // müzik olmadığı için Ses Efekti ayarı hepsine dinleyici üzerinden uygulanır
+    private void ApplyListenerVolume()
+    {
+        bool apartment = DinkScenes.IsApartment(SceneManager.GetActiveScene());
+        AudioListener.volume = GetMasterVolume() * (apartment ? GetSFXVolume() : 1f);
+    }
+
+    // Apartman sahnesi doğrudan açıldığında da (editör, Yeni Oyun) yönetici baştan kurulsun
+    [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.AfterSceneLoad)]
+    private static void Boot()
+    {
+        if (DinkScenes.IsApartment(SceneManager.GetActiveScene())) _ = instance;
     }
 
     private void SetupAudioSources()
@@ -102,8 +123,8 @@ public class AudioManager : MonoBehaviour
 
     public void SetMasterVolume(float vol)
     {
-        AudioListener.volume = vol;
         PlayerPrefs.SetFloat("Dink_MasterVolume", vol);
+        ApplyListenerVolume();
     }
 
     public void SetMusicVolume(float vol)
@@ -118,6 +139,7 @@ public class AudioManager : MonoBehaviour
     public void SetSFXVolume(float vol)
     {
         PlayerPrefs.SetFloat("Dink_SFXVolume", vol);
+        ApplyListenerVolume();
         if (sfxSource != null)
         {
             sfxSource.volume = vol;
@@ -127,9 +149,14 @@ public class AudioManager : MonoBehaviour
     private void OnSceneLoaded(Scene scene, LoadSceneMode mode)
     {
         AutoLoadAudioClips();
-        AudioClip targetClip = DinkScenes.IsMainMenu(scene) ? menuMusic : gameAmbience;
+        ApplyListenerVolume();
+        AudioClip targetClip = MusicFor(scene);
 
-        if (targetClip != null)
+        if (targetClip == null)
+        {
+            if (musicSource != null && musicSource.isPlaying) StopMusicWithFade(1.2f);
+        }
+        else
         {
             if (musicSource.clip == null || !musicSource.isPlaying || IsSameClip(musicSource.clip, targetClip))
             {
