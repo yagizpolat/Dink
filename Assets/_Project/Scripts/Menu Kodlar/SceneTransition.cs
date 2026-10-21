@@ -68,12 +68,7 @@ public class SceneTransition : MonoBehaviour
         // 1. ZAMANI ANINDA DONDUR (Oyuncu isim girerken hiçbir şey hareket etmesin)
         Time.timeScale = 0f;
 
-        // 2. Oyuncu ismi daha önce girilmemişse (veya Editor test modu aktifse) İSİM SORMA PANELİNİ aç!
-        bool hasName = LeaderboardManager.instance != null && LeaderboardManager.instance.HasPlayerName();
-        if (editorTestHerZamanGoster || !hasName)
-        {
-            yield return StartCoroutine(OynatIsimSormaPaneli());
-        }
+        // 2. İsim artık apartmanın giriş katında, kapıcı masasındaki defterde soruluyor (LobbyLogbook)
 
         // 2. Arkadaki 3D kapı etkileşimlerini ve seslerini anında durdur
         MainMenu3DController controller = FindFirstObjectByType<MainMenu3DController>();
@@ -115,7 +110,8 @@ public class SceneTransition : MonoBehaviour
         }
 
         Time.timeScale = 1f;
-        DinkScenes.LoadRoom(sahneNo);
+        // v0.5: yeni oyun Karanfil Apartmanı prologuyla açılır (sahneNo eski oda akışından kaldı)
+        DinkScenes.LoadPrologue();
     }
 
     private GameObject FindNicknamePanelInScene()

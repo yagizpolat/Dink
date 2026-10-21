@@ -33,6 +33,11 @@ public static class DinkScenes
 
     public static void LoadMainMenu() => SceneManager.LoadScene(MainMenu);
 
+    public const string Prologue = "Prolog";
+
+    /// <summary>Apartman bölümünün başı: sokaktaki Karanfil Apt. önü.</summary>
+    public static void LoadPrologue() => SceneManager.LoadScene(Prologue);
+
     public static void LoadRoom(int roomIndex) => SceneManager.LoadScene(RoomSceneName(roomIndex));
 
     /// <summary>
