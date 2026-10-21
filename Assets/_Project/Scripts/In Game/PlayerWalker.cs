@@ -40,6 +40,7 @@ public class PlayerWalker : MonoBehaviour
     {
         Cursor.lockState = CursorLockMode.Locked;
         Cursor.visible = false;
+        InteractionReticle.Ensure(this);
     }
 
     private void Update()

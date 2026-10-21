@@ -1176,6 +1176,7 @@ GameObject:
   - component: {fileID: 363857098}
   - component: {fileID: 363857097}
   - component: {fileID: 363857096}
+  - component: {fileID: 363857099}
   m_Layer: 0
   m_Name: GirisDefteri
   m_TagString: Untagged
@@ -1235,6 +1236,20 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &363857099
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 363857095}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bd3e601cc7762884f9492792468d15a5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::InteractionTarget
+  verb: 1
+  reach: 1.8
 --- !u!1 &588853960
 GameObject:
   m_ObjectHideFlags: 0
@@ -1484,6 +1499,7 @@ GameObject:
   m_Component:
   - component: {fileID: 952019711}
   - component: {fileID: 952019710}
+  - component: {fileID: 952019712}
   m_Layer: 0
   m_Name: CagirmaButonu
   m_TagString: Untagged
@@ -1527,6 +1543,20 @@ Transform:
   m_Children: []
   m_Father: {fileID: 287269112}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &952019712
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 952019709}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bd3e601cc7762884f9492792468d15a5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::InteractionTarget
+  verb: 2
+  reach: 1.8
 --- !u!1 &955888474
 GameObject:
   m_ObjectHideFlags: 0
@@ -2239,6 +2269,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1660709778}
   - component: {fileID: 1660709777}
+  - component: {fileID: 1660709779}
   m_Layer: 0
   m_Name: KatButonu1
   m_TagString: Untagged
@@ -2282,6 +2313,20 @@ Transform:
   m_Children: []
   m_Father: {fileID: 287269112}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1660709779
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1660709776}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bd3e601cc7762884f9492792468d15a5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::InteractionTarget
+  verb: 3
+  reach: 1.8
 --- !u!1 &1716154708
 GameObject:
   m_ObjectHideFlags: 0

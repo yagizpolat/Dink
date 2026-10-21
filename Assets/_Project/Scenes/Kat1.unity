@@ -842,6 +842,7 @@ GameObject:
   - component: {fileID: 155674896}
   - component: {fileID: 155674894}
   - component: {fileID: 155674895}
+  - component: {fileID: 155674898}
   m_Layer: 0
   m_Name: MuratinNotu
   m_TagString: Untagged
@@ -942,6 +943,20 @@ Transform:
   m_Children: []
   m_Father: {fileID: 1281768878}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &155674898
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 155674893}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bd3e601cc7762884f9492792468d15a5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::InteractionTarget
+  verb: 0
+  reach: 1.8
 --- !u!1 &569767759
 GameObject:
   m_ObjectHideFlags: 0
@@ -1208,6 +1223,7 @@ GameObject:
   m_Component:
   - component: {fileID: 656425565}
   - component: {fileID: 656425564}
+  - component: {fileID: 656425566}
   m_Layer: 0
   m_Name: FisYazici
   m_TagString: Untagged
@@ -1251,6 +1267,20 @@ Transform:
   m_Children: []
   m_Father: {fileID: 1281768878}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &656425566
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 656425563}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bd3e601cc7762884f9492792468d15a5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::InteractionTarget
+  verb: 0
+  reach: 1.8
 --- !u!1 &668802245
 GameObject:
   m_ObjectHideFlags: 0
