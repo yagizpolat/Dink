@@ -24,10 +24,11 @@ public class SceneDoorTrigger : MonoBehaviour
     {
         if (used || other.GetComponent<PlayerWalker>() == null) return;
         used = true;
-        StartCoroutine(FadeAndLoad());
+        StartCoroutine(FadeAndLoad(targetScene, fadeSeconds));
     }
 
-    private IEnumerator FadeAndLoad()
+    /// <summary>Kontrolleri kapatır, ekranı karartır ve sahneyi yükler. Kat geçişleri de bunu kullanır.</summary>
+    public static IEnumerator FadeAndLoad(string targetScene, float fadeSeconds)
     {
         PlayerControls.SetEnabled(false);
 
