@@ -32,6 +32,11 @@ ModelImporter:
   - first:
       type: UnityEngine:Material
       assembly: UnityEngine.CoreModule
+      name: L_DefterSayfa
+    second: {fileID: 2100000, guid: 89bc1a8e6f064d5428ba7ea4b23f4bcf, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
       name: L_Glob
     second: {fileID: 2100000, guid: 81bf9ebd2246cd3479b8c777c3709c3c, type: 2}
   - first:

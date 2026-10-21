@@ -12,16 +12,42 @@ public class LobbyLogbook : MonoBehaviour
     [SerializeField] private AudioSource audioSource;
     [SerializeField] private AudioClip openClip;
 
+    [Header("3D Defter Sayfası")]
+    [SerializeField] private Material pageMaterial;
+
     public static bool Signed { get; private set; }
 
     private Camera cam;
     private Collider col;
     private bool busy;
+    private RenderTexture pageTexture;
 
     private void Awake()
     {
         col = GetComponent<Collider>();
         Signed = false;
+    }
+
+    private void Start()
+    {
+        // Masadaki defter, ekranda açılan sayfanın aynısını gösterir
+        if (pageMaterial == null) return;
+        pageTexture = new RenderTexture(2048, 1152, 24) { name = "DefterSayfasi", anisoLevel = 4 };
+        pageMaterial.SetTexture("_BaseMap", pageTexture);
+        Vector4 st = NicknameLogbookUI.PageRectST;
+        pageMaterial.SetTextureScale("_BaseMap", new Vector2(st.x, st.y));
+        pageMaterial.SetTextureOffset("_BaseMap", new Vector2(st.z, st.w));
+        NicknameLogbookUI.RenderPageTexture("", pageTexture);
+    }
+
+    private void OnDestroy()
+    {
+        if (pageMaterial != null) pageMaterial.SetTexture("_BaseMap", null);
+        if (pageTexture != null)
+        {
+            pageTexture.Release();
+            Destroy(pageTexture);
+        }
     }
 
     private void Update()
@@ -45,10 +71,15 @@ public class LobbyLogbook : MonoBehaviour
         float previousScale = Time.timeScale;
         Time.timeScale = 0f;
 
+        string signedName = "";
         yield return NicknameLogbookUI.RunAtDesk(name =>
         {
+            signedName = name;
             if (LeaderboardManager.instance != null) LeaderboardManager.instance.SetPlayerName(name);
         });
+
+        // İmza masadaki deftere de geçer
+        if (pageTexture != null) NicknameLogbookUI.RenderPageTexture(signedName, pageTexture);
 
         Time.timeScale = previousScale;
         PlayerControls.SetEnabled(true);

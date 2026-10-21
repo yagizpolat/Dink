@@ -58,6 +58,52 @@ public class NicknameLogbookUI : MonoBehaviour
     }
 
     private bool fadeToBlack = true;
+    private bool renderOnly;
+
+    /// <summary>Sayfanın dokuda kapladığı bölge (tiling.xy, offset.zw): 1600x900 tuvalde ortalanmış PageW x PageH.</summary>
+    public static readonly Vector4 PageRectST = new Vector4(PageW / 1600f, PageH / 900f, (800f - PageW / 2f) / 1600f, (440f - PageH / 2f) / 900f);
+
+    /// <summary>
+    /// Aynı defter sayfasını masadaki 3D defter için bir dokuya çizer. İsim boşsa oyuncunun satırı boş kalır,
+    /// doluysa elle yazılmış hâli ve KAYDEDİLDİ damgasıyla çizilir.
+    /// </summary>
+    public static void RenderPageTexture(string playerName, RenderTexture target)
+    {
+        var root = new GameObject("[DefterSayfasiCizim]");
+        NicknameLogbookUI ui = root.AddComponent<NicknameLogbookUI>();
+        ui.renderOnly = true;
+        ui.Build();
+
+        bool signed = !string.IsNullOrEmpty(playerName);
+        ui.typed = signed ? playerName : "";
+        ui.nameText.color = BlueInk;
+        ui.nameText.text = ui.typed;
+        ui.stamp.SetActive(signed);
+        ui.cueText.gameObject.SetActive(false);
+        ui.blackout.gameObject.SetActive(false);
+
+        const int layer = 5; // UI
+        foreach (Transform t in root.GetComponentsInChildren<Transform>(true)) t.gameObject.layer = layer;
+
+        var cam = new GameObject("[DefterSayfasiKamera]").AddComponent<Camera>();
+        cam.enabled = false;
+        cam.orthographic = true;
+        cam.clearFlags = CameraClearFlags.SolidColor;
+        cam.backgroundColor = PaperColor;
+        cam.cullingMask = 1 << layer;
+        cam.targetTexture = target;
+        cam.transform.position = new Vector3(0f, -5000f, 0f);
+
+        ui.canvas.renderMode = RenderMode.ScreenSpaceCamera;
+        ui.canvas.worldCamera = cam;
+        ui.canvas.planeDistance = 1f;
+        Canvas.ForceUpdateCanvases();
+        cam.Render();
+
+        cam.targetTexture = null;
+        DestroyImmediate(cam.gameObject);
+        DestroyImmediate(root);
+    }
 
     /// <summary>Karartma tamamlandıktan sonra çağrılır; arkadaki geçiş kendi siyahını devraldığında defteri siler.</summary>
     public static void CloseAll()
@@ -166,7 +212,8 @@ public class NicknameLogbookUI : MonoBehaviour
         BuildHeader(pageRect);
         float tableBottom = BuildTable(pageRect);
         BuildFooter(pageRect, tableBottom);
-        AddLampFalloff(pageRect);
+        // 3D defterde ışığı sahnedeki masa lambası verir
+        if (!renderOnly) AddLampFalloff(pageRect);
 
         cueText = NewText("Cue", transform, monoFont, 14, new Color(0.42f, 0.38f, 0.34f), "ENTER");
         cueText.characterSpacing = 25;
