@@ -44,6 +44,8 @@ public class ElevatorController : MonoBehaviour
     [SerializeField] private Collider departButton;
     [SerializeField] private string departScene;
     [SerializeField] private string departFloor;
+    [Tooltip("Varış katında oyuncu kabinden çıkınca kapı kapanır ve asansör aşağı gider; geri dönüş yok")]
+    [SerializeField] private bool leaveAfterExit;
 
     [Header("Ses")]
     [SerializeField] private AudioSource audioSource;
@@ -152,6 +154,7 @@ public class ElevatorController : MonoBehaviour
     private void Update()
     {
         if (Time.timeScale == 0f) return;
+        if (arrival && leaveAfterExit && state == State.Open && !PlayerInCab()) { StartCoroutine(Leave()); return; }
         if (!Input.GetMouseButtonDown(0) && !Input.GetKeyDown(KeyCode.E)) return;
 
         if (cam == null) cam = Camera.main;
@@ -258,6 +261,24 @@ public class ElevatorController : MonoBehaviour
         camT.localPosition = rest;
 
         yield return SceneDoorTrigger.FadeAndLoad(targetScene, 1.2f);
+    }
+
+    // Oyuncu indikten kısa süre sonra kapı kapanır, motor uğuldar, gösterge aşağı sayar: asansör gitti
+    private IEnumerator Leave()
+    {
+        state = State.Riding;
+        yield return new WaitForSeconds(1.2f);
+        yield return MoveDoor(false);
+        state = State.Riding;
+        if (humSource != null) { humSource.volume = 0.4f; humSource.pitch = 0.9f; humSource.Play(); }
+        int floor = int.TryParse(toFloor, out int f) ? f : 0;
+        for (int i = floor - 1; i >= 0; i--)
+        {
+            yield return new WaitForSeconds(1.1f);
+            SetIndicator(i.ToString());
+            if (humSource != null) humSource.volume *= 0.7f;
+        }
+        if (humSource != null) humSource.Stop();
     }
 
     private void MoveCab(float dy, Transform player)

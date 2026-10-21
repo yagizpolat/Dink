@@ -1,7 +1,8 @@
 using UnityEngine;
 
 /// <summary>
-/// Apartman bölümleri için yürüyen birinci şahıs karakter. Koşma yok: gerilim hızdan değil, yaklaşmaktan gelir.
+/// Apartman bölümleri için yürüyen birinci şahıs karakter. Koşma yalnız kovalanılan katta var (Kat5Kovalamaca
+/// SpeedMultiplier'ı açar); başka yerde gerilim hızdan değil, yaklaşmaktan gelir.
 /// Sabit kameralı odalardaki Kamera.cs'nin yerini alır; PlayerControls.SetEnabled bunu da kapatıp açar.
 /// </summary>
 [RequireComponent(typeof(CharacterController))]
@@ -53,6 +54,9 @@ public class PlayerWalker : MonoBehaviour
         Bob();
     }
 
+    /// <summary>Yürüme hızı çarpanı; koşmaya izin veren kat betiği değiştirir.</summary>
+    public float SpeedMultiplier { get; set; } = 1f;
+
     /// <summary>Kamera dışarıdan düz bakışa çevrildiğinde (ör. asansör) iç bakış açısını eşitler.</summary>
     public void ResetPitch() => pitch = 0f;
 
@@ -68,7 +72,7 @@ public class PlayerWalker : MonoBehaviour
     private void Move()
     {
         Vector3 input = new Vector3(Input.GetAxisRaw("Horizontal"), 0f, Input.GetAxisRaw("Vertical"));
-        Vector3 target = transform.TransformDirection(Vector3.ClampMagnitude(input, 1f)) * walkSpeed;
+        Vector3 target = transform.TransformDirection(Vector3.ClampMagnitude(input, 1f)) * walkSpeed * SpeedMultiplier;
 
         Vector3 flat = Vector3.MoveTowards(new Vector3(velocity.x, 0f, velocity.z), target, acceleration * Time.deltaTime);
         velocity.x = flat.x;
@@ -84,7 +88,9 @@ public class PlayerWalker : MonoBehaviour
 
         float speed = new Vector2(velocity.x, velocity.z).magnitude;
         float amount = Mathf.Clamp01(speed / walkSpeed);
-        if (amount > 0.05f) bobTime += Time.deltaTime * bobFrequency * Mathf.PI * 2f;
+        // Koşarken adım sıklaşır
+        float pace = Mathf.Max(1f, speed / walkSpeed);
+        if (amount > 0.05f) bobTime += Time.deltaTime * bobFrequency * pace * Mathf.PI * 2f;
 
         Vector3 offset = new Vector3(Mathf.Cos(bobTime * 0.5f) * bobSide, Mathf.Sin(bobTime) * bobHeight, 0f) * amount;
         head.localPosition = Vector3.Lerp(head.localPosition, headRest + offset, 10f * Time.deltaTime);

@@ -26,6 +26,9 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/_Project/Scenes/Kat4.unity
     guid: 54cd108d6c5f07849a791fb5d661f7ad
+  - enabled: 1
+    path: Assets/_Project/Scenes/Kat5.unity
+    guid: 281dfcfbb6f872a45834c7a430433beb
   m_configObjects:
     com.unity.dt.app-ui: {fileID: 11400000, guid: 1b1c20d82303e4b5781c3ef50ac1449f, type: 2}
     com.unity.input.settings.actions: {fileID: -944628639613478452, guid: 052faaac586de48259a63d0c4782560b, type: 3}
