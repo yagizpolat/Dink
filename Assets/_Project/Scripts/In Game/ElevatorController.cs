@@ -30,6 +30,11 @@ public class ElevatorController : MonoBehaviour
     [SerializeField] private Transform shaftLight;
     [SerializeField] private Light cabLight;
 
+    [Header("Gösterge")]
+    [SerializeField] private TMPro.TMP_Text indicator;
+    [SerializeField] private string fromFloor = "0";
+    [SerializeField] private string toFloor = "1";
+
     [Header("Ses")]
     [SerializeField] private AudioSource audioSource;
     [SerializeField] private AudioSource humSource;
@@ -72,6 +77,7 @@ public class ElevatorController : MonoBehaviour
 
     private IEnumerator Start()
     {
+        SetIndicator(arrival ? toFloor : fromFloor);
         if (!arrival) yield break;
 
         // Varış: kabin hâlâ duruyor gibi başlar, sonra kapı açılır
@@ -154,6 +160,7 @@ public class ElevatorController : MonoBehaviour
     private IEnumerator Ride()
     {
         PlayerControls.SetEnabled(false);
+        StartCoroutine(TurnToDoor());
         yield return MoveDoor(false);
         state = State.Riding;
         yield return new WaitForSeconds(0.5f);
@@ -178,14 +185,42 @@ public class ElevatorController : MonoBehaviour
             if (shaftLight != null)
                 shaftLight.localPosition = lightTop + Vector3.down * Mathf.Repeat(t * 1.6f, 3f);
 
-            if (cabLight != null)
-                cabLight.intensity = (t > 2.4f && t < 2.55f) ? baseIntensity * 0.35f : baseIntensity;
+            // Lamba bir an söner; o anda gösterge olmaması gereken bir katı gösterir
+            bool glitch = t > 2.4f && t < 2.55f;
+            if (cabLight != null) cabLight.intensity = glitch ? baseIntensity * 0.35f : baseIntensity;
+            SetIndicator(glitch ? "11" : t < rideSeconds * 0.6f ? fromFloor : toFloor);
 
             yield return null;
         }
         camT.localPosition = rest;
 
         yield return SceneDoorTrigger.FadeAndLoad(targetScene, 1.2f);
+    }
+
+    // Butona basan oyuncu nereye bakıyorsa baksın, yolculuk boyunca kapıya döner
+    private IEnumerator TurnToDoor()
+    {
+        PlayerWalker walker = FindAnyObjectByType<PlayerWalker>();
+        if (walker == null) yield break;
+        Transform body = walker.transform, head = Camera.main.transform;
+
+        Quaternion bodyFrom = body.rotation, bodyTo = Quaternion.LookRotation(-transform.forward, Vector3.up);
+        Quaternion headFrom = head.localRotation;
+        for (float t = 0f; t < 0.9f; t += Time.deltaTime)
+        {
+            float k = Mathf.SmoothStep(0f, 1f, t / 0.9f);
+            body.rotation = Quaternion.Slerp(bodyFrom, bodyTo, k);
+            head.localRotation = Quaternion.Slerp(headFrom, Quaternion.identity, k);
+            yield return null;
+        }
+        body.rotation = bodyTo;
+        head.localRotation = Quaternion.identity;
+        walker.ResetPitch();
+    }
+
+    private void SetIndicator(string floor)
+    {
+        if (indicator != null && indicator.text != floor) indicator.text = floor;
     }
 
     private void Play(AudioClip clip)

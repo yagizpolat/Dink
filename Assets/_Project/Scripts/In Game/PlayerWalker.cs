@@ -52,6 +52,9 @@ public class PlayerWalker : MonoBehaviour
         Bob();
     }
 
+    /// <summary>Kamera dışarıdan düz bakışa çevrildiğinde (ör. asansör) iç bakış açısını eşitler.</summary>
+    public void ResetPitch() => pitch = 0f;
+
     private void Look()
     {
         float yaw = Input.GetAxis("Mouse X") * mouseSensitivity;
