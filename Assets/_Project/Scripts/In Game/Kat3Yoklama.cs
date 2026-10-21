@@ -4,9 +4,10 @@ using UnityEngine;
 /// <summary>
 /// Kat 3, "Yoklama": Daire 3'ün içi bir lise sınıfının köşesi. Sıraya oyuncunun adı kazınmış, yanındakine "11".
 /// Öğretmen masasındaki sınıf defterinde oyuncunun adının karşısında Eylül'den beri her gün "Y" var;
-/// 14.11.23'te kaydı silinmiş. Defter açıkken arkadan tebeşir sesi gelir; kâğıt kapanınca tahtada az önce
-/// olmayan "14.11.23 — YOK: ad" satırı durur. Ardından teneffüs zili kapalı daire kapılarının arkasından çalar,
-/// boş sınıf uğultusu yükselip kesilir, kabinde 4 yanar. Sesler (zil, uğultu, floresan) burada üretilir.
+/// 14.11.23'te kaydı silinmiş ("Yerine kimse oturmasın"). Defter kapanınca floresan susar ve "11" sırasından
+/// bir kalem tıklamaya başlar: oyuncu bakarken susar, arkasını dönünce sürer, yaklaştıkça hızlanır, her seferinde
+/// 11'de durur. Oyuncu sınıftan çıkarken sıra gıcırdar (biri kalkmış), teneffüs zili kapalı kapıların arkasından
+/// çalar, uğultu yükselip kesilir, kabinde 4 yanar. Sesler burada üretilir.
 /// </summary>
 public class Kat3Yoklama : MonoBehaviour
 {
@@ -14,9 +15,11 @@ public class Kat3Yoklama : MonoBehaviour
     [SerializeField] private float reach = 1.8f;
     [SerializeField] private TMPro.TMP_Text carvedName;
 
-    [Header("Tahta")]
-    [SerializeField] private TMPro.TMP_Text boardLine;
-    [SerializeField] private AudioSource chalkSource;
+    [Header("Yanındaki sıra")]
+    [SerializeField] private AudioSource tapSource;
+    [SerializeField] private AudioSource chairSource;
+    [SerializeField] private float classroomExitX = 2.75f;
+    [SerializeField] private float lookAngle = 55f;
 
     [Header("Ses")]
     [SerializeField] private AudioSource[] bellSources;
@@ -34,8 +37,14 @@ public class Kat3Yoklama : MonoBehaviour
     {
         if (nextFloorLight != null) nextFloorLight.SetActive(false);
         if (carvedName != null) carvedName.text = PlayerName();
-        if (boardLine != null) boardLine.gameObject.SetActive(false);
-        if (chalkSource != null) chalkSource.clip = Synth(2.6f, ChalkSample);
+        // Kalemin sıraya vuruşu: kuru, kısa, tahta tınısı
+        if (tapSource != null)
+            tapSource.clip = Synth(0.12f, t => (Mathf.Sin(2f * Mathf.PI * 950f * t) * 0.5f
+                                               + (Mathf.PerlinNoise(t * 9000f, 0.1f) - 0.5f) * 0.6f) * Mathf.Exp(-t * 70f));
+        // Sıranın demir ayağı döşemede sürtünür: biri kalkıyor
+        if (chairSource != null)
+            chairSource.clip = Synth(0.9f, t => (Mathf.PerlinNoise(t * 2500f, 0.7f) - 0.5f) * 0.7f
+                                              * Mathf.Sin(2f * Mathf.PI * (180f + 220f * t) * t) * Mathf.Sin(Mathf.PI * t / 0.9f));
 
         // Eski okul zili: elektrikli çan, tok ve kesintisiz
         AudioClip bell = Synth(3.2f, t => (Mathf.Sign(Mathf.Sin(2f * Mathf.PI * 25f * t)) * 0.5f + 0.5f)
@@ -78,19 +87,15 @@ public class Kat3Yoklama : MonoBehaviour
     {
         rang = true;
 
-        // Oyuncu okurken arkada biri tahtaya yazar; satır ses bitince belirir.
-        // Kâğıt açıkken zaman durur, bu yüzden gerçek zamanla beklenir
-        yield return new WaitForSecondsRealtime(1.8f);
-        if (chalkSource != null) { chalkSource.Play(); yield return new WaitForSecondsRealtime(chalkSource.clip.length); }
-        if (boardLine != null)
-        {
-            boardLine.text = "<u>14.11.23 — " + (IsTR ? "YOK: " : "ABSENT: ") + PlayerName() + "</u>";
-            boardLine.gameObject.SetActive(true);
-        }
-
         while (MektupNotHintUI.instance != null && MektupNotHintUI.instance.IsPanelOpen) yield return null;
-        // Tahtayı görmesine zaman tanı, zil sonra
-        yield return new WaitForSeconds(3f);
+
+        // Floresan susar, sınıf sessizleşir
+        if (humSource != null) humSource.Stop();
+        yield return new WaitForSeconds(2.5f);
+        yield return Tapping();
+
+        if (chairSource != null) chairSource.Play();
+        yield return new WaitForSeconds(2f);
 
         foreach (AudioSource s in bellSources) if (s != null) s.Play();
         yield return new WaitForSeconds(2.6f);
@@ -103,12 +108,44 @@ public class Kat3Yoklama : MonoBehaviour
             // Kesilir: kapı kapanmış gibi, bir anda
             crowdSource.Stop();
         }
-        if (humSource != null) humSource.Stop();
 
         yield return new WaitForSeconds(2f);
         ElevatorController.DepartureUnlocked = true;
         if (nextFloorLight != null) nextFloorLight.SetActive(true);
         if (nextFloorDing != null) nextFloorDing.Play();
+    }
+
+    // Biri yanındaki sırada kalemle vuruyor. Oyuncu ona bakarken susar; on bir vuruşta bir durup bekler.
+    // Oyuncu en az bir tam on biri duyup sınıftan çıkınca biter.
+    private IEnumerator Tapping()
+    {
+        Transform player = FindAnyObjectByType<PlayerWalker>()?.transform;
+        int count = 0;
+        bool heardEleven = false;
+        while (player != null && tapSource != null && !(heardEleven && player.position.x < classroomExitX))
+        {
+            if (Time.timeScale == 0f || Watched()) { yield return null; continue; }
+
+            tapSource.Play();
+            if (++count == 11)
+            {
+                count = 0;
+                heardEleven = true;
+                yield return new WaitForSeconds(2.8f);
+                continue;
+            }
+            // Yaklaştıkça sabırsızlanır
+            float d = Vector3.Distance(player.position, tapSource.transform.position);
+            yield return new WaitForSeconds(Mathf.Lerp(0.38f, 0.95f, Mathf.InverseLerp(1f, 4.5f, d)));
+        }
+    }
+
+    private bool Watched()
+    {
+        if (cam == null) cam = Camera.main;
+        if (cam == null) return false;
+        Vector3 to = tapSource.transform.position - cam.transform.position;
+        return Vector3.Angle(cam.transform.forward, to) < lookAngle;
     }
 
     private static bool IsTR => LanguageManager.instance != null && LanguageManager.instance.CurrentLanguage == LanguageManager.Language.TR;
@@ -141,18 +178,6 @@ public class Kat3Yoklama : MonoBehaviour
             : "CLASS 11-C  ATTENDANCE\n2023-2024 / TERM 1\n--------------------------\n" +
               "112  " + name + "\n\n" + days.ToString().TrimEnd() +
               "\n\nABSENT: " + col + " DAYS\n--------------------------\n14.11.23\nRemoved from the roll for absence.\n\nLet no one take this seat.";
-    }
-
-    // Tebeşir: harf harf kısa, kuru cızırtılar, aralarında kalkan elin boşlukları; sonunda alt çizgi
-    private static float ChalkSample(float t)
-    {
-        bool underline = t > 2.1f && t < 2.45f;
-        float stroke = Mathf.Repeat(t * 5.5f, 1f);
-        bool on = underline || (t < 1.9f && stroke < 0.6f && Mathf.PerlinNoise(t * 3f, 1.7f) > 0.3f);
-        if (!on) return 0f;
-        float grit = (Mathf.PerlinNoise(t * 6000f, 0.4f) - 0.5f) * 0.5f;
-        float squeak = Mathf.Sin(2f * Mathf.PI * (1700f + 300f * Mathf.PerlinNoise(t * 4f, 0f)) * t) * 0.04f;
-        return grit + squeak;
     }
 
     private static AudioClip Synth(float seconds, System.Func<float, float> f)
