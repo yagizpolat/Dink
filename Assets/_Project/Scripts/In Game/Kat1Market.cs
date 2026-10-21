@@ -90,6 +90,7 @@ public class Kat1Market : MonoBehaviour
     private IEnumerator Unlock()
     {
         NextFloorUnlocked = true;
+        ElevatorController.DepartureUnlocked = true;
         // Panel kapanana kadar bekle; oyuncu döndüğünde asansör çoktan haber vermiş olsun
         while (MektupNotHintUI.instance != null && MektupNotHintUI.instance.IsPanelOpen) yield return null;
         yield return new WaitForSeconds(1.5f);

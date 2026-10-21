@@ -4,7 +4,8 @@ using UnityEngine;
 /// <summary>
 /// Apartman asansörü. Kalkış katında: çağırma butonu (imzadan sonra) kapıyı açar, oyuncu kabine girip
 /// kat butonuna basınca kapı kapanır, motor uğuldar, kabin sarsılır, kapı camından kuyu ışıkları aşağı akar
-/// ve hedef kat yüklenir. Varış katında: oyuncu kabinde başlar, zil çalar, kapı açılır.
+/// ve hedef kat yüklenir. Varış katında: oyuncu kabinde başlar, zil çalar, kapı açılır; katın işi bitince
+/// (<see cref="DepartureUnlocked"/>) kabindeki bir sonraki kat butonu aynı yolculukla yukarı götürür.
 /// </summary>
 public class ElevatorController : MonoBehaviour
 {
@@ -39,10 +40,18 @@ public class ElevatorController : MonoBehaviour
     [SerializeField] private string fromFloor = "0";
     [SerializeField] private string toFloor = "1";
 
+    [Header("Varış katından kalkış")]
+    [SerializeField] private Collider departButton;
+    [SerializeField] private string departScene;
+    [SerializeField] private string departFloor;
+
     [Header("Ses")]
     [SerializeField] private AudioSource audioSource;
     [SerializeField] private AudioSource humSource;
     [SerializeField] private AudioClip openClip, closeClip, dingClip, deniedClip;
+
+    /// <summary>Varış katındaki görev bitince kat betiği açar; her sahnede kapalı başlar.</summary>
+    public static bool DepartureUnlocked { get; set; }
 
     private State state = State.Closed;
     private Quaternion closedRot, openRot;
@@ -51,6 +60,7 @@ public class ElevatorController : MonoBehaviour
 
     private void Awake()
     {
+        DepartureUnlocked = false;
         closedRot = door.rotation;
         openRot = OutwardRotation();
         if (shaftCover != null) shaftCover.SetActive(false);
@@ -141,12 +151,27 @@ public class ElevatorController : MonoBehaviour
 
     private void Update()
     {
-        if (arrival || Time.timeScale == 0f) return;
+        if (Time.timeScale == 0f) return;
         if (!Input.GetMouseButtonDown(0) && !Input.GetKeyDown(KeyCode.E)) return;
 
         if (cam == null) cam = Camera.main;
         if (cam == null) return;
         Ray ray = cam.ViewportPointToRay(new Vector3(0.5f, 0.5f, 0f));
+
+        if (arrival)
+        {
+            if (state != State.Open || departButton == null || !departButton.Raycast(ray, out _, reach) || !PlayerInCab()) return;
+            if (!DepartureUnlocked)
+            {
+                if (Time.time >= nextDenied) { Play(deniedClip); nextDenied = Time.time + 0.6f; }
+                return;
+            }
+            fromFloor = toFloor;
+            toFloor = departFloor;
+            targetScene = departScene;
+            StartCoroutine(Ride());
+            return;
+        }
 
         if (state == State.Closed && callButton != null && callButton.Raycast(ray, out _, reach))
         {

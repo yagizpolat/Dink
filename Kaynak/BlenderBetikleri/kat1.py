@@ -2,7 +2,9 @@ import bpy, bmesh, math
 from mathutils import Vector
 exec(open(r"C:\Kisisel Dosyalarim\ozel\Oyun Gelistirme\Denemelik projelerim\Dink\Kaynak\BlenderBetikleri\yardim.py", encoding='utf-8').read())
 
-y = Yapici('Kat1Koridor')
+# kat2.py aynı koridoru AD/ACIK3 vererek kurar (Daire 3 kapalı)
+AD = globals().get('AD', 'Kat1Koridor'); ACIK3 = globals().get('ACIK3', 82)
+y = Yapici(AD)
 X0, X1, Y0, Y1, H = 0.2, 2.6, 0.5, 8.99, 3.0
 y.box((0, 0.3, -0.1), (2.8, 9.2, 0), 'L_Mozaik')
 y.box((0, 0.3, H), (2.8, 9.2, H + 0.1), 'L_Tavan')
@@ -46,14 +48,15 @@ def kapi(cy, yon, acik=0.0):
     return (fx + s*0.0075, cy, 1.77)
 
 plak = {'1': kapi(2.6, 1), '2': kapi(6.4, 1), '4': kapi(6.9, -1)}
-kapi(4.5, -1, acik=82)
+if ACIK3: kapi(4.5, -1, acik=ACIK3)
+else: plak['3'] = kapi(4.5, -1)
 ob = y.done()
 
 texts = []
 for no, (x, cy, z) in plak.items():
     rz = math.pi/2 if x < 1.4 else -math.pi/2
     texts.append(yazi('No' + no, no, (x, cy, z), (math.radians(90), 0, rz), 0.06, 'L_Karanlik'))
-texts.append(yazi('No3', '3', (X1 - 0.03, 4.5, 2.2), (math.radians(90), 0, -math.pi/2), 0.07, 'T_BronzAlu'))
+if ACIK3: texts.append(yazi('No3', '3', (X1 - 0.03, 4.5, 2.2), (math.radians(90), 0, -math.pi/2), 0.07, 'T_BronzAlu'))
 birlestir(ob, texts)
 
 # Asansör duvarı giriş katının arka duvarından kopyalanır (aynı kapı, kasa, buton, gösterge)
