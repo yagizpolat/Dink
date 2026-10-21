@@ -26,6 +26,10 @@ public class ElevatorController : MonoBehaviour
 
     [Header("Yolculuk")]
     [SerializeField] private float rideSeconds = 5.5f;
+    [SerializeField] private Transform cabRig;
+    [SerializeField] private float rideHeight = 3.2f;
+    [SerializeField] private float arrivalRise = 0.9f;
+    [SerializeField] private float arrivalSeconds = 1.8f;
     [SerializeField] private GameObject shaftCover;
     [SerializeField] private Transform shaftLight;
     [SerializeField] private Light cabLight;
@@ -80,17 +84,40 @@ public class ElevatorController : MonoBehaviour
         SetIndicator(arrival ? toFloor : fromFloor);
         if (!arrival) yield break;
 
-        // Varış: kabin hâlâ duruyor gibi başlar, sonra kapı açılır
+        // Varış: kabin katın biraz altından başlar, son metreleri yavaşlayarak çıkar ve durur
         PlayerControls.SetEnabled(false);
         if (shaftCover != null) shaftCover.SetActive(true);
-        if (humSource != null) humSource.Play();
-        yield return new WaitForSeconds(1.2f);
-        for (float t = 0f; t < 0.8f; t += Time.deltaTime)
+        if (humSource != null) { humSource.volume = 0.5f; humSource.Play(); }
+
+        Transform player = FindAnyObjectByType<PlayerWalker>()?.transform;
+        CharacterController cc = player != null ? player.GetComponent<CharacterController>() : null;
+        if (cc != null) cc.enabled = false;
+        if (cabRig != null)
         {
-            if (humSource != null) humSource.volume = Mathf.Lerp(0.5f, 0f, t / 0.8f);
-            yield return null;
+            Vector3 down = Vector3.down * arrivalRise;
+            cabRig.position += down;
+            if (player != null) player.position += down;
+            float travelled = 0f;
+            for (float t = 0f; t < arrivalSeconds; t += Time.deltaTime)
+            {
+                // Hızlı gelir, sona doğru yavaşlar
+                float s = 1f - Mathf.Pow(1f - Mathf.Clamp01(t / arrivalSeconds), 3f);
+                float step = s * arrivalRise - travelled;
+                travelled += step;
+                MoveCab(step, player);
+                if (humSource != null) humSource.volume = Mathf.Lerp(0.5f, 0.05f, s);
+                yield return null;
+            }
+            MoveCab(arrivalRise - travelled, player);
         }
+        else
+        {
+            yield return new WaitForSeconds(1.2f);
+        }
+        // Durunca kısa bir oturma sarsıntısı
+        yield return Settle();
         if (humSource != null) humSource.Stop();
+        if (cc != null) cc.enabled = true;
         Play(dingClip);
         if (shaftCover != null) shaftCover.SetActive(false);
         yield return new WaitForSeconds(0.6f);
@@ -160,6 +187,7 @@ public class ElevatorController : MonoBehaviour
     private IEnumerator Ride()
     {
         PlayerControls.SetEnabled(false);
+        if (cabArea != null) cabArea.enabled = false;
         StartCoroutine(TurnToDoor());
         yield return MoveDoor(false);
         state = State.Riding;
@@ -171,30 +199,60 @@ public class ElevatorController : MonoBehaviour
         Transform camT = Camera.main.transform;
         Vector3 rest = camT.localPosition;
         float baseIntensity = cabLight != null ? cabLight.intensity : 0f;
-        Vector3 lightTop = shaftLight != null ? shaftLight.localPosition : Vector3.zero;
+        Transform player = FindAnyObjectByType<PlayerWalker>()?.transform;
+        CharacterController cc = player != null ? player.GetComponent<CharacterController>() : null;
+        if (cc != null) cc.enabled = false;
 
+        float travelled = 0f;
         for (float t = 0f; t < rideSeconds; t += Time.deltaTime)
         {
-            // Kalkışta kısa bir çöküş (yukarı ivme), sonra ince titreşim
+            // Kabin gerçekten yükselir: yavaş kalkar, kat arasında hızlanır, yukarı yaklaşırken yavaşlar.
+            // Açık kapı aralığından giriş katının kapısı aşağı kayar, yerini kuyu duvarı alır.
+            float s = Mathf.SmoothStep(0f, 1f, Mathf.SmoothStep(0f, 1f, t / rideSeconds));
+            float step = s * rideHeight - travelled;
+            travelled += step;
+            MoveCab(step, player);
+
+            // Kalkışta kısa bir çöküş (yukarı ivme), hızlanınca kablo titreşimi
+            float speed = Mathf.Sin(Mathf.Clamp01(t / rideSeconds) * Mathf.PI);
             float lift = t < 0.6f ? -Mathf.Sin(t / 0.6f * Mathf.PI) * 0.035f : 0f;
-            float shake = 0.004f;
+            float shake = 0.002f + 0.004f * speed;
             camT.localPosition = rest + new Vector3((Mathf.PerlinNoise(t * 9f, 0f) - 0.5f) * shake,
                                                     lift + (Mathf.PerlinNoise(0f, t * 11f) - 0.5f) * shake, 0f);
-
-            // Kapı camının ardından kuyu ışıkları aşağı kayar: yükseliyoruz
-            if (shaftLight != null)
-                shaftLight.localPosition = lightTop + Vector3.down * Mathf.Repeat(t * 1.6f, 3f);
+            if (humSource != null) { humSource.volume = 0.35f + 0.3f * speed; humSource.pitch = 0.9f + 0.2f * speed; }
 
             // Lamba bir an söner; o anda gösterge olmaması gereken bir katı gösterir
             bool glitch = t > 2.4f && t < 2.55f;
             if (cabLight != null) cabLight.intensity = glitch ? baseIntensity * 0.35f : baseIntensity;
-            SetIndicator(glitch ? "11" : t < rideSeconds * 0.6f ? fromFloor : toFloor);
+            SetIndicator(glitch ? "11" : s < 0.6f ? fromFloor : toFloor);
 
             yield return null;
         }
+        MoveCab(rideHeight - travelled, player);
         camT.localPosition = rest;
 
         yield return SceneDoorTrigger.FadeAndLoad(targetScene, 1.2f);
+    }
+
+    private void MoveCab(float dy, Transform player)
+    {
+        if (cabRig == null || dy == 0f) return;
+        Vector3 d = Vector3.up * dy;
+        cabRig.position += d;
+        if (player != null) player.position += d;
+    }
+
+    // Kabin durunca halatlar bir an esner: kamera hafifçe aşağı çöküp toparlanır
+    private IEnumerator Settle()
+    {
+        Transform camT = Camera.main.transform;
+        Vector3 rest = camT.localPosition;
+        for (float t = 0f; t < 0.5f; t += Time.deltaTime)
+        {
+            camT.localPosition = rest + Vector3.down * Mathf.Sin(t / 0.5f * Mathf.PI) * 0.025f * (1f - t / 0.5f);
+            yield return null;
+        }
+        camT.localPosition = rest;
     }
 
     // Butona basan oyuncu nereye bakıyorsa baksın, yolculuk boyunca kapıya döner
