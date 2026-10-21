@@ -90,10 +90,11 @@ public class Kat1Market : MonoBehaviour
     private IEnumerator Unlock()
     {
         NextFloorUnlocked = true;
-        ElevatorController.DepartureUnlocked = true;
         // Panel kapanana kadar bekle; oyuncu döndüğünde asansör çoktan haber vermiş olsun
         while (MektupNotHintUI.instance != null && MektupNotHintUI.instance.IsPanelOpen) yield return null;
         yield return new WaitForSeconds(1.5f);
+        // Buton ışıkla birlikte açılır, ışık yanmadan basılan 2 bir yere götürmez
+        ElevatorController.DepartureUnlocked = true;
         if (nextFloorLight != null) nextFloorLight.SetActive(true);
         if (nextFloorDing != null) nextFloorDing.Play();
     }
@@ -104,8 +105,6 @@ public class Kat1Market : MonoBehaviour
         return walker != null && area.bounds.Contains(walker.transform.position + Vector3.up * 0.5f);
     }
 
-    private static bool IsTR => LanguageManager.instance != null && LanguageManager.instance.CurrentLanguage == LanguageManager.Language.TR;
-
     private static string ReceiptText()
     {
         string name = LobbyLogbook.SignedName;
@@ -113,18 +112,27 @@ public class Kat1Market : MonoBehaviour
         if (string.IsNullOrEmpty(name)) name = "Hakan Kaya";
         name = name.ToUpperInvariant();
 
-        return IsTR
-            ? "KARANFİL MARKET\nKasa 1\n--------------------------\nPERSONEL: " + name +
-              "\n\nMESAİ BAŞLANGICI\n14.11.23        23:42\n\nMESAİ BİTİŞİ\n--.--.--        --:--\n--------------------------\nSÜRE                  —\nÖDENEN                —\n--------------------------\nYİNE BEKLERİZ"
-            : "KARANFIL MARKET\nTill 1\n--------------------------\nSTAFF: " + name +
-              "\n\nSHIFT START\n14.11.23        23:42\n\nSHIFT END\n--.--.--        --:--\n--------------------------\nHOURS                 —\nPAID                  —\n--------------------------\nSEE YOU AGAIN";
+        const string rule = "--------------------------";
+        return DinkLang.T("KARANFIL MARKET", "KARANFİL MARKET", "KARANFIL MARKT", "KARANFIL MARCHÉ", "SUPERMERCADO KARANFIL", "MERCADO KARANFIL", "МАГАЗИН «КАРАНФИЛ»") + "\n" +
+               DinkLang.T("Till 1", "Kasa 1", "Kasse 1", "Caisse 1", "Caja 1", "Caixa 1", "Касса 1") + "\n" + rule + "\n" +
+               DinkLang.T("STAFF: ", "PERSONEL: ", "PERSONAL: ", "EMPLOYÉ : ", "EMPLEADO: ", "FUNCIONÁRIO: ", "СОТРУДНИК: ") + name + "\n\n" +
+               DinkLang.T("SHIFT START", "MESAİ BAŞLANGICI", "SCHICHTBEGINN", "DÉBUT DE SERVICE", "INICIO DE TURNO", "INÍCIO DO TURNO", "НАЧАЛО СМЕНЫ") + "\n14.11.23        23:42\n\n" +
+               DinkLang.T("SHIFT END", "MESAİ BİTİŞİ", "SCHICHTENDE", "FIN DE SERVICE", "FIN DE TURNO", "FIM DO TURNO", "КОНЕЦ СМЕНЫ") + "\n--.--.--        --:--\n" + rule + "\n" +
+               DinkLang.T("HOURS", "SÜRE", "DAUER", "DURÉE", "HORAS", "HORAS", "ЧАСЫ").PadRight(22) + "—\n" +
+               DinkLang.T("PAID", "ÖDENEN", "BEZAHLT", "PAYÉ", "PAGADO", "PAGO", "ОПЛАЧЕНО").PadRight(22) + "—\n" + rule + "\n" +
+               DinkLang.T("SEE YOU AGAIN", "YİNE BEKLERİZ", "BIS ZUM NÄCHSTEN MAL", "À BIENTÔT", "VUELVA PRONTO", "VOLTE SEMPRE", "ЖДЁМ ВАС СНОВА");
     }
 
     private static string LetterText()
     {
-        return IsTR
-            ? "Fişleri sayma. Ben saydım.\n\nHer birinde kendi adım vardı, saat hep 23:42. Kalemle üstünü çizdim, yazıcı yenisini bastı.\n\nBurası benim marketim değildi ama rafların yerini ezbere biliyordum. Senin de biliyorsun, değil mi?\n\nAsansör seni yukarı götürecek. Her kat biraz daha tanıdık gelecek. Bu iyi bir şey değil.\n\n— M.K., Daire 4"
-            : "Don't count the receipts. I did.\n\nEvery one had my own name on it, always 23:42. I scratched it out with a pen and the printer printed another.\n\nThis wasn't my market, but I knew where every shelf was. You do too, don't you?\n\nThe elevator will take you up. Every floor will feel a little more familiar. That is not a good thing.\n\n— M.K., Flat 4";
+        return DinkLang.T(
+            "Don't count the receipts. I did.\n\nEvery one had my own name on it, always 23:42. I scratched it out with a pen and the printer printed another.\n\nThis wasn't my market, but I knew where every shelf was. You do too, don't you?\n\nThe elevator will take you up. Every floor will feel a little more familiar. That is not a good thing.\n\n— M.K., Flat 4",
+            "Fişleri sayma. Ben saydım.\n\nHer birinde kendi adım vardı, saat hep 23:42. Kalemle üstünü çizdim, yazıcı yenisini bastı.\n\nBurası benim marketim değildi ama rafların yerini ezbere biliyordum. Senin de biliyorsun, değil mi?\n\nAsansör seni yukarı götürecek. Her kat biraz daha tanıdık gelecek. Bu iyi bir şey değil.\n\n— M.K., Daire 4",
+            "Zähl die Kassenzettel nicht. Ich habe es getan.\n\nAuf jedem stand mein eigener Name, immer 23:42. Ich habe ihn mit dem Stift durchgestrichen, und der Drucker hat einen neuen gedruckt.\n\nDas war nicht mein Laden, aber ich wusste, wo jedes Regal steht. Du auch, nicht wahr?\n\nDer Aufzug bringt dich nach oben. Jedes Stockwerk wird dir ein bisschen vertrauter vorkommen. Das ist nichts Gutes.\n\n— M.K., Wohnung 4",
+            "Ne compte pas les tickets. Moi, je l'ai fait.\n\nChacun portait mon propre nom, toujours 23:42. Je l'ai barré au stylo, et l'imprimante en a sorti un autre.\n\nCe n'était pas ma supérette, mais je savais où était chaque rayon. Toi aussi, n'est-ce pas ?\n\nL'ascenseur va te faire monter. Chaque étage te semblera un peu plus familier. Ce n'est pas une bonne chose.\n\n— M.K., appartement 4",
+            "No cuentes los tiques. Yo lo hice.\n\nCada uno llevaba mi propio nombre, siempre a las 23:42. Lo taché con un bolígrafo y la impresora sacó otro.\n\nNo era mi tienda, pero sabía dónde estaba cada estante. Tú también lo sabes, ¿verdad?\n\nEl ascensor te llevará arriba. Cada piso te resultará un poco más familiar. Eso no es bueno.\n\n— M.K., piso 4",
+            "Não contes os talões. Eu contei.\n\nCada um tinha o meu próprio nome, sempre às 23:42. Risquei-o com uma caneta e a impressora imprimiu outro.\n\nAquele não era o meu mercado, mas eu sabia onde ficava cada prateleira. Tu também sabes, não sabes?\n\nO elevador vai levar-te para cima. Cada andar vai parecer-te um pouco mais familiar. Isso não é bom sinal.\n\n— M.K., apartamento 4",
+            "Не считай чеки. Я считал.\n\nНа каждом было моё имя, всегда 23:42. Я зачёркивал его ручкой, а принтер печатал новый.\n\nЭто был не мой магазин, но я знал наизусть, где какая полка. Ты ведь тоже знаешь, правда?\n\nЛифт повезёт тебя наверх. Каждый этаж будет казаться чуть более знакомым. Это не к добру.\n\n— М.К., квартира 4");
     }
 
     // Nokta vuruşlu yazıcı: satır satır kısa cızırtılar

@@ -27,9 +27,20 @@ public class SceneDoorTrigger : MonoBehaviour
         StartCoroutine(FadeAndLoad(targetScene, fadeSeconds));
     }
 
+    /// <summary>Karartma sürerken true; Esc menüsü bu sırada açılmaz (yoksa yeni sahne duraklatılmış gelir).</summary>
+    public static bool Transitioning { get; private set; }
+
+    [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.BeforeSceneLoad)]
+    private static void ResetOnSceneLoad()
+    {
+        Transitioning = false;
+        SceneManager.sceneLoaded += (scene, mode) => Transitioning = false;
+    }
+
     /// <summary>Kontrolleri kapatır, ekranı karartır ve sahneyi yükler. Kat geçişleri de bunu kullanır.</summary>
     public static IEnumerator FadeAndLoad(string targetScene, float fadeSeconds)
     {
+        Transitioning = true;
         PlayerControls.SetEnabled(false);
 
         var canvasGo = new GameObject("KapiGecisKarartma");

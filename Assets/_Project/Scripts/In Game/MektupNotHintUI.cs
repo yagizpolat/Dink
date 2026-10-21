@@ -507,7 +507,7 @@ public class MektupNotHintUI : MonoBehaviour
 
     private void PlayRustle()
     {
-        float sfx = AudioManager.instance != null ? AudioManager.instance.GetSFXVolume() : PlayerPrefs.GetFloat("Dink_SFXVolume", 0.8f);
+        float sfx = AudioManager.instance != null ? AudioManager.instance.SFXSourceScale : PlayerPrefs.GetFloat("Dink_SFXVolume", 0.8f);
         rustleSource.PlayOneShot(rustleClip, sfx * 0.45f);
     }
 

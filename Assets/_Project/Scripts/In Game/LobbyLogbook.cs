@@ -17,6 +17,9 @@ public class LobbyLogbook : MonoBehaviour
 
     public static bool Signed { get; private set; }
 
+    /// <summary>Defter açık, ad yazılıyor; Esc menüsü bu sırada açılmaz.</summary>
+    public static bool Busy { get; private set; }
+
     /// <summary>Defterde imzalanan ad; üst katlardaki fiş gibi yerler bunu kullanır.</summary>
     public static string SignedName { get; private set; } = "";
 
@@ -29,6 +32,8 @@ public class LobbyLogbook : MonoBehaviour
     {
         col = GetComponent<Collider>();
         Signed = false;
+        Busy = false;
+        SignedName = "";
     }
 
     private void Start()
@@ -68,6 +73,7 @@ public class LobbyLogbook : MonoBehaviour
     private IEnumerator Sign()
     {
         busy = true;
+        Busy = true;
         if (audioSource != null && openClip != null) audioSource.PlayOneShot(openClip);
 
         PlayerControls.SetEnabled(false);
@@ -89,5 +95,6 @@ public class LobbyLogbook : MonoBehaviour
         Signed = true;
         SignedName = signedName;
         busy = false;
+        Busy = false;
     }
 }

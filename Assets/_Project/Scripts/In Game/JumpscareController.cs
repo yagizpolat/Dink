@@ -39,7 +39,7 @@ public class JumpscareController : MonoBehaviour
         if (audioSource != null && jumpscareSound != null)
         {
             // Ses seviyesini SFX ayarına göre kıs (maksimum %50)
-            float sfxVol = AudioManager.instance != null ? AudioManager.instance.GetSFXVolume() : PlayerPrefs.GetFloat("Dink_SFXVolume", 0.8f);
+            float sfxVol = AudioManager.instance != null ? AudioManager.instance.SFXSourceScale : PlayerPrefs.GetFloat("Dink_SFXVolume", 0.8f);
             audioSource.PlayOneShot(jumpscareSound, sfxVol * 0.5f);
         }
 

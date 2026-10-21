@@ -60,6 +60,8 @@ public class Escmenu : MonoBehaviour
         // Mektup açıkken ESC mektubu kapatır; intro oynarken ESC introyu atlar
         if (MektupNotHintUI.instance != null && MektupNotHintUI.instance.IsPanelOpen) return;
         if (IntroCinematic.IsPlaying) return;
+        // Defter yazılırken ve sahne geçişinin karartmasında duraklatma yok
+        if (LobbyLogbook.Busy || SceneDoorTrigger.Transitioning) return;
         // Kapı ayarları açıkken ESC'yi o ekran işler (geri döner)
         if (kapiAyarlari != null && kapiAyarlari.IsOpen) return;
 
@@ -89,7 +91,7 @@ public class Escmenu : MonoBehaviour
 
         if (escmenusesbileseni != null && escmenukapanmasesi != null)
         {
-            float sfxVol = AudioManager.instance != null ? AudioManager.instance.GetSFXVolume() : PlayerPrefs.GetFloat("Dink_SFXVolume", 0.8f);
+            float sfxVol = AudioManager.instance != null ? AudioManager.instance.SFXSourceScale : PlayerPrefs.GetFloat("Dink_SFXVolume", 0.8f);
             escmenusesbileseni.PlayOneShot(escmenukapanmasesi, sfxVol);
         }
 
@@ -116,7 +118,7 @@ public class Escmenu : MonoBehaviour
 
         if (escmenusesbileseni != null && escmenuacilmasesi != null)
         {
-            float sfxVol = AudioManager.instance != null ? AudioManager.instance.GetSFXVolume() : PlayerPrefs.GetFloat("Dink_SFXVolume", 0.8f);
+            float sfxVol = AudioManager.instance != null ? AudioManager.instance.SFXSourceScale : PlayerPrefs.GetFloat("Dink_SFXVolume", 0.8f);
             escmenusesbileseni.PlayOneShot(escmenuacilmasesi, sfxVol);
         }
 

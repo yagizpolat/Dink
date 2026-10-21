@@ -161,7 +161,8 @@ public class ElevatorController : MonoBehaviour
         if (arrival)
         {
             if (state != State.Open || departButton == null || !departButton.Raycast(ray, out _, reach) || !PlayerInCab()) return;
-            if (!DepartureUnlocked)
+            // Sıradaki kat henüz yoksa (Kat4 yapılmadan) asansör kalkmaz; yoksa oyuncu siyah ekranda kalırdı
+            if (!DepartureUnlocked || !Application.CanStreamedLevelBeLoaded(departScene))
             {
                 if (Time.time >= nextDenied) { Play(deniedClip); nextDenied = Time.time + 0.6f; }
                 return;

@@ -461,7 +461,9 @@ public class SettingsManager : MonoBehaviour
         UpdateResolutionText();
 
         float masterVol = PlayerPrefs.GetFloat(PREF_MASTER_VOL, 0.8f);
-        AudioListener.volume = masterVol;
+        // AudioManager apartmanda SFX ayarını da dinleyiciye katar; doğrudan yazmak onu silerdi
+        if (AudioManager.instance != null) AudioManager.instance.SetMasterVolume(masterVol);
+        else AudioListener.volume = masterVol;
         if (masterVolumeSlider != null) masterVolumeSlider.SetValueWithoutNotify(masterVol);
         if (masterVolumePercentText != null) masterVolumePercentText.text = $"{(int)(masterVol * 100)}%";
 
@@ -472,8 +474,7 @@ public class SettingsManager : MonoBehaviour
         if (musicVolumePercentText != null) musicVolumePercentText.text = $"{(int)(musicVol * 100)}%";
 
         float sfxVol = PlayerPrefs.GetFloat(PREF_SFX_VOL, 0.8f);
-        if (AudioManager.instance != null && AudioManager.instance.sfxSource != null)
-            AudioManager.instance.sfxSource.volume = sfxVol;
+        if (AudioManager.instance != null) AudioManager.instance.SetSFXVolume(sfxVol);
         if (sfxVolumeSlider != null) sfxVolumeSlider.SetValueWithoutNotify(sfxVol);
         if (sfxVolumePercentText != null) sfxVolumePercentText.text = $"{(int)(sfxVol * 100)}%";
 

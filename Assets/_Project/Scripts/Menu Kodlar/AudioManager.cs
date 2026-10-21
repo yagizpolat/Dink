@@ -76,7 +76,14 @@ public class AudioManager : MonoBehaviour
     {
         bool apartment = DinkScenes.IsApartment(SceneManager.GetActiveScene());
         AudioListener.volume = GetMasterVolume() * (apartment ? GetSFXVolume() : 1f);
+        if (sfxSource != null) sfxSource.volume = SFXSourceScale;
     }
+
+    /// <summary>
+    /// Ses efekti kaynağına verilecek çarpan. Apartmanda Ses Efekti ayarı zaten dinleyicide olduğu için 1;
+    /// başka yerde ayarın kendisi. Kendi AudioSource'unu SFX ayarıyla kısan betikler bunu kullanmalı.
+    /// </summary>
+    public float SFXSourceScale => DinkScenes.IsApartment(SceneManager.GetActiveScene()) ? 1f : GetSFXVolume();
 
     // Apartman sahnesi doğrudan açıldığında da (editör, Yeni Oyun) yönetici baştan kurulsun
     [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.AfterSceneLoad)]
@@ -140,10 +147,6 @@ public class AudioManager : MonoBehaviour
     {
         PlayerPrefs.SetFloat("Dink_SFXVolume", vol);
         ApplyListenerVolume();
-        if (sfxSource != null)
-        {
-            sfxSource.volume = vol;
-        }
     }
 
     private void OnSceneLoaded(Scene scene, LoadSceneMode mode)
@@ -189,7 +192,8 @@ public class AudioManager : MonoBehaviour
     {
         if (clip != null && sfxSource != null)
         {
-            sfxSource.PlayOneShot(clip, GetSFXVolume());
+            // Kaynağın volume'u zaten SFX ayarında; burada ikinci kez çarpılmaz
+            sfxSource.PlayOneShot(clip);
         }
     }
 
@@ -220,7 +224,7 @@ public class AudioManager : MonoBehaviour
 
         while (currentTime < duration)
         {
-            currentTime += Time.deltaTime;
+            currentTime += Time.unscaledDeltaTime; // geçişlerde zaman donuk olabilir
             musicSource.volume = Mathf.Lerp(startVolume, 0, currentTime / duration);
             yield return null;
         }
@@ -249,7 +253,7 @@ public class AudioManager : MonoBehaviour
 
         while (currentTime < duration)
         {
-            currentTime += Time.deltaTime;
+            currentTime += Time.unscaledDeltaTime; // geçişlerde zaman donuk olabilir
             musicSource.volume = Mathf.Lerp(startVolume, 0, currentTime / duration);
             yield return null;
         }
@@ -267,7 +271,7 @@ public class AudioManager : MonoBehaviour
         currentTime = 0;
         while (currentTime < duration)
         {
-            currentTime += Time.deltaTime;
+            currentTime += Time.unscaledDeltaTime; // geçişlerde zaman donuk olabilir
             musicSource.volume = Mathf.Lerp(0, targetVolume, currentTime / duration);
             yield return null;
         }

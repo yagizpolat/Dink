@@ -1663,6 +1663,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1127414141}
   - component: {fileID: 1127414142}
+  - component: {fileID: 1127414143}
   m_Layer: 0
   m_Name: KatButonu3
   m_TagString: Untagged
@@ -1706,6 +1707,20 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 0.04, y: 0.06, z: 0.06}
   m_Center: {x: 0, y: 0, z: 0}
+--- !u!114 &1127414143
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1127414140}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bd3e601cc7762884f9492792468d15a5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::InteractionTarget
+  verb: 3
+  reach: 1.8
 --- !u!1 &1153196499
 GameObject:
   m_ObjectHideFlags: 0

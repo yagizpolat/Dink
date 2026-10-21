@@ -116,6 +116,8 @@ public class NicknameLogbookUI : MonoBehaviour
     {
         Build();
         RefreshName(true);
+        // Defteri açan E basışı aynı karede inputString'de durur; ada karışmasın
+        yield return null;
 
         float blink = 0f;
         bool done = false;

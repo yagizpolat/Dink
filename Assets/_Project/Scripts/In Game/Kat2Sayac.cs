@@ -114,7 +114,6 @@ public class Kat2Sayac : MonoBehaviour
         if (nextFloorDing != null) nextFloorDing.Play();
     }
 
-    private static bool IsTR => LanguageManager.instance != null && LanguageManager.instance.CurrentLanguage == LanguageManager.Language.TR;
 
     private static string NoticeText()
     {
@@ -123,11 +122,16 @@ public class Kat2Sayac : MonoBehaviour
         if (string.IsNullOrEmpty(name)) name = "Hakan Kaya";
         name = name.ToUpperInvariant();
 
-        return IsTR
-            ? "ELEKTRİK KESME İHBARNAMESİ\n--------------------------\nABONE: " + name +
-              "\nADRES: KARANFİL APT. DAİRE 11\nSAYAÇ NO: 11111\n\nÖDENMEMİŞ DÖNEM\nKASIM 2023\n\nTÜKETİM        11111 kWh\nBORÇ                  —\n--------------------------\nÖdenmediği takdirde\nenerjiniz kesilecektir.\n\nKESİM: 14.11.23  23:42"
-            : "NOTICE OF DISCONNECTION\n--------------------------\nACCOUNT: " + name +
-              "\nADDRESS: KARANFIL APT. FLAT 11\nMETER NO: 11111\n\nUNPAID PERIOD\nNOVEMBER 2023\n\nUSAGE          11111 kWh\nOWED                  —\n--------------------------\nIf left unpaid, your\npower will be cut off.\n\nCUT-OFF: 14.11.23  23:42";
+        const string rule = "--------------------------";
+        return DinkLang.T("NOTICE OF DISCONNECTION", "ELEKTRİK KESME İHBARNAMESİ", "SPERRANKÜNDIGUNG STROM", "AVIS DE COUPURE", "AVISO DE CORTE", "AVISO DE CORTE", "УВЕДОМЛЕНИЕ ОБ ОТКЛЮЧЕНИИ") + "\n" + rule + "\n" +
+               DinkLang.T("ACCOUNT: ", "ABONE: ", "KUNDE: ", "ABONNÉ : ", "TITULAR: ", "TITULAR: ", "АБОНЕНТ: ") + name + "\n" +
+               DinkLang.T("ADDRESS: KARANFIL APT. FLAT 11", "ADRES: KARANFİL APT. DAİRE 11", "ADRESSE: KARANFIL APT. WHG. 11", "ADRESSE : RÉS. KARANFIL, APP. 11", "DIRECCIÓN: EDIF. KARANFIL, PISO 11", "MORADA: PRÉDIO KARANFIL, APT. 11", "АДРЕС: ДОМ «КАРАНФИЛ», КВ. 11") + "\n" +
+               DinkLang.T("METER NO: ", "SAYAÇ NO: ", "ZÄHLER-NR.: ", "COMPTEUR N° : ", "CONTADOR N.º: ", "CONTADOR N.º: ", "СЧЁТЧИК №: ") + "11111\n\n" +
+               DinkLang.T("UNPAID PERIOD\nNOVEMBER 2023", "ÖDENMEMİŞ DÖNEM\nKASIM 2023", "OFFENER ZEITRAUM\nNOVEMBER 2023", "PÉRIODE IMPAYÉE\nNOVEMBRE 2023", "PERIODO IMPAGADO\nNOVIEMBRE 2023", "PERÍODO EM DÍVIDA\nNOVEMBRO 2023", "НЕОПЛАЧЕННЫЙ ПЕРИОД\nНОЯБРЬ 2023") + "\n\n" +
+               DinkLang.T("USAGE", "TÜKETİM", "VERBRAUCH", "CONSOMMATION", "CONSUMO", "CONSUMO", "РАСХОД").PadRight(15) + "11111 kWh\n" +
+               DinkLang.T("OWED", "BORÇ", "OFFEN", "DÛ", "DEUDA", "EM DÍVIDA", "ДОЛГ").PadRight(22) + "—\n" + rule + "\n" +
+               DinkLang.T("If left unpaid, your\npower will be cut off.", "Ödenmediği takdirde\nenerjiniz kesilecektir.", "Bei Nichtzahlung wird\nIhr Strom abgestellt.", "Faute de paiement, votre\ncourant sera coupé.", "Si no se paga, se le\ncortará la luz.", "Se não pagar, a sua\nluz será cortada.", "При неуплате\nэлектричество будет отключено.") + "\n\n" +
+               DinkLang.T("CUT-OFF: ", "KESİM: ", "SPERRUNG: ", "COUPURE : ", "CORTE: ", "CORTE: ", "ОТКЛЮЧЕНИЕ: ") + "14.11.23  23:42";
     }
 
     private static AudioClip Synth(float seconds, System.Func<float, float> f)

@@ -164,8 +164,6 @@ public class Kat3Yoklama : MonoBehaviour
         return Vector3.Angle(cam.transform.forward, to) < lookAngle;
     }
 
-    private static bool IsTR => LanguageManager.instance != null && LanguageManager.instance.CurrentLanguage == LanguageManager.Language.TR;
-
     private static string PlayerName()
     {
         string name = LobbyLogbook.SignedName;
@@ -176,24 +174,31 @@ public class Kat3Yoklama : MonoBehaviour
     private static string LogbookText()
     {
         string name = PlayerName().ToUpperInvariant();
-        // Eylül'den 14 Kasım'a kadar her okul günü "Y"; hafta sonları boş
+        // Eylül'den 14 Kasım'a kadar her okul günü "yok" işareti; hafta sonları boş
+        string mark = DinkLang.T("A", "Y", "F", "A", "F", "F", "Н");
         var days = new System.Text.StringBuilder();
         var d = new System.DateTime(2023, 9, 11);
         int col = 0;
         for (; d <= new System.DateTime(2023, 11, 14); d = d.AddDays(1))
         {
             if (d.DayOfWeek == System.DayOfWeek.Saturday || d.DayOfWeek == System.DayOfWeek.Sunday) continue;
-            days.Append(IsTR ? "Y " : "A ");
+            days.Append(mark).Append(' ');
             if (++col % 10 == 0) days.Append('\n');
         }
 
-        return IsTR
-            ? "11-C SINIFI  YOKLAMA\n2023-2024 / 1. DÖNEM\n--------------------------\n" +
-              "112  " + name + "\n\n" + days.ToString().TrimEnd() +
-              "\n\nDEVAMSIZLIK: " + col + " GÜN\n--------------------------\n14.11.23\nDevamsızlıktan kaydı silinmiştir.\n\nYerine kimse oturmasın."
-            : "CLASS 11-C  ATTENDANCE\n2023-2024 / TERM 1\n--------------------------\n" +
-              "112  " + name + "\n\n" + days.ToString().TrimEnd() +
-              "\n\nABSENT: " + col + " DAYS\n--------------------------\n14.11.23\nRemoved from the roll for absence.\n\nLet no one take this seat.";
+        const string rule = "--------------------------";
+        return DinkLang.T("CLASS 11-C  ATTENDANCE\n2023-2024 / TERM 1", "11-C SINIFI  YOKLAMA\n2023-2024 / 1. DÖNEM", "KLASSE 11c  ANWESENHEIT\n2023/24 / 1. HALBJAHR",
+                          "CLASSE DE 1re C  APPEL\n2023-2024 / 1er TRIMESTRE", "CLASE 11-C  ASISTENCIA\n2023-2024 / 1.er TRIMESTRE", "TURMA 11-C  CHAMADA\n2023-2024 / 1.º PERÍODO",
+                          "11 «В» КЛАСС  ПОСЕЩАЕМОСТЬ\n2023-2024 / 1-Я ЧЕТВЕРТЬ") + "\n" + rule + "\n" +
+               "112  " + name + "\n\n" + days.ToString().TrimEnd() + "\n\n" +
+               DinkLang.T("ABSENT: {0} DAYS", "DEVAMSIZLIK: {0} GÜN", "FEHLTAGE: {0}", "ABSENCES : {0} JOURS", "FALTAS: {0} DÍAS", "FALTAS: {0} DIAS", "ПРОПУСКИ: {0} ДН.").Replace("{0}", col.ToString()) + "\n" + rule + "\n14.11.23\n" +
+               DinkLang.T("Removed from the roll for absence.\n\nLet no one take this seat.",
+                          "Devamsızlıktan kaydı silinmiştir.\n\nYerine kimse oturmasın.",
+                          "Wegen Fehlzeiten von der Schule abgemeldet.\n\nNiemand soll sich auf diesen Platz setzen.",
+                          "Radié pour absences.\n\nQue personne ne prenne cette place.",
+                          "Dado de baja por faltas.\n\nQue nadie ocupe este sitio.",
+                          "Matrícula anulada por faltas.\n\nQue ninguém se sente neste lugar.",
+                          "Отчислен за пропуски.\n\nПусть никто не садится на это место.");
     }
 
     private static AudioClip Synth(float seconds, System.Func<float, float> f)
