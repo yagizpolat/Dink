@@ -7,6 +7,46 @@ ModelImporter:
   - first:
       type: UnityEngine:Material
       assembly: UnityEngine.CoreModule
+      name: K2_Bant
+    second: {fileID: 2100000, guid: 4274be1ab8cad4640aef0ea6e2434d56, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: K2_Disk
+    second: {fileID: 2100000, guid: 0cbf90a62d069eb4c83c1f7706a8d863, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: K2_Hane
+    second: {fileID: 2100000, guid: e1fbb70cd3817f4458c1da960da0e8dd, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: K2_IhbarKirmizi
+    second: {fileID: 2100000, guid: c7a15a475f1e2ba42b9166236fd2fba0, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: K2_Kagit
+    second: {fileID: 2100000, guid: 9b45d34361a0fc04f8779a22bef6c482, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: K2_PanoSac
+    second: {fileID: 2100000, guid: 0dd1a225a948a4f479be16a5ce2ff17a, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: K2_SayacCam
+    second: {fileID: 2100000, guid: 9a2c96587f0d9fa49ac05d98745bba7d, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: K2_SayacGovde
+    second: {fileID: 2100000, guid: 9c2621340d565f947a5448ccc66af62a, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
       name: L_Ahsap
     second: {fileID: 2100000, guid: 5d7ac5cd20cd07148a127ce29fa8a839, type: 2}
   - first:
@@ -32,6 +72,11 @@ ModelImporter:
   - first:
       type: UnityEngine:Material
       assembly: UnityEngine.CoreModule
+      name: L_Cilt
+    second: {fileID: 2100000, guid: a9a9d1f73e9f1174c85c541b18e0d498, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
       name: L_DefterSayfa
     second: {fileID: 2100000, guid: 89bc1a8e6f064d5428ba7ea4b23f4bcf, type: 2}
   - first:
@@ -49,6 +94,11 @@ ModelImporter:
       assembly: UnityEngine.CoreModule
       name: L_Kadran
     second: {fileID: 2100000, guid: fa5f69fc89ace4e4a89aa7f49ddec02d, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: L_Karanlik
+    second: {fileID: 2100000, guid: 1927ac243ed26f04282cf710c497d61c, type: 2}
   - first:
       type: UnityEngine:Material
       assembly: UnityEngine.CoreModule
@@ -82,8 +132,18 @@ ModelImporter:
   - first:
       type: UnityEngine:Material
       assembly: UnityEngine.CoreModule
+      name: L_Saksi
+    second: {fileID: 2100000, guid: dec3f9344ecb1db4baa9d59e1a91e9aa, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
       name: L_Siva
     second: {fileID: 2100000, guid: 45709b2ee4a0c2645a5266d1f48faece, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: L_Supurgelik
+    second: {fileID: 2100000, guid: 0a8b1c1a04c03814097a9edd0eea8c78, type: 2}
   - first:
       type: UnityEngine:Material
       assembly: UnityEngine.CoreModule
@@ -94,6 +154,16 @@ ModelImporter:
       assembly: UnityEngine.CoreModule
       name: L_YagliBoya
     second: {fileID: 2100000, guid: 97ac9ec5a665be548bf0c60f8e4b42cf, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: L_Yaprak
+    second: {fileID: 2100000, guid: df3ad374baf25a146b329d3bf19b5e75, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: T_BronzAlu
+    second: {fileID: 2100000, guid: b1789bde77bf47548bcdd64a3a4f009a, type: 2}
   materials:
     materialImportMode: 2
     materialName: 0

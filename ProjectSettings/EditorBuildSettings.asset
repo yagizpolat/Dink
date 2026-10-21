@@ -68,6 +68,9 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/_Project/Scenes/Kat2.unity
     guid: 79317e69226574f428d9dcf8e4920458
+  - enabled: 1
+    path: Assets/_Project/Scenes/Kat3.unity
+    guid: c1c06695e4956754598cac18c510be7e
   m_configObjects:
     com.unity.dt.app-ui: {fileID: 11400000, guid: 1b1c20d82303e4b5781c3ef50ac1449f, type: 2}
     com.unity.input.settings.actions: {fileID: -944628639613478452, guid: 052faaac586de48259a63d0c4782560b, type: 3}
