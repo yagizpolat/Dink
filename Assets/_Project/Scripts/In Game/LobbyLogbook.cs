@@ -17,6 +17,9 @@ public class LobbyLogbook : MonoBehaviour
 
     public static bool Signed { get; private set; }
 
+    /// <summary>Defterde imzalanan ad; üst katlardaki fiş gibi yerler bunu kullanır.</summary>
+    public static string SignedName { get; private set; } = "";
+
     private Camera cam;
     private Collider col;
     private bool busy;
@@ -84,6 +87,7 @@ public class LobbyLogbook : MonoBehaviour
         Time.timeScale = previousScale;
         PlayerControls.SetEnabled(true);
         Signed = true;
+        SignedName = signedName;
         busy = false;
     }
 }

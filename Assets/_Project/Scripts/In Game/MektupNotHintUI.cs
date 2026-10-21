@@ -180,9 +180,29 @@ public class MektupNotHintUI : MonoBehaviour
         string template = isTR ? letterPoolTR[index] : letterPoolEN[index];
         string finalText = ApplyDirectionTags(template, shownDirLeft, isTR);
 
-        LetterForm form = FormFor(index);
+        Show(FormFor(index), finalText);
+
+        // Lore puanı kazandır
+        TotalLettersRead++;
+        Debug.Log($"[MektupNotHintUI] 📖 Mektup #{TotalLettersRead} okundu (Index: {index}). Lore puanı kazanıldı.");
+    }
+
+    /// <summary>
+    /// Apartman katlarındaki elle yerleştirilmiş kâğıtlar için: verilen metni market fişi ya da
+    /// çizgili defter sayfası olarak açar (oda mektup havuzunu kullanmaz).
+    /// </summary>
+    public void OpenText(string body, bool asReceipt, bool countsAsLetter)
+    {
+        if (isPanelOpen) return;
+        if (letterCanvas == null) BuildRuntimeUI();
+        Show(asReceipt ? LetterForm.Receipt : LetterForm.RuledPage, body);
+        if (countsAsLetter) TotalLettersRead++;
+    }
+
+    private void Show(LetterForm form, string text)
+    {
         ApplyForm(form);
-        letterBodyText.text = finalText;
+        letterBodyText.text = text;
         if (animating != null) StopCoroutine(animating);
         letterCanvas.gameObject.SetActive(true);
         JitterHandwriting(form);
@@ -200,10 +220,6 @@ public class MektupNotHintUI : MonoBehaviour
         // İmleci serbest bırak
         Cursor.lockState = CursorLockMode.None;
         Cursor.visible = true;
-
-        // Lore puanı kazandır
-        TotalLettersRead++;
-        Debug.Log($"[MektupNotHintUI] 📖 Mektup #{TotalLettersRead} okundu (Index: {index}). Lore puanı kazanıldı.");
     }
 
     /// <summary>
