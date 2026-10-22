@@ -20,7 +20,7 @@ public class MainMenu3DController : MonoBehaviour
     public AudioClip menuAmbience;
 
     private LobbyMenu kapiMenusu;
-    private DoorLightSettings kapiAyarlari;
+    private LobbySettings lobiAyarlari;
     private bool oyunBasliyor;
 
     // ════════════════════════════════════════════
@@ -89,18 +89,20 @@ public class MainMenu3DController : MonoBehaviour
         if (kapiMenusu != null && kapiMenusu.Content != null) kapiMenusu.Content.SetActive(false);
     }
 
-    /// <summary>Kapı aralığı tarzı ayarlar ekranını menünün üstünde açar.</summary>
+    /// <summary>Ayarları kapının sağ camında açar; sol camdaki menü yazıları solar.</summary>
     private void OpenSettings()
     {
-        if (kapiAyarlari == null) kapiAyarlari = gameObject.AddComponent<DoorLightSettings>();
-        GameObject icerik = kapiMenusu != null ? kapiMenusu.Content : null;
-        if (icerik != null) icerik.SetActive(false);
-        kapiAyarlari.Open(10, () => { if (icerik != null) icerik.SetActive(true); });
+        if (lobiAyarlari == null)
+        {
+            lobiAyarlari = gameObject.AddComponent<LobbySettings>();
+            lobiAyarlari.menu = kapiMenusu;
+        }
+        lobiAyarlari.Open(null);
     }
 
     private bool IsAnySettingsPanelOpen()
     {
-        return (kapiAyarlari != null && kapiAyarlari.IsOpen) ||
+        return (lobiAyarlari != null && (lobiAyarlari.IsOpen || Time.frameCount == lobiAyarlari.LastClosedFrame)) ||
                (graphicsPanel != null && graphicsPanel.activeInHierarchy) ||
                (audioPanel != null && audioPanel.activeInHierarchy) ||
                (languagePanel != null && languagePanel.activeInHierarchy) ||

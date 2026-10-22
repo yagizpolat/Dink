@@ -46,6 +46,8 @@ public class LobbyMenu : MonoBehaviour
     private TMP_FontAsset font;
     private Camera cam;
     private bool busy;
+    private float dim = 1f;
+    private Coroutine dimRoutine;
 
     // ─── Sahne nesneleri ───
     private Transform lobi;
@@ -173,11 +175,37 @@ public class LobbyMenu : MonoBehaviour
         for (int k = 0; k < items.Count; k++)
         {
             bool on = k == selected;
-            items[k].text.color = new Color(0.82f, 0.8f, 0.75f, on ? 0.85f : UnselectedAlpha);
+            items[k].text.color = new Color(0.82f, 0.8f, 0.75f, (on ? 0.85f : UnselectedAlpha) * dim);
             items[k].text.fontStyle = FontStyles.Normal;
             items[k].glow.color = new Color(1f, 1f, 1f, 0f);
         }
         if (fromUser && changed) Stumble();
+    }
+
+    /// <summary>Menü yazılarını verilen saydamlık çarpanına yumuşakça götürür (ölçeksiz zaman).</summary>
+    public void FadeTo(float target, float duration = 0.25f)
+    {
+        if (dimRoutine != null) StopCoroutine(dimRoutine);
+        dimRoutine = StartCoroutine(DimRoutine(target, duration));
+    }
+
+    private IEnumerator DimRoutine(float target, float duration)
+    {
+        float from = dim;
+        for (float t = 0f; t < duration; t += Time.unscaledDeltaTime)
+        {
+            SetDim(Mathf.Lerp(from, target, t / duration));
+            yield return null;
+        }
+        SetDim(target);
+        dimRoutine = null;
+    }
+
+    private void SetDim(float value)
+    {
+        dim = value;
+        if (title != null) title.color = new Color(0.78f, 0.77f, 0.72f, 0.55f * dim);
+        Select(selected, false);
     }
 
     private void Activate(int i)
@@ -327,7 +355,8 @@ public class LobbyMenu : MonoBehaviour
         flickering = false;
     }
 
-    private void Stumble()
+    /// <summary>Ön ışıkta kısa bir tökezleme (seçim değişince); başka menüler de çağırabilir.</summary>
+    public void Stumble()
     {
         float now = Time.unscaledTime;
         if (flickering || now - lastStumble < 1.5f) return;

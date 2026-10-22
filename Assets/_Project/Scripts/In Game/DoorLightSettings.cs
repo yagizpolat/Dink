@@ -12,16 +12,23 @@ using UnityEngine.UI;
 /// </summary>
 public class DoorLightSettings : MonoBehaviour
 {
-    private enum RowKind { Cycle, Toggle, Slider, Action }
+    /// <summary>Ayar satırının türü.</summary>
+    public enum SettingKind { Cycle, Toggle, Slider, Action }
 
-    private class Row
+    /// <summary>Görünümden bağımsız ayar satırı verisi; hem bu ekran hem LobbySettings kullanır.</summary>
+    public class SettingRow
     {
         public string label;
         public string desc;
-        public RowKind kind;
+        public SettingKind kind;
         public Func<string> value;
         public Func<float> sliderValue;
         public Action<int> change;
+    }
+
+    private class Row
+    {
+        public SettingRow d;
         public RectTransform rect;
         public TextMeshProUGUI labelText;
         public TextMeshProUGUI valueText;
@@ -111,20 +118,44 @@ public class DoorLightSettings : MonoBehaviour
     private void DefineRows()
     {
         tabs.Clear();
-        tabs.Add(new List<Row>
+        foreach (List<SettingRow> list in BuildRows(Close))
         {
-            new Row { label = DinkLang.T("QUALITY", "KALİTE", "QUALITÄT", "QUALITÉ", "CALIDAD", "QUALIDADE", "КАЧЕСТВО"), desc = DinkLang.T("Shadow and lighting detail.", "Gölge ve ışık detayını belirler.", "Schatten- und Lichtdetails.", "Détail des ombres et de la lumière.", "Detalle de sombras e iluminación.", "Detalhe de sombras e iluminação.", "Детализация теней и света."), kind = RowKind.Cycle,
+            var rows = new List<Row>();
+            foreach (SettingRow r in list) rows.Add(new Row { d = r });
+            tabs.Add(rows);
+        }
+    }
+
+    /// <summary>Sekme başlıkları (GRAFİK / SES / OYUN), BuildRows ile aynı sırada.</summary>
+    public static string[] TabNames()
+    {
+        return new[] { DinkLang.T("GRAPHICS", "GRAFİK", "GRAFIK", "GRAPHISMES", "GRÁFICOS", "GRÁFICOS", "ГРАФИКА"), DinkLang.T("AUDIO", "SES", "AUDIO", "AUDIO", "AUDIO", "ÁUDIO", "ЗВУК"), DinkLang.T("GAME", "OYUN", "SPIEL", "JEU", "JUEGO", "JOGO", "ИГРА") };
+    }
+
+    /// <summary>SettingsManager'ı hazırlar (yoksa kurar, ayarları yükler).</summary>
+    public static void PrepareSettings()
+    {
+        if (SM != null) SM.PrepareForExternalUI();
+    }
+
+    /// <summary>Tüm ayar satırlarını sekme sekme kurar; GERİ satırı onBack'i çağırır.</summary>
+    public static List<List<SettingRow>> BuildRows(Action onBack)
+    {
+        var tabs = new List<List<SettingRow>>();
+        tabs.Add(new List<SettingRow>
+        {
+            new SettingRow { label = DinkLang.T("QUALITY", "KALİTE", "QUALITÄT", "QUALITÉ", "CALIDAD", "QUALIDADE", "КАЧЕСТВО"), desc = DinkLang.T("Shadow and lighting detail.", "Gölge ve ışık detayını belirler.", "Schatten- und Lichtdetails.", "Détail des ombres et de la lumière.", "Detalle de sombras e iluminación.", "Detalhe de sombras e iluminação.", "Детализация теней и света."), kind = SettingKind.Cycle,
                 value = () => SM != null ? QualityName(SM.QualityIndex) : "-", change = d => SM?.ChangeQuality(d) },
-            new Row { label = DinkLang.T("DISPLAY MODE", "EKRAN MODU", "ANZEIGEMODUS", "MODE D'AFFICHAGE", "MODO DE PANTALLA", "MODO DE TELA", "РЕЖИМ ЭКРАНА"), desc = DinkLang.T("How the game fills the screen.", "Oyunun ekranı nasıl kaplayacağı.", "Wie das Spiel den Bildschirm füllt.", "Comment le jeu remplit l'écran.", "Cómo ocupa el juego la pantalla.", "Como o jogo ocupa a tela.", "Как игра заполняет экран."), kind = RowKind.Toggle,
+            new SettingRow { label = DinkLang.T("DISPLAY MODE", "EKRAN MODU", "ANZEIGEMODUS", "MODE D'AFFICHAGE", "MODO DE PANTALLA", "MODO DE TELA", "РЕЖИМ ЭКРАНА"), desc = DinkLang.T("How the game fills the screen.", "Oyunun ekranı nasıl kaplayacağı.", "Wie das Spiel den Bildschirm füllt.", "Comment le jeu remplit l'écran.", "Cómo ocupa el juego la pantalla.", "Como o jogo ocupa a tela.", "Как игра заполняет экран."), kind = SettingKind.Toggle,
                 value = () => SM != null && SM.IsFullscreen ? DinkLang.T("FULLSCREEN", "TAM EKRAN", "VOLLBILD", "PLEIN ÉCRAN", "PANTALLA COMPLETA", "TELA CHEIA", "ПОЛНЫЙ ЭКРАН") : DinkLang.T("WINDOWED", "PENCERE", "FENSTER", "FENÊTRÉ", "VENTANA", "JANELA", "ОКНО"), change = d => SM?.ToggleFullscreen() },
-            new Row { label = DinkLang.T("RESOLUTION", "ÇÖZÜNÜRLÜK", "AUFLÖSUNG", "RÉSOLUTION", "RESOLUCIÓN", "RESOLUÇÃO", "РАЗРЕШЕНИЕ"), desc = DinkLang.T("Screen resolution.", "Ekran çözünürlüğü.", "Bildschirmauflösung.", "Résolution de l'écran.", "Resolución de pantalla.", "Resolução da tela.", "Разрешение экрана."), kind = RowKind.Cycle,
+            new SettingRow { label = DinkLang.T("RESOLUTION", "ÇÖZÜNÜRLÜK", "AUFLÖSUNG", "RÉSOLUTION", "RESOLUCIÓN", "RESOLUÇÃO", "РАЗРЕШЕНИЕ"), desc = DinkLang.T("Screen resolution.", "Ekran çözünürlüğü.", "Bildschirmauflösung.", "Résolution de l'écran.", "Resolución de pantalla.", "Resolução da tela.", "Разрешение экрана."), kind = SettingKind.Cycle,
                 value = () => SM != null ? SM.ResolutionName : "-", change = d => SM?.ChangeResolution(d) },
-            new Row { label = DinkLang.T("FPS LIMIT", "FPS SINIRI", "FPS-LIMIT", "LIMITE FPS", "LÍMITE FPS", "LIMITE FPS", "ЛИМИТ FPS"), desc = DinkLang.T("Maximum frames per second.", "Saniyedeki kare üst sınırı.", "Maximale Bilder pro Sekunde.", "Images par seconde maximum.", "Fotogramas por segundo máximos.", "Quadros por segundo máximos.", "Максимум кадров в секунду."), kind = RowKind.Cycle,
+            new SettingRow { label = DinkLang.T("FPS LIMIT", "FPS SINIRI", "FPS-LIMIT", "LIMITE FPS", "LÍMITE FPS", "LIMITE FPS", "ЛИМИТ FPS"), desc = DinkLang.T("Maximum frames per second.", "Saniyedeki kare üst sınırı.", "Maximale Bilder pro Sekunde.", "Images par seconde maximum.", "Fotogramas por segundo máximos.", "Quadros por segundo máximos.", "Максимум кадров в секунду."), kind = SettingKind.Cycle,
                 value = () => SM != null ? FrameRateName(SM.FrameRateIndex) : "-", change = d => SM?.ChangeFrameRate(d) },
-            new Row { label = "V-SYNC", desc = DinkLang.T("Prevents screen tearing.", "Ekran yırtılmasını önler.", "Verhindert Bildreißen.", "Empêche le déchirement de l'image.", "Evita el desgarro de pantalla.", "Evita o rasgo de tela.", "Убирает разрывы изображения."), kind = RowKind.Toggle,
+            new SettingRow { label = "V-SYNC", desc = DinkLang.T("Prevents screen tearing.", "Ekran yırtılmasını önler.", "Verhindert Bildreißen.", "Empêche le déchirement de l'image.", "Evita el desgarro de pantalla.", "Evita o rasgo de tela.", "Убирает разрывы изображения."), kind = SettingKind.Toggle,
                 value = () => SM != null && SM.IsVSync ? DinkLang.T("ON", "AÇIK", "AN", "OUI", "SÍ", "SIM", "ВКЛ") : DinkLang.T("OFF", "KAPALI", "AUS", "NON", "NO", "NÃO", "ВЫКЛ"), change = d => SM?.ToggleVSync() },
         });
-        tabs.Add(new List<Row>
+        tabs.Add(new List<SettingRow>
         {
             VolumeRow(DinkLang.T("MASTER", "GENEL SES", "GESAMT", "GÉNÉRAL", "GENERAL", "GERAL", "ОБЩАЯ"), DinkLang.T("Overall volume.", "Tüm seslerin seviyesi.", "Gesamtlautstärke.", "Volume général.", "Volumen general.", "Volume geral.", "Общая громкость."),
                 () => AudioManager.instance != null ? AudioManager.instance.GetMasterVolume() : AudioListener.volume, v => SM?.SetMasterVolume(v)),
@@ -133,16 +164,17 @@ public class DoorLightSettings : MonoBehaviour
             VolumeRow(DinkLang.T("EFFECTS", "EFEKTLER", "EFFEKTE", "EFFETS", "EFECTOS", "EFEITOS", "ЭФФЕКТЫ"), DinkLang.T("Doors, footsteps and whispers.", "Kapı, adım ve fısıltılar.", "Türen, Schritte und Flüstern.", "Portes, pas et chuchotements.", "Puertas, pasos y susurros.", "Portas, passos e sussurros.", "Двери, шаги и шёпот."),
                 () => AudioManager.instance != null ? AudioManager.instance.GetSFXVolume() : PlayerPrefs.GetFloat("Dink_SFXVolume", 0.8f), v => SM?.SetSFXVolume(v)),
         });
-        tabs.Add(new List<Row>
+        tabs.Add(new List<SettingRow>
         {
-            new Row { label = DinkLang.T("LANGUAGE", "DİL", "SPRACHE", "LANGUE", "IDIOMA", "IDIOMA", "ЯЗЫК"), desc = DinkLang.T("Interface and letter language.", "Arayüz ve mektup dili.", "Sprache von Oberfläche und Briefen.", "Langue de l'interface et des lettres.", "Idioma de la interfaz y las cartas.", "Idioma da interface e das cartas.", "Язык интерфейса и писем."), kind = RowKind.Cycle,
+            new SettingRow { label = DinkLang.T("LANGUAGE", "DİL", "SPRACHE", "LANGUE", "IDIOMA", "IDIOMA", "ЯЗЫК"), desc = DinkLang.T("Interface and letter language.", "Arayüz ve mektup dili.", "Sprache von Oberfläche und Briefen.", "Langue de l'interface et des lettres.", "Idioma de la interfaz y las cartas.", "Idioma da interface e das cartas.", "Язык интерфейса и писем."), kind = SettingKind.Cycle,
                 value = () => LanguageManager.instance != null ? LanguageManager.instance.GetCurrentLanguageName().ToUpperInvariant() : "-",
                 change = d => { if (LanguageManager.instance != null) { int n = System.Enum.GetValues(typeof(LanguageManager.Language)).Length; LanguageManager.instance.SetLanguage((LanguageManager.Language)(((int)LanguageManager.instance.CurrentLanguage + (d < 0 ? -1 : 1) + n) % n)); } } },
-            new Row { label = DinkLang.T("RESTORE DEFAULTS", "VARSAYILANA DÖN", "STANDARD", "PAR DÉFAUT", "RESTABLECER", "PADRÃO", "ПО УМОЛЧАНИЮ"), desc = DinkLang.T("Resets every setting.", "Tüm ayarları sıfırlar.", "Setzt alle Einstellungen zurück.", "Réinitialise tous les réglages.", "Restablece todos los ajustes.", "Redefine todas as configurações.", "Сбрасывает все настройки."), kind = RowKind.Action,
+            new SettingRow { label = DinkLang.T("RESTORE DEFAULTS", "VARSAYILANA DÖN", "STANDARD", "PAR DÉFAUT", "RESTABLECER", "PADRÃO", "ПО УМОЛЧАНИЮ"), desc = DinkLang.T("Resets every setting.", "Tüm ayarları sıfırlar.", "Setzt alle Einstellungen zurück.", "Réinitialise tous les réglages.", "Restablece todos los ajustes.", "Redefine todas as configurações.", "Сбрасывает все настройки."), kind = SettingKind.Action,
                 value = () => "", change = d => SM?.ResetToDefaults() },
-            new Row { label = DinkLang.T("BACK", "GERİ", "ZURÜCK", "RETOUR", "VOLVER", "VOLTAR", "НАЗАД"), desc = DinkLang.T("Returns to the previous menu.", "Önceki menüye döner.", "Zurück zum vorherigen Menü.", "Retour au menu précédent.", "Vuelve al menú anterior.", "Volta ao menu anterior.", "Возврат в предыдущее меню."), kind = RowKind.Action,
-                value = () => "", change = d => Close() },
+            new SettingRow { label = DinkLang.T("BACK", "GERİ", "ZURÜCK", "RETOUR", "VOLVER", "VOLTAR", "НАЗАД"), desc = DinkLang.T("Returns to the previous menu.", "Önceki menüye döner.", "Zurück zum vorherigen Menü.", "Retour au menu précédent.", "Vuelve al menú anterior.", "Volta ao menu anterior.", "Возврат в предыдущее меню."), kind = SettingKind.Action,
+                value = () => "", change = d => onBack?.Invoke() },
         });
+        return tabs;
     }
 
     private static string QualityName(int i)
@@ -158,11 +190,11 @@ public class DoorLightSettings : MonoBehaviour
         return n[Mathf.Clamp(i, 0, n.Length - 1)];
     }
 
-    private static Row VolumeRow(string label, string desc, Func<float> get, Action<float> set)
+    private static SettingRow VolumeRow(string label, string desc, Func<float> get, Action<float> set)
     {
-        return new Row
+        return new SettingRow
         {
-            label = label, desc = desc, kind = RowKind.Slider, sliderValue = get,
+            label = label, desc = desc, kind = SettingKind.Slider, sliderValue = get,
             change = d => set(Mathf.Clamp01(Mathf.Round(get() * 10f + d) / 10f))
         };
     }
@@ -199,7 +231,7 @@ public class DoorLightSettings : MonoBehaviour
         for (int i = 0; i < 3; i++)
         {
             int index = i;
-            string[] names = { DinkLang.T("GRAPHICS", "GRAFİK", "GRAFIK", "GRAPHISMES", "GRÁFICOS", "GRÁFICOS", "ГРАФИКА"), DinkLang.T("AUDIO", "SES", "AUDIO", "AUDIO", "AUDIO", "ÁUDIO", "ЗВУК"), DinkLang.T("GAME", "OYUN", "SPIEL", "JEU", "JUEGO", "JOGO", "ИГРА") };
+            string[] names = TabNames();
             TextMeshProUGUI t = NewText(canvasObj.transform, $"Tab_{i}", names[i], 24, normalColor, 8f,
                 new Vector2(ContentX + i * 190f, 265f), new Vector2(180f, 40f));
             t.raycastTarget = true;
@@ -267,7 +299,7 @@ public class DoorLightSettings : MonoBehaviour
             divider.rectTransform.anchoredPosition = Vector2.zero;
             divider.rectTransform.sizeDelta = new Vector2(0f, 1f);
 
-            row.labelText = NewText(rowObj.transform, "Label", row.label, 26, normalColor, 6f, Vector2.zero, new Vector2(RowWidth, RowHeight));
+            row.labelText = NewText(rowObj.transform, "Label", row.d.label, 26, normalColor, 6f, Vector2.zero, new Vector2(RowWidth, RowHeight));
             Fill(row.labelText.rectTransform);
             row.valueText = NewText(rowObj.transform, "Value", "", 22, normalColor, 3f, Vector2.zero, new Vector2(RowWidth, RowHeight));
             Fill(row.valueText.rectTransform);
@@ -322,8 +354,8 @@ public class DoorLightSettings : MonoBehaviour
     {
         Row row = tabs[tab][selected];
         // Aksiyon satırları (Geri, Varsayılan) yalnızca Enter/tık ile çalışsın, A/D ile değil
-        if (row.kind == RowKind.Action && delta < 0) return;
-        row.change?.Invoke(delta);
+        if (row.d.kind == SettingKind.Action && delta < 0) return;
+        row.d.change?.Invoke(delta);
         if (IsOpen) Refresh();
     }
 
@@ -336,20 +368,20 @@ public class DoorLightSettings : MonoBehaviour
             bool on = i == selected;
             row.labelText.color = on ? Color.white : normalColor;
             row.valueText.color = on ? Color.white : normalColor;
-            row.valueText.text = FormatValue(row, on);
+            row.valueText.text = FormatValue(row.d, on);
         }
-        descText.text = rows[selected].desc;
+        descText.text = rows[selected].d.desc;
     }
 
-    private static string FormatValue(Row row, bool selected)
+    private static string FormatValue(SettingRow row, bool selected)
     {
-        if (row.kind == RowKind.Slider)
+        if (row.kind == SettingKind.Slider)
         {
             int filled = Mathf.RoundToInt(row.sliderValue() * 10f);
             return $"<color=#FFFFFF>{new string('■', filled)}</color><color=#FFFFFF2E>{new string('■', 10 - filled)}</color>  {filled * 10,3}";
         }
         string v = row.value();
-        if (row.kind == RowKind.Action) return selected ? "→" : "";
+        if (row.kind == SettingKind.Action) return selected ? "→" : "";
         return selected ? $"‹   {v}   ›" : v;
     }
 
