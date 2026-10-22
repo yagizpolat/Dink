@@ -1684,7 +1684,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::SisterTrace
   traceId: 4
-  reach: 2
+  reach: 2.4
   hiddenUntilRevealed: 0
   revealRoot: {fileID: 0}
   revealLight: {fileID: 0}
