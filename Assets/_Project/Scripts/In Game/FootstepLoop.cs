@@ -10,7 +10,7 @@ using UnityEngine;
 public class FootstepLoop : MonoBehaviour
 {
     [SerializeField] private float volume = 1f;
-    [SerializeField] private float strideMeters = 0.85f;
+    [SerializeField] private float strideMeters = 1.0f;
     [SerializeField] private float pitchJitter = 0.06f;
     [SerializeField] private float onsetThreshold = 0.25f;
     [SerializeField] private float stepSeconds = 0.32f;

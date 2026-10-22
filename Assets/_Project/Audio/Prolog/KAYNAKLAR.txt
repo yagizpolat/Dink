@@ -1,4 +1,4 @@
 Prolog sesleri (CC0, freesound.org, Openverse üzerinden):
 - GeceSehir.wav (sesi yükseltildi): "Night city atmosphere" freesound 237329
 - GeceTeras.mp3: "City Terrace Night 2" freesound 567387
-- KaldirimAdim.mp3: "Walking on pavement.wav" freesound 244310
+- AsfaltAdim.mp3: "footsteps shoes walk road asphalt hard" freesound 637556

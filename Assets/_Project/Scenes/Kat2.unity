@@ -3151,7 +3151,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::FootstepLoop
   volume: 1
-  strideMeters: 0.85
+  strideMeters: 1
   pitchJitter: 0.06
   onsetThreshold: 0.25
   stepSeconds: 0.32
