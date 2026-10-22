@@ -99,6 +99,9 @@ public class ElevatorController : MonoBehaviour
         SetIndicator(arrival ? toFloor : fromFloor);
         if (!arrival) yield break;
 
+        // Kat sahnesine varış: otomatik kayıt (yalnız KatN sahnelerinde; kat içinde başka kayıt alınmaz)
+        DinkSave.SaveFloorArrival(UnityEngine.SceneManagement.SceneManager.GetActiveScene().name);
+
         // Varış: kabin katın biraz altından başlar, son metreleri yavaşlayarak çıkar ve durur
         PlayerControls.SetEnabled(false);
         if (shaftCover != null) shaftCover.SetActive(true);

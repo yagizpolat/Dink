@@ -34,12 +34,18 @@ public class MainMenu3DController : MonoBehaviour
         BuildDoorLightMenu();
     }
 
-    private static string[] MenuYazilari() => new[]
+    // Menü kurulurken kayıt varsa Devam Et en üste eklenir
+    private bool devamVar;
+
+    private string[] MenuYazilari()
     {
-        DinkLang.T("NEW GAME", "YENİ OYUN", "NEUES SPIEL", "NOUVELLE PARTIE", "NUEVA PARTIDA", "NOVO JOGO", "НОВАЯ ИГРА"),
-        DinkLang.T("SETTINGS", "AYARLAR", "EINSTELLUNGEN", "PARAMÈTRES", "AJUSTES", "CONFIGURAÇÕES", "НАСТРОЙКИ"),
-        DinkLang.T("QUIT", "ÇIKIŞ", "BEENDEN", "QUITTER", "SALIR", "SAIR", "ВЫЙТИ")
-    };
+        var yazilar = new System.Collections.Generic.List<string>();
+        if (devamVar) yazilar.Add(DinkLang.T("CONTINUE", "DEVAM ET", "FORTSETZEN", "CONTINUER", "CONTINUAR", "CONTINUAR", "ПРОДОЛЖИТЬ"));
+        yazilar.Add(DinkLang.T("NEW GAME", "YENİ OYUN", "NEUES SPIEL", "NOUVELLE PARTIE", "NUEVA PARTIDA", "NOVO JOGO", "НОВАЯ ИГРА"));
+        yazilar.Add(DinkLang.T("SETTINGS", "AYARLAR", "EINSTELLUNGEN", "PARAMÈTRES", "AJUSTES", "CONFIGURAÇÕES", "НАСТРОЙКИ"));
+        yazilar.Add(DinkLang.T("QUIT", "ÇIKIŞ", "BEENDEN", "QUITTER", "SALIR", "SAIR", "ВЫЙТИ"));
+        return yazilar.ToArray();
+    }
 
     private void OnEnable() { LanguageManager.OnLanguageChanged += DilDegisti; }
     private void OnDisable() { LanguageManager.OnLanguageChanged -= DilDegisti; }
@@ -47,13 +53,15 @@ public class MainMenu3DController : MonoBehaviour
 
     private void BuildDoorLightMenu()
     {
+        devamVar = DinkSave.HasSave;
+        var eylemler = new System.Collections.Generic.List<System.Action>();
+        if (devamVar) eylemler.Add(() => { oyunBasliyor = true; ContinueGame(); });
+        eylemler.Add(() => { oyunBasliyor = true; StartGame(); });
+        eylemler.Add(OpenSettings);
+        eylemler.Add(QuitGame);
+
         kapiMenusu = gameObject.AddComponent<DoorLightMenu>();
-        kapiMenusu.Build(MenuYazilari(), new System.Action[]
-        {
-            () => { oyunBasliyor = true; StartGame(); },
-            OpenSettings,
-            QuitGame
-        }, new DoorLightMenu.Layout
+        kapiMenusu.Build(MenuYazilari(), eylemler.ToArray(), new DoorLightMenu.Layout
         {
             title = "DINK",
             darkness = 1f,          // 3D kapı sahnesi arkada hiç görünmesin
@@ -106,8 +114,31 @@ public class MainMenu3DController : MonoBehaviour
 
     // ─── Oyun Başlat / Çıkış ───
 
+    /// <summary>Kayıttaki kat sahnesini açar; sahne yüklenemiyorsa Yeni Oyun akışına düşer.</summary>
+    private void ContinueGame()
+    {
+        string sahne = DinkSave.LastFloorScene;
+        if (!DinkSave.IsFloorScene(sahne) || !Application.CanStreamedLevelBeLoaded(sahne))
+        {
+            StartGame();
+            return;
+        }
+
+        if (sceneTransition != null)
+        {
+            sceneTransition.KayittanDevamEt(sahne);
+        }
+        else
+        {
+            LobbyLogbook.RestoreSignature(DinkSave.PlayerName);
+            if (LeaderboardManager.instance != null) LeaderboardManager.instance.StartTimer(DinkSave.ElapsedSeconds);
+            UnityEngine.SceneManagement.SceneManager.LoadScene(sahne);
+        }
+    }
+
     private void StartGame()
     {
+        DinkSave.NewGame();
         if (sceneTransition != null)
         {
             sceneTransition.ButonlaSahneyeGit(0);

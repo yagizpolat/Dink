@@ -106,6 +106,10 @@ public class Kat2Sayac : MonoBehaviour
         }
         if (buzzSource != null) buzzSource.Stop();
 
+        // Lambalar sönünce gizli başlayan SisterTrace nesneleri yanar
+        foreach (SisterTrace trace in FindObjectsByType<SisterTrace>(FindObjectsSortMode.None))
+            if (trace.HiddenUntilRevealed) trace.Reveal();
+
         yield return new WaitForSeconds(1.5f);
         diskSpeed *= 1.6f;
         if (meterSource != null) meterSource.pitch = 1.25f;

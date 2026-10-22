@@ -62,6 +62,51 @@ public class SceneTransition : MonoBehaviour
         StartCoroutine(GecisRoutine(sahneNo));
     }
 
+    /// <summary>
+    /// Devam Et: kayıttaki kat sahnesini aynı karartmayla doğrudan açar; hikaye yazısı gösterilmez.
+    /// Ad imza olarak geri yüklenir, kronometre kayıttaki süreden sürer.
+    /// </summary>
+    public void KayittanDevamEt(string sahne)
+    {
+        StartCoroutine(DevamRoutine(sahne));
+    }
+
+    private IEnumerator DevamRoutine(string sahne)
+    {
+        Time.timeScale = 0f;
+
+        MainMenu3DController controller = FindFirstObjectByType<MainMenu3DController>();
+        if (controller != null)
+        {
+            controller.HideMenu();
+            controller.enabled = false;
+        }
+
+        if (AudioManager.instance != null)
+        {
+            AudioManager.instance.StopMusicWithFade(1.2f);
+        }
+
+        yield return StartCoroutine(FadeCanvasGroup(globalFadeGroup, 1f, fadeDuration));
+
+        if (mainMenuUI != null)
+        {
+            mainMenuUI.SetActive(false);
+        }
+
+        string ad = DinkSave.PlayerName;
+        if (string.IsNullOrWhiteSpace(ad) && LeaderboardManager.instance != null) ad = LeaderboardManager.instance.GetPlayerName();
+        if (string.IsNullOrWhiteSpace(ad)) ad = "Anonymous Player";
+        LobbyLogbook.RestoreSignature(ad);
+        if (LeaderboardManager.instance != null)
+        {
+            LeaderboardManager.instance.StartTimer(DinkSave.ElapsedSeconds);
+        }
+
+        Time.timeScale = 1f;
+        SceneManager.LoadScene(sahne);
+    }
+
     private IEnumerator GecisRoutine(int sahneNo)
     {
         // 1. ZAMANI ANINDA DONDUR

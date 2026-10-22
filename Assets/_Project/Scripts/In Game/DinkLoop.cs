@@ -1,21 +1,17 @@
-using UnityEngine;
-
-/// <summary>Oyunun kaçıncı turda olduğunu PlayerPrefs'te tutar.</summary>
+/// <summary>Tur sayısı için ince sarmalayıcı; veri <see cref="DinkSave.LoopCount"/> içinde tutulur.</summary>
 public static class DinkLoop
 {
-    private const string Key = "Dink_LoopCount";
-
-    public static int Count => PlayerPrefs.GetInt(Key, 0);
+    public static int Count => DinkSave.LoopCount;
 
     public static void Increment()
     {
-        PlayerPrefs.SetInt(Key, Count + 1);
-        PlayerPrefs.Save();
+        DinkSave.LoopCount = DinkSave.LoopCount + 1;
+        DinkSave.Save();
     }
 
     public static void Reset()
     {
-        PlayerPrefs.DeleteKey(Key);
-        PlayerPrefs.Save();
+        DinkSave.LoopCount = 0;
+        DinkSave.Save();
     }
 }

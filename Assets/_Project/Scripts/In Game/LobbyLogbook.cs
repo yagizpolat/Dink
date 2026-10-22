@@ -23,6 +23,15 @@ public class LobbyLogbook : MonoBehaviour
     /// <summary>Defterde imzalanan ad; üst katlardaki fiş gibi yerler bunu kullanır.</summary>
     public static string SignedName { get; private set; } = "";
 
+    /// <summary>Devam Et: kayıttaki adla imza atılmış sayılır (asansör vb. imza ister).</summary>
+    public static void RestoreSignature(string signedName)
+    {
+        if (string.IsNullOrWhiteSpace(signedName)) return;
+        Signed = true;
+        SignedName = signedName;
+        if (LeaderboardManager.instance != null) LeaderboardManager.instance.SetPlayerName(signedName);
+    }
+
     private Camera cam;
     private Collider col;
     private bool busy;

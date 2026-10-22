@@ -162,6 +162,9 @@ public class Escmenu : MonoBehaviour
     public void AnaMenuyeDon()
     {
         Time.timeScale = 1f;
+        // Kat kaydı varışta alındı; burada yalnız süre güncellenir ve kronometre menüde durur
+        DinkSave.SaveElapsedIfRunning();
+        if (LeaderboardManager.instance != null) LeaderboardManager.instance.StopTimer();
         DinkScenes.LoadMainMenu();
     }
 

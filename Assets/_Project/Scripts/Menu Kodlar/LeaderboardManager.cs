@@ -380,10 +380,28 @@ public class LeaderboardManager : MonoBehaviour
     // ⏱️ KRONOMETRE VE SÜRE ÖLÇÜMÜ
     // ════════════════════════════════════════════
 
-    public void StartTimer()
+    public bool IsTimerRunning => _isTimerRunning;
+
+    /// <summary>Çalışan kronometrenin o anki süresi (saniye); duruyorsa 0.</summary>
+    public float ElapsedTime => _isTimerRunning ? Time.time - _gameStartTime : 0f;
+
+    /// <param name="startOffset">Devam Et'te kayıttaki süreden sürdürmek için başlangıç değeri.</param>
+    public void StartTimer(float startOffset = 0f)
     {
-        _gameStartTime = Time.time;
+        _gameStartTime = Time.time - Mathf.Max(0f, startOffset);
         _isTimerRunning = true;
+    }
+
+    /// <summary>Skor yazmadan durdurur (ana menüye dönüş).</summary>
+    public void StopTimer()
+    {
+        _isTimerRunning = false;
+    }
+
+    // Oyun kapanırken süre kayda yazılır; kapalıyken geçen zaman sayılmaz
+    private void OnApplicationQuit()
+    {
+        if (_instance == this) DinkSave.SaveElapsedIfRunning();
     }
 
     public float StopTimerAndSaveScore()
@@ -404,6 +422,7 @@ public class LeaderboardManager : MonoBehaviour
         SubmitScoreToCloud(playerName, elapsedTime);
         PlayerPrefs.SetInt(GAME_FINISHED_KEY, 1);
         PlayerPrefs.Save();
+        DinkSave.ClearProgress();
 
         return elapsedTime;
     }
