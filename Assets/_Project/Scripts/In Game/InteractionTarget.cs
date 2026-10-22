@@ -7,7 +7,7 @@ using UnityEngine;
 [RequireComponent(typeof(Collider))]
 public class InteractionTarget : MonoBehaviour
 {
-    public enum Verb { Read, Sign, Call, Press, Take }
+    public enum Verb { Read, Sign, Call, Press, Take, Open }
 
     [SerializeField] private Verb verb = Verb.Read;
     [SerializeField] private float reach = 1.8f;
@@ -23,6 +23,7 @@ public class InteractionTarget : MonoBehaviour
 
     public string Label => verb switch
     {
+        Verb.Open => DinkLang.T("OPEN", "AÇ", "ÖFFNEN", "OUVRIR", "ABRIR", "ABRIR", "ОТКРЫТЬ"),
         Verb.Take => DinkLang.T("TAKE", "AL", "NEHMEN", "PRENDRE", "COGER", "PEGAR", "ВЗЯТЬ"),
         Verb.Sign => DinkLang.T("SIGN", "İMZALA", "UNTERSCHREIBEN", "SIGNER", "FIRMAR", "ASSINAR", "ПОДПИСАТЬ"),
         Verb.Call => DinkLang.T("CALL", "ÇAĞIR", "RUFEN", "APPELER", "LLAMAR", "CHAMAR", "ВЫЗВАТЬ"),

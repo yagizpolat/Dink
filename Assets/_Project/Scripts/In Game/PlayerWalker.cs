@@ -11,7 +11,7 @@ public class PlayerWalker : MonoBehaviour
     [SerializeField] private Transform head;
 
     [Header("Yürüme")]
-    [SerializeField] private float walkSpeed = 1.7f;
+    [SerializeField] private float walkSpeed = 3.2f;
     [SerializeField] private float acceleration = 8f;
     [SerializeField] private float gravity = -15f;
 

@@ -17,7 +17,7 @@ public class ElevatorController : MonoBehaviour
     [Header("Kapı")]
     [SerializeField] private Transform door;
     [SerializeField] private float openAngle = 95f;
-    [SerializeField] private float doorSeconds = 1.3f;
+    [SerializeField] private float doorSeconds = 0.9f;
 
     [Header("Butonlar ve Kabin")]
     [SerializeField] private Collider callButton;
@@ -26,11 +26,11 @@ public class ElevatorController : MonoBehaviour
     [SerializeField] private float reach = 1.8f;
 
     [Header("Yolculuk")]
-    [SerializeField] private float rideSeconds = 5.5f;
+    [SerializeField] private float rideSeconds = 3.0f;
     [SerializeField] private Transform cabRig;
     [SerializeField] private float rideHeight = 3.2f;
     [SerializeField] private float arrivalRise = 0.9f;
-    [SerializeField] private float arrivalSeconds = 1.8f;
+    [SerializeField] private float arrivalSeconds = 1.0f;
     [SerializeField] private GameObject shaftCover;
     [SerializeField] private Transform shaftLight;
     [SerializeField] private Light cabLight;
@@ -130,7 +130,7 @@ public class ElevatorController : MonoBehaviour
         }
         else
         {
-            yield return new WaitForSeconds(1.2f);
+            yield return new WaitForSeconds(0.6f);
         }
         // Durunca kısa bir oturma sarsıntısı
         yield return Settle();
@@ -138,7 +138,7 @@ public class ElevatorController : MonoBehaviour
         if (cc != null) cc.enabled = true;
         Play(dingClip);
         if (shaftCover != null) shaftCover.SetActive(false);
-        yield return new WaitForSeconds(0.6f);
+        yield return new WaitForSeconds(0.3f);
         PlayerControls.SetEnabled(true);
         yield return MoveDoor(true);
     }
@@ -189,6 +189,14 @@ public class ElevatorController : MonoBehaviour
             {
                 // İmza yok: buton tık eder, asansör gelmez
                 if (Time.time >= nextDenied) { Play(deniedClip); nextDenied = Time.time + 0.6f; }
+                ScreenHint.Show(DinkLang.T(
+                    "Sign your name in the logbook on the concierge desk first to use the elevator.",
+                    "Asansör için önce kapıcı masasındaki deftere adını yaz.",
+                    "Trag zuerst deinen Namen ins Buch auf dem Pförtnertisch ein, um den Aufzug zu nutzen.",
+                    "Pour l'ascenseur, écris d'abord ton nom dans le registre sur le bureau du concierge.",
+                    "Para el ascensor, primero escribe tu nombre en el libro del mostrador del conserje.",
+                    "Para o elevador, escreva primeiro seu nome no livro da mesa do porteiro.",
+                    "Чтобы вызвать лифт, сначала впиши имя в журнал на столе консьержа."));
                 return;
             }
             StartCoroutine(MoveDoor(true));
@@ -222,11 +230,13 @@ public class ElevatorController : MonoBehaviour
     private IEnumerator Ride()
     {
         PlayerControls.SetEnabled(false);
+        // Hedef kat yolculuk sürerken arka planda yüklenir; varışta bekleme olmaz
+        SceneDoorTrigger.Preload(targetScene);
         if (cabArea != null) cabArea.enabled = false;
         StartCoroutine(TurnToDoor());
         yield return MoveDoor(false);
         state = State.Riding;
-        yield return new WaitForSeconds(0.5f);
+        yield return new WaitForSeconds(0.25f);
 
         if (shaftCover != null) shaftCover.SetActive(true);
         if (humSource != null) { humSource.volume = 0.5f; humSource.Play(); }
@@ -257,7 +267,7 @@ public class ElevatorController : MonoBehaviour
             if (humSource != null) { humSource.volume = 0.35f + 0.3f * speed; humSource.pitch = 0.9f + 0.2f * speed; }
 
             // Lamba bir an söner; o anda gösterge olmaması gereken bir katı gösterir
-            bool glitch = t > 2.4f && t < 2.55f;
+            bool glitch = t > rideSeconds * 0.44f && t < rideSeconds * 0.44f + 0.15f;
             if (cabLight != null) cabLight.intensity = glitch ? baseIntensity * 0.35f : baseIntensity;
             SetIndicator(glitch ? "11" : s < 0.6f ? fromFloor : toFloor);
 
@@ -266,21 +276,21 @@ public class ElevatorController : MonoBehaviour
         MoveCab(rideHeight - travelled, player);
         camT.localPosition = rest;
 
-        yield return SceneDoorTrigger.FadeAndLoad(targetScene, 1.2f);
+        yield return SceneDoorTrigger.FadeAndLoad(targetScene, 0.35f);
     }
 
     // Oyuncu indikten kısa süre sonra kapı kapanır, motor uğuldar, gösterge aşağı sayar: asansör gitti
     private IEnumerator Leave()
     {
         state = State.Riding;
-        yield return new WaitForSeconds(1.2f);
+        yield return new WaitForSeconds(0.6f);
         yield return MoveDoor(false);
         state = State.Riding;
         if (humSource != null) { humSource.volume = 0.4f; humSource.pitch = 0.9f; humSource.Play(); }
         int floor = int.TryParse(toFloor, out int f) ? f : 0;
         for (int i = floor - 1; i >= 0; i--)
         {
-            yield return new WaitForSeconds(1.1f);
+            yield return new WaitForSeconds(0.55f);
             SetIndicator(i.ToString());
             if (humSource != null) humSource.volume *= 0.7f;
         }

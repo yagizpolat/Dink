@@ -17,8 +17,8 @@ public static class DinkScenes
     public static bool IsApartment(Scene scene) =>
         scene.name == Prologue || scene.name == "GirisKati" || (scene.name.StartsWith("Kat") && scene.name.Length > 3 && char.IsDigit(scene.name[3]));
 
-    public static void LoadMainMenu() => SceneManager.LoadScene(MainMenu);
+    public static void LoadMainMenu() { SceneDoorTrigger.ReleasePreload(); SceneManager.LoadScene(MainMenu); }
 
     /// <summary>Yeni oyunun başı: sokaktaki Karanfil Apt. önü.</summary>
-    public static void LoadPrologue() => SceneManager.LoadScene(Prologue);
+    public static void LoadPrologue() { SceneDoorTrigger.ReleasePreload(); SceneManager.LoadScene(Prologue); }
 }

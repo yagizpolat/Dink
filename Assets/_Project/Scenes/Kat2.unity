@@ -1831,7 +1831,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PlayerWalker
   head: {fileID: 0}
-  walkSpeed: 1.7
+  walkSpeed: 3.2
   acceleration: 8
   gravity: -15
   mouseSensitivity: 2.2
@@ -2369,16 +2369,16 @@ MonoBehaviour:
   targetScene: Kat1
   door: {fileID: 1298635977}
   openAngle: 95
-  doorSeconds: 1.3
+  doorSeconds: 0.9
   callButton: {fileID: 1896395297}
   floorButton: {fileID: 811206050}
   cabArea: {fileID: 1399087959}
   reach: 1.8
-  rideSeconds: 5.5
+  rideSeconds: 3
   cabRig: {fileID: 1293226982}
   rideHeight: 3.2
   arrivalRise: 0.9
-  arrivalSeconds: 1.8
+  arrivalSeconds: 1
   shaftCover: {fileID: 0}
   shaftLight: {fileID: 0}
   cabLight: {fileID: 1384280635}

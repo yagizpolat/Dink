@@ -11,7 +11,7 @@ using UnityEngine.SceneManagement;
 public class Kat5Kovalamaca : MonoBehaviour
 {
     [Header("Koşma")]
-    [SerializeField] private float runMultiplier = 2.3f;
+    [SerializeField] private float runMultiplier = 1.6f;
     [SerializeField] private float staminaSeconds = 6f;
     [SerializeField] private float regenPerSecond = 0.35f;
 
@@ -21,7 +21,7 @@ public class Kat5Kovalamaca : MonoBehaviour
     [SerializeField] private float doorOpenAngle = -100f;
     [SerializeField] private float wakeZ = 2.5f;
     [SerializeField] private Vector3 corridorEntry = new Vector3(1.6f, 0f, 4.5f);
-    [SerializeField] private float chaseSpeed = 2.9f;
+    [SerializeField] private float chaseSpeed = 3.6f;
     [SerializeField] private float catchDistance = 0.85f;
 
     [Header("Çıkış")]
