@@ -3,7 +3,7 @@ using UnityEngine;
 /// <summary>
 /// Apartman bölümleri için yürüyen birinci şahıs karakter. Koşma yalnız kovalanılan katta var (Kat5Kovalamaca
 /// SpeedMultiplier'ı açar); başka yerde gerilim hızdan değil, yaklaşmaktan gelir.
-/// Sabit kameralı odalardaki Kamera.cs'nin yerini alır; PlayerControls.SetEnabled bunu da kapatıp açar.
+/// PlayerControls.SetEnabled bunu kapatıp açar (mektup, ESC menüsü).
 /// </summary>
 [RequireComponent(typeof(CharacterController))]
 public class PlayerWalker : MonoBehaviour

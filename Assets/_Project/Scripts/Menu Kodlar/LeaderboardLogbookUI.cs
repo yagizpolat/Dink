@@ -122,7 +122,7 @@ public class LeaderboardLogbookUI : MonoBehaviour
         if (replay)
         {
             if (LeaderboardManager.instance != null) LeaderboardManager.instance.StartTimer();
-            DinkScenes.LoadNewGame();
+            DinkScenes.LoadPrologue();
         }
         else
         {

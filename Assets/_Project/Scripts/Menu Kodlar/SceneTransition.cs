@@ -4,8 +4,8 @@ using UnityEngine.SceneManagement;
 using TMPro;
 
 /// <summary>
-/// Ana menüden oyun sahnesine akıcı, hızlı ve 1 defaya mahsus hikaye yazısıyla geçişi sağlar.
-/// Oyuncu ilk defa girdiğinde önce kullanıcı adını sorar, ardından hikaye ekranını getirip oyunu başlatır.
+/// Ana menüden prolog sahnesine akıcı, hızlı ve 1 defaya mahsus hikaye yazısıyla geçişi sağlar.
+/// Oyuncu adı burada sorulmaz; giriş katındaki kapıcı defterinde (LobbyLogbook) sorulur.
 /// </summary>
 public class SceneTransition : MonoBehaviour
 {
@@ -19,7 +19,7 @@ public class SceneTransition : MonoBehaviour
     [Tooltip("Tarih ve devam etmek için tuşa bas uyarısı paneli")]
     public CanvasGroup dateandpressTextGroup;
 
-    [Header("Oyuncu Adı Giriş Paneli (İsteğe Bağlı)")]
+    [Header("Eski Oyuncu Adı Paneli (kullanılmıyor, sahne referansı için duruyor)")]
     public GameObject nicknamePanel;
     public TMP_InputField nicknameInputField;
     public UnityEngine.UI.Button nicknameSubmitButton;
@@ -47,7 +47,6 @@ public class SceneTransition : MonoBehaviour
     {
         PlayerPrefs.DeleteKey(INTRO_SEEN_KEY);
         PlayerPrefs.Save();
-        TutorialProgress.Reset();
 
         if (LeaderboardManager.instance != null)
         {
@@ -57,7 +56,7 @@ public class SceneTransition : MonoBehaviour
         Debug.Log("<color=green>[DINK] Intro & Hikaye & İsim hafızası sıfırlandı!</color>");
     }
 
-    /// <param name="sahneNo">Açılacak oda numarası ("Game N" sahnesi).</param>
+    /// <param name="sahneNo">Kullanılmıyor (sahnedeki buton bağlantıları için imza korunuyor); her zaman prolog açılır.</param>
     public void ButonlaSahneyeGit(int sahneNo)
     {
         StartCoroutine(GecisRoutine(sahneNo));
@@ -65,10 +64,8 @@ public class SceneTransition : MonoBehaviour
 
     private IEnumerator GecisRoutine(int sahneNo)
     {
-        // 1. ZAMANI ANINDA DONDUR (Oyuncu isim girerken hiçbir şey hareket etmesin)
+        // 1. ZAMANI ANINDA DONDUR
         Time.timeScale = 0f;
-
-        // 2. İsim artık apartmanın giriş katında, kapıcı masasındaki defterde soruluyor (LobbyLogbook)
 
         // 2. Arkadaki 3D kapı etkileşimlerini ve seslerini anında durdur
         MainMenu3DController controller = FindFirstObjectByType<MainMenu3DController>();
@@ -110,43 +107,8 @@ public class SceneTransition : MonoBehaviour
         }
 
         Time.timeScale = 1f;
-        // v0.5: yeni oyun Karanfil Apartmanı prologuyla açılır (sahneNo eski oda akışından kaldı)
+        // Yeni oyun Karanfil Apartmanı prologuyla açılır
         DinkScenes.LoadPrologue();
-    }
-
-    private GameObject FindNicknamePanelInScene()
-    {
-        if (nicknamePanel != null) return nicknamePanel;
-
-        Canvas[] canvases = FindObjectsByType<Canvas>(FindObjectsInactive.Include, FindObjectsSortMode.None);
-        foreach (var c in canvases)
-        {
-            if (c.gameObject.name.Contains("İSİM GİRİŞİ") || c.gameObject.name.Contains("OYUNCU") || c.gameObject.name.Contains("Nickname"))
-            {
-                return c.gameObject;
-            }
-        }
-        return GameObject.Find("[OYUNCU İSİM GİRİŞİ (CANVAS)]");
-    }
-
-    /// <summary>
-    /// Oyuncudan kullanıcı adını isteyen paneli ekrana getirir ve girilene kadar bekler.
-    /// İsim 1 kez girildikten sonra oyun bitene kadar tekrar sorulmaz.
-    /// </summary>
-    private IEnumerator OynatIsimSormaPaneli()
-    {
-        // Sahnedeki eski panel artık kullanılmıyor; ad, kapıcı masasındaki giriş defterine yazılır
-        nicknamePanel = FindNicknamePanelInScene();
-        if (nicknamePanel != null) nicknamePanel.SetActive(false);
-
-        yield return StartCoroutine(NicknameLogbookUI.Run(name =>
-        {
-            if (LeaderboardManager.instance != null) LeaderboardManager.instance.SetPlayerName(name);
-        }));
-
-        // Defter siyaha kararıp bitti; aynı siyahı global fade devralsın, sonra defteri kaldır
-        if (globalFadeGroup != null) globalFadeGroup.alpha = 1f;
-        NicknameLogbookUI.CloseAll();
     }
 
     /// <summary>

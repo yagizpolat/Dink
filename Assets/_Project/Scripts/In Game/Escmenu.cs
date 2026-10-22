@@ -59,7 +59,6 @@ public class Escmenu : MonoBehaviour
 
         // Mektup açıkken ESC mektubu kapatır; intro oynarken ESC introyu atlar
         if (MektupNotHintUI.instance != null && MektupNotHintUI.instance.IsPanelOpen) return;
-        if (IntroCinematic.IsPlaying) return;
         // Defter yazılırken ve sahne geçişinin karartmasında duraklatma yok
         if (LobbyLogbook.Busy || SceneDoorTrigger.Transitioning) return;
         // Kapı ayarları açıkken ESC'yi o ekran işler (geri döner)
@@ -83,7 +82,6 @@ public class Escmenu : MonoBehaviour
     {
         if (escmenu != null) escmenu.SetActive(false);
         if (kapiMenusu != null) kapiMenusu.Close();
-        if (RoomCountdown.instance != null) RoomCountdown.instance.SetHidden(false);
         Time.timeScale = 1f;
         oyundurdumu = false;
         Cursor.lockState = CursorLockMode.Locked;
@@ -110,7 +108,6 @@ public class Escmenu : MonoBehaviour
         {
             escmenu.SetActive(true);
         }
-        if (RoomCountdown.instance != null) RoomCountdown.instance.SetHidden(true);
         Time.timeScale = 0f;
         oyundurdumu = true;
         Cursor.visible = true;

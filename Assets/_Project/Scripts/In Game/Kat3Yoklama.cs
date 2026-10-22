@@ -3,8 +3,8 @@ using UnityEngine;
 
 /// <summary>
 /// Kat 3, "Yoklama": Daire 3'ün içi bir lise sınıfının köşesi. Sıraya oyuncunun adı kazınmış, yanındakine "11".
-/// Öğretmen masasındaki sınıf defterinde oyuncunun adının karşısında Eylül'den beri her gün "Y" var;
-/// 14.11.23'te kaydı silinmiş ("Yerine kimse oturmasın"). Defter kapanınca floresan susar ve "11" sırasından
+/// Öğretmen masasındaki 2019-2020 sınıf defterinde oyuncunun adının karşısında 02.03.2020'den itibaren her gün "Y" var;
+/// dönem sonunda kaydı silinmiş. Defter kapanınca floresan susar ve "11" sırasından
 /// bir kalem tıklamaya başlar: oyuncu bakarken susar, arkasını dönünce sürer, yaklaştıkça hızlanır, her seferinde
 /// 11'de durur. Oyuncu sınıftan çıkarken sıra gıcırdar (biri kalkmış), teneffüs zili kapalı kapıların arkasından
 /// çalar, uğultu yükselip kesilir, kabinde 4 yanar. Sesler burada üretilir.
@@ -173,13 +173,13 @@ public class Kat3Yoklama : MonoBehaviour
 
     private static string LogbookText()
     {
-        string name = PlayerName().ToUpperInvariant();
-        // Eylül'den 14 Kasım'a kadar her okul günü "yok" işareti; hafta sonları boş
+        string name = DinkLang.Upper(PlayerName());
+        // 2 Mart'tan 5 Haziran'a kadar her okul günü "yok" işareti; hafta sonları boş
         string mark = DinkLang.T("A", "Y", "F", "A", "F", "F", "Н");
         var days = new System.Text.StringBuilder();
-        var d = new System.DateTime(2023, 9, 11);
+        var d = new System.DateTime(2020, 3, 2);
         int col = 0;
-        for (; d <= new System.DateTime(2023, 11, 14); d = d.AddDays(1))
+        for (; d <= new System.DateTime(2020, 6, 5); d = d.AddDays(1))
         {
             if (d.DayOfWeek == System.DayOfWeek.Saturday || d.DayOfWeek == System.DayOfWeek.Sunday) continue;
             days.Append(mark).Append(' ');
@@ -187,18 +187,18 @@ public class Kat3Yoklama : MonoBehaviour
         }
 
         const string rule = "--------------------------";
-        return DinkLang.T("CLASS 11-C  ATTENDANCE\n2023-2024 / TERM 1", "11-C SINIFI  YOKLAMA\n2023-2024 / 1. DÖNEM", "KLASSE 11c  ANWESENHEIT\n2023/24 / 1. HALBJAHR",
-                          "CLASSE DE 1re C  APPEL\n2023-2024 / 1er TRIMESTRE", "CLASE 11-C  ASISTENCIA\n2023-2024 / 1.er TRIMESTRE", "TURMA 11-C  CHAMADA\n2023-2024 / 1.º PERÍODO",
-                          "11 «В» КЛАСС  ПОСЕЩАЕМОСТЬ\n2023-2024 / 1-Я ЧЕТВЕРТЬ") + "\n" + rule + "\n" +
+        return DinkLang.T("CLASS 11-C  ATTENDANCE\n2019-2020 / TERM 2", "11-C SINIFI  YOKLAMA\n2019-2020 / 2. DÖNEM", "KLASSE 11c  ANWESENHEIT\n2019/20 / 2. HALBJAHR",
+                          "CLASSE DE 1re C  APPEL\n2019-2020 / 3e TRIMESTRE", "CLASE 11-C  ASISTENCIA\n2019-2020 / 3.er TRIMESTRE", "TURMA 11-C  CHAMADA\n2019-2020 / 3.º PERÍODO",
+                          "11 «В» КЛАСС  ПОСЕЩАЕМОСТЬ\n2019-2020 / 4-Я ЧЕТВЕРТЬ") + "\n" + rule + "\n" +
                "112  " + name + "\n\n" + days.ToString().TrimEnd() + "\n\n" +
-               DinkLang.T("ABSENT: {0} DAYS", "DEVAMSIZLIK: {0} GÜN", "FEHLTAGE: {0}", "ABSENCES : {0} JOURS", "FALTAS: {0} DÍAS", "FALTAS: {0} DIAS", "ПРОПУСКИ: {0} ДН.").Replace("{0}", col.ToString()) + "\n" + rule + "\n14.11.23\n" +
-               DinkLang.T("Removed from the roll for absence.\n\nLet no one take this seat.",
-                          "Devamsızlıktan kaydı silinmiştir.\n\nYerine kimse oturmasın.",
-                          "Wegen Fehlzeiten von der Schule abgemeldet.\n\nNiemand soll sich auf diesen Platz setzen.",
-                          "Radié pour absences.\n\nQue personne ne prenne cette place.",
-                          "Dado de baja por faltas.\n\nQue nadie ocupe este sitio.",
-                          "Matrícula anulada por faltas.\n\nQue ninguém se sente neste lugar.",
-                          "Отчислен за пропуски.\n\nПусть никто не садится на это место.");
+               DinkLang.T("ABSENT: {0} DAYS", "DEVAMSIZLIK: {0} GÜN", "FEHLTAGE: {0}", "ABSENCES : {0} JOURS", "FALTAS: {0} DÍAS", "FALTAS: {0} DIAS", "ПРОПУСКИ: {0} ДН.").Replace("{0}", col.ToString()) + "\n" + rule + "\n05.06.20\n" +
+               DinkLang.T("Removed from the roll for absence.",
+                          "Devamsızlıktan kaydı silinmiştir.",
+                          "Wegen Fehlzeiten von der Schule abgemeldet.",
+                          "Radié pour absences.",
+                          "Dado de baja por faltas.",
+                          "Matrícula anulada por faltas.",
+                          "Отчислен за пропуски.");
     }
 
     private static AudioClip Synth(float seconds, System.Func<float, float> f)

@@ -4,7 +4,7 @@ using UnityEngine.SceneManagement;
 
 /// <summary>
 /// Kat 5, "Kavga gecesi": uzun koridor, inilen asansör geri gider. Oyuncu Daire 3'ü geçince kapı çarparak açılır,
-/// marketten iş arkadaşı çıkar ve kovalar. Koşma yalnız bu katta var (Shift, nefes biter). Yakalanırsa ekran kararır
+/// marketten Murat çıkar ve kovalar. Koşma yalnız bu katta var (Shift, nefes biter). Yakalanırsa ekran kararır
 /// ve kat baştan başlar; koridorun ucundaki yangın merdivenine yetişirse bir üst kata geçer.
 /// Sesler (kapı çarpması, ayak sesleri, nefes, darbe) burada üretilir.
 /// </summary>
@@ -15,7 +15,7 @@ public class Kat5Kovalamaca : MonoBehaviour
     [SerializeField] private float staminaSeconds = 6f;
     [SerializeField] private float regenPerSecond = 0.35f;
 
-    [Header("Kovalayan")]
+    [Header("Kovalayan (Murat)")]
     [SerializeField] private Transform chaser;
     [SerializeField] private Transform doorHinge;
     [SerializeField] private float doorOpenAngle = -100f;

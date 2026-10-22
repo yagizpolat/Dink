@@ -318,8 +318,7 @@ public class NicknameLogbookUI : MonoBehaviour
         // (tarih, saat, ad, daire, mürekkep stili) — 0: mavi tükenmez, 1: siyah, 2: kurşun kalem (oyuncu satırı)
         var rows = new (string d, string t, string n, string f, int ink)[]
         {
-            ("13.11.23", "21:58", "Murat Kaya", "4", 0),
-            ("14.11.23", "22:10", "Zeynep Aydın", "11", 1),
+            ("14.11.23", "22:10", "Zeynep Kaya", "11", 1),
             ("14.11.23", "23:05", "", "11", 0),
             ("14.11.23", "23:42", null, "11", 2),
             ("", "", "", "", -1), ("", "", "", "", -1), ("", "", "", "", -1)

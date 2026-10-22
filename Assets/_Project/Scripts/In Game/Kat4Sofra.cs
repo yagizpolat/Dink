@@ -58,7 +58,7 @@ public class Kat4Sofra : MonoBehaviour
         Ray ray = cam.ViewportPointToRay(new Vector3(0.5f, 0.5f, 0f));
         if (note == null || !note.Raycast(ray, out _, reach)) return;
 
-        MektupNotHintUI.Instance.OpenText(NoteText(), false, !done);
+        MektupNotHintUI.Instance.OpenText(NoteText(), MektupNotHintUI.LetterForm.ZeynepNote, !done);
         if (!done) StartCoroutine(EmptyChairs());
     }
 

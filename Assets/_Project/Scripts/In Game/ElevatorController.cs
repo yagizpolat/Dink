@@ -44,8 +44,9 @@ public class ElevatorController : MonoBehaviour
     [SerializeField] private Collider departButton;
     [SerializeField] private string departScene;
     [SerializeField] private string departFloor;
-    [Tooltip("Varış katında oyuncu kabinden çıkınca kapı kapanır ve asansör aşağı gider; geri dönüş yok")]
-    [SerializeField] private bool leaveAfterExit;
+    [Tooltip("Varış katında oyuncu kabinden çıkınca kapı kapanır ve asansör aşağı gider. Kapalıyken kabin katta, kapısı açık ve ışığı yanık bekler")]
+    [UnityEngine.Serialization.FormerlySerializedAs("leaveAfterExit")]
+    [SerializeField] private bool departAfterArrival;
 
     [Header("Ses")]
     [SerializeField] private AudioSource audioSource;
@@ -66,6 +67,8 @@ public class ElevatorController : MonoBehaviour
         closedRot = door.rotation;
         openRot = OutwardRotation();
         if (shaftCover != null) shaftCover.SetActive(false);
+        // Kat5'te asansör kovalamacanın parçası: sahne ayarı ne olursa olsun gider
+        if (arrival && FindAnyObjectByType<Kat5Kovalamaca>() != null) departAfterArrival = true;
 
         // Paketlerde asansör sesi yok: motor uğultusu ve zil burada üretilir
         if (dingClip == null) dingClip = Synth("AsansorZil", 1.6f, (t, i) => Mathf.Sin(2f * Mathf.PI * 880f * t) * Mathf.Exp(-t * 3f) * 0.5f
@@ -154,7 +157,7 @@ public class ElevatorController : MonoBehaviour
     private void Update()
     {
         if (Time.timeScale == 0f) return;
-        if (arrival && leaveAfterExit && state == State.Open && !PlayerInCab()) { StartCoroutine(Leave()); return; }
+        if (arrival && departAfterArrival && state == State.Open && !PlayerInCab()) { StartCoroutine(Leave()); return; }
         if (!Input.GetMouseButtonDown(0) && !Input.GetKeyDown(KeyCode.E)) return;
 
         if (cam == null) cam = Camera.main;

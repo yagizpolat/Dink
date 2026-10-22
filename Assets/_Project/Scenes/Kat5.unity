@@ -1998,7 +1998,7 @@ MonoBehaviour:
   departButton: {fileID: 0}
   departScene: 
   departFloor: 
-  leaveAfterExit: 1
+  departAfterArrival: 1
   audioSource: {fileID: 1154801964}
   humSource: {fileID: 1384280633}
   openClip: {fileID: 8300000, guid: 92a0f60e58f6f65439b639d2d89370c8, type: 3}
@@ -3740,7 +3740,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1923086963}
   m_Layer: 0
-  m_Name: Arkadas
+  m_Name: Murat
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -4511,7 +4511,7 @@ GameObject:
   - component: {fileID: 8733668837160305802}
   - component: {fileID: 8550172143339808005}
   m_Layer: 0
-  m_Name: Kat5Arkadas
+  m_Name: Kat5Murat
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

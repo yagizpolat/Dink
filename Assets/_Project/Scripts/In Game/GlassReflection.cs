@@ -4,6 +4,7 @@ using UnityEngine.Rendering;
 /// <summary>
 /// Düz bir cam yüzeyini aynaya çevirir: ayna kamerası holü cam düzlemine göre yansıtıp bir RenderTexture'a çizer,
 /// cam materyali (Dink/CamYansima) bunu ekran koordinatıyla okur. Giriş kapısı kapanınca açılır.
+/// Yalnız <see cref="DinkLoop.Count"/> sıfırdan büyükken çalışır; yoksa cam kendi materyaliyle kalır.
 /// </summary>
 public class GlassReflection : MonoBehaviour
 {
@@ -21,6 +22,8 @@ public class GlassReflection : MonoBehaviour
 
     private void OnEnable()
     {
+        // İlk turda cam normal camdır: materyaller ve kamera hiç değiştirilmez
+        if (DinkLoop.Count <= 0) { enabled = false; return; }
         mainCam = Camera.main;
         if (mainCam == null) { enabled = false; return; }
 

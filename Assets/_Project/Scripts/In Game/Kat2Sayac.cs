@@ -120,7 +120,7 @@ public class Kat2Sayac : MonoBehaviour
         string name = LobbyLogbook.SignedName;
         if (string.IsNullOrEmpty(name) && LeaderboardManager.instance != null) name = LeaderboardManager.instance.GetPlayerName();
         if (string.IsNullOrEmpty(name)) name = "Hakan Kaya";
-        name = name.ToUpperInvariant();
+        name = DinkLang.Upper(name);
 
         const string rule = "--------------------------";
         return DinkLang.T("NOTICE OF DISCONNECTION", "ELEKTRİK KESME İHBARNAMESİ", "SPERRANKÜNDIGUNG STROM", "AVIS DE COUPURE", "AVISO DE CORTE", "AVISO DE CORTE", "УВЕДОМЛЕНИЕ ОБ ОТКЛЮЧЕНИИ") + "\n" + rule + "\n" +

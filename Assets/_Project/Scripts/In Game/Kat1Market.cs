@@ -3,7 +3,7 @@ using UnityEngine;
 
 /// <summary>
 /// Kat 1, "Mesai bitmiyor": Daire 3'ün içindeki market reyonu.
-/// Kasadaki fiş yazıcısı durmadan oyuncunun mesai fişini basar; tezgâhta Daire 4'ten Murat'ın notu durur.
+/// Kasadaki fiş yazıcısı durmadan oyuncunun mesai fişini basar; tezgâhta iş arkadaşının bıraktığı bir not durur.
 /// İkisi de okununca kabindeki 2. kat butonu yanar. Sesler (yazıcı, floresan, kapı zili) burada üretilir.
 /// </summary>
 public class Kat1Market : MonoBehaviour
@@ -110,14 +110,14 @@ public class Kat1Market : MonoBehaviour
         string name = LobbyLogbook.SignedName;
         if (string.IsNullOrEmpty(name) && LeaderboardManager.instance != null) name = LeaderboardManager.instance.GetPlayerName();
         if (string.IsNullOrEmpty(name)) name = "Hakan Kaya";
-        name = name.ToUpperInvariant();
+        name = DinkLang.Upper(name);
 
         const string rule = "--------------------------";
         return DinkLang.T("KARANFIL MARKET", "KARANFİL MARKET", "KARANFIL MARKT", "KARANFIL MARCHÉ", "SUPERMERCADO KARANFIL", "MERCADO KARANFIL", "МАГАЗИН «КАРАНФИЛ»") + "\n" +
                DinkLang.T("Till 1", "Kasa 1", "Kasse 1", "Caisse 1", "Caja 1", "Caixa 1", "Касса 1") + "\n" + rule + "\n" +
                DinkLang.T("STAFF: ", "PERSONEL: ", "PERSONAL: ", "EMPLOYÉ : ", "EMPLEADO: ", "FUNCIONÁRIO: ", "СОТРУДНИК: ") + name + "\n\n" +
-               DinkLang.T("SHIFT START", "MESAİ BAŞLANGICI", "SCHICHTBEGINN", "DÉBUT DE SERVICE", "INICIO DE TURNO", "INÍCIO DO TURNO", "НАЧАЛО СМЕНЫ") + "\n14.11.23        23:42\n\n" +
-               DinkLang.T("SHIFT END", "MESAİ BİTİŞİ", "SCHICHTENDE", "FIN DE SERVICE", "FIN DE TURNO", "FIM DO TURNO", "КОНЕЦ СМЕНЫ") + "\n--.--.--        --:--\n" + rule + "\n" +
+               "14.11.23        23:42\n\n" +
+               DinkLang.T("SHIFT 08:00 – END: —", "MESAİ 08:00 – BİTİŞ: —", "SCHICHT 08:00 – ENDE: —", "SERVICE 08:00 – FIN : —", "TURNO 08:00 – FIN: —", "TURNO 08:00 – FIM: —", "СМЕНА 08:00 – КОНЕЦ: —") + "\n" + rule + "\n" +
                DinkLang.T("HOURS", "SÜRE", "DAUER", "DURÉE", "HORAS", "HORAS", "ЧАСЫ").PadRight(22) + "—\n" +
                DinkLang.T("PAID", "ÖDENEN", "BEZAHLT", "PAYÉ", "PAGADO", "PAGO", "ОПЛАЧЕНО").PadRight(22) + "—\n" + rule + "\n" +
                DinkLang.T("SEE YOU AGAIN", "YİNE BEKLERİZ", "BIS ZUM NÄCHSTEN MAL", "À BIENTÔT", "VUELVA PRONTO", "VOLTE SEMPRE", "ЖДЁМ ВАС СНОВА");
@@ -126,13 +126,13 @@ public class Kat1Market : MonoBehaviour
     private static string LetterText()
     {
         return DinkLang.T(
-            "Don't count the receipts. I did.\n\nEvery one had my own name on it, always 23:42. I scratched it out with a pen and the printer printed another.\n\nThis wasn't my market, but I knew where every shelf was. You do too, don't you?\n\nThe elevator will take you up. Every floor will feel a little more familiar. That is not a good thing.\n\n— M.K., Flat 4",
-            "Fişleri sayma. Ben saydım.\n\nHer birinde kendi adım vardı, saat hep 23:42. Kalemle üstünü çizdim, yazıcı yenisini bastı.\n\nBurası benim marketim değildi ama rafların yerini ezbere biliyordum. Senin de biliyorsun, değil mi?\n\nAsansör seni yukarı götürecek. Her kat biraz daha tanıdık gelecek. Bu iyi bir şey değil.\n\n— M.K., Daire 4",
-            "Zähl die Kassenzettel nicht. Ich habe es getan.\n\nAuf jedem stand mein eigener Name, immer 23:42. Ich habe ihn mit dem Stift durchgestrichen, und der Drucker hat einen neuen gedruckt.\n\nDas war nicht mein Laden, aber ich wusste, wo jedes Regal steht. Du auch, nicht wahr?\n\nDer Aufzug bringt dich nach oben. Jedes Stockwerk wird dir ein bisschen vertrauter vorkommen. Das ist nichts Gutes.\n\n— M.K., Wohnung 4",
-            "Ne compte pas les tickets. Moi, je l'ai fait.\n\nChacun portait mon propre nom, toujours 23:42. Je l'ai barré au stylo, et l'imprimante en a sorti un autre.\n\nCe n'était pas ma supérette, mais je savais où était chaque rayon. Toi aussi, n'est-ce pas ?\n\nL'ascenseur va te faire monter. Chaque étage te semblera un peu plus familier. Ce n'est pas une bonne chose.\n\n— M.K., appartement 4",
-            "No cuentes los tiques. Yo lo hice.\n\nCada uno llevaba mi propio nombre, siempre a las 23:42. Lo taché con un bolígrafo y la impresora sacó otro.\n\nNo era mi tienda, pero sabía dónde estaba cada estante. Tú también lo sabes, ¿verdad?\n\nEl ascensor te llevará arriba. Cada piso te resultará un poco más familiar. Eso no es bueno.\n\n— M.K., piso 4",
-            "Não contes os talões. Eu contei.\n\nCada um tinha o meu próprio nome, sempre às 23:42. Risquei-o com uma caneta e a impressora imprimiu outro.\n\nAquele não era o meu mercado, mas eu sabia onde ficava cada prateleira. Tu também sabes, não sabes?\n\nO elevador vai levar-te para cima. Cada andar vai parecer-te um pouco mais familiar. Isso não é bom sinal.\n\n— M.K., apartamento 4",
-            "Не считай чеки. Я считал.\n\nНа каждом было моё имя, всегда 23:42. Я зачёркивал его ручкой, а принтер печатал новый.\n\nЭто был не мой магазин, но я знал наизусть, где какая полка. Ты ведь тоже знаешь, правда?\n\nЛифт повезёт тебя наверх. Каждый этаж будет казаться чуть более знакомым. Это не к добру.\n\n— М.К., квартира 4");
+            "Hakan, the stock came in. Don't leave till the shelves are done. You're closing the till too.\n\n— M.K.",
+            "Hakan, depo geldi. Rafları bitirmeden çıkma. Kasayı da sen kapatırsın.\n\n— M.K.",
+            "Hakan, die Lieferung ist da. Du gehst erst, wenn die Regale fertig sind. Die Kasse machst du auch zu.\n\n— M.K.",
+            "Hakan, la livraison est arrivée. Tu ne pars pas avant d'avoir fini les rayons. Et c'est toi qui fermes la caisse.\n\n— M.K.",
+            "Hakan, llegó el pedido. No te vas hasta terminar los estantes. La caja la cierras tú también.\n\n— M.K.",
+            "Hakan, chegou a mercadoria. Não sais antes de acabar as prateleiras. E a caixa fechas tu.\n\n— M.K.",
+            "Хакан, пришёл товар. Не уходи, пока не разложишь полки. Кассу тоже закрываешь ты.\n\n— М.К.");
     }
 
     // Nokta vuruşlu yazıcı: satır satır kısa cızırtılar

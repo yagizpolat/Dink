@@ -4,17 +4,17 @@ A first-person psychological horror game developed with Unity.
 
 ## 🎮 About
 
-Dink is a psychological horror game where the player is trapped inside a mysterious cycle of doors.
+Dink is a psychological horror game set in an apartment building where every floor feels a little too familiar.
 
-Instead of traditional movement, the gameplay focuses on observation, decision-making, exploration and psychological tension.
+The gameplay focuses on observation, exploration and psychological tension.
 
 ## ✨ Features
 
-- Limited first-person camera
-- Interactive letter system
-- Flashlight mechanic
-- Inventory system
-- Door decision gameplay
+- First-person exploration
+- Interactive notes and objects
+- Elevator-driven floor progression
+- Multiple endings
+- 7 languages (EN, TR, DE, FR, ES, PT, RU)
 - Psychological horror atmosphere
 
 ## 🛠 Engine
