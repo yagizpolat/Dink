@@ -369,7 +369,8 @@ public class LobbyMenu : MonoBehaviour
         elevatorRoutine = null;
     }
 
-    // Oyun başlarken: yazılar söner, ön lamba son kez tökezleyip kapanır, vızıltı kesilir; kısa karanlıktan sonra eylem
+    // Oyun başlarken: yazılar söner, lobi olduğu gibi kalır (oyuncu az sonra aynı lobiye ışıklar yanarken girer);
+    // karartmayı sahne geçişi yapar
     private IEnumerator OpenEntranceThen(Action act)
     {
         busy = true;
@@ -386,21 +387,7 @@ public class LobbyMenu : MonoBehaviour
         }
         if (Content != null) Content.SetActive(false);
 
-        if (frontLight != null)
-        {
-            foreach (float w in new[] { 0.06f, 0.12f, 0.05f })
-            {
-                frontLight.intensity = 0f;
-                yield return new WaitForSecondsRealtime(w);
-                frontLight.intensity = frontBase * 0.7f;
-                yield return new WaitForSecondsRealtime(0.07f);
-            }
-            frontLight.intensity = 0f;
-        }
-        if (humSrc != null) humSrc.Stop();
-        if (sfxSrc != null && tickClip != null) sfxSrc.PlayOneShot(tickClip, 0.6f);
-
-        yield return new WaitForSecondsRealtime(0.9f);
+        yield return new WaitForSecondsRealtime(0.25f);
         busy = false;
         act?.Invoke();
     }
