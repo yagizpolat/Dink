@@ -15,7 +15,11 @@ public class MainMenu3DController : MonoBehaviour
     [Header("Sahne Geçişi")]
     public SceneTransition sceneTransition;
 
-    private DoorLightMenu kapiMenusu;
+    [Header("Menü Ambiyansı")]
+    [Tooltip("Sokak gece ambiyansı (ör. Audio/Prolog/GeceSehir.mp3)")]
+    public AudioClip menuAmbience;
+
+    private LobbyMenu kapiMenusu;
     private DoorLightSettings kapiAyarlari;
     private bool oyunBasliyor;
 
@@ -60,17 +64,16 @@ public class MainMenu3DController : MonoBehaviour
         eylemler.Add(OpenSettings);
         eylemler.Add(QuitGame);
 
-        kapiMenusu = gameObject.AddComponent<DoorLightMenu>();
-        kapiMenusu.Build(MenuYazilari(), eylemler.ToArray(), new DoorLightMenu.Layout
-        {
-            title = "DINK",
-            darkness = 1f,          // 3D kapı sahnesi arkada hiç görünmesin
-            stripHeight = 980f,
-            stripX = -380f,
-            itemsCenterY = -150f,
-            sortingOrder = 5,       // intro Canvas (1) tıklamaları yutmasın; ayarlar (10) ve isim girişi (15) yine üstte açılır
-            openDuration = 1.1f
-        });
+        // Oyunu başlatan öğelerde giriş kapısı önce açılır
+        var kapiAcar = new System.Collections.Generic.List<bool>();
+        if (devamVar) kapiAcar.Add(true);
+        kapiAcar.Add(true);
+        kapiAcar.Add(false);
+        kapiAcar.Add(false);
+
+        kapiMenusu = gameObject.AddComponent<LobbyMenu>();
+        kapiMenusu.ambience = menuAmbience;
+        kapiMenusu.Build(MenuYazilari(), eylemler.ToArray(), kapiAcar.ToArray());
 
         // Oyun başlarken ya da üstte ayarlar paneli açıkken menü tuşları çalışmasın
         kapiMenusu.IsInputBlocked = () => oyunBasliyor || IsAnySettingsPanelOpen();
