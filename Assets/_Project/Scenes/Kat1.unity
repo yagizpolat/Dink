@@ -2159,9 +2159,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b2dffe99dd18376479da3642009fdb8e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::FootstepLoop
-  volume: 0.85
-  moveThreshold: 0.4
-  fadeSpeed: 6
+  volume: 1
+  strideMeters: 0.85
+  pitchJitter: 0.06
+  onsetThreshold: 0.25
+  stepSeconds: 0.32
 --- !u!82 &807468375
 AudioSource:
   m_ObjectHideFlags: 0
