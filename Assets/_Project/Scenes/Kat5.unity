@@ -4298,6 +4298,7 @@ MonoBehaviour:
   pitchJitter: 0.06
   onsetThreshold: 0.25
   stepSeconds: 0.32
+  minSpeed: 0.8
 --- !u!82 &1720397530
 AudioSource:
   m_ObjectHideFlags: 0
@@ -4310,7 +4311,7 @@ AudioSource:
   OutputAudioMixerGroup: {fileID: 0}
   m_audioClip: {fileID: 0}
   m_Resource: {fileID: 8300000, guid: 25833f1190345b049b6549f92b498a84, type: 3}
-  m_PlayOnAwake: 1
+  m_PlayOnAwake: 0
   m_Volume: 1
   m_Pitch: 1
   Loop: 0

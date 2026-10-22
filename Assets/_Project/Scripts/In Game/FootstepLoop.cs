@@ -14,6 +14,7 @@ public class FootstepLoop : MonoBehaviour
     [SerializeField] private float pitchJitter = 0.06f;
     [SerializeField] private float onsetThreshold = 0.25f;
     [SerializeField] private float stepSeconds = 0.32f;
+    [SerializeField] private float minSpeed = 0.8f;
 
     private AudioSource source;
     private readonly List<AudioClip> steps = new List<AudioClip>();
@@ -27,6 +28,7 @@ public class FootstepLoop : MonoBehaviour
         source = GetComponent<AudioSource>();
         source.loop = false;
         source.playOnAwake = false;
+        source.Stop(); // sahnede playOnAwake açık kalmışsa kaydın tamamı çalmasın
         source.spatialBlend = 0f;
         if (source.clip != null) SliceSteps(source.clip);
     }
@@ -89,7 +91,9 @@ public class FootstepLoop : MonoBehaviour
 
         float d = delta.magnitude;
         if (d > 1f) { travelled = 0f; return; } // ışınlanma / sahne başı
-        if (d < 0.0005f) { travelled = Mathf.Min(travelled, strideMeters * 0.5f); return; }
+        // Yavaş kayma / çarpışma itmesi yürüme sayılmaz
+        float speed = Time.deltaTime > 0f ? d / Time.deltaTime : 0f;
+        if (speed < minSpeed) { travelled = Mathf.Min(travelled, strideMeters * 0.5f); return; }
 
         travelled += d;
         if (travelled < strideMeters) return;
