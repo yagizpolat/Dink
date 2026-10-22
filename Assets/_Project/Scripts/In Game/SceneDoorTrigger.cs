@@ -84,7 +84,8 @@ public class SceneDoorTrigger : MonoBehaviour
             else if (doorHinge != null && c.transform.IsChildOf(doorHinge)) continue;
             else if (!c.isTrigger) wallDist = Mathf.Min(wallDist, hits[i].distance);
         }
-        return doorDist <= wallDist + 0.02f;
+        // Kapı hiç vurulmadıysa (iki mesafe de MaxValue) açılmamalı
+        return doorDist < float.MaxValue && doorDist <= wallDist + 0.02f;
     }
 
     private void Use()
