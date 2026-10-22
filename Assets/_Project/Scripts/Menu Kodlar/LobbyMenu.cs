@@ -369,46 +369,40 @@ public class LobbyMenu : MonoBehaviour
         elevatorRoutine = null;
     }
 
-    // Giriş kanatlarını dış kenarlarından içeri doğru hızla açar, sonra eylemi çağırır
+    // Oyun başlarken: yazılar söner, ön lamba son kez tökezleyip kapanır, vızıltı kesilir; kısa karanlıktan sonra eylem
     private IEnumerator OpenEntranceThen(Action act)
     {
         busy = true;
-        var leaves = new List<(Transform t, Vector3 pivot, float angle)>();
-        AddLeaf(leaves, leafLeft, true);
-        AddLeaf(leaves, leafRight, false);
 
-        if (leaves.Count > 0)
+        var texts = new List<TextMeshPro>();
+        if (Content != null) texts.AddRange(Content.GetComponentsInChildren<TextMeshPro>());
+        var startAlpha = new float[texts.Count];
+        for (int i = 0; i < texts.Count; i++) startAlpha[i] = texts[i].color.a;
+        for (float t = 0f; t < 0.35f; t += Time.unscaledDeltaTime)
         {
-            if (sfxSrc != null && tickClip != null) sfxSrc.PlayOneShot(tickClip, 0.4f);
-            const float dur = 0.4f;
-            float done = 0f;
-            for (float t = 0f; t < dur; t += Time.unscaledDeltaTime)
-            {
-                float k = 1f - Mathf.Pow(1f - Mathf.Clamp01(t / dur), 2f);
-                float step = k - done;
-                done = k;
-                foreach (var l in leaves) l.t.RotateAround(l.pivot, Vector3.up, l.angle * step);
-                yield return null;
-            }
-            foreach (var l in leaves) l.t.RotateAround(l.pivot, Vector3.up, l.angle * (1f - done));
+            float k = 1f - t / 0.35f;
+            for (int i = 0; i < texts.Count; i++) { Color c = texts[i].color; c.a = startAlpha[i] * k; texts[i].color = c; }
+            yield return null;
         }
+        if (Content != null) Content.SetActive(false);
+
+        if (frontLight != null)
+        {
+            foreach (float w in new[] { 0.06f, 0.12f, 0.05f })
+            {
+                frontLight.intensity = 0f;
+                yield return new WaitForSecondsRealtime(w);
+                frontLight.intensity = frontBase * 0.7f;
+                yield return new WaitForSecondsRealtime(0.07f);
+            }
+            frontLight.intensity = 0f;
+        }
+        if (humSrc != null) humSrc.Stop();
+        if (sfxSrc != null && tickClip != null) sfxSrc.PlayOneShot(tickClip, 0.6f);
+
+        yield return new WaitForSecondsRealtime(0.9f);
         busy = false;
         act?.Invoke();
-    }
-
-    private static void AddLeaf(List<(Transform, Vector3, float)> list, Transform leaf, bool outerIsMinX)
-    {
-        if (leaf == null) return;
-        Renderer[] rs = leaf.GetComponentsInChildren<Renderer>();
-        if (rs.Length == 0) return;
-        Bounds b = rs[0].bounds;
-        foreach (Renderer r in rs) b.Encapsulate(r.bounds);
-        Vector3 pivot = new Vector3(outerIsMinX ? b.min.x : b.max.x, b.center.y, b.center.z);
-        float angle = 80f;
-        Vector3 c = b.center - pivot;
-        // İçeri (+z, lobiye doğru) giden işareti seç
-        if ((Quaternion.AngleAxis(angle, Vector3.up) * c).z < (Quaternion.AngleAxis(-angle, Vector3.up) * c).z) angle = -angle;
-        list.Add((leaf, pivot, angle));
     }
 
     // ═══ Ses ═══
