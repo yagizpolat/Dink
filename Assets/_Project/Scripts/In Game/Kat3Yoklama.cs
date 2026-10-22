@@ -26,6 +26,8 @@ public class Kat3Yoklama : MonoBehaviour
     [SerializeField] private AudioSource crowdSource;
     [SerializeField] private AudioSource humSource;
     [SerializeField] private Light[] classroomLights;
+    [SerializeField, Range(0f, 0.5f)] private float darkResidual = 0.12f;
+    [SerializeField] private Color darkTint = new Color(0.55f, 0.65f, 0.85f);
 
     [Header("Asansör")]
     [SerializeField] private GameObject nextFloorLight;
@@ -102,7 +104,17 @@ public class Kat3Yoklama : MonoBehaviour
         }
         SetLights(intensity, 0f);
         if (humSource != null) humSource.Stop();
-        yield return new WaitForSeconds(2.5f);
+
+        // Göz karanlığa alışır: tam siyah kalmaz, soğuk ve çok loş bir artık ışık yavaşça belirir
+        yield return new WaitForSeconds(0.6f);
+        foreach (Light l in classroomLights) if (l != null) l.color = darkTint;
+        for (float t = 0f; t < 1.8f; t += Time.deltaTime)
+        {
+            SetLights(intensity, darkResidual * Mathf.SmoothStep(0f, 1f, t / 1.8f));
+            yield return null;
+        }
+        SetLights(intensity, darkResidual);
+        yield return new WaitForSeconds(0.1f);
         yield return Tapping();
 
         if (chairSource != null) chairSource.Play();
