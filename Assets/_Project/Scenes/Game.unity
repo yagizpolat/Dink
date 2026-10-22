@@ -3576,7 +3576,7 @@ MonoBehaviour:
   swayDegrees: 0.45
   swaySpeed: 0.18
   bobMeters: 0.006
-  pushMeters: 0.35
+  pushMeters: 0.15
   pushSeconds: 90
 --- !u!1 &360505113
 GameObject:

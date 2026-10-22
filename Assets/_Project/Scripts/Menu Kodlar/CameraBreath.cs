@@ -9,7 +9,7 @@ public class CameraBreath : MonoBehaviour
     [SerializeField] private float swayDegrees = 0.45f;
     [SerializeField] private float swaySpeed = 0.18f;
     [SerializeField] private float bobMeters = 0.006f;
-    [SerializeField] private float pushMeters = 0.35f;
+    [SerializeField] private float pushMeters = 0.15f;
     [SerializeField] private float pushSeconds = 90f;
 
     private Vector3 basePos;

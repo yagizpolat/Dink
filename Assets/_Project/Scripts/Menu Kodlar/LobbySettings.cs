@@ -14,8 +14,8 @@ public class LobbySettings : MonoBehaviour
     private const float CamZ = -0.03f;
     private const float LeafCenterX = 0.48f;
     private const float LeafWidth = 0.8f;
-    private const float TitleY = 1.62f;
-    private const float ItemsTopY = 1.5f;
+    private const float TitleY = 1.98f;
+    private const float ItemsTopY = 1.86f;
     private const float ItemStep = 0.068f;
     private const float TitleSize = 0.5f;
     private const float ItemSize = 0.38f;
