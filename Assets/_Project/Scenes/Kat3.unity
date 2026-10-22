@@ -1786,7 +1786,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PlayerWalker
   head: {fileID: 0}
-  walkSpeed: 3.2
+  walkSpeed: 2.3
   acceleration: 8
   gravity: -15
   mouseSensitivity: 2.2
@@ -3381,7 +3381,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::FootstepLoop
   volume: 1
-  strideMeters: 1
+  strideMeters: 0.8
   pitchJitter: 0.06
   onsetThreshold: 0.25
   stepSeconds: 0.32
