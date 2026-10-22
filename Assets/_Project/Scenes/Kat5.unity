@@ -4293,7 +4293,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b2dffe99dd18376479da3642009fdb8e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::FootstepLoop
-  volume: 0.4
+  volume: 0.85
   moveThreshold: 0.4
   fadeSpeed: 6
 --- !u!82 &1720397530
@@ -4307,7 +4307,7 @@ AudioSource:
   serializedVersion: 4
   OutputAudioMixerGroup: {fileID: 0}
   m_audioClip: {fileID: 0}
-  m_Resource: {fileID: 8300000, guid: b01e982c95b1f734b99d9cf87059ec95, type: 3}
+  m_Resource: {fileID: 8300000, guid: 25833f1190345b049b6549f92b498a84, type: 3}
   m_PlayOnAwake: 1
   m_Volume: 1
   m_Pitch: 1
