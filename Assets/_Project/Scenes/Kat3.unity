@@ -1985,8 +1985,8 @@ MonoBehaviour:
   m_text: "<b>VEL\u0130 TOPLANTISI</b>\n\n\xD6\u011Frenci: Zeynep Kaya\nS\u0131n\u0131f:
     7-B\n\nVeli: <font-weight=400>Hakan Kaya</font>\n\u0130mza: <i>H. Kaya</i>"
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: 2e498d1c8094910479dc3e1b768306a4, type: 2}
-  m_sharedMaterial: {fileID: 2180264, guid: 2e498d1c8094910479dc3e1b768306a4, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: d24e90e165451d047a3b44a0c2cef88f, type: 2}
+  m_sharedMaterial: {fileID: -8410871267138600046, guid: d24e90e165451d047a3b44a0c2cef88f, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
@@ -2083,7 +2083,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2180264, guid: 2e498d1c8094910479dc3e1b768306a4, type: 2}
+  - {fileID: -8410871267138600046, guid: d24e90e165451d047a3b44a0c2cef88f, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -5512,8 +5512,8 @@ MonoBehaviour:
     4 ki\u015Fi / 320 kg\n\nSon periyodik kontrol:\n10.11.2023\n\nAcil durumda alarm
     butonuna bas\u0131n\u0131z.</size>"
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: 2e498d1c8094910479dc3e1b768306a4, type: 2}
-  m_sharedMaterial: {fileID: 2180264, guid: 2e498d1c8094910479dc3e1b768306a4, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: d24e90e165451d047a3b44a0c2cef88f, type: 2}
+  m_sharedMaterial: {fileID: -8410871267138600046, guid: d24e90e165451d047a3b44a0c2cef88f, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
@@ -5610,7 +5610,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2180264, guid: 2e498d1c8094910479dc3e1b768306a4, type: 2}
+  - {fileID: -8410871267138600046, guid: d24e90e165451d047a3b44a0c2cef88f, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
