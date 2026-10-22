@@ -3068,6 +3068,7 @@ GameObject:
   - component: {fileID: 330585544}
   - component: {fileID: 330585547}
   - component: {fileID: 330585549}
+  - component: {fileID: 330585550}
   m_Layer: 2
   m_Name: Ana Kamera (Main Camera)
   m_TagString: MainCamera
@@ -3290,6 +3291,23 @@ AudioSource:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
+--- !u!114 &330585550
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 330585543}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f1071de81664f4e4bb3836b5f478c20b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::CameraBreath
+  swayDegrees: 0.45
+  swaySpeed: 0.18
+  bobMeters: 0.006
+  pushMeters: 0.35
+  pushSeconds: 90
 --- !u!1 &360505113
 GameObject:
   m_ObjectHideFlags: 0
@@ -8310,7 +8328,7 @@ MonoBehaviour:
   priority: 0
   blendDistance: 0
   weight: 1
-  sharedProfile: {fileID: 11400000, guid: 84d63877e9d561748a798caea031f6db, type: 2}
+  sharedProfile: {fileID: 11400000, guid: f0f8421824f047a469358cd8bafb7654, type: 2}
 --- !u!1 &873120030
 GameObject:
   m_ObjectHideFlags: 0
@@ -9610,7 +9628,7 @@ Light:
   serializedVersion: 12
   m_Type: 2
   m_Color: {r: 1, g: 0.76, b: 0.5, a: 1}
-  m_Intensity: 2.6
+  m_Intensity: 0.35
   m_Range: 7
   m_SpotAngle: 30
   m_InnerSpotAngle: 21.80208
@@ -13706,8 +13724,8 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1740554404}
   serializedVersion: 2
-  m_LocalRotation: {x: 0.30041307, y: 0.24583735, z: -0.08044387, w: 0.9180658}
-  m_LocalPosition: {x: -1.4, y: 3.2, z: -2.6}
+  m_LocalRotation: {x: 0.4848354, y: -0.031170253, z: 0.017293524, w: 0.8738787}
+  m_LocalPosition: {x: 0.3, y: 4.5, z: -3.2}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -13724,9 +13742,9 @@ Light:
   serializedVersion: 12
   m_Type: 0
   m_Color: {r: 0.55, g: 0.68, b: 0.95, a: 1}
-  m_Intensity: 2.2
+  m_Intensity: 1.1
   m_Range: 7
-  m_SpotAngle: 70
+  m_SpotAngle: 95
   m_InnerSpotAngle: 21.80208
   m_CookieSize2D: {x: 0.5, y: 0.5}
   m_Shadows:
@@ -13880,7 +13898,7 @@ Light:
   serializedVersion: 12
   m_Type: 2
   m_Color: {r: 1, g: 0.76, b: 0.5, a: 1}
-  m_Intensity: 3.2
+  m_Intensity: 2.2
   m_Range: 7
   m_SpotAngle: 30
   m_InnerSpotAngle: 21.80208

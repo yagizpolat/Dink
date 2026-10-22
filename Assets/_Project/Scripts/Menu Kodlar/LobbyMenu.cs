@@ -22,13 +22,13 @@ public class LobbyMenu : MonoBehaviour
 
     // ─── Yerleşim (cam yüzeyi, kamera tarafı) ───
     private const float CamZ = -0.03f;
-    private const float LeafCenterX = -0.45f;
-    private const float TitleY = 1.95f;
-    private const float ItemsTopY = 1.30f;
-    private const float ItemStep = 0.14f;
-    private const float TitleSize = 1.6f;
-    private const float ItemSize = 0.62f;
-    private const float UnselectedAlpha = 0.55f;
+    private const float LeafCenterX = -0.52f;
+    private const float TitleY = 1.30f;
+    private const float ItemsTopY = 1.12f;
+    private const float ItemStep = 0.1f;
+    private const float TitleSize = 0.62f;
+    private const float ItemSize = 0.44f;
+    private const float UnselectedAlpha = 0.4f;
 
     private class Item
     {
@@ -86,9 +86,9 @@ public class LobbyMenu : MonoBehaviour
         Content.transform.rotation = Quaternion.identity;
 
         title = MakeText("Baslik", "DINK", TitleSize, new Vector3(LeafCenterX, TitleY, CamZ));
-        title.fontStyle = FontStyles.Bold;
-        title.characterSpacing = 12f;
-        title.color = new Color(0.93f, 0.92f, 0.88f, 0.9f);
+        title.fontStyle = FontStyles.Normal;
+        title.characterSpacing = 4f;
+        title.color = new Color(0.78f, 0.77f, 0.72f, 0.55f);
         title.transform.rotation = Quaternion.Euler(0f, 0f, UnityEngine.Random.Range(-1.2f, 1.2f));
 
         SetLabels(labels);
@@ -173,9 +173,9 @@ public class LobbyMenu : MonoBehaviour
         for (int k = 0; k < items.Count; k++)
         {
             bool on = k == selected;
-            items[k].text.color = new Color(0.95f, 0.94f, 0.9f, on ? 1f : UnselectedAlpha);
-            items[k].text.fontStyle = on ? FontStyles.Underline : FontStyles.Normal;
-            items[k].glow.color = new Color(1f, 1f, 1f, on ? 0.12f : 0f);
+            items[k].text.color = new Color(0.82f, 0.8f, 0.75f, on ? 0.85f : UnselectedAlpha);
+            items[k].text.fontStyle = FontStyles.Normal;
+            items[k].glow.color = new Color(1f, 1f, 1f, 0f);
         }
         if (fromUser && changed) Stumble();
     }
