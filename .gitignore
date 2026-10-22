@@ -30,3 +30,6 @@ Packages/Backups/
 # Blender kaynak dosyalari yalniz yerelde tutulur (oyun FBX ile calisir)
 *.blend
 Kaynak/Blender/
+
+# Yerel proje notları (GitHub'a gitmez)
+DINK_PROJECT_STATUS.md
