@@ -46,10 +46,13 @@ public static class DinkSettings
     }
 
     // ── Değiştirme ────────────────────────────────────
+    // Seçenekler uçlarda başa sarar: Enter/tık hep +1 gönderir, en üstteyken takılıp kalmasın
+
+    static int Wrap(int i, int count) => count <= 0 ? 0 : ((i % count) + count) % count;
 
     public static void ChangeQuality(int delta)
     {
-        int level = Mathf.Clamp(QualityIndex + delta, 0, QualitySettings.names.Length - 1);
+        int level = Wrap(QualityIndex + delta, QualitySettings.names.Length);
         QualitySettings.SetQualityLevel(level, true);
         SaveInt(DinkPrefs.Quality, level);
     }
@@ -65,7 +68,7 @@ public static class DinkSettings
     {
         SetupResolutions();
         if (resolutions.Length == 0) return;
-        resIndex = Mathf.Clamp(resIndex + delta, 0, resolutions.Length - 1);
+        resIndex = Wrap(resIndex + delta, resolutions.Length);
         Resolution res = resolutions[resIndex];
         Screen.SetResolution(res.width, res.height, IsFullscreen);
         PlayerPrefs.SetInt(DinkPrefs.ResWidth, res.width);
@@ -74,7 +77,7 @@ public static class DinkSettings
 
     public static void ChangeFrameRate(int delta)
     {
-        int i = Mathf.Clamp(FrameRateIndex + delta, 0, frameRateValues.Length - 1);
+        int i = Wrap(FrameRateIndex + delta, frameRateValues.Length);
         Application.targetFrameRate = frameRateValues[i];
         SaveInt(DinkPrefs.FrameRate, i);
     }
