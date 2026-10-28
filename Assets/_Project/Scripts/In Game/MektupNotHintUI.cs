@@ -142,7 +142,7 @@ public class MektupNotHintUI : MonoBehaviour
     /// </summary>
     private void TogglePlayerScripts(bool enable)
     {
-        PlayerControls.SetEnabled(enable);
+        PlayerControls.SetPaused(!enable);
 
         // Mektup açıkken ESC menüsü de kapalı: yoksa ESC → "Devam" kamerayı mektubun arkasında açıyordu
         Escmenu esc = FindAnyObjectByType<Escmenu>();

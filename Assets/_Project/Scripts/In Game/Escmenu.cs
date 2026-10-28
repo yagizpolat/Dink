@@ -179,6 +179,6 @@ public class Escmenu : MonoBehaviour
 
     void CloseOpenScript(bool enable)
     {
-        PlayerControls.SetEnabled(enable);
+        PlayerControls.SetPaused(!enable);
     }
 }

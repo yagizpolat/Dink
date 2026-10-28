@@ -72,7 +72,30 @@ public class LeaderboardManager : MonoBehaviour
     {
         public int rank;
         public int score;
+        public string metadata; // gönderimde yazılan tarih (dd.MM.yyyy)
         public LootLockerPlayer player;
+    }
+
+    // İstek gövdeleri JsonUtility ile kurulur; adda " ya da \ olsa da JSON bozulmaz
+    [System.Serializable]
+    private class LootLockerSessionRequest
+    {
+        public string game_key;
+        public string game_version = "1.0.0";
+        public bool development_mode = true;
+    }
+
+    [System.Serializable]
+    private class LootLockerNameRequest
+    {
+        public string name;
+    }
+
+    [System.Serializable]
+    private class LootLockerScoreRequest
+    {
+        public int score;
+        public string metadata;
     }
 
     [System.Serializable]
@@ -123,7 +146,7 @@ public class LeaderboardManager : MonoBehaviour
         }
 
         string url = "https://api.lootlocker.io/game/v2/session/guest";
-        string jsonBody = $"{{\"game_key\":\"{lootLockerGameKey.Trim()}\",\"game_version\":\"1.0.0\",\"development_mode\":true}}";
+        string jsonBody = JsonUtility.ToJson(new LootLockerSessionRequest { game_key = lootLockerGameKey.Trim() });
 
         using (UnityWebRequest req = new UnityWebRequest(url, "POST"))
         {
@@ -187,7 +210,7 @@ public class LeaderboardManager : MonoBehaviour
     {
         // 1. İsim Güncelleme
         string nameUrl = "https://api.lootlocker.io/game/player/name";
-        string nameJson = $"{{\"name\":\"{playerName.Trim()}\"}}";
+        string nameJson = JsonUtility.ToJson(new LootLockerNameRequest { name = playerName.Trim() });
 
         using (UnityWebRequest nameReq = new UnityWebRequest(nameUrl, "PATCH"))
         {
@@ -202,7 +225,7 @@ public class LeaderboardManager : MonoBehaviour
         // 2. Skor Gönderimi (Milisaniye Cinsinden Integer)
         int scoreInMS = (int)(timeInSeconds * 1000f);
         string scoreUrl = $"https://api.lootlocker.io/game/leaderboards/{lootLockerLeaderboardKey.Trim()}/submit";
-        string scoreJson = $"{{\"score\":{scoreInMS}}}";
+        string scoreJson = JsonUtility.ToJson(new LootLockerScoreRequest { score = scoreInMS, metadata = DateTime.Now.ToString("dd.MM.yyyy") });
 
         using (UnityWebRequest scoreReq = new UnityWebRequest(scoreUrl, "POST"))
         {
@@ -259,7 +282,8 @@ public class LeaderboardManager : MonoBehaviour
                         {
                             playerName = pName,
                             timeInSeconds = tSec,
-                            dateString = DateTime.Now.ToString("dd.MM.yyyy")
+                            // Eski kayıtlarda tarih yok; bugünün tarihini uydurmak yerine boş bırakılır
+                            dateString = string.IsNullOrEmpty(item.metadata) ? "—" : item.metadata
                         });
                     }
                     Debug.Log($"<color=cyan>[DINK LootLocker] Buluttan {cloudList.Count} adet canlı skor başarıyla çekildi!</color>");

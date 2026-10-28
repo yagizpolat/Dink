@@ -70,7 +70,10 @@ public class DoorLightSettings : MonoBehaviour
             if (SettingsManager.instance != null) return SettingsManager.instance;
             SettingsManager found = FindAnyObjectByType<SettingsManager>(FindObjectsInactive.Include);
             if (found != null) return found;
-            return new GameObject("[SettingsManager]").AddComponent<SettingsManager>();
+            // Pasif kurulur: aktif olsaydı kendi Update'i ESC'yi yutar, Escmenu de ayarları hep açık sanırdı
+            var go = new GameObject("[SettingsManager]");
+            go.SetActive(false);
+            return go.AddComponent<SettingsManager>();
         }
     }
 
@@ -181,7 +184,7 @@ public class DoorLightSettings : MonoBehaviour
     {
         string[] n = { DinkLang.T("LOW", "DÜŞÜK", "NIEDRIG", "BAS", "BAJO", "BAIXO", "НИЗКО", "低", "低", "낮음"), DinkLang.T("MEDIUM", "ORTA", "MITTEL", "MOYEN", "MEDIO", "MÉDIO", "СРЕДНЕ", "中", "中", "중간"),
                        DinkLang.T("HIGH", "YÜKSEK", "HOCH", "ÉLEVÉ", "ALTO", "ALTO", "ВЫСОКО", "高", "高", "높음"), DinkLang.T("ULTRA", "ULTRA", "ULTRA", "ULTRA", "ULTRA", "ULTRA", "УЛЬТРА", "极高", "最高", "최고") };
-        return n[Mathf.Clamp(i, 0, n.Length - 1)];
+        return n[SettingsManager.QualityLabelIndex(i)];
     }
 
     private static string FrameRateName(int i)

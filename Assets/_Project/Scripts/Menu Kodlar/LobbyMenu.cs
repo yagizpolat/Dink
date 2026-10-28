@@ -509,6 +509,15 @@ public class LobbyMenu : MonoBehaviour
         ambSrc.Play();
     }
 
+    // Sentez klipleri her menü açılışında yeniden üretilir; menü kapanınca silinmezse birikiyordu
+    private void OnDestroy()
+    {
+        if (humSrc != null && humSrc.clip != null) Destroy(humSrc.clip);
+        if (tickClip != null) Destroy(tickClip);
+        if (dingClip != null) Destroy(dingClip);
+        if (groanClip != null) Destroy(groanClip);
+    }
+
     private static AudioClip MakeClip(string name, float[] data, int rate)
     {
         AudioClip c = AudioClip.Create(name, data.Length, 1, rate, false);

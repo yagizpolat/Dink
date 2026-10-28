@@ -143,6 +143,8 @@ public class SceneTransition : MonoBehaviour
         if (editorTestHerZamanGoster || !hasSeenIntro)
         {
             yield return StartCoroutine(OynatHikayeYazisi());
+            PlayerPrefs.SetInt(INTRO_SEEN_KEY, 1);
+            PlayerPrefs.Save();
         }
 
         // 5. Kronometreyi başlat, zamanı normale al ve sahneyi yükle

@@ -51,12 +51,11 @@ public class SettingsManager : MonoBehaviour
     // Dahili Seçenek Listeleri
     private Resolution[] resolutions;
     private int currentResIndex = 0;
-    private int currentQualityIndex = 2;
+    private int currentQualityIndex = 0;
     private int currentFrameRateIndex = 1;
     private bool isFullscreen = true;
     private bool isVSync = true;
 
-    private readonly string[] qualityNames = { "DÜŞÜK", "ORTA", "YÜKSEK", "ULTRA" };
     private readonly string[] frameRateOptions = { "30 FPS", "60 FPS", "120 FPS", "SINIRSIZ" };
     private readonly int[] frameRateValues = { 30, 60, 120, -1 };
 
@@ -227,7 +226,7 @@ public class SettingsManager : MonoBehaviour
 
     public void ChangeQuality(int delta)
     {
-        currentQualityIndex = Mathf.Clamp(currentQualityIndex + delta, 0, qualityNames.Length - 1);
+        currentQualityIndex = Mathf.Clamp(currentQualityIndex + delta, 0, QualitySettings.names.Length - 1);
         QualitySettings.SetQualityLevel(currentQualityIndex, true);
         PlayerPrefs.SetInt(PREF_QUALITY, currentQualityIndex);
         PlayerPrefs.Save();
@@ -307,6 +306,18 @@ public class SettingsManager : MonoBehaviour
     // 🌐 10 DİLLİ METİN GÜNCELLEYİCİLERİ
     // ════════════════════════════════════════════
 
+    /// <summary>
+    /// Unity kalite seviyesini DÜŞÜK/ORTA/YÜKSEK/ULTRA etiketlerinden birine eşler.
+    /// İki seviye varsa DÜŞÜK ve YÜKSEK, daha fazlası varsa etiketlere orantılı dağıtılır.
+    /// </summary>
+    public static int QualityLabelIndex(int level)
+    {
+        int levels = QualitySettings.names.Length;
+        if (levels <= 1) return 2;
+        if (levels == 2) return level <= 0 ? 0 : 2;
+        return Mathf.Clamp(Mathf.RoundToInt(level * 3f / (levels - 1)), 0, 3);
+    }
+
     private LanguageManager.Language GetCurrentLang()
     {
         return LanguageManager.instance != null ? LanguageManager.instance.CurrentLanguage : LanguageManager.Language.EN;
@@ -330,7 +341,7 @@ public class SettingsManager : MonoBehaviour
             new string[] { "低", "中", "高", "最高" },               // JA
             new string[] { "낮음", "중간", "높음", "최고" }            // KO
         };
-        qualityValueText.text = localizedQuality[(int)lang][currentQualityIndex];
+        qualityValueText.text = localizedQuality[(int)lang][QualityLabelIndex(currentQualityIndex)];
 
     }
     private void UpdateDisplayModeText()
@@ -445,7 +456,9 @@ public class SettingsManager : MonoBehaviour
 
     public void LoadAndApplySettings()
     {
-        currentQualityIndex = PlayerPrefs.GetInt(PREF_QUALITY, 2);
+        // Projede tanımlı kalite seviyesi kadar seçenek var (şu an Mobile, PC); varsayılan en yükseği
+        int levels = QualitySettings.names.Length;
+        currentQualityIndex = Mathf.Clamp(PlayerPrefs.GetInt(PREF_QUALITY, levels - 1), 0, levels - 1);
         QualitySettings.SetQualityLevel(currentQualityIndex, true);
         UpdateQualityText();
 
@@ -457,7 +470,7 @@ public class SettingsManager : MonoBehaviour
         QualitySettings.vSyncCount = isVSync ? 1 : 0;
         UpdateVSyncText();
 
-        currentFrameRateIndex = PlayerPrefs.GetInt(PREF_FRAMERATE, 1);
+        currentFrameRateIndex = Mathf.Clamp(PlayerPrefs.GetInt(PREF_FRAMERATE, 1), 0, frameRateValues.Length - 1);
         Application.targetFrameRate = frameRateValues[currentFrameRateIndex];
         UpdateFrameRateText();
 

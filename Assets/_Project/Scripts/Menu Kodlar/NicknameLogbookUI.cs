@@ -523,7 +523,12 @@ public class NicknameLogbookUI : MonoBehaviour
         return c;
     }
 
-    private static Texture2D DeskTexture()
+    // Dokular her defter açılışında ve 3D sayfa çiziminde yeniden üretilip sızıyordu; bir kez üretilir
+    private static Texture2D cachedDesk, cachedGrain, cachedFalloff, cachedDot;
+
+    private static Texture2D DeskTexture() => cachedDesk != null ? cachedDesk : (cachedDesk = MakeDesk());
+
+    private static Texture2D MakeDesk()
     {
         const int w = 256, h = 144;
         Texture2D tex = new Texture2D(w, h, TextureFormat.RGBA32, false) { wrapMode = TextureWrapMode.Clamp };
@@ -540,7 +545,9 @@ public class NicknameLogbookUI : MonoBehaviour
         return tex;
     }
 
-    private static Texture2D GrainTexture()
+    private static Texture2D GrainTexture() => cachedGrain != null ? cachedGrain : (cachedGrain = MakeGrain());
+
+    private static Texture2D MakeGrain()
     {
         const int s = 256;
         Texture2D tex = new Texture2D(s, s, TextureFormat.RGBA32, false) { wrapMode = TextureWrapMode.Repeat };
@@ -555,7 +562,9 @@ public class NicknameLogbookUI : MonoBehaviour
         return tex;
     }
 
-    private static Texture2D FalloffTexture()
+    private static Texture2D FalloffTexture() => cachedFalloff != null ? cachedFalloff : (cachedFalloff = MakeFalloff());
+
+    private static Texture2D MakeFalloff()
     {
         const int w = 128, h = 84;
         Texture2D tex = new Texture2D(w, h, TextureFormat.RGBA32, false) { wrapMode = TextureWrapMode.Clamp };
@@ -571,7 +580,9 @@ public class NicknameLogbookUI : MonoBehaviour
         return tex;
     }
 
-    private static Texture2D DotTexture()
+    private static Texture2D DotTexture() => cachedDot != null ? cachedDot : (cachedDot = MakeDot());
+
+    private static Texture2D MakeDot()
     {
         const int s = 32;
         Texture2D tex = new Texture2D(s, s, TextureFormat.RGBA32, false) { wrapMode = TextureWrapMode.Clamp };
