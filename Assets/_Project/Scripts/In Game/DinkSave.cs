@@ -6,12 +6,11 @@ using UnityEngine;
 /// </summary>
 public static class DinkSave
 {
-    private const string FloorKey = "Dink_Save_LastFloor";
-    private const string TracesKey = "Dink_Save_Traces";
-    private const string NameKey = "Dink_Save_PlayerName";
-    private const string ElapsedKey = "Dink_Save_Elapsed";
-    // Eski anahtar korunur, önceki kayıtlardaki tur sayısı kaybolmasın
-    private const string LoopKey = "Dink_LoopCount";
+    private const string FloorKey = DinkPrefs.SaveLastFloor;
+    private const string TracesKey = DinkPrefs.SaveTraces;
+    private const string NameKey = DinkPrefs.SavePlayerName;
+    private const string ElapsedKey = DinkPrefs.SaveElapsed;
+    private const string LoopKey = DinkPrefs.LoopCount;
 
     public const int TraceSlots = 5;
 
@@ -75,20 +74,14 @@ public static class DinkSave
         if (!IsFloorScene(sceneName)) return;
         LastFloorScene = sceneName;
         string name = LobbyLogbook.SignedName;
-        if (string.IsNullOrEmpty(name) && LeaderboardManager.instance != null) name = LeaderboardManager.instance.GetPlayerName();
         if (!string.IsNullOrEmpty(name)) PlayerName = name;
         if (LeaderboardManager.instance != null && LeaderboardManager.instance.IsTimerRunning)
             ElapsedSeconds = LeaderboardManager.instance.ElapsedTime;
         Save();
     }
 
-    /// <summary>Kayıttan devam ederken deftere yazılacak ad: kayıttaki ad, yoksa skor adı, yoksa "Anonymous Player".</summary>
-    public static string ResumeName()
-    {
-        string ad = PlayerName;
-        if (string.IsNullOrWhiteSpace(ad) && LeaderboardManager.instance != null) ad = LeaderboardManager.instance.GetPlayerName();
-        return string.IsNullOrWhiteSpace(ad) ? "Anonymous Player" : ad;
-    }
+    /// <summary>Kayıttan devam ederken deftere yazılacak ad: kayıttaki ad, yoksa "Anonymous Player".</summary>
+    public static string ResumeName() => string.IsNullOrWhiteSpace(PlayerName) ? "Anonymous Player" : PlayerName;
 
     /// <summary>Kronometre süresini günceller (çıkışta, ana menüye dönüşte); kat kaydına dokunmaz.</summary>
     public static void SaveElapsedIfRunning()

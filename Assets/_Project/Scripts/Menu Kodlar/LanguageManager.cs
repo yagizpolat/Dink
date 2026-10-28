@@ -48,7 +48,7 @@ public class LanguageManager : MonoBehaviour
 
     public static event Action OnLanguageChanged;
 
-    private const string PREF_LANGUAGE = "Dink_Language";
+    private const string PREF_LANGUAGE = DinkPrefs.Language;
     private Language currentLanguage = Language.EN;
 
     public Language CurrentLanguage => currentLanguage;
@@ -160,18 +160,11 @@ public class LanguageManager : MonoBehaviour
         Debug.Log($"<color=cyan>[DINK] Dil Değiştirildi: {GetLanguageName(currentLanguage)} ({currentLanguage})</color>");
     }
 
-    public void NextLanguage()
+    /// <summary>Dil listesinde ileri (+1) ya da geri (-1) gider; uçlarda başa sarar.</summary>
+    public void ShiftLanguage(int delta)
     {
-        int totalLangs = Enum.GetValues(typeof(Language)).Length;
-        int nextIndex = ((int)currentLanguage + 1) % totalLangs;
-        SetLanguage((Language)nextIndex);
-    }
-
-    public void PreviousLanguage()
-    {
-        int totalLangs = Enum.GetValues(typeof(Language)).Length;
-        int prevIndex = ((int)currentLanguage - 1 + totalLangs) % totalLangs;
-        SetLanguage((Language)prevIndex);
+        int total = Enum.GetValues(typeof(Language)).Length;
+        SetLanguage((Language)(((int)currentLanguage + (delta < 0 ? -1 : 1) + total) % total));
     }
 
     public string GetLanguageName(Language lang)

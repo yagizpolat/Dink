@@ -17,8 +17,6 @@ public class LobbyLogbook : MonoBehaviour
 
     public static bool Signed { get; private set; }
 
-    /// <summary>Defter açık, ad yazılıyor; Esc menüsü bu sırada açılmaz.</summary>
-    public static bool Busy { get; private set; }
 
     /// <summary>Defterde imzalanan ad; üst katlardaki fiş gibi yerler bunu kullanır.</summary>
     public static string SignedName { get; private set; } = "";
@@ -41,7 +39,6 @@ public class LobbyLogbook : MonoBehaviour
     {
         col = GetComponent<Collider>();
         Signed = false;
-        Busy = false;
         SignedName = "";
     }
 
@@ -82,12 +79,9 @@ public class LobbyLogbook : MonoBehaviour
     private IEnumerator Sign()
     {
         busy = true;
-        Busy = true;
         if (audioSource != null && openClip != null) audioSource.PlayOneShot(openClip);
 
-        PlayerControls.SetEnabled(false);
-        float previousScale = Time.timeScale;
-        Time.timeScale = 0f;
+        PauseService.Pause(this);
 
         string signedName = "";
         yield return NicknameLogbookUI.RunAtDesk(name =>
@@ -99,11 +93,9 @@ public class LobbyLogbook : MonoBehaviour
         // İmza masadaki deftere de geçer
         if (pageTexture != null) NicknameLogbookUI.RenderPageTexture(signedName, pageTexture);
 
-        Time.timeScale = previousScale;
-        PlayerControls.SetEnabled(true);
+        PauseService.Resume(this);
         Signed = true;
         SignedName = signedName;
         busy = false;
-        Busy = false;
     }
 }

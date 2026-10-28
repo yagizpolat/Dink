@@ -230,8 +230,6 @@ public class ElevatorController : MonoBehaviour
     private IEnumerator Ride()
     {
         PlayerControls.SetEnabled(false);
-        // Hedef kat yolculuk sürerken arka planda yüklenir; varışta bekleme olmaz
-        SceneDoorTrigger.Preload(targetScene);
         if (cabArea != null) cabArea.enabled = false;
         StartCoroutine(TurnToDoor());
         yield return MoveDoor(false);

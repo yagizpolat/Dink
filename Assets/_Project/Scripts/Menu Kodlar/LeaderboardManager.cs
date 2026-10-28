@@ -8,7 +8,7 @@ using UnityEngine.SceneManagement;
 using TMPro;
 
 /// <summary>
-/// Dink Projesi Oyuncu Adı, Kronometre ve LootLocker Bulut Destekli 7 Dilli Skor Tablosu Yöneticisi.
+/// Dink Projesi Oyuncu Adı, Kronometre ve LootLocker Bulut Destekli Skor Tablosu Yöneticisi.
 /// Oturumu otomatik başlatır, skorları milisaniye bazında bulut sunucusuna gönderir ve canlı skorları çeker.
 /// </summary>
 public class LeaderboardManager : MonoBehaviour
@@ -41,9 +41,8 @@ public class LeaderboardManager : MonoBehaviour
     [Tooltip("Bulut sunucu aktif edilsin mi?")]
     public bool useCloudLeaderboard = true;
 
-    private const string NICKNAME_KEY = "Dink_PlayerNickname";
-    private const string LEADERBOARD_KEY = "Dink_LeaderboardData";
-    private const string GAME_FINISHED_KEY = "Dink_GameFinished";
+    private const string LEADERBOARD_KEY = DinkPrefs.LeaderboardData;
+    private const string GAME_FINISHED_KEY = DinkPrefs.GameFinished;
 
     [System.Serializable]
     public class LeaderboardEntry
@@ -297,123 +296,16 @@ public class LeaderboardManager : MonoBehaviour
     }
 
     // ════════════════════════════════════════════
-    // 🌐 7 DİLLİ METİN SÖZLÜĞÜ (LOCALIZATION)
-    // ════════════════════════════════════════════
-
-    public string GetLoc(string key)
-    {
-        LanguageManager.Language lang = LanguageManager.Language.EN;
-        if (LanguageManager.instance != null) lang = LanguageManager.instance.CurrentLanguage;
-        else Enum.TryParse(PlayerPrefs.GetString("Dink_Language", "EN"), out lang);
-
-        switch (key)
-        {
-            case "TITLE":
-                switch (lang)
-                {
-                    case LanguageManager.Language.TR: return "🌐 KÜRESEL SKOR TABLOSU & EN İYİ SÜRELER";
-                    case LanguageManager.Language.DE: return "🌐 GLOBALE BESTENLISTE & BESTZEITEN";
-                    case LanguageManager.Language.FR: return "🌐 CLASSEMENT MONDIAL & MEILLEURS TEMPS";
-                    case LanguageManager.Language.ES: return "🌐 TABLA GLOBAL Y MEJORES TIEMPOS";
-                    case LanguageManager.Language.PT: return "🌐 CLASSIFICAÇÃO GLOBAL E MELHORES TEMPOS";
-                    case LanguageManager.Language.RU: return "🌐 ГЛОБАЛЬНАЯ ТАБЛИЦА ЛИДЕРОВ";
-                    case LanguageManager.Language.ZH: return "🌐 全球排行榜与最佳时间";
-                    case LanguageManager.Language.JA: return "🌐 世界ランキングとベストタイム";
-                    case LanguageManager.Language.KO: return "🌐 글로벌 순위표 & 최고 기록";
-                    default: return "🌐 GLOBAL LEADERBOARD & BEST TIMES";
-                }
-            case "YOUR_TIME":
-                switch (lang)
-                {
-                    case LanguageManager.Language.TR: return "Sizin Süreniz:";
-                    case LanguageManager.Language.DE: return "Ihre Zeit:";
-                    case LanguageManager.Language.FR: return "Votre Temps :";
-                    case LanguageManager.Language.ES: return "Tu Tiempo:";
-                    case LanguageManager.Language.PT: return "Seu Tempo:";
-                    case LanguageManager.Language.RU: return "Ваше Время:";
-                    case LanguageManager.Language.ZH: return "你的时间：";
-                    case LanguageManager.Language.JA: return "あなたのタイム：";
-                    case LanguageManager.Language.KO: return "당신의 기록:";
-                    default: return "Your Time:";
-                }
-            case "HEADER":
-                switch (lang)
-                {
-                    case LanguageManager.Language.TR: return "SIRA   OYUNCU ADI                  SÜRE         TARİH";
-                    case LanguageManager.Language.DE: return "RANG   SPIELERNAME                 ZEIT         DATUM";
-                    case LanguageManager.Language.FR: return "RANG   NOM DU JOUEUR               TEMPS        DATE";
-                    case LanguageManager.Language.ES: return "POS    NOMBRE DE JUGADOR           TIEMPO       FECHA";
-                    case LanguageManager.Language.PT: return "POS    NOME DO JOGADOR             TEMPO        DATA";
-                    case LanguageManager.Language.RU: return "РАНГ   ИМЯ ИГРОКА                  ВРЕМЯ        ДАТА";
-                    case LanguageManager.Language.ZH: return "排名   玩家名称                    时间         日期";
-                    case LanguageManager.Language.JA: return "順位   プレイヤー名                タイム       日付";
-                    case LanguageManager.Language.KO: return "순위   플레이어 이름               시간         날짜";
-                    default: return "RANK   PLAYER NAME                 TIME         DATE";
-                }
-            case "EMPTY":
-                switch (lang)
-                {
-                    case LanguageManager.Language.TR: return "Henüz kaydedilmiş skor bulunmuyor.";
-                    case LanguageManager.Language.DE: return "Noch keine Einträge vorhanden.";
-                    case LanguageManager.Language.FR: return "Aucun score enregistré pour le moment.";
-                    case LanguageManager.Language.ES: return "Aún no hay puntuaciones registradas.";
-                    case LanguageManager.Language.PT: return "Nenhuma pontuação registrada ainda.";
-                    case LanguageManager.Language.RU: return "Пока нет записанных результатов.";
-                    case LanguageManager.Language.ZH: return "还没有任何记录。";
-                    case LanguageManager.Language.JA: return "まだ記録はない。";
-                    case LanguageManager.Language.KO: return "아직 기록이 없습니다.";
-                    default: return "No recorded scores yet.";
-                }
-            case "MAIN_MENU":
-                switch (lang)
-                {
-                    case LanguageManager.Language.TR: return "ANA MENÜ";
-                    case LanguageManager.Language.DE: return "HAUPTMENÜ";
-                    case LanguageManager.Language.FR: return "MENU PRINCIPAL";
-                    case LanguageManager.Language.ES: return "MENÚ PRINCIPAL";
-                    case LanguageManager.Language.PT: return "MENU PRINCIPAL";
-                    case LanguageManager.Language.RU: return "ГЛАВНОЕ МЕНЮ";
-                    case LanguageManager.Language.ZH: return "主菜单";
-                    case LanguageManager.Language.JA: return "メインメニュー";
-                    case LanguageManager.Language.KO: return "메인 메뉴";
-                    default: return "MAIN MENU";
-                }
-            case "REPLAY":
-                switch (lang)
-                {
-                    case LanguageManager.Language.TR: return "YENİDEN OYNA";
-                    case LanguageManager.Language.DE: return "ERNEUT SPIELEN";
-                    case LanguageManager.Language.FR: return "REJOUER";
-                    case LanguageManager.Language.ES: return "REPETIR";
-                    case LanguageManager.Language.PT: return "JOGAR NOVAMENTE";
-                    case LanguageManager.Language.RU: return "ИГРАТЬ СНОВА";
-                    case LanguageManager.Language.ZH: return "再玩一次";
-                    case LanguageManager.Language.JA: return "もう一度プレイ";
-                    case LanguageManager.Language.KO: return "다시 하기";
-                    default: return "REPLAY";
-                }
-            default: return "";
-        }
-    }
-
-    // ════════════════════════════════════════════
     // 👤 OYUNCU ADI YÖNETİMİ
     // ════════════════════════════════════════════
 
-    public bool HasPlayerName()
-    {
-        return PlayerPrefs.HasKey(NICKNAME_KEY) && !string.IsNullOrWhiteSpace(PlayerPrefs.GetString(NICKNAME_KEY));
-    }
-
-    public string GetPlayerName()
-    {
-        return PlayerPrefs.GetString(NICKNAME_KEY, "");
-    }
+    // Ad tek yerde tutulur: kayıttaki oyuncu adı (DinkSave.PlayerName)
+    public string GetPlayerName() => DinkSave.PlayerName;
 
     public void SetPlayerName(string name)
     {
         if (string.IsNullOrWhiteSpace(name)) return;
-        PlayerPrefs.SetString(NICKNAME_KEY, name.Trim());
+        DinkSave.PlayerName = name.Trim();
         PlayerPrefs.Save();
         Debug.Log($"<color=green>[DINK] Oyuncu adı kaydedildi: {name}</color>");
     }
@@ -534,14 +426,12 @@ public class LeaderboardManager : MonoBehaviour
     }
 
     // ════════════════════════════════════════════
-    // 📊 7 DİLLİ KÜRESEL SKOR TABLOSU UI PANELİ
+    // 📊 OYUN SONU SKOR TABLOSU
     // ════════════════════════════════════════════
 
     public void ShowLeaderboardUIPanel(float currentScoreTime = -1f)
     {
-        Time.timeScale = 0f;
-        Cursor.lockState = CursorLockMode.None;
-        Cursor.visible = true;
+        PauseService.Pause(this);
 
         // Oyun sonu skor tablosu: giriş defterinin bir sonraki sayfası (LeaderboardLogbookUI)
         LeaderboardLogbookUI.Show(currentScoreTime, GetPlayerName());
@@ -567,7 +457,7 @@ public class LeaderboardManager : MonoBehaviour
     [ContextMenu("Skor Tablosunu ve İsimleri Sıfırla (Reset All Scores & Name)")]
     public void ResetAllLeaderboardData()
     {
-        PlayerPrefs.DeleteKey(NICKNAME_KEY);
+        PlayerPrefs.DeleteKey(DinkPrefs.SavePlayerName);
         PlayerPrefs.DeleteKey(LEADERBOARD_KEY);
         PlayerPrefs.DeleteKey(GAME_FINISHED_KEY);
         PlayerPrefs.Save();

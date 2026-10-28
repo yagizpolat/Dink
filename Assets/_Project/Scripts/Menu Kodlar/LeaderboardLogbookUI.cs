@@ -118,7 +118,7 @@ public class LeaderboardLogbookUI : MonoBehaviour
             blackout.color = new Color(0, 0, 0, Mathf.Clamp01(t / 0.9f));
             yield return null;
         }
-        Time.timeScale = 1f;
+        PauseService.ResetAll();
         if (replay)
         {
             if (LeaderboardManager.instance != null) LeaderboardManager.instance.StartTimer();

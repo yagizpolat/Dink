@@ -27,15 +27,13 @@ public class MektupNotHintUI : MonoBehaviour
             return _instance;
         }
     }
-    public static MektupNotHintUI instance => Instance;
+    /// <summary>Var olan örnek ya da null; yalnız kontrol için ("panel açık mı"), yoksa nesne kurmaz.</summary>
+    public static MektupNotHintUI instance => _instance;
 
     private Canvas letterCanvas;
     private TextMeshProUGUI letterBodyText;
     private bool isPanelOpen;
     public bool IsPanelOpen => isPanelOpen;
-    private float previousTimeScale;
-    private CursorLockMode previousLockState = CursorLockMode.Locked;
-    private bool previousCursorVisible;
 
     /// <summary>
     /// Toplam okunan mektup sayısı (countsAsLetter ile açılan kâğıtlar).
@@ -101,18 +99,8 @@ public class MektupNotHintUI : MonoBehaviour
         PlayRustle();
         isPanelOpen = true;
 
-        // Zamanı dondur
-        previousTimeScale = Time.timeScale;
-        previousLockState = Cursor.lockState;
-        previousCursorVisible = Cursor.visible;
-        Time.timeScale = 0f;
-
-        // Kamera rotasyonu ve etkileşimleri geçici olarak durdur (fare kaymasını önler)
-        TogglePlayerScripts(false);
-
-        // İmleci serbest bırak
-        Cursor.lockState = CursorLockMode.None;
-        Cursor.visible = true;
+        // Zaman durur, imleç serbest, yürüme kapalı (fare kaymasını önler); ESC menüsü bu sırada açılmaz
+        PauseService.Pause(this);
     }
 
     /// <summary>
@@ -127,28 +115,9 @@ public class MektupNotHintUI : MonoBehaviour
         PlayRustle();
         isPanelOpen = false;
 
-        // Zamanı geri yükle
-        Time.timeScale = previousTimeScale > 0f ? previousTimeScale : 1f;
-
-        // İmleç mektup açılmadan önceki hâline döner (yürürken kilitli; defter gibi serbest imleçli ekranda serbest)
-        Cursor.lockState = previousLockState;
-        Cursor.visible = previousCursorVisible;
+        // Başka bir ekran (ör. defter) hâlâ duraklatıyorsa zaman ve imleç onda kalır
+        PauseService.Resume(this);
         Input.ResetInputAxes();
-
-        // Kamera ve kontrol script'lerini tekrar aktif et
-        TogglePlayerScripts(true);
-    }
-
-    /// <summary>
-    /// Mektup okurken kameranın dönmesini ve etkileşimlerin çakışmasını önlemek için scriptleri açar/kapatır.
-    /// </summary>
-    private void TogglePlayerScripts(bool enable)
-    {
-        PlayerControls.SetPaused(!enable);
-
-        // Mektup açıkken ESC menüsü de kapalı: yoksa ESC → "Devam" kamerayı mektubun arkasında açıyordu
-        Escmenu esc = FindAnyObjectByType<Escmenu>();
-        if (esc != null) esc.enabled = enable;
     }
 
     // =========================================================================
@@ -369,7 +338,7 @@ public class MektupNotHintUI : MonoBehaviour
 
     private void PlayRustle()
     {
-        float sfx = AudioManager.instance != null ? AudioManager.instance.SFXSourceScale : PlayerPrefs.GetFloat("Dink_SFXVolume", 0.8f);
+        float sfx = DinkPrefs.SfxSourceScale;
         rustleSource.PlayOneShot(rustleClip, sfx * 0.45f);
     }
 

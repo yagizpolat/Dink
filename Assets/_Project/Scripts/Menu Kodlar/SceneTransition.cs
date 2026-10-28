@@ -19,11 +19,6 @@ public class SceneTransition : MonoBehaviour
     [Tooltip("Tarih ve devam etmek için tuşa bas uyarısı paneli")]
     public CanvasGroup dateandpressTextGroup;
 
-    [Header("Eski Oyuncu Adı Paneli (kullanılmıyor, sahne referansı için duruyor)")]
-    public GameObject nicknamePanel;
-    public TMP_InputField nicknameInputField;
-    public UnityEngine.UI.Button nicknameSubmitButton;
-
     [Header("Metin Bileşenleri (İsteğe Bağlı)")]
     public TMP_Text quoteText;
     public TMP_Text dateText;
@@ -40,12 +35,10 @@ public class SceneTransition : MonoBehaviour
     [Tooltip("Unity Editor'de test ederken hikaye yazısının HER SEFERİNDE gösterilmesi için bunu işaretleyin.")]
     public bool editorTestHerZamanGoster = false;
 
-    private const string INTRO_SEEN_KEY = "Dink_IntroSeen";
-
     [ContextMenu("Intro Hafızasını Sıfırla (Reset PlayerPrefs)")]
     public void ResetIntroPlayerPrefs()
     {
-        PlayerPrefs.DeleteKey(INTRO_SEEN_KEY);
+        PlayerPrefs.DeleteKey(DinkPrefs.IntroSeen);
         PlayerPrefs.Save();
 
         if (LeaderboardManager.instance != null)
@@ -56,10 +49,10 @@ public class SceneTransition : MonoBehaviour
         Debug.Log("<color=green>[DINK] Intro & Hikaye & İsim hafızası sıfırlandı!</color>");
     }
 
-    /// <param name="sahneNo">Kullanılmıyor (sahnedeki buton bağlantıları için imza korunuyor); her zaman prolog açılır.</param>
-    public void ButonlaSahneyeGit(int sahneNo)
+    /// <summary>Yeni Oyun: karartma, ilk seferde hikaye yazısı, sonra prolog.</summary>
+    public void YeniOyunaGec()
     {
-        StartCoroutine(GecisRoutine(sahneNo));
+        StartCoroutine(GecisRoutine());
     }
 
     /// <summary>
@@ -73,43 +66,36 @@ public class SceneTransition : MonoBehaviour
 
     private IEnumerator DevamRoutine(string sahne)
     {
-        Time.timeScale = 0f;
-
-        MainMenu3DController controller = FindFirstObjectByType<MainMenu3DController>();
-        if (controller != null)
-        {
-            controller.HideMenu();
-            controller.enabled = false;
-        }
-
-        if (AudioManager.instance != null)
-        {
-            AudioManager.instance.StopMusicWithFade(1.2f);
-        }
-
-        yield return StartCoroutine(FadeCanvasGroup(globalFadeGroup, 1f, fadeDuration));
-
-        if (mainMenuUI != null)
-        {
-            mainMenuUI.SetActive(false);
-        }
-
+        yield return MenudenCik();
         LobbyLogbook.RestoreSignature(DinkSave.ResumeName());
-        if (LeaderboardManager.instance != null)
-        {
-            LeaderboardManager.instance.StartTimer(DinkSave.ElapsedSeconds);
-        }
-
-        Time.timeScale = 1f;
+        LeaderboardManager.instance.StartTimer(DinkSave.ElapsedSeconds);
+        PauseService.ResetAll();
         SceneManager.LoadScene(sahne);
     }
 
-    private IEnumerator GecisRoutine(int sahneNo)
+    private IEnumerator GecisRoutine()
     {
-        // 1. ZAMANI ANINDA DONDUR
-        Time.timeScale = 0f;
+        yield return MenudenCik();
 
-        // 2. Arkadaki 3D kapı etkileşimlerini ve seslerini anında durdur
+        // Hikaye yazısı yalnız ilk yeni oyunda
+        if (editorTestHerZamanGoster || PlayerPrefs.GetInt(DinkPrefs.IntroSeen, 0) != 1)
+        {
+            yield return StartCoroutine(OynatHikayeYazisi());
+            PlayerPrefs.SetInt(DinkPrefs.IntroSeen, 1);
+            PlayerPrefs.Save();
+        }
+
+        LeaderboardManager.instance.StartTimer();
+        PauseService.ResetAll();
+        // Yeni oyun Karanfil Apartmanı prologuyla açılır
+        DinkScenes.LoadPrologue();
+    }
+
+    /// <summary>Zamanı durdurur, menüyü gizler, müziği susturur ve ekranı karartır.</summary>
+    private IEnumerator MenudenCik()
+    {
+        PauseService.Pause(this);
+
         MainMenu3DController controller = FindFirstObjectByType<MainMenu3DController>();
         if (controller != null)
         {
@@ -117,42 +103,9 @@ public class SceneTransition : MonoBehaviour
             controller.enabled = false;
         }
 
-        // Arka plan menü müziğini yumuşakça sustur
-        if (AudioManager.instance != null)
-        {
-            AudioManager.instance.StopMusicWithFade(1.2f);
-        }
-
-        // 3. Ekranı karart
+        AudioManager.instance.StopMusicWithFade(1.2f);
         yield return StartCoroutine(FadeCanvasGroup(globalFadeGroup, 1f, fadeDuration));
-
-        if (mainMenuUI != null)
-        {
-            mainMenuUI.SetActive(false);
-        }
-
-        // Zamanı dondur (Arka planda hiçbir şey hareket etmesin/çalmasın)
-        Time.timeScale = 0f;
-
-        // 4. Hikaye yazısı gösterimi
-        bool hasSeenIntro = PlayerPrefs.GetInt(INTRO_SEEN_KEY, 0) == 1;
-
-        if (editorTestHerZamanGoster || !hasSeenIntro)
-        {
-            yield return StartCoroutine(OynatHikayeYazisi());
-            PlayerPrefs.SetInt(INTRO_SEEN_KEY, 1);
-            PlayerPrefs.Save();
-        }
-
-        // 5. Kronometreyi başlat, zamanı normale al ve sahneyi yükle
-        if (LeaderboardManager.instance != null)
-        {
-            LeaderboardManager.instance.StartTimer();
-        }
-
-        Time.timeScale = 1f;
-        // Yeni oyun Karanfil Apartmanı prologuyla açılır
-        DinkScenes.LoadPrologue();
+        if (mainMenuUI != null) mainMenuUI.SetActive(false);
     }
 
     /// <summary>
@@ -160,15 +113,7 @@ public class SceneTransition : MonoBehaviour
     /// </summary>
     private IEnumerator OynatHikayeYazisi()
     {
-        if (quoteText != null && string.IsNullOrEmpty(quoteText.text))
-        {
-            quoteText.text = "\"Yüzümdeki kanı silmeden kaçtım... Evde beni bekleyen küçük kardeşimi ve arkamdaki adımları düşünürken, o dar sokakta gördüğüm şeyle olduğum yere çakıldım. Akla mantığa sığmayan o manzara karşısında... ben nereye düştüm?\"";
-        }
-        if (dateText != null && string.IsNullOrEmpty(dateText.text))
-        {
-            dateText.text = "14 Kasım 2023 | 23:42\n[ Devam Etmek İçin Tıklayın ]";
-        }
-
+        // Metinleri sahnedeki LocalizedText bileşenleri seçili dilde yazar
         PrepareGroupForFade(quoteTextGroup);
         PrepareGroupForFade(dateandpressTextGroup);
 

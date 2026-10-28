@@ -115,7 +115,6 @@ public class SisterTrace : MonoBehaviour
         if (taken || !interactable || Time.timeScale == 0f) return;
         if (!Input.GetMouseButtonDown(0) && !Input.GetKeyDown(KeyCode.E)) return;
         if (MektupNotHintUI.instance != null && MektupNotHintUI.instance.IsPanelOpen) return;
-        if (LobbyLogbook.Busy) return;
 
         if (cam == null) cam = Camera.main;
         if (cam == null) return;
@@ -172,7 +171,7 @@ public class SisterTrace : MonoBehaviour
         var src = go.AddComponent<AudioSource>();
         src.clip = noteClip;
         src.spatialBlend = 0.5f;
-        float sfx = AudioManager.instance != null ? AudioManager.instance.SFXSourceScale : PlayerPrefs.GetFloat("Dink_SFXVolume", 0.8f);
+        float sfx = DinkPrefs.SfxSourceScale;
         src.volume = noteVolume * sfx;
         src.Play();
         Destroy(go, noteClip.length + 0.1f);

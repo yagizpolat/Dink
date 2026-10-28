@@ -52,18 +52,7 @@ public class LocalizedText : MonoBehaviour
     {
         CacheComponents();
 
-        LanguageManager.Language activeLang = LanguageManager.Language.EN;
-        if (LanguageManager.instance != null)
-        {
-            activeLang = LanguageManager.instance.CurrentLanguage;
-        }
-        else
-        {
-            string saved = PlayerPrefs.GetString("Dink_Language", "EN");
-            System.Enum.TryParse(saved, out activeLang);
-        }
-
-        string selectedText = GetTextForLanguage(activeLang);
+        string selectedText = GetTextForLanguage(LanguageManager.instance.CurrentLanguage);
 
         // Seçilen dilde metin boşsa İngilizce'ye düş, o da boşsa Türkçe'ye düş
         if (string.IsNullOrEmpty(selectedText))

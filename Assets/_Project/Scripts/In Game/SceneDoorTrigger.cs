@@ -46,11 +46,6 @@ public class SceneDoorTrigger : MonoBehaviour
         }
     }
 
-    private void Start()
-    {
-        Preload(targetScene);
-    }
-
     private void OnTriggerEnter(Collider other)
     {
         if (requireInteract || used || other.GetComponent<PlayerWalker>() == null) return;
@@ -61,7 +56,6 @@ public class SceneDoorTrigger : MonoBehaviour
     {
         if (!requireInteract || used || Time.timeScale == 0f) return;
         if (!Input.GetMouseButtonDown(0) && !Input.GetKeyDown(KeyCode.E)) return;
-        if (LobbyLogbook.Busy) return;
 
         if (cam == null) cam = Camera.main;
         if (cam == null) return;
@@ -108,59 +102,19 @@ public class SceneDoorTrigger : MonoBehaviour
         doorHinge.localRotation = to;
     }
 
-    private static readonly bool PreloadEnabled = false;
-    private static AsyncOperation preloadOp;
-    private static string preloadScene;
-
-    /// <summary>
-    /// Sahneyi arka planda yükler ama etkinleştirmez; FadeAndLoad aynı sahne için bunu kullanır.
-    /// Bekleyen bir yükleme varken başka async yükleme ilerlemez; bu yüzden aynı anda tek ön yükleme tutulur.
-    /// </summary>
-    public static void Preload(string scene)
-    {
-        // Kapalı: bekleyen ön yükleme, menüye dönüşte hedef sahneyi bir anlığına açıyordu.
-        // Sahneler küçük; kısa karartma + normal yükleme yeterince hızlı.
-        if (!PreloadEnabled) return;
-        if (string.IsNullOrEmpty(scene) || preloadOp != null) return;
-        if (!Application.CanStreamedLevelBeLoaded(scene)) return;
-        preloadOp = SceneManager.LoadSceneAsync(scene);
-        if (preloadOp == null) return;
-        preloadOp.allowSceneActivation = false;
-        preloadScene = scene;
-    }
-
     /// <summary>Karartma sürerken true; Esc menüsü bu sırada açılmaz (yoksa yeni sahne duraklatılmış gelir).</summary>
     public static bool Transitioning { get; private set; }
-
-    /// <summary>
-    /// Bekleyen ön yüklemeyi serbest bırakır. Etkinleşmesi engellenmiş bir yükleme varken
-    /// SceneManager.LoadScene sıraya takılabilir; başka sahneye (ör. ana menü) geçmeden önce çağrılır.
-    /// </summary>
-    public static void ReleasePreload()
-    {
-        if (preloadOp == null) return;
-        preloadOp.allowSceneActivation = true;
-        preloadOp = null;
-        preloadScene = null;
-    }
 
     [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.BeforeSceneLoad)]
     private static void ResetOnSceneLoad()
     {
         Transitioning = false;
-        preloadOp = null;
-        preloadScene = null;
         // Domain reload kapalıyken her Play'de abonelik birikmesin
         SceneManager.sceneLoaded -= ClearTransition;
         SceneManager.sceneLoaded += ClearTransition;
     }
 
-    private static void ClearTransition(Scene scene, LoadSceneMode mode)
-    {
-        Transitioning = false;
-        preloadOp = null;
-        preloadScene = null;
-    }
+    private static void ClearTransition(Scene scene, LoadSceneMode mode) => Transitioning = false;
 
     /// <summary>Kontrolleri kapatır, ekranı karartır ve sahneyi yükler. Kat geçişleri de bunu kullanır.</summary>
     public static IEnumerator FadeAndLoad(string targetScene, float fadeSeconds)
@@ -185,22 +139,6 @@ public class SceneDoorTrigger : MonoBehaviour
         }
         image.color = Color.black;
 
-        if (preloadOp != null && preloadScene == targetScene)
-        {
-            AsyncOperation op = preloadOp;
-            op.allowSceneActivation = true;
-            while (!op.isDone) yield return null;
-        }
-        else if (preloadOp != null)
-        {
-            // Başka sahne ön yüklenmişti: etkinleşmesine izin verilmeden yeni yükleme ilerlemez
-            Debug.LogWarning($"[SceneDoorTrigger] Ön yüklenen '{preloadScene}' yerine '{targetScene}' yükleniyor.");
-            ReleasePreload();
-            SceneManager.LoadScene(targetScene);
-        }
-        else
-        {
-            SceneManager.LoadScene(targetScene);
-        }
+        SceneManager.LoadScene(targetScene);
     }
 }

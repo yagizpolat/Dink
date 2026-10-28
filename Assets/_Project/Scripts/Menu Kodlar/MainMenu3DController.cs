@@ -2,16 +2,10 @@ using UnityEngine;
 
 /// <summary>
 /// Ana menü yöneticisi.
-/// Karanlıkta aralık kapı ışığı menüsünü (DoorLightMenu) kurar; Yeni Oyun / Ayarlar / Çıkış.
-/// (Eski 3D kapılı menü kaldırıldı.)
+/// Gece lobisi menüsünü (LobbyMenu) kurar; Devam Et / Yeni Oyun / Ayarlar / Çıkış.
 /// </summary>
 public class MainMenu3DController : MonoBehaviour
 {
-    [Header("Ayar Panelleri (Opsiyonel)")]
-    public GameObject graphicsPanel;
-    public GameObject audioPanel;
-    public GameObject languagePanel;
-
     [Header("Sahne Geçişi")]
     public SceneTransition sceneTransition;
 
@@ -34,7 +28,6 @@ public class MainMenu3DController : MonoBehaviour
         if (sceneTransition == null)
             sceneTransition = FindFirstObjectByType<SceneTransition>();
 
-        CloseAllPanels();
         BuildDoorLightMenu();
     }
 
@@ -102,19 +95,7 @@ public class MainMenu3DController : MonoBehaviour
 
     private bool IsAnySettingsPanelOpen()
     {
-        return (lobiAyarlari != null && (lobiAyarlari.IsOpen || Time.frameCount == lobiAyarlari.LastClosedFrame)) ||
-               (graphicsPanel != null && graphicsPanel.activeInHierarchy) ||
-               (audioPanel != null && audioPanel.activeInHierarchy) ||
-               (languagePanel != null && languagePanel.activeInHierarchy) ||
-               (SettingsManager.instance != null && SettingsManager.instance.gameObject.activeInHierarchy);
-    }
-
-    /// <summary>
-    /// Ayarlar panelinden geri dönülünce SettingsManager çağırır; paneller kapanır, kapı menüsü zaten arkada açık.
-    /// </summary>
-    public void ShowMainDoors()
-    {
-        CloseAllPanels();
+        return lobiAyarlari != null && (lobiAyarlari.IsOpen || Time.frameCount == lobiAyarlari.LastClosedFrame);
     }
 
     // ─── Oyun Başlat / Çıkış ───
@@ -137,7 +118,7 @@ public class MainMenu3DController : MonoBehaviour
         {
             LobbyLogbook.RestoreSignature(DinkSave.ResumeName());
             if (LeaderboardManager.instance != null) LeaderboardManager.instance.StartTimer(DinkSave.ElapsedSeconds);
-            Time.timeScale = 1f;
+            PauseService.ResetAll();
             StartCoroutine(SceneDoorTrigger.FadeAndLoad(sahne, 0.6f));
         }
     }
@@ -147,7 +128,7 @@ public class MainMenu3DController : MonoBehaviour
         DinkSave.NewGame();
         if (sceneTransition != null)
         {
-            sceneTransition.ButonlaSahneyeGit(0);
+            sceneTransition.YeniOyunaGec();
         }
         else
         {
@@ -163,51 +144,5 @@ public class MainMenu3DController : MonoBehaviour
         #else
         Application.Quit();
         #endif
-    }
-
-    // ─── Panel Yönetimi ───
-
-    private void OpenPanel(GameObject panel)
-    {
-        CloseAllPanels();
-
-        if (panel == null)
-        {
-            if (SettingsManager.instance != null)
-            {
-                panel = SettingsManager.instance.gameObject;
-            }
-            else
-            {
-                SettingsManager sm = FindAnyObjectByType<SettingsManager>(FindObjectsInactive.Include);
-                if (sm != null) panel = sm.gameObject;
-            }
-        }
-
-        if (panel != null)
-        {
-            panel.SetActive(true);
-            if (SettingsManager.instance != null)
-            {
-                SettingsManager.instance.LoadAndApplySettings();
-            }
-        }
-    }
-
-    private void CloseAllPanels()
-    {
-        if (graphicsPanel != null) graphicsPanel.SetActive(false);
-        if (audioPanel != null) audioPanel.SetActive(false);
-        if (languagePanel != null) languagePanel.SetActive(false);
-
-        if (SettingsManager.instance != null)
-        {
-            SettingsManager.instance.gameObject.SetActive(false);
-        }
-        else
-        {
-            SettingsManager sm = FindAnyObjectByType<SettingsManager>(FindObjectsInactive.Include);
-            if (sm != null) sm.gameObject.SetActive(false);
-        }
     }
 }

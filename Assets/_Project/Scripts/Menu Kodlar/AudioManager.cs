@@ -124,19 +124,19 @@ public class AudioManager : MonoBehaviour
         SetSFXVolume(GetSFXVolume());
     }
 
-    public float GetMasterVolume() => PlayerPrefs.GetFloat("Dink_MasterVolume", 0.8f);
-    public float GetMusicVolume() => PlayerPrefs.GetFloat("Dink_MusicVolume", 0.5f);
-    public float GetSFXVolume() => PlayerPrefs.GetFloat("Dink_SFXVolume", 0.8f);
+    public float GetMasterVolume() => DinkPrefs.MasterVolume;
+    public float GetMusicVolume() => DinkPrefs.MusicVolume;
+    public float GetSFXVolume() => DinkPrefs.SfxVolume;
 
     public void SetMasterVolume(float vol)
     {
-        PlayerPrefs.SetFloat("Dink_MasterVolume", vol);
+        DinkPrefs.MasterVolume = vol;
         ApplyListenerVolume();
     }
 
     public void SetMusicVolume(float vol)
     {
-        PlayerPrefs.SetFloat("Dink_MusicVolume", vol);
+        DinkPrefs.MusicVolume = vol;
         if (musicSource != null && !_isFading)
         {
             musicSource.volume = vol;
@@ -145,7 +145,7 @@ public class AudioManager : MonoBehaviour
 
     public void SetSFXVolume(float vol)
     {
-        PlayerPrefs.SetFloat("Dink_SFXVolume", vol);
+        DinkPrefs.SfxVolume = vol;
         ApplyListenerVolume();
     }
 

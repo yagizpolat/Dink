@@ -60,7 +60,6 @@ public class LobbySettings : MonoBehaviour
     public void Open(Action backAction)
     {
         onBack = backAction;
-        DoorLightSettings.PrepareSettings();
         if (root == null) Build();
         root.SetActive(true);
         Relabel();
@@ -100,7 +99,7 @@ public class LobbySettings : MonoBehaviour
         title.transform.rotation = Quaternion.Euler(0f, 0f, UnityEngine.Random.Range(-1.2f, 1.2f));
 
         desc = MakeText("Aciklama", DescSize, Vector3.zero);
-        desc.enableWordWrapping = true;
+        desc.textWrappingMode = TextWrappingModes.Normal;
         desc.alignment = TextAlignmentOptions.TopLeft;
         desc.rectTransform.sizeDelta = new Vector2(LeafWidth, 0.2f);
         desc.rectTransform.pivot = new Vector2(0.5f, 1f);
@@ -116,7 +115,7 @@ public class LobbySettings : MonoBehaviour
         if (font != null) t.font = font;
         t.fontSize = size;
         t.alignment = TextAlignmentOptions.Left;
-        t.enableWordWrapping = false;
+        t.textWrappingMode = TextWrappingModes.NoWrap;
         t.richText = true;
         t.rectTransform.sizeDelta = new Vector2(LeafWidth, 0.1f);
         t.color = new Color(Ink.r, Ink.g, Ink.b, 0f);

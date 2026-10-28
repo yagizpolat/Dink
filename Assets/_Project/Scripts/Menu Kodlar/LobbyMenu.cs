@@ -55,7 +55,6 @@ public class LobbyMenu : MonoBehaviour
     private float frontBase;
     private Transform elevatorHinge;
     private Quaternion elevatorClosed, elevatorOpen;
-    private Transform leafLeft, leafRight;
     private TextMeshPro indicator;
 
     // ─── Ses ───
@@ -160,7 +159,7 @@ public class LobbyMenu : MonoBehaviour
         t.text = txt;
         t.fontSize = size;
         t.alignment = TextAlignmentOptions.Center;
-        t.enableWordWrapping = false;
+        t.textWrappingMode = TextWrappingModes.NoWrap;
         t.richText = true;
         t.rectTransform.sizeDelta = new Vector2(0.85f, 0.3f);
         t.color = Color.white;
@@ -302,9 +301,6 @@ public class LobbyMenu : MonoBehaviour
             elevatorOpen = OpenRotation(elevatorHinge, 95f, -1f);
         }
 
-        leafLeft = FindChild("GirisKapi/KanatSol");
-        leafRight = FindChild("GirisKapi/KanatSag");
-
         // Asansör kat göstergesi
         var go = new GameObject("AsansorGostergeYazi");
         if (lobi != null) go.transform.SetParent(lobi, false);
@@ -315,7 +311,7 @@ public class LobbyMenu : MonoBehaviour
         indicator.text = "0";
         indicator.fontSize = 1.1f;
         indicator.alignment = TextAlignmentOptions.Center;
-        indicator.enableWordWrapping = false;
+        indicator.textWrappingMode = TextWrappingModes.NoWrap;
         indicator.rectTransform.sizeDelta = new Vector2(0.4f, 0.2f);
         indicator.color = new Color(1f, 0.12f, 0.08f, 0.9f);
     }
@@ -497,16 +493,6 @@ public class LobbyMenu : MonoBehaviour
             ambSrc.clip = ambience;
             ambSrc.Play();
         }
-    }
-
-    /// <summary>Ambiyans Build'den sonra atanırsa çalmaya başlatır.</summary>
-    public void SetAmbience(AudioClip clip)
-    {
-        ambience = clip;
-        if (clip == null) return;
-        if (ambSrc == null) ambSrc = NewSource(true, ambienceVolume);
-        ambSrc.clip = clip;
-        ambSrc.Play();
     }
 
     // Sentez klipleri her menü açılışında yeniden üretilir; menü kapanınca silinmezse birikiyordu

@@ -39,13 +39,6 @@ public class NicknameLogbookUI : MonoBehaviour
     private string placeholder;
     private bool submitRequested;
 
-    /// <summary>Defteri açar, oyuncu adını yazıp Enter'a basana kadar bekler, sonra ekranı karartır.</summary>
-    public static IEnumerator Run(Action<string> onSubmitted)
-    {
-        NicknameLogbookUI ui = new GameObject("[NicknameLogbook]").AddComponent<NicknameLogbookUI>();
-        yield return ui.Play(onSubmitted);
-    }
-
     /// <summary>
     /// Giriş katındaki masada imzalama: karartma yerine defter yavaşça kaybolur ve oyuncu holde kalır.
     /// </summary>
@@ -103,13 +96,6 @@ public class NicknameLogbookUI : MonoBehaviour
         cam.targetTexture = null;
         DestroyImmediate(cam.gameObject);
         DestroyImmediate(root);
-    }
-
-    /// <summary>Karartma tamamlandıktan sonra çağrılır; arkadaki geçiş kendi siyahını devraldığında defteri siler.</summary>
-    public static void CloseAll()
-    {
-        foreach (NicknameLogbookUI ui in FindObjectsByType<NicknameLogbookUI>(FindObjectsSortMode.None))
-            Destroy(ui.gameObject);
     }
 
     private IEnumerator Play(Action<string> onSubmitted)
