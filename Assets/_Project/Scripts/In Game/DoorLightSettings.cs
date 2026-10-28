@@ -129,7 +129,7 @@ public class DoorLightSettings : MonoBehaviour
     /// <summary>Sekme başlıkları (GRAFİK / SES / OYUN), BuildRows ile aynı sırada.</summary>
     public static string[] TabNames()
     {
-        return new[] { DinkLang.T("GRAPHICS", "GRAFİK", "GRAFIK", "GRAPHISMES", "GRÁFICOS", "GRÁFICOS", "ГРАФИКА"), DinkLang.T("AUDIO", "SES", "AUDIO", "AUDIO", "AUDIO", "ÁUDIO", "ЗВУК"), DinkLang.T("GAME", "OYUN", "SPIEL", "JEU", "JUEGO", "JOGO", "ИГРА") };
+        return new[] { DinkLang.T("GRAPHICS", "GRAFİK", "GRAFIK", "GRAPHISMES", "GRÁFICOS", "GRÁFICOS", "ГРАФИКА", "画面", "グラフィック", "그래픽"), DinkLang.T("AUDIO", "SES", "AUDIO", "AUDIO", "AUDIO", "ÁUDIO", "ЗВУК", "音频", "サウンド", "오디오"), DinkLang.T("GAME", "OYUN", "SPIEL", "JEU", "JUEGO", "JOGO", "ИГРА", "游戏", "ゲーム", "게임") };
     }
 
     /// <summary>SettingsManager'ı hazırlar (yoksa kurar, ayarları yükler).</summary>
@@ -144,34 +144,34 @@ public class DoorLightSettings : MonoBehaviour
         var tabs = new List<List<SettingRow>>();
         tabs.Add(new List<SettingRow>
         {
-            new SettingRow { label = DinkLang.T("QUALITY", "KALİTE", "QUALITÄT", "QUALITÉ", "CALIDAD", "QUALIDADE", "КАЧЕСТВО"), desc = DinkLang.T("Shadow and lighting detail.", "Gölge ve ışık detayını belirler.", "Schatten- und Lichtdetails.", "Détail des ombres et de la lumière.", "Detalle de sombras e iluminación.", "Detalhe de sombras e iluminação.", "Детализация теней и света."), kind = SettingKind.Cycle,
+            new SettingRow { label = DinkLang.T("QUALITY", "KALİTE", "QUALITÄT", "QUALITÉ", "CALIDAD", "QUALIDADE", "КАЧЕСТВО", "画质", "画質", "품질"), desc = DinkLang.T("Shadow and lighting detail.", "Gölge ve ışık detayını belirler.", "Schatten- und Lichtdetails.", "Détail des ombres et de la lumière.", "Detalle de sombras e iluminación.", "Detalhe de sombras e iluminação.", "Детализация теней и света.", "阴影与光照的细节。", "影と光の細かさ。", "그림자와 조명의 세밀함."), kind = SettingKind.Cycle,
                 value = () => SM != null ? QualityName(SM.QualityIndex) : "-", change = d => SM?.ChangeQuality(d) },
-            new SettingRow { label = DinkLang.T("DISPLAY MODE", "EKRAN MODU", "ANZEIGEMODUS", "MODE D'AFFICHAGE", "MODO DE PANTALLA", "MODO DE TELA", "РЕЖИМ ЭКРАНА"), desc = DinkLang.T("How the game fills the screen.", "Oyunun ekranı nasıl kaplayacağı.", "Wie das Spiel den Bildschirm füllt.", "Comment le jeu remplit l'écran.", "Cómo ocupa el juego la pantalla.", "Como o jogo ocupa a tela.", "Как игра заполняет экран."), kind = SettingKind.Toggle,
-                value = () => SM != null && SM.IsFullscreen ? DinkLang.T("FULLSCREEN", "TAM EKRAN", "VOLLBILD", "PLEIN ÉCRAN", "PANTALLA COMPLETA", "TELA CHEIA", "ПОЛНЫЙ ЭКРАН") : DinkLang.T("WINDOWED", "PENCERE", "FENSTER", "FENÊTRÉ", "VENTANA", "JANELA", "ОКНО"), change = d => SM?.ToggleFullscreen() },
-            new SettingRow { label = DinkLang.T("RESOLUTION", "ÇÖZÜNÜRLÜK", "AUFLÖSUNG", "RÉSOLUTION", "RESOLUCIÓN", "RESOLUÇÃO", "РАЗРЕШЕНИЕ"), desc = DinkLang.T("Screen resolution.", "Ekran çözünürlüğü.", "Bildschirmauflösung.", "Résolution de l'écran.", "Resolución de pantalla.", "Resolução da tela.", "Разрешение экрана."), kind = SettingKind.Cycle,
+            new SettingRow { label = DinkLang.T("DISPLAY MODE", "EKRAN MODU", "ANZEIGEMODUS", "MODE D'AFFICHAGE", "MODO DE PANTALLA", "MODO DE TELA", "РЕЖИМ ЭКРАНА", "显示模式", "表示モード", "화면 모드"), desc = DinkLang.T("How the game fills the screen.", "Oyunun ekranı nasıl kaplayacağı.", "Wie das Spiel den Bildschirm füllt.", "Comment le jeu remplit l'écran.", "Cómo ocupa el juego la pantalla.", "Como o jogo ocupa a tela.", "Как игра заполняет экран.", "游戏如何占据屏幕。", "ゲームを画面にどう映すか。", "게임이 화면을 채우는 방식."), kind = SettingKind.Toggle,
+                value = () => SM != null && SM.IsFullscreen ? DinkLang.T("FULLSCREEN", "TAM EKRAN", "VOLLBILD", "PLEIN ÉCRAN", "PANTALLA COMPLETA", "TELA CHEIA", "ПОЛНЫЙ ЭКРАН", "全屏", "フルスクリーン", "전체 화면") : DinkLang.T("WINDOWED", "PENCERE", "FENSTER", "FENÊTRÉ", "VENTANA", "JANELA", "ОКНО", "窗口", "ウィンドウ", "창 모드"), change = d => SM?.ToggleFullscreen() },
+            new SettingRow { label = DinkLang.T("RESOLUTION", "ÇÖZÜNÜRLÜK", "AUFLÖSUNG", "RÉSOLUTION", "RESOLUCIÓN", "RESOLUÇÃO", "РАЗРЕШЕНИЕ", "分辨率", "解像度", "해상도"), desc = DinkLang.T("Screen resolution.", "Ekran çözünürlüğü.", "Bildschirmauflösung.", "Résolution de l'écran.", "Resolución de pantalla.", "Resolução da tela.", "Разрешение экрана.", "屏幕分辨率。", "画面の解像度。", "화면 해상도."), kind = SettingKind.Cycle,
                 value = () => SM != null ? SM.ResolutionName : "-", change = d => SM?.ChangeResolution(d) },
-            new SettingRow { label = DinkLang.T("FPS LIMIT", "FPS SINIRI", "FPS-LIMIT", "LIMITE FPS", "LÍMITE FPS", "LIMITE FPS", "ЛИМИТ FPS"), desc = DinkLang.T("Maximum frames per second.", "Saniyedeki kare üst sınırı.", "Maximale Bilder pro Sekunde.", "Images par seconde maximum.", "Fotogramas por segundo máximos.", "Quadros por segundo máximos.", "Максимум кадров в секунду."), kind = SettingKind.Cycle,
+            new SettingRow { label = DinkLang.T("FPS LIMIT", "FPS SINIRI", "FPS-LIMIT", "LIMITE FPS", "LÍMITE FPS", "LIMITE FPS", "ЛИМИТ FPS", "帧率上限", "FPS上限", "FPS 제한"), desc = DinkLang.T("Maximum frames per second.", "Saniyedeki kare üst sınırı.", "Maximale Bilder pro Sekunde.", "Images par seconde maximum.", "Fotogramas por segundo máximos.", "Quadros por segundo máximos.", "Максимум кадров в секунду.", "每秒最大帧数。", "1秒あたりの最大フレーム数。", "초당 최대 프레임 수."), kind = SettingKind.Cycle,
                 value = () => SM != null ? FrameRateName(SM.FrameRateIndex) : "-", change = d => SM?.ChangeFrameRate(d) },
-            new SettingRow { label = "V-SYNC", desc = DinkLang.T("Prevents screen tearing.", "Ekran yırtılmasını önler.", "Verhindert Bildreißen.", "Empêche le déchirement de l'image.", "Evita el desgarro de pantalla.", "Evita o rasgo de tela.", "Убирает разрывы изображения."), kind = SettingKind.Toggle,
-                value = () => SM != null && SM.IsVSync ? DinkLang.T("ON", "AÇIK", "AN", "OUI", "SÍ", "SIM", "ВКЛ") : DinkLang.T("OFF", "KAPALI", "AUS", "NON", "NO", "NÃO", "ВЫКЛ"), change = d => SM?.ToggleVSync() },
+            new SettingRow { label = "V-SYNC", desc = DinkLang.T("Prevents screen tearing.", "Ekran yırtılmasını önler.", "Verhindert Bildreißen.", "Empêche le déchirement de l'image.", "Evita el desgarro de pantalla.", "Evita o rasgo de tela.", "Убирает разрывы изображения.", "防止画面撕裂。", "画面のちらつきを防ぐ。", "화면 찢김을 막는다."), kind = SettingKind.Toggle,
+                value = () => SM != null && SM.IsVSync ? DinkLang.T("ON", "AÇIK", "AN", "OUI", "SÍ", "SIM", "ВКЛ", "开", "オン", "켜짐") : DinkLang.T("OFF", "KAPALI", "AUS", "NON", "NO", "NÃO", "ВЫКЛ", "关", "オフ", "꺼짐"), change = d => SM?.ToggleVSync() },
         });
         tabs.Add(new List<SettingRow>
         {
-            VolumeRow(DinkLang.T("MASTER", "GENEL SES", "GESAMT", "GÉNÉRAL", "GENERAL", "GERAL", "ОБЩАЯ"), DinkLang.T("Overall volume.", "Tüm seslerin seviyesi.", "Gesamtlautstärke.", "Volume général.", "Volumen general.", "Volume geral.", "Общая громкость."),
+            VolumeRow(DinkLang.T("MASTER", "GENEL SES", "GESAMT", "GÉNÉRAL", "GENERAL", "GERAL", "ОБЩАЯ", "总音量", "全体", "전체"), DinkLang.T("Overall volume.", "Tüm seslerin seviyesi.", "Gesamtlautstärke.", "Volume général.", "Volumen general.", "Volume geral.", "Общая громкость.", "全部声音的音量。", "全体の音量。", "전체 음량."),
                 () => AudioManager.instance != null ? AudioManager.instance.GetMasterVolume() : AudioListener.volume, v => SM?.SetMasterVolume(v)),
-            VolumeRow(DinkLang.T("MUSIC", "MÜZİK", "MUSIK", "MUSIQUE", "MÚSICA", "MÚSICA", "МУЗЫКА"), DinkLang.T("Background music.", "Arka plan müziği.", "Hintergrundmusik.", "Musique de fond.", "Música de fondo.", "Música de fundo.", "Фоновая музыка."),
+            VolumeRow(DinkLang.T("MUSIC", "MÜZİK", "MUSIK", "MUSIQUE", "MÚSICA", "MÚSICA", "МУЗЫКА", "音乐", "音楽", "음악"), DinkLang.T("Background music.", "Arka plan müziği.", "Hintergrundmusik.", "Musique de fond.", "Música de fondo.", "Música de fundo.", "Фоновая музыка.", "背景音乐。", "背景の音楽。", "배경 음악."),
                 () => AudioManager.instance != null ? AudioManager.instance.GetMusicVolume() : PlayerPrefs.GetFloat("Dink_MusicVolume", 0.5f), v => SM?.SetMusicVolume(v)),
-            VolumeRow(DinkLang.T("EFFECTS", "EFEKTLER", "EFFEKTE", "EFFETS", "EFECTOS", "EFEITOS", "ЭФФЕКТЫ"), DinkLang.T("Doors, footsteps and whispers.", "Kapı, adım ve fısıltılar.", "Türen, Schritte und Flüstern.", "Portes, pas et chuchotements.", "Puertas, pasos y susurros.", "Portas, passos e sussurros.", "Двери, шаги и шёпот."),
+            VolumeRow(DinkLang.T("EFFECTS", "EFEKTLER", "EFFEKTE", "EFFETS", "EFECTOS", "EFEITOS", "ЭФФЕКТЫ", "音效", "効果音", "효과음"), DinkLang.T("Doors, footsteps and whispers.", "Kapı, adım ve fısıltılar.", "Türen, Schritte und Flüstern.", "Portes, pas et chuchotements.", "Puertas, pasos y susurros.", "Portas, passos e sussurros.", "Двери, шаги и шёпот.", "门声、脚步声和低语。", "扉、足音、ささやき。", "문소리, 발소리, 속삭임."),
                 () => AudioManager.instance != null ? AudioManager.instance.GetSFXVolume() : PlayerPrefs.GetFloat("Dink_SFXVolume", 0.8f), v => SM?.SetSFXVolume(v)),
         });
         tabs.Add(new List<SettingRow>
         {
-            new SettingRow { label = DinkLang.T("LANGUAGE", "DİL", "SPRACHE", "LANGUE", "IDIOMA", "IDIOMA", "ЯЗЫК"), desc = DinkLang.T("Interface and letter language.", "Arayüz ve mektup dili.", "Sprache von Oberfläche und Briefen.", "Langue de l'interface et des lettres.", "Idioma de la interfaz y las cartas.", "Idioma da interface e das cartas.", "Язык интерфейса и писем."), kind = SettingKind.Cycle,
+            new SettingRow { label = DinkLang.T("LANGUAGE", "DİL", "SPRACHE", "LANGUE", "IDIOMA", "IDIOMA", "ЯЗЫК", "语言", "言語", "언어"), desc = DinkLang.T("Interface and letter language.", "Arayüz ve mektup dili.", "Sprache von Oberfläche und Briefen.", "Langue de l'interface et des lettres.", "Idioma de la interfaz y las cartas.", "Idioma da interface e das cartas.", "Язык интерфейса и писем.", "界面与信件的语言。", "画面と手紙の言語。", "화면과 편지의 언어."), kind = SettingKind.Cycle,
                 value = () => LanguageManager.instance != null ? LanguageManager.instance.GetCurrentLanguageName().ToUpperInvariant() : "-",
                 change = d => { if (LanguageManager.instance != null) { int n = System.Enum.GetValues(typeof(LanguageManager.Language)).Length; LanguageManager.instance.SetLanguage((LanguageManager.Language)(((int)LanguageManager.instance.CurrentLanguage + (d < 0 ? -1 : 1) + n) % n)); } } },
-            new SettingRow { label = DinkLang.T("RESTORE DEFAULTS", "VARSAYILANA DÖN", "STANDARD", "PAR DÉFAUT", "RESTABLECER", "PADRÃO", "ПО УМОЛЧАНИЮ"), desc = DinkLang.T("Resets every setting.", "Tüm ayarları sıfırlar.", "Setzt alle Einstellungen zurück.", "Réinitialise tous les réglages.", "Restablece todos los ajustes.", "Redefine todas as configurações.", "Сбрасывает все настройки."), kind = SettingKind.Action,
+            new SettingRow { label = DinkLang.T("RESTORE DEFAULTS", "VARSAYILANA DÖN", "STANDARD", "PAR DÉFAUT", "RESTABLECER", "PADRÃO", "ПО УМОЛЧАНИЮ", "恢复默认", "初期設定に戻す", "기본값 복원"), desc = DinkLang.T("Resets every setting.", "Tüm ayarları sıfırlar.", "Setzt alle Einstellungen zurück.", "Réinitialise tous les réglages.", "Restablece todos los ajustes.", "Redefine todas as configurações.", "Сбрасывает все настройки.", "重置所有设置。", "すべての設定を元に戻す。", "모든 설정을 초기화한다."), kind = SettingKind.Action,
                 value = () => "", change = d => SM?.ResetToDefaults() },
-            new SettingRow { label = DinkLang.T("BACK", "GERİ", "ZURÜCK", "RETOUR", "VOLVER", "VOLTAR", "НАЗАД"), desc = DinkLang.T("Returns to the previous menu.", "Önceki menüye döner.", "Zurück zum vorherigen Menü.", "Retour au menu précédent.", "Vuelve al menú anterior.", "Volta ao menu anterior.", "Возврат в предыдущее меню."), kind = SettingKind.Action,
+            new SettingRow { label = DinkLang.T("BACK", "GERİ", "ZURÜCK", "RETOUR", "VOLVER", "VOLTAR", "НАЗАД", "返回", "戻る", "뒤로"), desc = DinkLang.T("Returns to the previous menu.", "Önceki menüye döner.", "Zurück zum vorherigen Menü.", "Retour au menu précédent.", "Vuelve al menú anterior.", "Volta ao menu anterior.", "Возврат в предыдущее меню.", "回到上一个菜单。", "前のメニューに戻る。", "이전 메뉴로 돌아간다."), kind = SettingKind.Action,
                 value = () => "", change = d => onBack?.Invoke() },
         });
         return tabs;
@@ -179,14 +179,14 @@ public class DoorLightSettings : MonoBehaviour
 
     private static string QualityName(int i)
     {
-        string[] n = { DinkLang.T("LOW", "DÜŞÜK", "NIEDRIG", "BAS", "BAJO", "BAIXO", "НИЗКО"), DinkLang.T("MEDIUM", "ORTA", "MITTEL", "MOYEN", "MEDIO", "MÉDIO", "СРЕДНЕ"),
-                       DinkLang.T("HIGH", "YÜKSEK", "HOCH", "ÉLEVÉ", "ALTO", "ALTO", "ВЫСОКО"), DinkLang.T("ULTRA", "ULTRA", "ULTRA", "ULTRA", "ULTRA", "ULTRA", "УЛЬТРА") };
+        string[] n = { DinkLang.T("LOW", "DÜŞÜK", "NIEDRIG", "BAS", "BAJO", "BAIXO", "НИЗКО", "低", "低", "낮음"), DinkLang.T("MEDIUM", "ORTA", "MITTEL", "MOYEN", "MEDIO", "MÉDIO", "СРЕДНЕ", "中", "中", "중간"),
+                       DinkLang.T("HIGH", "YÜKSEK", "HOCH", "ÉLEVÉ", "ALTO", "ALTO", "ВЫСОКО", "高", "高", "높음"), DinkLang.T("ULTRA", "ULTRA", "ULTRA", "ULTRA", "ULTRA", "ULTRA", "УЛЬТРА", "极高", "最高", "최고") };
         return n[Mathf.Clamp(i, 0, n.Length - 1)];
     }
 
     private static string FrameRateName(int i)
     {
-        string[] n = { "30", "60", "120", DinkLang.T("UNLIMITED", "SINIRSIZ", "UNBEGRENZT", "ILLIMITÉ", "ILIMITADO", "ILIMITADO", "БЕЗ ЛИМИТА") };
+        string[] n = { "30", "60", "120", DinkLang.T("UNLIMITED", "SINIRSIZ", "UNBEGRENZT", "ILLIMITÉ", "ILIMITADO", "ILIMITADO", "БЕЗ ЛИМИТА", "无限制", "無制限", "무제한") };
         return n[Mathf.Clamp(i, 0, n.Length - 1)];
     }
 
@@ -225,7 +225,7 @@ public class DoorLightSettings : MonoBehaviour
         strip.anchoredPosition = new Vector2(ContentX - 160f, 0f);
         strip.sizeDelta = new Vector2(10f, 760f);
 
-        NewText(canvasObj.transform, "Title", DinkLang.T("SETTINGS", "AYARLAR", "EINSTELLUNGEN", "PARAMÈTRES", "AJUSTES", "CONFIGURAÇÕES", "НАСТРОЙКИ"), 26, new Color(1f, 1f, 1f, 0.4f), 20f,
+        NewText(canvasObj.transform, "Title", DinkLang.T("SETTINGS", "AYARLAR", "EINSTELLUNGEN", "PARAMÈTRES", "AJUSTES", "CONFIGURAÇÕES", "НАСТРОЙКИ", "设置", "設定", "설정"), 26, new Color(1f, 1f, 1f, 0.4f), 20f,
             new Vector2(ContentX, 330f), new Vector2(600f, 40f));
 
         for (int i = 0; i < 3; i++)

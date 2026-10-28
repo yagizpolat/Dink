@@ -4,12 +4,12 @@ using UnityEngine.UI;
 
 /// <summary>
 /// Oyundaki tüm metin bileşenlerini (TextMeshPro 3D, TextMeshProUGUI ve UI Text)
-/// 7 dil seçeneğine göre canlı olarak günceller.
+/// 10 dil seçeneğine göre canlı olarak günceller.
 /// Varsayılan Dil: İngilizce (EN).
 /// </summary>
 public class LocalizedText : MonoBehaviour
 {
-    [Header("7 Dil Metin Karşılıkları")]
+    [Header("10 Dil Metin Karşılıkları")]
     [TextArea(2, 5)] public string enText; // İngilizce (Varsayılan)
     [TextArea(2, 5)] public string trText; // Türkçe
     [TextArea(2, 5)] public string deText; // Almanca
@@ -17,6 +17,9 @@ public class LocalizedText : MonoBehaviour
     [TextArea(2, 5)] public string esText; // İspanyolca
     [TextArea(2, 5)] public string ptText; // Portekizce
     [TextArea(2, 5)] public string ruText; // Rusça
+    [TextArea(2, 5)] public string zhText; // Basitleştirilmiş Çince
+    [TextArea(2, 5)] public string jaText; // Japonca
+    [TextArea(2, 5)] public string koText; // Korece
 
     private TextMeshProUGUI tmpUGUI;
     private TextMeshPro tmp3D;
@@ -93,6 +96,9 @@ public class LocalizedText : MonoBehaviour
             case LanguageManager.Language.ES: return esText;
             case LanguageManager.Language.PT: return ptText;
             case LanguageManager.Language.RU: return ruText;
+            case LanguageManager.Language.ZH: return zhText;
+            case LanguageManager.Language.JA: return jaText;
+            case LanguageManager.Language.KO: return koText;
             default: return enText;
         }
     }

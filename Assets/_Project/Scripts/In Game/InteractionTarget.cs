@@ -23,11 +23,11 @@ public class InteractionTarget : MonoBehaviour
 
     public string Label => verb switch
     {
-        Verb.Open => DinkLang.T("OPEN", "AÇ", "ÖFFNEN", "OUVRIR", "ABRIR", "ABRIR", "ОТКРЫТЬ"),
-        Verb.Take => DinkLang.T("TAKE", "AL", "NEHMEN", "PRENDRE", "COGER", "PEGAR", "ВЗЯТЬ"),
-        Verb.Sign => DinkLang.T("SIGN", "İMZALA", "UNTERSCHREIBEN", "SIGNER", "FIRMAR", "ASSINAR", "ПОДПИСАТЬ"),
-        Verb.Call => DinkLang.T("CALL", "ÇAĞIR", "RUFEN", "APPELER", "LLAMAR", "CHAMAR", "ВЫЗВАТЬ"),
-        Verb.Press => DinkLang.T("PRESS", "BAS", "DRÜCKEN", "APPUYER", "PULSAR", "APERTAR", "НАЖАТЬ"),
-        _ => DinkLang.T("READ", "OKU", "LESEN", "LIRE", "LEER", "LER", "ЧИТАТЬ"),
+        Verb.Open => DinkLang.T("OPEN", "AÇ", "ÖFFNEN", "OUVRIR", "ABRIR", "ABRIR", "ОТКРЫТЬ", "打开", "開ける", "열기"),
+        Verb.Take => DinkLang.T("TAKE", "AL", "NEHMEN", "PRENDRE", "COGER", "PEGAR", "ВЗЯТЬ", "拿起", "取る", "줍기"),
+        Verb.Sign => DinkLang.T("SIGN", "İMZALA", "UNTERSCHREIBEN", "SIGNER", "FIRMAR", "ASSINAR", "ПОДПИСАТЬ", "签名", "署名する", "서명"),
+        Verb.Call => DinkLang.T("CALL", "ÇAĞIR", "RUFEN", "APPELER", "LLAMAR", "CHAMAR", "ВЫЗВАТЬ", "呼叫", "呼ぶ", "호출"),
+        Verb.Press => DinkLang.T("PRESS", "BAS", "DRÜCKEN", "APPUYER", "PULSAR", "APERTAR", "НАЖАТЬ", "按下", "押す", "누르기"),
+        _ => DinkLang.T("READ", "OKU", "LESEN", "LIRE", "LEER", "LER", "ЧИТАТЬ", "阅读", "読む", "읽기"),
     };
 }

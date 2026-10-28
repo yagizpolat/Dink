@@ -196,7 +196,7 @@ public class ElevatorController : MonoBehaviour
                     "Pour l'ascenseur, écris d'abord ton nom dans le registre sur le bureau du concierge.",
                     "Para el ascensor, primero escribe tu nombre en el libro del mostrador del conserje.",
                     "Para o elevador, escreva primeiro seu nome no livro da mesa do porteiro.",
-                    "Чтобы вызвать лифт, сначала впиши имя в журнал на столе консьержа."));
+                    "Чтобы вызвать лифт, сначала впиши имя в журнал на столе консьержа.", "要坐电梯，先在门卫桌上的登记簿里写下你的名字。", "エレベーターに乗るには、まず管理人の机にある記帳簿に名前を書け。", "엘리베이터를 타려면 먼저 경비실 책상 위 방명록에 이름을 적어라."));
                 return;
             }
             StartCoroutine(MoveDoor(true));

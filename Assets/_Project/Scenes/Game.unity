@@ -176,6 +176,9 @@ MonoBehaviour:
   esText: Audio general
   ptText: "\xC1udio geral"
   ruText: "\u041E\u0431\u0449\u0438\u0439 \u0437\u0432\u0443\u043A"
+  zhText: "\u603B\u97F3\u91CF"
+  jaText: "\u5168\u4F53\u97F3\u91CF"
+  koText: "\uC804\uCCB4 \uC74C\uB7C9"
 --- !u!114 &15179827
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -333,6 +336,9 @@ MonoBehaviour:
   esText: 
   ptText: 
   ruText: 
+  zhText: 
+  jaText: 
+  koText: 
 --- !u!222 &19441570
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -761,6 +767,9 @@ MonoBehaviour:
   esText: 
   ptText: 
   ruText: 
+  zhText: 
+  jaText: 
+  koText: 
 --- !u!114 &88127500
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2058,6 +2067,9 @@ MonoBehaviour:
   ptText: 'Data: 14 de novembro de 2023 | 23:42'
   ruText: "\u0414\u0430\u0442\u0430: 14 \u043D\u043E\u044F\u0431\u0440\u044F 2023
     \u0433. | 23:42"
+  zhText: "\u65E5\u671F\uFF1A2023\u5E7411\u670814\u65E5 | 23:42"
+  jaText: "\u65E5\u4ED8\uFF1A2023\u5E7411\u670814\u65E5 | 23:42"
+  koText: "\uB0A0\uC9DC: 2023\uB144 11\uC6D4 14\uC77C | 23:42"
 --- !u!1 &203476083
 GameObject:
   m_ObjectHideFlags: 0
@@ -2564,6 +2576,9 @@ MonoBehaviour:
   esText: 
   ptText: 
   ruText: 
+  zhText: 
+  jaText: 
+  koText: 
 --- !u!114 &266567049
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3965,6 +3980,9 @@ MonoBehaviour:
   esText: Modo de pantalla
   ptText: Modo de tela
   ruText: "\u0420\u0435\u0436\u0438\u043C \u044D\u043A\u0440\u0430\u043D\u0430"
+  zhText: "\u663E\u793A\u6A21\u5F0F"
+  jaText: "\u8868\u793A\u30E2\u30FC\u30C9"
+  koText: "\uD654\uBA74 \uBAA8\uB4DC"
 --- !u!114 &402072308
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4122,6 +4140,9 @@ MonoBehaviour:
   esText: Valores predeterminados
   ptText: "Padr\xE3o"
   ruText: "\u041F\u043E \u0443\u043C\u043E\u043B\u0447\u0430\u043D\u0438\u044E"
+  zhText: "\u6062\u590D\u9ED8\u8BA4"
+  jaText: "\u521D\u671F\u8A2D\u5B9A\u306B\u623B\u3059"
+  koText: "\uAE30\uBCF8\uAC12 \uBCF5\uC6D0"
 --- !u!114 &420420980
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4494,6 +4515,9 @@ MonoBehaviour:
   esText: Nombre de usuario...
   ptText: "Nome de usu\xE1rio..."
   ruText: "\u0418\u043C\u044F \u043F\u043E\u043B\u044C\u0437\u043E\u0432\u0430\u0442\u0435\u043B\u044F..."
+  zhText: "\u7528\u6237\u540D\u2026"
+  jaText: "\u30E6\u30FC\u30B6\u30FC\u540D\u2026"
+  koText: "\uC0AC\uC6A9\uC790 \uC774\uB984\u2026"
 --- !u!114 &496476006
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4652,6 +4676,9 @@ MonoBehaviour:
   ptText: "FPS m\xE1ximos"
   ruText: "\u041C\u0430\u043A\u0441\u0438\u043C\u0430\u043B\u044C\u043D\u044B\u0439
     FPS"
+  zhText: "\u6700\u5927\u5E27\u7387"
+  jaText: "\u6700\u5927FPS"
+  koText: "\uCD5C\uB300 FPS"
 --- !u!114 &508493376
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -5156,6 +5183,9 @@ MonoBehaviour:
   esText: 
   ptText: 
   ruText: 
+  zhText: 
+  jaText: 
+  koText: 
 --- !u!222 &531284378
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -6059,6 +6089,9 @@ MonoBehaviour:
   esText: 
   ptText: 
   ruText: 
+  zhText: 
+  jaText: 
+  koText: 
 --- !u!222 &615409016
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -6617,6 +6650,9 @@ MonoBehaviour:
   esText: 
   ptText: 
   ruText: 
+  zhText: 
+  jaText: 
+  koText: 
 --- !u!114 &662636668
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -8181,6 +8217,9 @@ MonoBehaviour:
   esText: 
   ptText: 
   ruText: 
+  zhText: 
+  jaText: 
+  koText: 
 --- !u!114 &855102071
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -8641,6 +8680,9 @@ MonoBehaviour:
   esText: "Calidad gr\xE1fica"
   ptText: "Qualidade gr\xE1fica"
   ruText: "\u041A\u0430\u0447\u0435\u0441\u0442\u0432\u043E \u0433\u0440\u0430\u0444\u0438\u043A\u0438"
+  zhText: "\u753B\u8D28"
+  jaText: "\u753B\u8CEA"
+  koText: "\uADF8\uB798\uD53D \uD488\uC9C8"
 --- !u!114 &1013127413
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -9107,6 +9149,9 @@ MonoBehaviour:
   esText: 
   ptText: 
   ruText: 
+  zhText: 
+  jaText: 
+  koText: 
 --- !u!114 &1069150635
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -9264,6 +9309,9 @@ MonoBehaviour:
   esText: 
   ptText: 
   ruText: 
+  zhText: 
+  jaText: 
+  koText: 
 --- !u!222 &1075923461
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -9546,6 +9594,9 @@ MonoBehaviour:
   esText: "Resoluci\xF3n"
   ptText: "Resolu\xE7\xE3o"
   ruText: "\u0420\u0430\u0437\u0440\u0435\u0448\u0435\u043D\u0438\u0435"
+  zhText: "\u5206\u8FA8\u7387"
+  jaText: "\u89E3\u50CF\u5EA6"
+  koText: "\uD574\uC0C1\uB3C4"
 --- !u!114 &1132933207
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -10065,6 +10116,9 @@ MonoBehaviour:
   esText: SFX
   ptText: SFX
   ruText: SFX
+  zhText: "\u97F3\u6548"
+  jaText: "\u52B9\u679C\u97F3"
+  koText: "\uD6A8\uACFC\uC74C"
 --- !u!114 &1191343134
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -10347,6 +10401,9 @@ MonoBehaviour:
   ptText: "INSIRA SEU NOME DE USU\xC1RIO"
   ruText: "\u0412\u0412\u0415\u0414\u0418\u0422\u0415 \u0412\u0410\u0428\u0415 \u0418\u041C\u042F
     \u041F\u041E\u041B\u042C\u0417\u041E\u0412\u0410\u0422\u0415\u041B\u042F"
+  zhText: "\u8F93\u5165\u4F60\u7684\u7528\u6237\u540D"
+  jaText: "\u30E6\u30FC\u30B6\u30FC\u540D\u3092\u5165\u529B"
+  koText: "\uC0AC\uC6A9\uC790 \uC774\uB984 \uC785\uB825"
 --- !u!114 &1210437649
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -10817,6 +10874,9 @@ MonoBehaviour:
   esText: 
   ptText: 
   ruText: 
+  zhText: 
+  jaText: 
+  koText: 
 --- !u!222 &1304533297
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -11335,6 +11395,9 @@ MonoBehaviour:
   esText: 
   ptText: 
   ruText: 
+  zhText: 
+  jaText: 
+  koText: 
 --- !u!222 &1350100093
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -11705,6 +11768,16 @@ MonoBehaviour:
     \u044D\u0442\u0438\u043C \u043D\u0435\u0432\u0435\u0440\u043E\u044F\u0442\u043D\u044B\u043C
     \u0437\u0440\u0435\u043B\u0438\u0449\u0435\u043C... \u043A\u0443\u0434\u0430
     \u0436\u0435 \u044F \u043F\u043E\u043F\u0430\u043B?"
+  zhText: "\u201C\u6211\u8FDE\u8138\u4E0A\u7684\u8840\u90FD\u6CA1\u64E6\u5C31\u9003\u4E86\u2026\u2026\u60F3\u7740\u5728\u5BB6\u7B49\u6211\u7684\u5C0F\u59B9\u59B9\uFF0C\u60F3\u7740\u8EAB\u540E\u7684\u811A\u6B65\u58F0\uFF0C\u6211\u5728\u90A3\u6761\u7A84\u5DF7\u91CC\u770B\u5230\u7684\u4E1C\u897F\u8BA9\u6211\u5F53\u573A\u50F5\u4F4F\u3002\u9762\u5BF9\u90A3\u5E45\u65E0\u6CD5\u7406\u89E3\u7684\u666F\u8C61\u2026\u2026\u6211\u5230\u5E95\u6389\u8FDB\u4E86\u4EC0\u4E48\u5730\u65B9\uFF1F\u201D"
+  jaText: "\u300C\u9854\u306E\u8840\u3082\u62ED\u308F\u305A\u306B\u9003\u3052\u305F\u2026\u2026\u5BB6\u3067\u5F85\u3064\u5E7C\u3044\u59B9\u306E\u3053\u3068\u3001\u80CC\u5F8C\u306E\u8DB3\u97F3\u306E\u3053\u3068\u3092\u8003\u3048\u306A\u304C\u3089\u3001\u3042\u306E\u72ED\u3044\u8DEF\u5730\u3067\u76EE\u306B\u3057\u305F\u3082\u306E\u306B\u3001\u4FFA\u306F\u305D\u306E\u5834\u3067\u7ACB\u3061\u3059\u304F\u3093\u3060\u3002\u7406\u5C48\u3067\u306F\u8AAC\u660E\u3067\u304D\u306A\u3044\u3042\u306E\u5149\u666F\u3092\u524D\u306B\u2026\u2026\u4FFA\u306F\u3069\u3053\u306B\u843D\u3061\u305F\u3093\u3060\uFF1F\u300D"
+  koText: "\u201C\uC5BC\uAD74\uC758 \uD53C\uB3C4 \uB2E6\uC9C0 \uBABB\uD55C \uCC44
+    \uB3C4\uB9DD\uCCE4\uB2E4\u2026 \uC9D1\uC5D0\uC11C \uB098\uB97C \uAE30\uB2E4\uB9AC\uB294
+    \uC5B4\uB9B0 \uC5EC\uB3D9\uC0DD\uACFC \uB4F1 \uB4A4\uC758 \uBC1C\uC18C\uB9AC\uB97C
+    \uC0DD\uAC01\uD558\uBA70, \uADF8 \uC881\uC740 \uACE8\uBAA9\uC5D0\uC11C \uBCF8
+    \uAC83 \uC55E\uC5D0 \uADF8 \uC790\uB9AC\uC5D0 \uC5BC\uC5B4\uBD99\uC5C8\uB2E4.
+    \uB3C4\uBB34\uC9C0 \uC774\uD574\uD560 \uC218 \uC5C6\uB294 \uADF8 \uAD11\uACBD
+    \uC55E\uC5D0\uC11C\u2026 \uB098\uB294 \uB300\uCCB4 \uC5B4\uB514\uB85C \uB5A8\uC5B4\uC9C4
+    \uAC78\uAE4C?\u201D"
 --- !u!1 &1391729347
 GameObject:
   m_ObjectHideFlags: 0
@@ -11937,6 +12010,9 @@ MonoBehaviour:
   esText: Volver
   ptText: Voltar
   ruText: "\u041D\u0430\u0437\u0430\u0434"
+  zhText: "\u8FD4\u56DE"
+  jaText: "\u623B\u308B"
+  koText: "\uB4A4\uB85C"
 --- !u!114 &1420211636
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -12132,6 +12208,9 @@ MonoBehaviour:
   esText: "Configuraci\xF3n"
   ptText: "Configura\xE7\xF5es"
   ruText: "\u041D\u0430\u0441\u0442\u0440\u043E\u0439\u043A\u0438"
+  zhText: "\u8BBE\u7F6E"
+  jaText: "\u8A2D\u5B9A"
+  koText: "\uC124\uC815"
 --- !u!114 &1437056045
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -12527,6 +12606,9 @@ MonoBehaviour:
   esText: 
   ptText: 
   ruText: 
+  zhText: 
+  jaText: 
+  koText: 
 --- !u!114 &1496412379
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -12838,6 +12920,9 @@ MonoBehaviour:
   esText: 
   ptText: 
   ruText: 
+  zhText: 
+  jaText: 
+  koText: 
 --- !u!114 &1583817386
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -13131,6 +13216,9 @@ MonoBehaviour:
   esText: 
   ptText: 
   ruText: 
+  zhText: 
+  jaText: 
+  koText: 
 --- !u!114 &1613985649
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -13565,6 +13653,9 @@ MonoBehaviour:
   esText: 
   ptText: 
   ruText: 
+  zhText: 
+  jaText: 
+  koText: 
 --- !u!222 &1705669329
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -13722,6 +13813,9 @@ MonoBehaviour:
   esText: "Volumen de la m\xFAsica"
   ptText: "Volume da m\xFAsica"
   ruText: "\u0413\u0440\u043E\u043C\u043A\u043E\u0441\u0442\u044C \u043C\u0443\u0437\u044B\u043A\u0438"
+  zhText: "\u97F3\u4E50\u97F3\u91CF"
+  jaText: "\u97F3\u697D\u306E\u97F3\u91CF"
+  koText: "\uC74C\uC545 \uC74C\uB7C9"
 --- !u!114 &1714726989
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -14435,6 +14529,10 @@ MonoBehaviour:
   ptText: "Insira seu nome antes de come\xE7ar a hist\xF3ria:"
   ruText: "\u0412\u0432\u0435\u0434\u0438\u0442\u0435 \u0432\u0430\u0448\u0435 \u0438\u043C\u044F
     \u043F\u0435\u0440\u0435\u0434 \u043D\u0430\u0447\u0430\u043B\u043E\u043C \u0438\u0441\u0442\u043E\u0440\u0438\u0438:"
+  zhText: "\u5F00\u59CB\u6545\u4E8B\u4E4B\u524D\uFF0C\u8BF7\u8F93\u5165\u4F60\u7684\u540D\u5B57\uFF1A"
+  jaText: "\u7269\u8A9E\u3092\u59CB\u3081\u308B\u524D\u306B\u540D\u524D\u3092\u5165\u529B\u3057\u3066\u304F\u3060\u3055\u3044\uFF1A"
+  koText: "\uC774\uC57C\uAE30\uB97C \uC2DC\uC791\uD558\uAE30 \uC804\uC5D0 \uC774\uB984\uC744
+    \uC785\uB825\uD558\uC138\uC694:"
 --- !u!114 &1768433354
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -15171,6 +15269,9 @@ MonoBehaviour:
   esText: 
   ptText: 
   ruText: 
+  zhText: 
+  jaText: 
+  koText: 
 --- !u!114 &1862342204
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -15859,6 +15960,9 @@ MonoBehaviour:
   esText: V-Sync
   ptText: V-Sync
   ruText: V-Sync
+  zhText: "\u5782\u76F4\u540C\u6B65"
+  jaText: "\u5782\u76F4\u540C\u671F"
+  koText: "\uC218\uC9C1 \uB3D9\uAE30\uD654"
 --- !u!114 &1931963004
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -16357,6 +16461,9 @@ MonoBehaviour:
   esText: 
   ptText: 
   ruText: 
+  zhText: 
+  jaText: 
+  koText: 
 --- !u!222 &2008252967
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -16514,6 +16621,9 @@ MonoBehaviour:
   esText: 
   ptText: 
   ruText: 
+  zhText: 
+  jaText: 
+  koText: 
 --- !u!114 &2020969121
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -16671,6 +16781,9 @@ MonoBehaviour:
   esText: CONTINUAR
   ptText: CONTINUAR
   ruText: "\u041F\u0420\u041E\u0414\u041E\u041B\u0416\u0418\u0422\u042C"
+  zhText: "\u7EE7\u7EED"
+  jaText: "\u7D9A\u3051\u308B"
+  koText: "\uC774\uC5B4\uD558\uAE30"
 --- !u!114 &2028814654
 MonoBehaviour:
   m_ObjectHideFlags: 0

@@ -33,10 +33,10 @@ public class Escmenu : MonoBehaviour
 
     private static string[] MenuYazilari() => new[]
     {
-        DinkLang.T("RESUME", "DEVAM ET", "FORTSETZEN", "REPRENDRE", "CONTINUAR", "CONTINUAR", "ПРОДОЛЖИТЬ"),
-        DinkLang.T("SETTINGS", "AYARLAR", "EINSTELLUNGEN", "PARAMÈTRES", "AJUSTES", "CONFIGURAÇÕES", "НАСТРОЙКИ"),
-        DinkLang.T("MAIN MENU", "ANA MENÜ", "HAUPTMENÜ", "MENU PRINCIPAL", "MENÚ PRINCIPAL", "MENU PRINCIPAL", "ГЛАВНОЕ МЕНЮ"),
-        DinkLang.T("QUIT", "OYUNDAN ÇIK", "BEENDEN", "QUITTER", "SALIR", "SAIR", "ВЫЙТИ")
+        DinkLang.T("RESUME", "DEVAM ET", "FORTSETZEN", "REPRENDRE", "CONTINUAR", "CONTINUAR", "ПРОДОЛЖИТЬ", "继续", "再開", "계속"),
+        DinkLang.T("SETTINGS", "AYARLAR", "EINSTELLUNGEN", "PARAMÈTRES", "AJUSTES", "CONFIGURAÇÕES", "НАСТРОЙКИ", "设置", "設定", "설정"),
+        DinkLang.T("MAIN MENU", "ANA MENÜ", "HAUPTMENÜ", "MENU PRINCIPAL", "MENÚ PRINCIPAL", "MENU PRINCIPAL", "ГЛАВНОЕ МЕНЮ", "主菜单", "メインメニュー", "메인 메뉴"),
+        DinkLang.T("QUIT", "OYUNDAN ÇIK", "BEENDEN", "QUITTER", "SALIR", "SAIR", "ВЫЙТИ", "退出", "終了", "종료")
     };
 
     private void OnEnable() { LanguageManager.OnLanguageChanged += DilDegisti; }

@@ -293,6 +293,9 @@ public class LeaderboardManager : MonoBehaviour
                     case LanguageManager.Language.ES: return "🌐 TABLA GLOBAL Y MEJORES TIEMPOS";
                     case LanguageManager.Language.PT: return "🌐 CLASSIFICAÇÃO GLOBAL E MELHORES TEMPOS";
                     case LanguageManager.Language.RU: return "🌐 ГЛОБАЛЬНАЯ ТАБЛИЦА ЛИДЕРОВ";
+                    case LanguageManager.Language.ZH: return "🌐 全球排行榜与最佳时间";
+                    case LanguageManager.Language.JA: return "🌐 世界ランキングとベストタイム";
+                    case LanguageManager.Language.KO: return "🌐 글로벌 순위표 & 최고 기록";
                     default: return "🌐 GLOBAL LEADERBOARD & BEST TIMES";
                 }
             case "YOUR_TIME":
@@ -304,6 +307,9 @@ public class LeaderboardManager : MonoBehaviour
                     case LanguageManager.Language.ES: return "Tu Tiempo:";
                     case LanguageManager.Language.PT: return "Seu Tempo:";
                     case LanguageManager.Language.RU: return "Ваше Время:";
+                    case LanguageManager.Language.ZH: return "你的时间：";
+                    case LanguageManager.Language.JA: return "あなたのタイム：";
+                    case LanguageManager.Language.KO: return "당신의 기록:";
                     default: return "Your Time:";
                 }
             case "HEADER":
@@ -315,6 +321,9 @@ public class LeaderboardManager : MonoBehaviour
                     case LanguageManager.Language.ES: return "POS    NOMBRE DE JUGADOR           TIEMPO       FECHA";
                     case LanguageManager.Language.PT: return "POS    NOME DO JOGADOR             TEMPO        DATA";
                     case LanguageManager.Language.RU: return "РАНГ   ИМЯ ИГРОКА                  ВРЕМЯ        ДАТА";
+                    case LanguageManager.Language.ZH: return "排名   玩家名称                    时间         日期";
+                    case LanguageManager.Language.JA: return "順位   プレイヤー名                タイム       日付";
+                    case LanguageManager.Language.KO: return "순위   플레이어 이름               시간         날짜";
                     default: return "RANK   PLAYER NAME                 TIME         DATE";
                 }
             case "EMPTY":
@@ -326,6 +335,9 @@ public class LeaderboardManager : MonoBehaviour
                     case LanguageManager.Language.ES: return "Aún no hay puntuaciones registradas.";
                     case LanguageManager.Language.PT: return "Nenhuma pontuação registrada ainda.";
                     case LanguageManager.Language.RU: return "Пока нет записанных результатов.";
+                    case LanguageManager.Language.ZH: return "还没有任何记录。";
+                    case LanguageManager.Language.JA: return "まだ記録はない。";
+                    case LanguageManager.Language.KO: return "아직 기록이 없습니다.";
                     default: return "No recorded scores yet.";
                 }
             case "MAIN_MENU":
@@ -337,6 +349,9 @@ public class LeaderboardManager : MonoBehaviour
                     case LanguageManager.Language.ES: return "MENÚ PRINCIPAL";
                     case LanguageManager.Language.PT: return "MENU PRINCIPAL";
                     case LanguageManager.Language.RU: return "ГЛАВНОЕ МЕНЮ";
+                    case LanguageManager.Language.ZH: return "主菜单";
+                    case LanguageManager.Language.JA: return "メインメニュー";
+                    case LanguageManager.Language.KO: return "메인 메뉴";
                     default: return "MAIN MENU";
                 }
             case "REPLAY":
@@ -348,6 +363,9 @@ public class LeaderboardManager : MonoBehaviour
                     case LanguageManager.Language.ES: return "REPETIR";
                     case LanguageManager.Language.PT: return "JOGAR NOVAMENTE";
                     case LanguageManager.Language.RU: return "ИГРАТЬ СНОВА";
+                    case LanguageManager.Language.ZH: return "再玩一次";
+                    case LanguageManager.Language.JA: return "もう一度プレイ";
+                    case LanguageManager.Language.KO: return "다시 하기";
                     default: return "REPLAY";
                 }
             default: return "";

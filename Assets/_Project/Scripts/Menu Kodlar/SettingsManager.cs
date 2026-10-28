@@ -304,7 +304,7 @@ public class SettingsManager : MonoBehaviour
     }
 
     // ════════════════════════════════════════════
-    // 🌐 7 DİLLİ METİN GÜNCELLEYİCİLERİ
+    // 🌐 10 DİLLİ METİN GÜNCELLEYİCİLERİ
     // ════════════════════════════════════════════
 
     private LanguageManager.Language GetCurrentLang()
@@ -325,7 +325,10 @@ public class SettingsManager : MonoBehaviour
             new string[] { "BAS", "MOYEN", "ÉLEVÉ", "ULTRA" },         // FR
             new string[] { "BAJO", "MEDIO", "ALTO", "ULTRA" },         // ES
             new string[] { "BAIXO", "MÉDIO", "ALTO", "ULTRA" },       // PT
-            new string[] { "НИЗКО", "СРЕДНЕ", "ВЫСОКО", "УЛЬТРА" }     // RU
+            new string[] { "НИЗКО", "СРЕДНЕ", "ВЫСОКО", "УЛЬТРА" },    // RU
+            new string[] { "低", "中", "高", "极高" },               // ZH
+            new string[] { "低", "中", "高", "最高" },               // JA
+            new string[] { "낮음", "중간", "높음", "최고" }            // KO
         };
         qualityValueText.text = localizedQuality[(int)lang][currentQualityIndex];
 
@@ -336,12 +339,12 @@ public class SettingsManager : MonoBehaviour
         var lang = GetCurrentLang();
         if (isFullscreen)
         {
-            string[] full = { "FULLSCREEN", "TAM EKRAN", "VOLLBILD", "PLEIN ÉCRAN", "PANTALLA COMPLETA", "TELA CHEIA", "ПОЛНЫЙ ЭКРАН" };
+            string[] full = { "FULLSCREEN", "TAM EKRAN", "VOLLBILD", "PLEIN ÉCRAN", "PANTALLA COMPLETA", "TELA CHEIA", "ПОЛНЫЙ ЭКРАН", "全屏", "フルスクリーン", "전체 화면" };
             displayModeValueText.text = full[(int)lang];
         }
         else
         {
-            string[] win = { "WINDOWED", "PENCERELİ", "FENSTERMODUS", "FENÊTRÉ", "VENTANA", "JANELA", "В ОКНЕ" };
+            string[] win = { "WINDOWED", "PENCERELİ", "FENSTERMODUS", "FENÊTRÉ", "VENTANA", "JANELA", "В ОКНЕ", "窗口", "ウィンドウ", "창 모드" };
             displayModeValueText.text = win[(int)lang];
         }
     }
@@ -358,7 +361,7 @@ public class SettingsManager : MonoBehaviour
         var lang = GetCurrentLang();
         if (currentFrameRateIndex == 3) // Sınırsız / Unlimited seçeneği
         {
-            string[] unlimited = { "UNLIMITED", "SINIRSIZ", "UNBEGRENZT", "ILLIMITÉ", "ILIMITADO", "ILIMITADO", "БЕЗ ЛИМИТА" };
+            string[] unlimited = { "UNLIMITED", "SINIRSIZ", "UNBEGRENZT", "ILLIMITÉ", "ILIMITADO", "ILIMITADO", "БЕЗ ЛИМИТА", "无限制", "無制限", "무제한" };
             frameRateValueText.text = unlimited[(int)lang];
         }
         else
@@ -373,12 +376,12 @@ public class SettingsManager : MonoBehaviour
         var lang = GetCurrentLang();
         if (isVSync)
         {
-            string[] on = { "ON", "AÇIK", "EIN", "ACTIVÉ", "ACTIVADO", "LIGADO", "ВКЛ" };
+            string[] on = { "ON", "AÇIK", "EIN", "ACTIVÉ", "ACTIVADO", "LIGADO", "ВКЛ", "开", "オン", "켜짐" };
             vsyncValueText.text = on[(int)lang];
         }
         else
         {
-            string[] off = { "OFF", "KAPALI", "AUS", "DÉSACTIVÉ", "DESACTIVADO", "DESLIGADO", "ВЫКЛ" };
+            string[] off = { "OFF", "KAPALI", "AUS", "DÉSACTIVÉ", "DESACTIVADO", "DESLIGADO", "ВЫКЛ", "关", "オフ", "꺼짐" };
             vsyncValueText.text = off[(int)lang];
         }
     }

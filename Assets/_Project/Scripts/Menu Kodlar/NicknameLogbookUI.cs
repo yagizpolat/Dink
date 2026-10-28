@@ -207,7 +207,7 @@ public class NicknameLogbookUI : MonoBehaviour
         handFont = LoadFont("Fonts/Caveat-Regular");
         handFontBold = LoadFont("Fonts/Caveat-SemiBold");
         monoFont = LoadFont("Fonts/PTMono-Regular");
-        placeholder = DinkLang.T("write your name", "adınızı yazın", "Namen eintragen", "écrivez votre nom", "escriba su nombre", "escreva seu nome", "впишите имя");
+        placeholder = DinkLang.T("write your name", "adınızı yazın", "Namen eintragen", "écrivez votre nom", "escriba su nombre", "escreva seu nome", "впишите имя", "写下你的名字", "名前を書く", "이름을 적으세요");
 
         canvas = gameObject.AddComponent<Canvas>();
         RectTransform pageRect = BuildDeskAndPage(gameObject);
@@ -276,7 +276,7 @@ public class NicknameLogbookUI : MonoBehaviour
         float contentW = PageW - PadL - PadR;
 
         TextMeshProUGUI title = NewText("Title", page, null, 30, PrintColor,
-            DinkLang.T("VISITOR LOG", "GİRİŞ – ÇIKIŞ DEFTERİ", "BESUCHERBUCH", "REGISTRE DES VISITEURS", "REGISTRO DE VISITAS", "LIVRO DE VISITAS", "ЖУРНАЛ ПОСЕТИТЕЛЕЙ"));
+            DinkLang.T("VISITOR LOG", "GİRİŞ – ÇIKIŞ DEFTERİ", "BESUCHERBUCH", "REGISTRE DES VISITEURS", "REGISTRO DE VISITAS", "LIVRO DE VISITAS", "ЖУРНАЛ ПОСЕТИТЕЛЕЙ", "访客登记簿", "来訪者記帳簿", "방문자 명부"));
         title.fontStyle = FontStyles.Bold;
         title.characterSpacing = 8;
         title.enableAutoSizing = true;
@@ -287,13 +287,13 @@ public class NicknameLogbookUI : MonoBehaviour
 
         TextMeshProUGUI sub = NewText("Subtitle", page, null, 17, PrintColor,
             DinkLang.T("Karanfil Apts. · Front Desk", "Karanfil Apt. · Kapıcı Masası", "Haus Karanfil · Pförtnerloge", "Résidence Karanfil · Loge",
-                       "Edificio Karanfil · Portería", "Edifício Karanfil · Portaria", "Дом «Каранфил» · Вахта"));
+                       "Edificio Karanfil · Portería", "Edifício Karanfil · Portaria", "Дом «Каранфил» · Вахта", "卡兰菲尔公寓 · 门卫室", "カランフィル・アパート · 管理人室", "카란필 아파트 · 경비실"));
         sub.textWrappingMode = TextWrappingModes.NoWrap;
         TopLeft(sub.rectTransform, PadL, PadT + 40, contentW * 0.72f, 24);
 
         TextMeshProUGUI meta = NewText("Meta", page, monoFont, 13, PrintColor,
             DinkLang.T("Form G-2 · Vol. 4\nPage 23", "Form G-2 · Cilt 4\nSayfa 23", "Formular G-2 · Bd. 4\nSeite 23", "Formulaire G-2 · Vol. 4\nPage 23",
-                       "Formulario G-2 · Vol. 4\nPágina 23", "Formulário G-2 · Vol. 4\nPágina 23", "Форма Г-2 · Том 4\nСтр. 23"));
+                       "Formulario G-2 · Vol. 4\nPágina 23", "Formulário G-2 · Vol. 4\nPágina 23", "Форма Г-2 · Том 4\nСтр. 23", "G-2表 · 第4册\n第23页", "様式G-2 · 第4巻\n23ページ", "양식 G-2 · 제4권\n23쪽"));
         meta.alignment = TextAlignmentOptions.BottomRight;
         meta.lineSpacing = 10;
         TopLeft(meta.rectTransform, PadL + contentW * 0.72f, PadT, contentW * 0.28f, 64);
@@ -309,10 +309,10 @@ public class NicknameLogbookUI : MonoBehaviour
 
         string[] headers =
         {
-            DinkLang.T("DATE", "TARİH", "DATUM", "DATE", "FECHA", "DATA", "ДАТА"),
-            DinkLang.T("TIME", "SAAT", "UHRZEIT", "HEURE", "HORA", "HORA", "ВРЕМЯ"),
-            DinkLang.T("FULL NAME", "AD SOYAD", "VOR- UND NACHNAME", "NOM ET PRÉNOM", "NOMBRE Y APELLIDO", "NOME COMPLETO", "ФАМИЛИЯ, ИМЯ"),
-            DinkLang.T("FLAT", "DAİRE", "WOHNUNG", "APPT.", "PISO", "APTO.", "КВ.")
+            DinkLang.T("DATE", "TARİH", "DATUM", "DATE", "FECHA", "DATA", "ДАТА", "日期", "日付", "날짜"),
+            DinkLang.T("TIME", "SAAT", "UHRZEIT", "HEURE", "HORA", "HORA", "ВРЕМЯ", "时间", "時刻", "시각"),
+            DinkLang.T("FULL NAME", "AD SOYAD", "VOR- UND NACHNAME", "NOM ET PRÉNOM", "NOMBRE Y APELLIDO", "NOME COMPLETO", "ФАМИЛИЯ, ИМЯ", "姓名", "氏名", "성명"),
+            DinkLang.T("FLAT", "DAİRE", "WOHNUNG", "APPT.", "PISO", "APTO.", "КВ.", "房号", "部屋", "호실")
         };
 
         // (tarih, saat, ad, daire, mürekkep stili) — 0: mavi tükenmez, 1: siyah, 2: kurşun kalem (oyuncu satırı)
@@ -402,14 +402,14 @@ public class NicknameLogbookUI : MonoBehaviour
         TextMeshProUGUI rule = NewText("Footer", page, monoFont, 13, new Color(0.43f, 0.47f, 0.5f),
             DinkLang.T("All visitors must sign in on arrival.", "Ziyaretçiler girişte kayıt yaptırmak zorundadır.", "Besucher müssen sich beim Betreten eintragen.",
                        "Les visiteurs doivent s'inscrire à l'entrée.", "Los visitantes deben registrarse al entrar.", "Os visitantes devem registrar-se na entrada.",
-                       "Посетители обязаны отмечаться при входе."));
+                       "Посетители обязаны отмечаться при входе.", "所有访客进入时必须登记。", "来訪者は到着時に必ず記帳すること。", "모든 방문자는 도착 시 반드시 서명해야 합니다."));
         rule.alignment = TextAlignmentOptions.BottomLeft;
         TopLeft(rule.rectTransform, PadL, PageH - PadB - 24, contentW * 0.65f, 24);
 
         stamp = new GameObject("Stamp", typeof(RectTransform));
         stamp.transform.SetParent(page, false);
         TextMeshProUGUI st = NewText("StampText", stamp.transform, null, 22, StampRed,
-            DinkLang.T("LOGGED", "KAYDEDİLDİ", "EINGETRAGEN", "ENREGISTRÉ", "REGISTRADO", "REGISTRADO", "ЗАПИСАНО"));
+            DinkLang.T("LOGGED", "KAYDEDİLDİ", "EINGETRAGEN", "ENREGISTRÉ", "REGISTRADO", "REGISTRADO", "ЗАПИСАНО", "已登记", "記帳済", "기록됨"));
         st.fontStyle = FontStyles.Bold;
         st.characterSpacing = 18;
         st.alignment = TextAlignmentOptions.Center;

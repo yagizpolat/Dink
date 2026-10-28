@@ -44,10 +44,10 @@ public class MainMenu3DController : MonoBehaviour
     private string[] MenuYazilari()
     {
         var yazilar = new System.Collections.Generic.List<string>();
-        if (devamVar) yazilar.Add(DinkLang.T("CONTINUE", "DEVAM ET", "FORTSETZEN", "CONTINUER", "CONTINUAR", "CONTINUAR", "ПРОДОЛЖИТЬ"));
-        yazilar.Add(DinkLang.T("NEW GAME", "YENİ OYUN", "NEUES SPIEL", "NOUVELLE PARTIE", "NUEVA PARTIDA", "NOVO JOGO", "НОВАЯ ИГРА"));
-        yazilar.Add(DinkLang.T("SETTINGS", "AYARLAR", "EINSTELLUNGEN", "PARAMÈTRES", "AJUSTES", "CONFIGURAÇÕES", "НАСТРОЙКИ"));
-        yazilar.Add(DinkLang.T("QUIT", "ÇIKIŞ", "BEENDEN", "QUITTER", "SALIR", "SAIR", "ВЫЙТИ"));
+        if (devamVar) yazilar.Add(DinkLang.T("CONTINUE", "DEVAM ET", "FORTSETZEN", "CONTINUER", "CONTINUAR", "CONTINUAR", "ПРОДОЛЖИТЬ", "继续", "続ける", "이어하기"));
+        yazilar.Add(DinkLang.T("NEW GAME", "YENİ OYUN", "NEUES SPIEL", "NOUVELLE PARTIE", "NUEVA PARTIDA", "NOVO JOGO", "НОВАЯ ИГРА", "新游戏", "ニューゲーム", "새 게임"));
+        yazilar.Add(DinkLang.T("SETTINGS", "AYARLAR", "EINSTELLUNGEN", "PARAMÈTRES", "AJUSTES", "CONFIGURAÇÕES", "НАСТРОЙКИ", "设置", "設定", "설정"));
+        yazilar.Add(DinkLang.T("QUIT", "ÇIKIŞ", "BEENDEN", "QUITTER", "SALIR", "SAIR", "ВЫЙТИ", "退出", "終了", "종료"));
         return yazilar.ToArray();
     }
 

@@ -41,6 +41,6 @@ public class BlockedPassageHint : MonoBehaviour
         Vector3 p = player.position + Vector3.up;
         if ((col.ClosestPoint(p) - p).sqrMagnitude > touchDistance * touchDistance) return;
         ScreenHint.Show(DinkLang.T("The stairs are closed.", "Merdiven kapalı.", "Die Treppe ist gesperrt.",
-            "L'escalier est fermé.", "La escalera está cerrada.", "A escada está fechada.", "Лестница закрыта."));
+            "L'escalier est fermé.", "La escalera está cerrada.", "A escada está fechada.", "Лестница закрыта.", "楼梯被封住了。", "階段は閉ざされている。", "계단이 막혀 있다."));
     }
 }

@@ -178,7 +178,7 @@ public class SceneTransition : MonoBehaviour
         if (dateText != null)
         {
             string devam = DinkLang.T("[ Click to continue ]", "[ Devam Etmek İçin Tıklayın ]", "[ Zum Fortfahren klicken ]",
-                "[ Cliquez pour continuer ]", "[ Haz clic para continuar ]", "[ Clique para continuar ]", "[ Нажмите, чтобы продолжить ]");
+                "[ Cliquez pour continuer ]", "[ Haz clic para continuar ]", "[ Clique para continuar ]", "[ Нажмите, чтобы продолжить ]", "[ 点击继续 ]", "[ クリックして続ける ]", "[ 클릭하여 계속 ]");
             if (!dateText.text.Contains(devam)) dateText.text += "\n" + devam;
             dateText.margin = new Vector4(dateText.margin.x, dateText.margin.y, 60f, 40f);
         }

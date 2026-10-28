@@ -1,6 +1,7 @@
 /// <summary>
 /// Kodla kurulan menüler için kısa çeviri yardımcısı.
-/// Metinler LanguageManager.Language sırasıyla verilir: EN, TR, DE, FR, ES, PT, RU.
+/// Metinler LanguageManager.Language sırasıyla verilir: EN, TR, DE, FR, ES, PT, RU, ZH, JA, KO.
+/// Eksik verilen dillerde İngilizce kullanılır.
 /// </summary>
 public static class DinkLang
 {

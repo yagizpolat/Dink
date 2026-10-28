@@ -47,7 +47,7 @@ public class LeaderboardLogbookUI : MonoBehaviour
         if (entries == null || entries.Count == 0)
         {
             Cell(0, 1, DinkLang.T("— no one has made it out yet —", "— henüz kimse çıkamadı —", "— noch niemand ist herausgekommen —",
-                "— personne n'est encore sorti —", "— nadie ha salido todavía —", "— ninguém saiu ainda —", "— ещё никто не вышел —"), 2, false);
+                "— personne n'est encore sorti —", "— nadie ha salido todavía —", "— ninguém saiu ainda —", "— ещё никто не вышел —", "— 还没有人出去过 —", "— まだ誰も出ていない —", "— 아직 아무도 나가지 못했다 —"), 2, false);
             return;
         }
 
@@ -149,7 +149,7 @@ public class LeaderboardLogbookUI : MonoBehaviour
         float contentW = L.PageW - L.PadL - L.PadR;
 
         TextMeshProUGUI title = L.NewText("Title", page, null, 30, L.PrintColor,
-            DinkLang.T("VISITOR LOG", "GİRİŞ – ÇIKIŞ DEFTERİ", "BESUCHERBUCH", "REGISTRE DES VISITEURS", "REGISTRO DE VISITAS", "LIVRO DE VISITAS", "ЖУРНАЛ ПОСЕТИТЕЛЕЙ"));
+            DinkLang.T("VISITOR LOG", "GİRİŞ – ÇIKIŞ DEFTERİ", "BESUCHERBUCH", "REGISTRE DES VISITEURS", "REGISTRO DE VISITAS", "LIVRO DE VISITAS", "ЖУРНАЛ ПОСЕТИТЕЛЕЙ", "访客登记簿", "来訪者記帳簿", "방문자 명부"));
         title.fontStyle = FontStyles.Bold;
         title.characterSpacing = 8;
         title.enableAutoSizing = true;
@@ -160,13 +160,13 @@ public class LeaderboardLogbookUI : MonoBehaviour
 
         TextMeshProUGUI sub = L.NewText("Subtitle", page, null, 17, L.PrintColor,
             DinkLang.T("Departures · fastest first", "Çıkışlar · en hızlıdan", "Ausgänge · die schnellsten zuerst", "Sorties · les plus rapides d'abord",
-                       "Salidas · los más rápidos primero", "Saídas · os mais rápidos primeiro", "Выходы · самые быстрые сверху"));
+                       "Salidas · los más rápidos primero", "Saídas · os mais rápidos primeiro", "Выходы · самые быстрые сверху", "离开记录 · 最快的在前", "退出 · 早い順", "퇴실 · 빠른 순"));
         sub.textWrappingMode = TextWrappingModes.NoWrap;
         L.TopLeft(sub.rectTransform, L.PadL, L.PadT + 40, contentW * 0.62f, 24);
 
         TextMeshProUGUI meta = L.NewText("Meta", page, monoFont, 13, L.PrintColor,
             DinkLang.T("Form G-2 · Vol. 4\nPage 24", "Form G-2 · Cilt 4\nSayfa 24", "Formular G-2 · Bd. 4\nSeite 24", "Formulaire G-2 · Vol. 4\nPage 24",
-                       "Formulario G-2 · Vol. 4\nPágina 24", "Formulário G-2 · Vol. 4\nPágina 24", "Форма Г-2 · Том 4\nСтр. 24"));
+                       "Formulario G-2 · Vol. 4\nPágina 24", "Formulário G-2 · Vol. 4\nPágina 24", "Форма Г-2 · Том 4\nСтр. 24", "G-2表 · 第4册\n第24页", "様式G-2 · 第4巻\n24ページ", "양식 G-2 · 제4권\n24쪽"));
         meta.alignment = TextAlignmentOptions.BottomRight;
         meta.lineSpacing = 10;
         L.TopLeft(meta.rectTransform, L.PadL + contentW * 0.62f, L.PadT, contentW * 0.38f, 64);
@@ -184,7 +184,7 @@ public class LeaderboardLogbookUI : MonoBehaviour
 
         // Bulut listesi gelene kadar kurşun kalemle bekleme satırı
         Cell(0, 1, DinkLang.T("checking the log…", "defter kontrol ediliyor…", "Buch wird geprüft…", "vérification du registre…",
-                              "revisando el registro…", "verificando o livro…", "проверяем журнал…"), 2, false);
+                              "revisando el registro…", "verificando o livro…", "проверяем журнал…", "正在查看登记簿…", "記帳簿を確認中…", "명부를 확인하는 중…"), 2, false);
     }
 
     private void BuildTable(float contentW)
@@ -203,9 +203,9 @@ public class LeaderboardLogbookUI : MonoBehaviour
         string[] headers =
         {
             "№",
-            DinkLang.T("FULL NAME", "AD SOYAD", "VOR- UND NACHNAME", "NOM ET PRÉNOM", "NOMBRE Y APELLIDO", "NOME COMPLETO", "ФАМИЛИЯ, ИМЯ"),
-            DinkLang.T("TIME INSIDE", "İÇERİDE KALDI", "DAUER", "DURÉE", "TIEMPO DENTRO", "TEMPO DENTRO", "ВРЕМЯ ВНУТРИ"),
-            DinkLang.T("DATE", "TARİH", "DATUM", "DATE", "FECHA", "DATA", "ДАТА")
+            DinkLang.T("FULL NAME", "AD SOYAD", "VOR- UND NACHNAME", "NOM ET PRÉNOM", "NOMBRE Y APELLIDO", "NOME COMPLETO", "ФАМИЛИЯ, ИМЯ", "姓名", "氏名", "성명"),
+            DinkLang.T("TIME INSIDE", "İÇERİDE KALDI", "DAUER", "DURÉE", "TIEMPO DENTRO", "TEMPO DENTRO", "ВРЕМЯ ВНУТРИ", "在内时长", "滞在時間", "머문 시간"),
+            DinkLang.T("DATE", "TARİH", "DATUM", "DATE", "FECHA", "DATA", "ДАТА", "日期", "日付", "날짜")
         };
         for (int c = 0; c < headers.Length; c++)
         {
@@ -223,7 +223,7 @@ public class LeaderboardLogbookUI : MonoBehaviour
     private void BuildExitStamp(float contentW)
     {
         if (playerTime <= 0f) return;
-        string label = DinkLang.T("OUT", "ÇIKTI", "RAUS", "SORTI", "SALIÓ", "SAIU", "ВЫШЕЛ") + "  " + LeaderboardManager.FormatTime(playerTime);
+        string label = DinkLang.T("OUT", "ÇIKTI", "RAUS", "SORTI", "SALIÓ", "SAIU", "ВЫШЕЛ", "已离开", "退出", "나감") + "  " + LeaderboardManager.FormatTime(playerTime);
 
         GameObject stamp = new GameObject("ExitStamp", typeof(RectTransform));
         stamp.transform.SetParent(page, false);
@@ -247,10 +247,10 @@ public class LeaderboardLogbookUI : MonoBehaviour
     {
         Color footColor = new Color(0.36f, 0.4f, 0.42f);
         FooterButton(DinkLang.T("[Enter]  Go in again", "[Enter]  Tekrar gir", "[Enter]  Noch einmal hinein", "[Entrée]  Entrer à nouveau",
-                                "[Enter]  Entrar de nuevo", "[Enter]  Entrar de novo", "[Enter]  Войти снова"),
+                                "[Enter]  Entrar de nuevo", "[Enter]  Entrar de novo", "[Enter]  Войти снова", "[Enter]  再进去一次", "[Enter]  もう一度入る", "[Enter]  다시 들어가기"),
                      L.PadL, footColor, () => { if (!leaving) StartCoroutine(Leave(true)); });
         FooterButton(DinkLang.T("[Esc]  Main menu", "[Esc]  Ana menü", "[Esc]  Hauptmenü", "[Échap]  Menu principal",
-                                "[Esc]  Menú principal", "[Esc]  Menu principal", "[Esc]  Главное меню"),
+                                "[Esc]  Menú principal", "[Esc]  Menu principal", "[Esc]  Главное меню", "[Esc]  主菜单", "[Esc]  メインメニュー", "[Esc]  메인 메뉴"),
                      L.PadL + 300, footColor, () => { if (!leaving) StartCoroutine(Leave(false)); });
     }
 

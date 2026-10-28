@@ -130,7 +130,7 @@ public class LobbySettings : MonoBehaviour
         var rows = new List<DoorLightSettings.SettingRow>();
         foreach (var tab in DoorLightSettings.BuildRows(Close)) rows.AddRange(tab);
 
-        title.text = DinkLang.T("SETTINGS", "AYARLAR", "EINSTELLUNGEN", "PARAMÈTRES", "AJUSTES", "CONFIGURAÇÕES", "НАСТРОЙКИ");
+        title.text = DinkLang.T("SETTINGS", "AYARLAR", "EINSTELLUNGEN", "PARAMÈTRES", "AJUSTES", "CONFIGURAÇÕES", "НАСТРОЙКИ", "设置", "設定", "설정");
         for (int i = 0; i < rows.Count; i++)
         {
             Item it;
