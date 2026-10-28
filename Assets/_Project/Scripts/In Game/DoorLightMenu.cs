@@ -21,7 +21,8 @@ public class DoorLightMenu : MonoBehaviour
         public float stripHeight = 760f;
         public float stripX = -170f;         // ekran merkezine göre ışık şeridinin konumu
         public float itemsCenterY = 0f;      // seçeneklerin dikey ortası
-        public int sortingOrder = 150;
+        // Karartma perdelerinin (1000) üstünde: Kat5 ölüm perdesinde ESC basılırsa menü görünür kalsın
+        public int sortingOrder = 1100;
         public float openDuration = 0.45f;
     }
 

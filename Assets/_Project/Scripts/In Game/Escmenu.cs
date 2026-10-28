@@ -73,7 +73,7 @@ public class Escmenu : MonoBehaviour
         if (kapiAyarlari == null) kapiAyarlari = gameObject.AddComponent<DoorLightSettings>();
         GameObject icerik = kapiMenusu.Content;
         if (icerik != null) icerik.SetActive(false);
-        kapiAyarlari.Open(160, () => { if (icerik != null) icerik.SetActive(true); });
+        kapiAyarlari.Open(1110, () => { if (icerik != null) icerik.SetActive(true); });
     }
 
     public void AnaMenuyeDon()

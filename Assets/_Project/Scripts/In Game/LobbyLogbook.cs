@@ -17,6 +17,14 @@ public class LobbyLogbook : MonoBehaviour
 
     public static bool Signed { get; private set; }
 
+    // Domain reload kapalıyken editörde önceki Play'in imzası taşınmasın
+    [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.SubsystemRegistration)]
+    private static void ResetStatics()
+    {
+        Signed = false;
+        SignedName = "";
+    }
+
 
     /// <summary>Defterde imzalanan ad; üst katlardaki fiş gibi yerler bunu kullanır.</summary>
     public static string SignedName { get; private set; } = "";
