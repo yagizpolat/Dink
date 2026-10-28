@@ -83,16 +83,35 @@ public class LanguageManager : MonoBehaviour
 
     private void LoadSavedLanguage()
     {
-        string savedLang = PlayerPrefs.GetString(PREF_LANGUAGE, "EN");
+        // Oyuncu ayarlardan dil seçtiyse o kullanılır; seçmediyse bilgisayarın dili, oyunda yoksa İngilizce
+        string savedLang = PlayerPrefs.GetString(PREF_LANGUAGE, "");
         if (Enum.TryParse(savedLang, out Language loadedLang))
         {
             currentLanguage = loadedLang;
         }
         else
         {
-            currentLanguage = Language.EN;
+            currentLanguage = FromSystemLanguage(Application.systemLanguage);
         }
         ApplyCjkFontOrder();
+    }
+
+    private static Language FromSystemLanguage(SystemLanguage system)
+    {
+        switch (system)
+        {
+            case SystemLanguage.Turkish: return Language.TR;
+            case SystemLanguage.German: return Language.DE;
+            case SystemLanguage.French: return Language.FR;
+            case SystemLanguage.Spanish: return Language.ES;
+            case SystemLanguage.Portuguese: return Language.PT;
+            case SystemLanguage.Russian: return Language.RU;
+            case SystemLanguage.Chinese:
+            case SystemLanguage.ChineseSimplified: return Language.ZH;
+            case SystemLanguage.Japanese: return Language.JA;
+            case SystemLanguage.Korean: return Language.KO;
+            default: return Language.EN;
+        }
     }
 
     // Çince, Japonca ve Korece aynı Han karakterlerini farklı biçimde çizer; seçili dilin
