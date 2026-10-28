@@ -225,7 +225,7 @@ public class LeaderboardManager : MonoBehaviour
         // 2. Skor Gönderimi (Milisaniye Cinsinden Integer)
         int scoreInMS = (int)(timeInSeconds * 1000f);
         string scoreUrl = $"https://api.lootlocker.io/game/leaderboards/{lootLockerLeaderboardKey.Trim()}/submit";
-        string scoreJson = JsonUtility.ToJson(new LootLockerScoreRequest { score = scoreInMS, metadata = DateTime.Now.ToString("dd.MM.yyyy") });
+        string scoreJson = JsonUtility.ToJson(new LootLockerScoreRequest { score = scoreInMS, metadata = DateTime.Now.ToString("dd.MM.yyyy", System.Globalization.CultureInfo.InvariantCulture) });
 
         using (UnityWebRequest scoreReq = new UnityWebRequest(scoreUrl, "POST"))
         {
@@ -481,7 +481,7 @@ public class LeaderboardManager : MonoBehaviour
         {
             playerName = playerName,
             timeInSeconds = timeInSeconds,
-            dateString = DateTime.Now.ToString("dd.MM.yyyy")
+            dateString = DateTime.Now.ToString("dd.MM.yyyy", System.Globalization.CultureInfo.InvariantCulture)
         };
 
         _currentData.entries.Add(newEntry);

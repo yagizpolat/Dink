@@ -82,6 +82,14 @@ public static class DinkSave
         Save();
     }
 
+    /// <summary>Kayıttan devam ederken deftere yazılacak ad: kayıttaki ad, yoksa skor adı, yoksa "Anonymous Player".</summary>
+    public static string ResumeName()
+    {
+        string ad = PlayerName;
+        if (string.IsNullOrWhiteSpace(ad) && LeaderboardManager.instance != null) ad = LeaderboardManager.instance.GetPlayerName();
+        return string.IsNullOrWhiteSpace(ad) ? "Anonymous Player" : ad;
+    }
+
     /// <summary>Kronometre süresini günceller (çıkışta, ana menüye dönüşte); kat kaydına dokunmaz.</summary>
     public static void SaveElapsedIfRunning()
     {

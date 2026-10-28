@@ -16,13 +16,17 @@ public class BlockedPassageHint : MonoBehaviour
     [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.BeforeSceneLoad)]
     private static void Hook()
     {
-        SceneManager.sceneLoaded += (scene, mode) =>
-        {
-            foreach (GameObject root in scene.GetRootGameObjects())
-                foreach (Collider c in root.GetComponentsInChildren<Collider>(true))
-                    if (c.gameObject.name == "MerdivenEngeli" && c.GetComponent<BlockedPassageHint>() == null)
-                        c.gameObject.AddComponent<BlockedPassageHint>();
-        };
+        // Domain reload kapalıyken her Play'de abonelik birikmesin
+        SceneManager.sceneLoaded -= AttachToBlockers;
+        SceneManager.sceneLoaded += AttachToBlockers;
+    }
+
+    private static void AttachToBlockers(Scene scene, LoadSceneMode mode)
+    {
+        foreach (GameObject root in scene.GetRootGameObjects())
+            foreach (Collider c in root.GetComponentsInChildren<Collider>(true))
+                if (c.gameObject.name == "MerdivenEngeli" && c.GetComponent<BlockedPassageHint>() == null)
+                    c.gameObject.AddComponent<BlockedPassageHint>();
     }
 
     private void Awake()

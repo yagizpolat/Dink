@@ -135,9 +135,10 @@ public class MainMenu3DController : MonoBehaviour
         }
         else
         {
-            LobbyLogbook.RestoreSignature(DinkSave.PlayerName);
+            LobbyLogbook.RestoreSignature(DinkSave.ResumeName());
             if (LeaderboardManager.instance != null) LeaderboardManager.instance.StartTimer(DinkSave.ElapsedSeconds);
-            UnityEngine.SceneManagement.SceneManager.LoadScene(sahne);
+            Time.timeScale = 1f;
+            StartCoroutine(SceneDoorTrigger.FadeAndLoad(sahne, 0.6f));
         }
     }
 

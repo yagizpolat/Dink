@@ -114,6 +114,20 @@ public class LanguageManager : MonoBehaviour
         }
     }
 
+#if UNITY_EDITOR
+    private static System.Collections.Generic.List<TMPro.TMP_FontAsset> editorOriginalOrder;
+
+    private static void RestoreFontOrder(UnityEditor.PlayModeStateChange change)
+    {
+        if (change != UnityEditor.PlayModeStateChange.ExitingPlayMode || editorOriginalOrder == null) return;
+        var fallbacks = TMPro.TMP_Settings.fallbackFontAssets;
+        fallbacks.Clear();
+        fallbacks.AddRange(editorOriginalOrder);
+        editorOriginalOrder = null;
+        UnityEditor.EditorApplication.playModeStateChanged -= RestoreFontOrder;
+    }
+#endif
+
     // Çince, Japonca ve Korece aynı Han karakterlerini farklı biçimde çizer; seçili dilin
     // Noto fontu TMP yedek listesinde başa alınır (yedekler: NotoSansSC, NotoSansJP, NotoSansKR)
     private void ApplyCjkFontOrder()
@@ -123,6 +137,14 @@ public class LanguageManager : MonoBehaviour
         string tag = currentLanguage == Language.JA ? "JP" : currentLanguage == Language.KO ? "KR" : "SC";
         int i = fallbacks.FindIndex(f => f != null && f.name.Contains("NotoSans" + tag));
         if (i <= 0) return;
+#if UNITY_EDITOR
+        // Liste TMP Settings asset'inin kendisi; editörde Play bitince asıl sıraya döner, git'e değişiklik sızmaz
+        if (editorOriginalOrder == null)
+        {
+            editorOriginalOrder = new System.Collections.Generic.List<TMPro.TMP_FontAsset>(fallbacks);
+            UnityEditor.EditorApplication.playModeStateChanged += RestoreFontOrder;
+        }
+#endif
         var first = fallbacks[i];
         fallbacks.RemoveAt(i);
         fallbacks.Insert(0, first);

@@ -150,12 +150,16 @@ public class SceneDoorTrigger : MonoBehaviour
         Transitioning = false;
         preloadOp = null;
         preloadScene = null;
-        SceneManager.sceneLoaded += (scene, mode) =>
-        {
-            Transitioning = false;
-            preloadOp = null;
-            preloadScene = null;
-        };
+        // Domain reload kapalıyken her Play'de abonelik birikmesin
+        SceneManager.sceneLoaded -= ClearTransition;
+        SceneManager.sceneLoaded += ClearTransition;
+    }
+
+    private static void ClearTransition(Scene scene, LoadSceneMode mode)
+    {
+        Transitioning = false;
+        preloadOp = null;
+        preloadScene = null;
     }
 
     /// <summary>Kontrolleri kapatır, ekranı karartır ve sahneyi yükler. Kat geçişleri de bunu kullanır.</summary>

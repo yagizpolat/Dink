@@ -94,10 +94,7 @@ public class SceneTransition : MonoBehaviour
             mainMenuUI.SetActive(false);
         }
 
-        string ad = DinkSave.PlayerName;
-        if (string.IsNullOrWhiteSpace(ad) && LeaderboardManager.instance != null) ad = LeaderboardManager.instance.GetPlayerName();
-        if (string.IsNullOrWhiteSpace(ad)) ad = "Anonymous Player";
-        LobbyLogbook.RestoreSignature(ad);
+        LobbyLogbook.RestoreSignature(DinkSave.ResumeName());
         if (LeaderboardManager.instance != null)
         {
             LeaderboardManager.instance.StartTimer(DinkSave.ElapsedSeconds);

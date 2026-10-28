@@ -446,9 +446,14 @@ public class SettingsManager : MonoBehaviour
     {
         PlayClickSFX();
         PlayerPrefs.DeleteKey(PREF_QUALITY); PlayerPrefs.DeleteKey(PREF_FULLSCREEN);
+        PlayerPrefs.DeleteKey(PREF_RES_WIDTH); PlayerPrefs.DeleteKey(PREF_RES_HEIGHT);
         PlayerPrefs.DeleteKey(PREF_VSYNC); PlayerPrefs.DeleteKey(PREF_FRAMERATE);
         PlayerPrefs.DeleteKey(PREF_MASTER_VOL); PlayerPrefs.DeleteKey(PREF_MUSIC_VOL);
         PlayerPrefs.DeleteKey(PREF_SFX_VOL); PlayerPrefs.Save();
+        // Ekranın kendi çözünürlüğüne döner
+        SetupResolutions();
+        Resolution native = Screen.currentResolution;
+        Screen.SetResolution(native.width, native.height, PlayerPrefs.GetInt(PREF_FULLSCREEN, 1) == 1);
         LoadAndApplySettings();
         PlayClickSFX();
         Debug.Log("<color=green>[DINK] Tüm ayarlar varsayılana sıfırlandı.</color>");

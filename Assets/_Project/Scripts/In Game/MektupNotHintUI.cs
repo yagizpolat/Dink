@@ -34,7 +34,7 @@ public class MektupNotHintUI : MonoBehaviour
     private bool isPanelOpen;
     public bool IsPanelOpen => isPanelOpen;
     private float previousTimeScale;
-    private CursorLockMode previousCursorLock;
+    private CursorLockMode previousLockState = CursorLockMode.Locked;
     private bool previousCursorVisible;
 
     /// <summary>
@@ -103,6 +103,8 @@ public class MektupNotHintUI : MonoBehaviour
 
         // Zamanı dondur
         previousTimeScale = Time.timeScale;
+        previousLockState = Cursor.lockState;
+        previousCursorVisible = Cursor.visible;
         Time.timeScale = 0f;
 
         // Kamera rotasyonu ve etkileşimleri geçici olarak durdur (fare kaymasını önler)
@@ -128,9 +130,9 @@ public class MektupNotHintUI : MonoBehaviour
         // Zamanı geri yükle
         Time.timeScale = previousTimeScale > 0f ? previousTimeScale : 1f;
 
-        // İmleci KESİNLİKLE merkeze kitle ve gizle
-        Cursor.lockState = CursorLockMode.Locked;
-        Cursor.visible = false;
+        // İmleç mektup açılmadan önceki hâline döner (yürürken kilitli; defter gibi serbest imleçli ekranda serbest)
+        Cursor.lockState = previousLockState;
+        Cursor.visible = previousCursorVisible;
         Input.ResetInputAxes();
 
         // Kamera ve kontrol script'lerini tekrar aktif et
