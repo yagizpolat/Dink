@@ -1,4 +1,4 @@
-# Kat koridoru baskı dokuları (PIL; Blender Python'unda PIL yok): pirinç daire numaraları, zil isimlikleri,
+# Kat koridoru baskı dokuları (PIL; Blender Python'unda PIL yok). Dünya yazıları İngilizce (Steam; arayüz ayrı, 10 dilli): pirinç daire numaraları, zil isimlikleri,
 # asansör çağırma paneli ve kat göstergesi, kat levhası, yönetim duyurusu, paspaslar, yangın dolabı etiketi,
 # pencereden gece manzarası. Kullanım izi: parmakla parlamış pirinç, sararmış kâğıt, ezilmiş paspas lifi.
 # Çalıştır: python koridor_baski.py
@@ -54,7 +54,7 @@ for i in range(4):
 im.save(os.path.join(DOKU, "daire_no.png"))
 
 # ── Zil isimlikleri (1024x256, 4 hücre): beyaz plastik çerçevede kâğıt kart; el yazısı ya da daktilo ──
-isimler = [("YILMAZ", "consolab.ttf"), ("Demir", "segoepr.ttf"), ("Ş. AKSOY", "arialbd.ttf"), ("", None)]
+isimler = [("MILLER", "consolab.ttf"), ("Novak", "segoepr.ttf"), ("R. ADLER", "arialbd.ttf"), ("", None)]
 im = Image.new("RGB", (1024, 256), (230, 228, 220))
 for i, (ad, f) in enumerate(isimler):
     x0 = i * 256
@@ -65,7 +65,7 @@ for i, (ad, f) in enumerate(isimler):
     if ad:
         merkez(d, (x0 + 22, 70, x0 + 234, 186), ad, font(f, 46 if f != "segoepr.ttf" else 50), (30, 32, 70) if f == "segoepr.ttf" else (20, 20, 20))
     else:  # eski adın üstü karalanmış, bant izi
-        d.text((x0 + 40, 104), "ÇELİK", font=font("arialbd.ttf", 40), fill=(60, 60, 60))
+        d.text((x0 + 40, 104), "STONE", font=font("arialbd.ttf", 40), fill=(60, 60, 60))
         for k in range(9):
             d.line([x0 + 34 + random.randint(-4, 4), 108 + k * 4, x0 + 168 + random.randint(-6, 6), 104 + k * 5], fill=(25, 25, 60), width=3)
     d.rectangle([x0 + 22, 70, x0 + 234, 186], outline=(200, 198, 190), width=3)
@@ -86,7 +86,7 @@ d.polygon([(128, 212), (152, 252), (104, 252)], fill=(70, 70, 70))
 for k in range(3):
     d.ellipse([112 + k * 14, 312, 120 + k * 14, 320], fill=(110, 110, 112))
 d.rounded_rectangle([60, 360, 196, 420], 6, fill=(30, 30, 32))
-merkez(d, (60, 360, 196, 420), "ÇAĞIR", font("arialbd.ttf", 28), (200, 200, 196))
+merkez(d, (60, 360, 196, 420), "CALL", font("arialbd.ttf", 28), (200, 200, 196))
 im.filter(ImageFilter.GaussianBlur(0.5)).save(os.path.join(DOKU, "asansor_panel.png"))
 
 # ── Kat göstergesi (256x128): siyah cam arkasında kırmızı segment "1", söndük segmentler ──
@@ -101,12 +101,12 @@ d.polygon([(30, 64), (54, 40), (54, 88)], fill=(36, 10, 10))      # sönük aşa
 d.polygon([(226, 64), (202, 40), (202, 88)], fill=(36, 10, 10))
 im.filter(ImageFilter.GaussianBlur(1.2)).save(os.path.join(DOKU, "kat_gosterge.png"))
 
-# ── Kat levhası (512x256): mermer taklidi plastik üstünde "1. KAT" ──
+# ── Kat levhası (512x256): mermer taklidi plastik üstünde "FLOOR 1" ──
 im = Image.new("RGB", (512, 256), (232, 228, 216))
 dam = Image.effect_noise((64, 32), 80).convert("L").resize((512, 256), Image.BICUBIC).filter(ImageFilter.GaussianBlur(6))
 im = carp(im, dam.point(lambda v: (v - 128) // 6 + 128))
 d = ImageDraw.Draw(im)
-merkez(d, (0, 20, 512, 236), "1. KAT", font("georgiab.ttf", 120), (40, 34, 28))
+merkez(d, (0, 20, 512, 236), "FLOOR 1", font("georgiab.ttf", 104), (40, 34, 28))
 d.rectangle([8, 8, 503, 247], outline=(150, 140, 120), width=4)
 im.save(os.path.join(DOKU, "kat_levha.png"))
 
@@ -122,15 +122,15 @@ for k in range(30):
 im = Image.composite(Image.new("RGB", (w, h), (214, 196, 150)), im, sar.filter(ImageFilter.GaussianBlur(8)))
 d = ImageDraw.Draw(im)
 fb, fm = font("courbd.ttf", 30), font("cour.ttf", 19)
-merkez(d, (0, 60, w, 110), "KARANFİL APARTMANI", fb, (30, 30, 30))
-merkez(d, (0, 108, w, 150), "YÖNETİM DUYURUSU", font("courbd.ttf", 24), (30, 30, 30))
-satirlar = ["Sayın kat malikleri,", "", "Aidatlar her ayın 15'ine kadar", "yöneticiye elden ödenecektir.",
-            "", "Merdiven ışığı otomatiktir,", "lütfen düğmeyi tutmayınız.", "", "Asansör bakımı nedeniyle",
-            "Salı günü 10:00-14:00 arası", "asansör çalışmayacaktır.", "", "Gece 23:00'ten sonra", "gürültü yapılmaması rica olunur."]
+merkez(d, (0, 60, w, 110), "KARANFIL APARTMENTS", fb, (30, 30, 30))
+merkez(d, (0, 108, w, 150), "NOTICE TO RESIDENTS", font("courbd.ttf", 24), (30, 30, 30))
+satirlar = ["Dear residents,", "", "Maintenance fees are due by", "the 15th of each month.",
+            "", "Hallway lights are on a timer.", "Please do not hold the switch.", "", "Due to elevator maintenance,",
+            "the elevator will be out of", "service Tuesday 10:00-14:00.", "", "Please keep noise to a minimum", "after 11 PM."]
 y = 190
 for s in satirlar:
     d.text((50, y), s, font=fm, fill=(36, 36, 40)); y += 26
-d.text((300, y + 20), "Yönetim", font=font("segoepr.ttf", 30), fill=(30, 40, 110))
+d.text((280, y + 20), "Management", font=font("segoepr.ttf", 30), fill=(30, 40, 110))
 im = im.filter(ImageFilter.GaussianBlur(0.5))
 d = ImageDraw.Draw(im)
 for (x, yy, a) in [(60, 6, -8), (w - 150, 10, 6)]:  # bant parçaları (yarı saydam sarımsı)
@@ -149,7 +149,7 @@ for k, (zemin, desen) in enumerate([((150, 104, 56), (60, 40, 22)), ((86, 64, 44
     d = ImageDraw.Draw(p)
     d.rectangle([22, 22, 489, 297], outline=desen, width=16)
     if k == 0:
-        merkez(d, (40, 40, 472, 280), "HOŞGELDİNİZ", font("arialbd.ttf", 60), desen)
+        merkez(d, (40, 40, 472, 280), "WELCOME", font("arialbd.ttf", 76), desen)
     else:
         for x in range(70, 460, 60):
             d.polygon([(x, 120), (x + 24, 160), (x, 200), (x - 24, 160)], outline=desen, width=8)
@@ -161,8 +161,8 @@ im.save(os.path.join(DOKU, "paspas.png"))
 
 # ── Yangın dolabı etiketi (512x256) ──
 im = Image.new("RGB", (512, 256), (196, 24, 20)); d = ImageDraw.Draw(im)
-merkez(d, (0, 20, 512, 150), "YANGIN DOLABI", font("arialbd.ttf", 64), (255, 255, 255))
-merkez(d, (0, 150, 512, 230), "ACİL DURUMDA CAMI KIRINIZ", font("arial.ttf", 30), (255, 235, 230))
+merkez(d, (0, 20, 512, 150), "FIRE HOSE", font("arialbd.ttf", 72), (255, 255, 255))
+merkez(d, (0, 150, 512, 230), "IN CASE OF FIRE BREAK GLASS", font("arial.ttf", 30), (255, 235, 230))
 im = carp(im, gren((512, 256), 10).point(lambda v: (v - 128) // 5 + 128))
 im.save(os.path.join(DOKU, "yangin_etiket.png"))
 

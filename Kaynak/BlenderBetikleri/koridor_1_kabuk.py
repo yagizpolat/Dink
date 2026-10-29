@@ -11,6 +11,8 @@ DOKU_BOYU.update({
     "beige_wall_001": 3.0,
     "pebble_embedded_concrete_02": 0.9,  # basamak mozaiği: gerçekte ince taneli, 2.15 iri çakıl gibiydi
     "black_walnut_veneer_02": 1.0,
+    "green_metal_rust": 0.6,        # boyalı sac: kalkık ve pas izleri korkuluk dikmesinde görünecek kadar küçük
+    "lacquered_cherry_wood": 1.0,
 })
 
 K = "Koridor_Kabuk"
@@ -29,8 +31,10 @@ tavan = pbr("M_K_Tavan", "beige_wall_001", renk_carp=(1.0, 1.0, 0.97), parlaklik
 basamak = pbr("M_K_Basamak_Mozaik", "pebble_embedded_concrete_02", parlaklik=1.6, puruz_carp=0.75)
 # Boya bandının üstünde koyu kahve şerit (eski apartmanlarda boyacının çektiği ayrım çizgisi)
 serit = detay("M_K_Boya_Serit", "detay_plastik", (0.12, 0.07, 0.04), pmin=0.3, pmax=0.45, normal_guc=0.3, ton=0.08)
-demir = detay("M_K_Demir_Siyah", "detay_cizik", (0.03, 0.03, 0.03), metal=0.6, pmin=0.35, pmax=0.6, normal_guc=0.2, ton=0.1)
-kupeste = detay("M_K_Kupeste", "detay_plastik", (0.16, 0.08, 0.04), pmin=0.25, pmax=0.4, normal_guc=0.3, ton=0.08, yansima=0.4)
+# Korkuluk: gerçek boyalı sac taraması siyaha çekilmiş (kalkık, pas lekesi); küpeşte cilalı ahşap taraması
+demir = pbr("M_K_Demir_Siyah", "green_metal_rust", doygunluk=0.1, parlaklik=0.09, puruz_carp=1.5, normal_guc=1.0)  # mat: parlak hali duvarı yansıtıp gümüş görünüyordu
+next(n for n in demir.node_tree.nodes if n.type == "BSDF_PRINCIPLED").inputs["Specular IOR Level"].default_value = 0.3
+kupeste = pbr("M_K_Kupeste", "lacquered_cherry_wood", parlaklik=0.8, doygunluk=0.9, puruz_carp=0.7)
 
 
 def duvar(ad, eksen, sabit, a, b, z0, z1, delikler=(), bant=True):
@@ -128,7 +132,7 @@ def kol(ad, x0, x1, y_bas, z_bas, yon_y, yon_z):
     y_orta = y_bas + yon_y * uz / 2
     # Basamak diplerinin orta noktası: çıkışta yuk/2 - R/2, inişte -yuk/2 - 1.5R (ilk iniş basamağı -R'de başlar)
     z_orta = z_bas + yon_z * yuk / 2 - (0.5 * R if yon_z > 0 else 1.5 * R) - 0.07 / math.cos(egim)
-    p = kutu(ad + "_AltPlak", ((x0 + x1) / 2, y_orta, z_orta), (x1 - x0, boy, 0.14), siva, K, uv=False)
+    p = kutu(ad + "_AltPlak", ((x0 + x1) / 2, y_orta, z_orta), (x1 - x0, boy, 0.14), siva, K)
     p.rotation_euler = (yon_y * yon_z * egim, 0, 0)
     return y_bas + yon_y * N * G
 
@@ -150,13 +154,13 @@ def korkuluk(ad, p0, p1, h=0.95, ara=0.12):
     n = max(2, int(uz / ara))
     for i in range(n + 1):
         p = a.lerp(b, i / n)
-        kutu(ad + "_Dikme", (p.x, p.y, p.z + h / 2), (0.014, 0.014, h), demir, K, uv=False)
+        kutu(ad + "_Dikme", (p.x, p.y, p.z + h / 2), (0.014, 0.014, h), demir, K)
     # Küpeşte: iki ucu birleştiren eğimli çubuk
     orta = (a + b) / 2 + Vector((0, 0, h + 0.025))
-    o = kutu(ad + "_Kupeste", orta, (0.045, uz + 0.08, 0.05), kupeste, K, uv=False)
+    o = kutu(ad + "_Kupeste", orta, (0.045, uz + 0.08, 0.05), kupeste, K)  # UV dönmeden önce: damar boy boyunca
     yon = (b - a).normalized()
     o.rotation_euler = Vector((0, 1, 0)).rotation_difference(yon).to_euler()
-    alt = kutu(ad + "_AltLama", (a + b) / 2 + Vector((0, 0, 0.06)), (0.03, uz, 0.008), demir, K, uv=False)
+    alt = kutu(ad + "_AltLama", (a + b) / 2 + Vector((0, 0, 0.06)), (0.03, uz, 0.008), demir, K)
     alt.rotation_euler = o.rotation_euler
 
 

@@ -35,12 +35,13 @@ def glob_cam(guc):
 
 def glob(ad, x, y, guc=6.0, watt=160):
     """Tavana vidalı taban + pirinç bilezik + opal küre; içinde nokta ışık."""
-    kutu(ad + "_Taban", (x, y, H - 0.015), (0.16, 0.16, 0.03), taban, K, uv=False)
+    kutu(ad + "_Taban", (x, y, H - 0.015), (0.16, 0.16, 0.03), taban, K)
     me = bpy.data.meshes.new(ad + "_Bilezik"); bm = bmesh.new()
     bmesh.ops.create_cone(bm, cap_ends=True, segments=32, radius1=0.075, radius2=0.075, depth=0.03)
     bm.to_mesh(me); bm.free()
     o = bpy.data.objects.new(ad + "_Bilezik", me); o.location = (x, y, H - 0.045); koleksiyon(K).objects.link(o)
     me.materials.append(pirinc)
+    bpy.context.view_layer.update(); malz_uv(o)
     me = bpy.data.meshes.new(ad + "_Kure"); bm = bmesh.new()
     bmesh.ops.create_uvsphere(bm, u_segments=32, v_segments=16, radius=0.13)
     bm.to_mesh(me); bm.free()
@@ -60,7 +61,7 @@ glob("Lamba_Koridor3", 0.95, 11.2)
 
 # Merdiven boşluğu: dış duvarda, sahanlık hizasında aplik (aşağı ve yukarı kolu aydınlatır)
 x, y, z = 4.15, -0.4, 2.9
-kutu("Aplik_Taban", (x - 0.01, y, z), (0.02, 0.14, 0.14), taban, K, uv=False)
+kutu("Aplik_Taban", (x - 0.01, y, z), (0.02, 0.14, 0.14), taban, K)
 me = bpy.data.meshes.new("Aplik_Kure"); bm = bmesh.new()
 bmesh.ops.create_uvsphere(bm, u_segments=32, v_segments=16, radius=0.1)
 bm.to_mesh(me); bm.free()
