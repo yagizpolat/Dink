@@ -11,7 +11,8 @@ for o in list(koleksiyon("Market_Kabuk").objects):
 K = "Market_Kabuk"
 
 zemin = pbr("M_Zemin_Granit", "granite_tile", parlaklik=0.95, puruz_carp=0.85)
-duvar = pbr("M_Duvar_Siva", "plastered_wall_04", renk_carp=(0.93, 0.9, 0.82), parlaklik=0.95)
+# Sıva kabartısı güçlü: floresan yandan vurduğunda yüzey düz boya gibi durmasın
+duvar = pbr("M_Duvar_Siva", "plastered_wall_04", renk_carp=(0.93, 0.9, 0.82), parlaklik=0.95, normal_guc=1.8, puruz_carp=1.1)
 fayans = pbr("M_Duvar_Fayans", "long_white_tiles", renk_carp=(0.95, 0.95, 0.92))
 tavan = pbr("M_Tavan_Panel", "polystyrene", parlaklik=0.9)
 supurge = duz("M_Supurgelik", (0.08, 0.08, 0.08), puruz=0.6)

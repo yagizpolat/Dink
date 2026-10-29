@@ -16,6 +16,8 @@ random.seed(2342)
 # ── Malzemeler ──
 atlas = bpy.data.images.load(os.path.join(DOKU, "urun_etiket_atlas.png"), check_existing=True)
 atlas.reload()
+puruz_atlas = bpy.data.images.load(os.path.join(DOKU, "urun_etiket_puruz.png"), check_existing=True)
+puruz_atlas.reload(); puruz_atlas.colorspace_settings.name = "Non-Color"
 
 
 def etiket_malz(ad, puruz, metal=0.0):
@@ -23,10 +25,17 @@ def etiket_malz(ad, puruz, metal=0.0):
     m.use_nodes = True
     nt = m.node_tree
     b = next(n for n in nt.nodes if n.type == "BSDF_PRINCIPLED")
-    t = next((n for n in nt.nodes if n.type == "TEX_IMAGE"), None) or nt.nodes.new("ShaderNodeTexImage")
-    t.image = atlas
+    for n in [n for n in nt.nodes if n.type in ("TEX_IMAGE", "MATH", "BUMP")]:
+        nt.nodes.remove(n)
+    t = nt.nodes.new("ShaderNodeTexImage"); t.image = atlas
     nt.links.new(t.outputs["Color"], b.inputs["Base Color"])
-    b.inputs["Roughness"].default_value = puruz
+    # Pürüzlülük atlası: mürekkepli yüzey yarı parlak, aşınmış kenar ve kat izi mat; malzemeye göre ölçeklenir
+    r = nt.nodes.new("ShaderNodeTexImage"); r.image = puruz_atlas
+    mul = nt.nodes.new("ShaderNodeMath"); mul.operation = "MULTIPLY"; mul.inputs[1].default_value = puruz / 0.47
+    nt.links.new(r.outputs["Color"], mul.inputs[0]); nt.links.new(mul.outputs[0], b.inputs["Roughness"])
+    # Karton lifi ve kat izinden hafif kabartı
+    bump = nt.nodes.new("ShaderNodeBump"); bump.inputs["Strength"].default_value = 0.08
+    nt.links.new(r.outputs["Color"], bump.inputs["Height"]); nt.links.new(bump.outputs["Normal"], b.inputs["Normal"])
     b.inputs["Metallic"].default_value = metal
     return m
 
@@ -73,12 +82,12 @@ def kutu_urun(ad, hucre, en, derin, boy):
     # Ön yüz: etiket kutunun en/boy oranında kırpılır, yazı ezilmez. Geniş kutuda üst kısım (marka) alınır.
     oran = en / boy
     if oran >= 1:
+        # Geniş kutu: etiketin üst kısmı (marka ve ürün adı) alınır
         kw, kh = 1.0, 1.0 / oran
-        ky0 = max(0.0, 0.66 - kh / 2)
-        if ky0 + kh > 1.0: ky0 = 1.0 - kh
-        kx0 = 0.0
+        ky0, kx0 = 1.0 - kh - 0.03, 0.0
     else:
-        kw, kh = max(oran, 0.88), 1.0  # yazı kesilmesin diye biraz dikey esneme kabul
+        # Uzun kutu: orta sütun; yazılar tasarımda orta %62'ye sığdırıldı
+        kw, kh = max(oran, 0.64), 1.0
         kx0, ky0 = 0.5 - kw / 2, 0.0
     for f in bm.faces:
         n = f.normal
@@ -95,8 +104,12 @@ def kutu_urun(ad, hucre, en, derin, boy):
                 s = 0.03 + (p.x / en + 0.5) * 0.04
                 t = 0.95 + (p.y / derin + 0.5) * 0.03
             l[uv].uv = (u0 + pay + s * (u1 - u0 - 2 * pay), v0 + pay + t * (v1 - v0 - 2 * pay))
+    # Karton kenarları keskin değil: 3 mm pah ışığı yakalar
+    bmesh.ops.bevel(bm, geom=bm.edges[:], offset=0.003, segments=2, profile=0.5, affect="EDGES")
     bm.to_mesh(me); bm.free()
     me.materials.append(KARTON)
+    for p in me.polygons:
+        p.use_smooth = p.area < 0.0004  # yalnız pah yüzleri yumuşak; düz yüzler düz kalır
     return o
 
 
@@ -124,6 +137,8 @@ def konserve(ad, hucre, r, boy):
             else:
                 l[uv].uv = (u0, v0)
     # Ön yüzde dikiş olmasın diye UV açısına göre yüzleri ayır
+    # Teneke kapak kenarı yuvarlak
+    bmesh.ops.bevel(bm, geom=[e for e in bm.edges if abs(e.verts[0].co.z - e.verts[1].co.z) < 1e-5 and abs(e.verts[0].co.z) < 1e-4 or abs(e.verts[0].co.z - boy) < 1e-4 and abs(e.verts[1].co.z - boy) < 1e-4], offset=0.004, segments=2, affect="EDGES")
     bmesh.ops.split_edges(bm, edges=[e for e in bm.edges if abs(e.verts[0].co.y - e.verts[1].co.y) < 1e-4 and e.verts[0].co.y > 0 and abs(e.verts[0].co.x) < 1e-3 and abs(e.verts[0].co.z - e.verts[1].co.z) > 1e-4])
     bm.to_mesh(me); bm.free()
     me.materials.append(TENEKE); me.materials.append(KAPAK)
