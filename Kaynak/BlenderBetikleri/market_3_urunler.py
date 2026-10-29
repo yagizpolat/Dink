@@ -114,7 +114,10 @@ def kutu_urun(ad, hucre, en, derin, boy):
             elif abs(n.x) > 0.5:    # yanlar: döndürülmüş marka bandı, ayna olmasın diye yöne göre işaret
                 s = p.z / boy
                 t = mt - (p.y / derin) * bh if n.x > 0 else mt + (p.y / derin) * bh
-            else:                   # üst/alt: yazısız arka plan köşesi
+            elif n.z > 0.5:         # üst: marka bandı, ön kenar yazının altı (raftan bakınca okunur)
+                s = p.x / en + 0.5
+                t = mt + (p.y / derin) * min(0.2, derin / en)
+            else:                   # alt: yazısız arka plan köşesi
                 s = 0.03 + (p.x / en + 0.5) * 0.04
                 t = 0.95 + (p.y / derin + 0.5) * 0.03
             l[uv].uv = (u0 + pay + s * (u1 - u0 - 2 * pay), v0 + pay + t * (v1 - v0 - 2 * pay))
