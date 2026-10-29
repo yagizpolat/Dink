@@ -62,6 +62,10 @@ def hucre_uv(i):
     return c / 4, 1 - (r + 1) / 4, (c + 1) / 4, 1 - r / 4
 
 
+# Atlas hücresinde marka yazısının dikey merkezi (UV t); yerleşime göre: bant 0.79, pencere 0.84, capraz 0.85, sade 0.70
+MARKA_T = [0.79, 0.79, 0.84, 0.85, 0.70, 0.84, 0.84, 0.70, 0.85, 0.85, 0.79, 0.79, 0.70, 0.84, 0.85, 0.84]
+
+
 def on_yari(a):
     """Silindir sarması: etiketin tamamı ön yarım çevreye (oyuncuya bakan yüz) gelir, kare oranı korunur;
     arka yarı etiketin kenar zemin rengini alır."""
@@ -94,8 +98,11 @@ def kutu_urun(ad, hucre, en, derin, boy):
         ky0, kx0 = 1.0 - kh - 0.03, 0.0
     else:
         # Uzun kutu: orta sütun; yazılar tasarımda orta %62'ye sığdırıldı
-        kw, kh = max(oran, 0.64), 1.0
+        kw, kh = max(oran, 0.74), 1.0
         kx0, ky0 = 0.5 - kw / 2, 0.0
+    # Yan yüz: marka bandı 90° döndürülüp kutu boyunca aşağıdan yukarı okunur (gerçek kutu yan paneli gibi)
+    mt = MARKA_T[hucre]
+    bh = min(0.2, derin / boy)
     for f in bm.faces:
         n = f.normal
         for l in f.loops:
@@ -104,9 +111,9 @@ def kutu_urun(ad, hucre, en, derin, boy):
                 s = (p.x / en + 0.5) if n.y < 0 else (0.5 - p.x / en)
                 t = p.z / boy
                 s, t = kx0 + s * kw, ky0 + t * kh
-            elif abs(n.x) > 0.5:    # yanlar: etiketin orta dikey şeridi
-                s = 0.47 + (p.y / derin + 0.5) * 0.06
-                t = p.z / boy
+            elif abs(n.x) > 0.5:    # yanlar: döndürülmüş marka bandı, ayna olmasın diye yöne göre işaret
+                s = p.z / boy
+                t = mt - (p.y / derin) * bh if n.x > 0 else mt + (p.y / derin) * bh
             else:                   # üst/alt: yazısız arka plan köşesi
                 s = 0.03 + (p.x / en + 0.5) * 0.04
                 t = 0.95 + (p.y / derin + 0.5) * 0.03
