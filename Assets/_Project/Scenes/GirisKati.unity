@@ -644,12 +644,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 43c31a091efc50542be938af2ad9106c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Escmenu
-  escmenu: {fileID: 0}
-  settingsMenuPanel: {fileID: 0}
   escmenusesbileseni: {fileID: 100429004}
   escmenuacilmasesi: {fileID: 8300000, guid: a1ba0cc4c4be309478c8f63436e4b0af, type: 3}
   escmenukapanmasesi: {fileID: 8300000, guid: 0aeb507dbecac7d41b9ee8a9a3f80004, type: 3}
-  kapiAraligiMenusu: 1
 --- !u!82 &100429004
 AudioSource:
   m_ObjectHideFlags: 0
@@ -2702,7 +2699,9 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: "<b>KAYIP</b>\n<size=70%>Gri tekir, ad\u0131 Pamuk. 3. kat.</size>"
+  m_text: '<b>LOST CAT</b>
+
+    <size=70%>Grey tabby, named Misty. Floor 3.</size>'
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: d24e90e165451d047a3b44a0c2cef88f, type: 2}
   m_sharedMaterial: {fileID: -8410871267138600046, guid: d24e90e165451d047a3b44a0c2cef88f, type: 2}
@@ -2951,8 +2950,8 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: "<b>DUYURU</b>\n<size=75%>16 Kas\u0131m Per\u015Fembe 09:00\u201315:00
-    aras\u0131 \u015Febeke \xE7al\u0131\u015Fmas\u0131 nedeniyle sular kesik olacakt\u0131r.</size>"
+  m_text: "<b>NOTICE</b>\n<size=75%>Water will be shut off on Thursday, November
+    16, 09:00\u201315:00 due to mains repair work.</size>"
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: d24e90e165451d047a3b44a0c2cef88f, type: 2}
   m_sharedMaterial: {fileID: -8410871267138600046, guid: d24e90e165451d047a3b44a0c2cef88f, type: 2}
@@ -4736,8 +4735,14 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: "<b>ASANS\xD6R</b>\n<size=75%>Ayl\u0131k bak\u0131m yap\u0131ld\u0131.\n10.11.2023\nAr\u0131za
-    i\xE7in kap\u0131c\u0131ya haber veriniz.</size>"
+  m_text: '<b>ELEVATOR</b>
+
+    <size=75%>Monthly maintenance done.
+
+    Nov 10,
+    2023
+
+    Report faults to the caretaker.</size>'
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: d24e90e165451d047a3b44a0c2cef88f, type: 2}
   m_sharedMaterial: {fileID: -8410871267138600046, guid: d24e90e165451d047a3b44a0c2cef88f, type: 2}
@@ -5337,9 +5342,24 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: "<b>ASANS\xD6R\nKULLANIM BELGES\u0130</b>\n\n<size=70%>Karanfil Apt.\nKapasite:
-    4 ki\u015Fi / 320 kg\n\nSon periyodik kontrol:\n10.11.2023\n\nAcil durumda alarm
-    butonuna bas\u0131n\u0131z.</size>"
+  m_text: '<b>ELEVATOR
+
+    INSPECTION CERTIFICATE</b>
+
+
+    <size=70%>Karanfil Apts.
+
+    Capacity:
+    4 persons / 320 kg
+
+
+    Last periodic inspection:
+
+    Nov 10, 2023
+
+
+    In
+    an emergency, press the alarm button.</size>'
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: d24e90e165451d047a3b44a0c2cef88f, type: 2}
   m_sharedMaterial: {fileID: -8410871267138600046, guid: d24e90e165451d047a3b44a0c2cef88f, type: 2}
@@ -5348,7 +5368,7 @@ MonoBehaviour:
   m_fontMaterials: []
   m_fontColor32:
     serializedVersion: 2
-    rgba: 4294967295
+    rgba: 4281214502
   m_fontColor: {r: 0.15, g: 0.15, b: 0.18, a: 1}
   m_enableVertexGradient: 0
   m_colorMode: 3
@@ -5361,7 +5381,7 @@ MonoBehaviour:
   m_spriteAsset: {fileID: 0}
   m_tintAllSprites: 0
   m_StyleSheet: {fileID: 0}
-  m_TextStyleHashCode: 0
+  m_TextStyleHashCode: -1183493901
   m_overrideHtmlColors: 0
   m_faceColor:
     serializedVersion: 2
@@ -6060,13 +6080,43 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: "<b>KARANF\u0130L APT. Y\xD6NET\u0130M\u0130</b>\n<size=70%>KASIM 2023
-    A\u0130DAT DURUMU</size>\n<size=62%>\nDaire 1 ........ \xF6dendi\nDaire 2 ........
-    \xF6dendi\nDaire 3 ........ \xF6dendi\nDaire 4 ........ \xF6dendi\nDaire 5 ........
-    <color=#8a1c1c>gecikmede</color>\nDaire 6 ........ \xF6dendi\nDaire 7 ........
-    \xF6dendi\nDaire 8 ........ \xF6dendi\nDaire 9 ........ \xF6dendi\nDaire 10 ......
-    \xF6dendi\nDaire 11 ...... <color=#8a1c1c>\xD6DENMED\u0130</color>\nDaire 12
-    ...... \xF6dendi\n\nY\xF6netici: S. Demirta\u015F</size>"
+  m_text: '<b>KARANFIL APTS. MANAGEMENT</b>
+
+    <size=70%>NOVEMBER 2023 FEES</size>
+
+    <size=62%>
+
+    Apt
+    1 ........ paid
+
+    Apt 2 ........ paid
+
+    Apt 3 ........ paid
+
+    Apt 4
+    ........ paid
+
+    Apt 5 ........ <color=#8a1c1c>overdue</color>
+
+    Apt 6 ........
+    paid
+
+    Apt 7 ........ paid
+
+    Apt 8 ........ paid
+
+    Apt 9 ........ paid
+
+    Apt
+    10 ...... paid
+
+    Apt 11 ...... <color=#8a1c1c>UNPAID</color>
+
+    Apt 12 ......
+    paid
+
+
+    Manager: S. Dorsey</size>'
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: d24e90e165451d047a3b44a0c2cef88f, type: 2}
   m_sharedMaterial: {fileID: -8410871267138600046, guid: d24e90e165451d047a3b44a0c2cef88f, type: 2}
