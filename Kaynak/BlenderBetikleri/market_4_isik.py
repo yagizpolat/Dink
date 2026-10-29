@@ -38,6 +38,21 @@ ld = bpy.data.lights.new("Dolap_Isik", "AREA"); ld.shape = "RECTANGLE"; ld.size 
 ld.color = (0.8, 0.9, 1.0)
 lo = bpy.data.objects.new("Dolap_Isik", ld); lo.location = (5.62, 3.3, 1.9)
 koleksiyon(K).objects.link(lo)
+# Tek üst ışık alt rafları karanlıkta bırakıyordu: gerçek dolaplardaki gibi kapı kasasında dikey LED şeritler
+# ve her tel rafın altında zayıf bir dolgu ışığı
+led = duz("M_Dolap_LED", (0.9, 0.95, 1.0), isik=8.0, isik_renk=(0.85, 0.93, 1.0))
+for yy in (2.71, 3.89):
+    kutu("Dolap_LED", (5.36, yy, 1.04), (0.015, 0.012, 1.7), led, K, uv=False)
+    ld = bpy.data.lights.new("Dolap_LED_Isik", "AREA"); ld.shape = "RECTANGLE"; ld.size = 0.03; ld.size_y = 1.7; ld.energy = 45
+    ld.color = (0.85, 0.93, 1.0)
+    lo = bpy.data.objects.new("Dolap_LED_Isik", ld); lo.location = (5.37, yy, 1.04)
+    lo.rotation_euler = (math.pi / 2 if yy < 3.3 else -math.pi / 2, 0, 0)  # dolabın ortasına bakar
+    koleksiyon(K).objects.link(lo)
+for z in (0.53, 0.93, 1.33):
+    ld = bpy.data.lights.new("Dolap_Raf_Isik", "AREA"); ld.shape = "RECTANGLE"; ld.size = 0.45; ld.size_y = 1.1; ld.energy = 18
+    ld.color = (0.85, 0.93, 1.0)
+    lo = bpy.data.objects.new("Dolap_Raf_Isik", ld); lo.location = (5.65, 3.3, z)
+    koleksiyon(K).objects.link(lo)
 
 # Raf fiyat etiketleri: dudak üstüne küçük beyaz/sarı kartlar, fiyatlar elle yazılmış gibi
 # Görsel market_etiket_atlas.py ile üretilir (Blender Python'unda PIL yok)

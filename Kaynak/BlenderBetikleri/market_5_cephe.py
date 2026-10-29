@@ -8,7 +8,9 @@ for o in list(koleksiyon(K).objects):
 
 alu = duz("M_Aluminyum", (0.62, 0.63, 0.64), puruz=0.32, metal=1.0)
 vitrin_cam = cam_kur("M_Vitrin_Cam")
-cam_kur("M_Cam")  # içecek dolabı camı da aynı kurulum
+dolap_cam = cam_kur("M_Cam")  # içecek dolabı camı da aynı kurulum
+# Tek düz panel: blended sıralama sorunu çıkarmaz; dithered iken arkadaki saydam şişelerle üst üste binip karıncalanıyordu
+dolap_cam.surface_render_method = "BLENDED"; dolap_cam.use_backface_culling = True
 asfalt = pbr("M_Sokak_Kaldirim", "granite_tile", parlaklik=0.25, puruz_carp=0.6)
 gece_duvar = pbr("M_Sokak_Duvar", "plastered_wall_04", renk_carp=(0.45, 0.42, 0.4), parlaklik=0.5)
 

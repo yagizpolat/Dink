@@ -201,6 +201,9 @@ def sise(ad, hucre, tur, r, boy):
                 p = l.vert.co
                 a = (math.atan2(p.x, -p.y) / (2 * math.pi)) + 0.5
                 l[uv].uv = (u0 + on_yari(a) * (u1 - u0), v0 + ((p.z - bant0) / (bant1 - bant0)) * (v1 - v0))
+        elif f.material_index == 1:
+            # Bisect'ten önce bandı aşan yüzün dışarıda kalan parçası: UV'si komşu atlas hücresine taşıyordu
+            f.material_index = 0
     bm.to_mesh(me); bm.free()
     me.materials.append(SISE_MALZ[tur]); me.materials.append(PLASTIK_ET); me.materials.append(KAPAK_RENK[tur])
     for p in me.polygons:
@@ -245,8 +248,11 @@ def diz(sablon_ad, baslangic, yon_boy, yon_on, uzunluk, derinlik, z, bosluk=0.12
             p = Vector(baslangic) + yon_boy * (kenar + en * (i + 0.5)) - yon_on * (0.03 + derin * (j + 0.5))
             k = o.copy()
             k.location = (p.x, p.y, z)
-            k.rotation_euler = (0, 0, aci + random.uniform(-0.05, 0.05))
-            k.location += Vector((random.uniform(-0.006, 0.006), random.uniform(-0.006, 0.006), 0))
+            # Müşteri eli değmiş raf: çoğu düz, arada belirgin dönmüş ya da geri itilmiş ürün
+            sapma = random.uniform(-0.05, 0.05) if random.random() > 0.08 else random.uniform(-0.35, 0.35)
+            k.rotation_euler = (0, 0, aci + sapma)
+            geri = random.uniform(0, 0.04) if j == 0 and random.random() < 0.15 else 0.0
+            k.location += Vector((random.uniform(-0.006, 0.006), random.uniform(-0.006, 0.006), 0)) - yon_on * geri
             koleksiyon(K).objects.link(k)
 
 

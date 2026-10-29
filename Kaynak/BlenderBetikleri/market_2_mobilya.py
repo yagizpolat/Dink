@@ -97,7 +97,7 @@ kutu("Fis_Yazici", (4.55, 0.6, 1.02), (0.16, 0.2, 0.12), plastik_koyu, K, uv=Fal
 dl = []
 dl.append(kutu("Dolap_Govde_Arka", (5.95, 3.3, 1.0), (0.05, 1.3, 2.0), raf, K))  # iç yüzey beyaz
 dl.append(kutu("Dolap_Govde_Ust", (5.65, 3.3, 2.0), (0.65, 1.3, 0.12), raf_koyu, K))
-dl.append(kutu("Dolap_Govde_Alt", (5.65, 3.3, 0.08), (0.65, 1.3, 0.16), raf_koyu, K))
+dl.append(kutu("Dolap_Govde_Alt", (5.65, 3.3, 0.08), (0.65, 1.3, 0.16), raf, K))  # iç taban beyaz: şişe dipleri kararmasın
 for yy in (2.67, 3.93):
     dl.append(kutu("Dolap_Govde_Yan", (5.65, yy, 1.0), (0.65, 0.04, 2.0), raf, K))  # iç yüzey beyaz
 for z in (0.55, 0.95, 1.35, 1.72):
