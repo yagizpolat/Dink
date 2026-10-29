@@ -34,7 +34,7 @@ lo = bpy.data.objects.new("Tavan_Sekme", ld); lo.location = (3.0, 2.25, 0.3); lo
 koleksiyon(K).objects.link(lo)
 
 # Dolap içi ışık
-ld = bpy.data.lights.new("Dolap_Isik", "AREA"); ld.shape = "RECTANGLE"; ld.size = 0.5; ld.size_y = 1.2; ld.energy = 40
+ld = bpy.data.lights.new("Dolap_Isik", "AREA"); ld.shape = "RECTANGLE"; ld.size = 0.5; ld.size_y = 1.2; ld.energy = 90
 ld.color = (0.8, 0.9, 1.0)
 lo = bpy.data.objects.new("Dolap_Isik", ld); lo.location = (5.62, 3.3, 1.9)
 koleksiyon(K).objects.link(lo)

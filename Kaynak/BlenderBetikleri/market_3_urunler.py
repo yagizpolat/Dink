@@ -62,6 +62,13 @@ def hucre_uv(i):
     return c / 4, 1 - (r + 1) / 4, (c + 1) / 4, 1 - r / 4
 
 
+def on_yari(a):
+    """Silindir sarması: etiketin tamamı ön yarım çevreye (oyuncuya bakan yüz) gelir, kare oranı korunur;
+    arka yarı etiketin kenar zemin rengini alır."""
+    f = (a - 0.25) * 2.0
+    return f if 0.0 <= f <= 1.0 else (0.02 if f < 0 else 0.98)
+
+
 def _yeni(ad):
     me = bpy.data.meshes.new(ad)
     o = bpy.data.objects.new(ad, me)
@@ -133,7 +140,7 @@ def konserve(ad, hucre, r, boy):
             if yan:
                 a = (math.atan2(p.x, -p.y) / (2 * math.pi)) + 0.5
                 # dikiş arkada kalsın; ön yüz etiketin ortası
-                l[uv].uv = (u0 + (a % 1.0) * (u1 - u0), v0 + 0.05 * (v1 - v0) + (p.z / boy) * 0.9 * (v1 - v0))
+                l[uv].uv = (u0 + on_yari(a) * (u1 - u0), v0 + 0.05 * (v1 - v0) + (p.z / boy) * 0.9 * (v1 - v0))
             else:
                 l[uv].uv = (u0, v0)
     # Ön yüzde dikiş olmasın diye UV açısına göre yüzleri ayır
@@ -170,7 +177,7 @@ def sise(ad, hucre, tur, r, boy):
             for l in f.loops:
                 p = l.vert.co
                 a = (math.atan2(p.x, -p.y) / (2 * math.pi)) + 0.5
-                l[uv].uv = (u0 + (a % 1.0) * (u1 - u0), v0 + ((p.z - bant0) / (bant1 - bant0)) * (v1 - v0))
+                l[uv].uv = (u0 + on_yari(a) * (u1 - u0), v0 + ((p.z - bant0) / (bant1 - bant0)) * (v1 - v0))
         else:
             f.material_index = 0
     # Etiket bandını gövdeye ayrı halka yap: kesimi bant sınırlarına göre bisect
@@ -183,7 +190,7 @@ def sise(ad, hucre, tur, r, boy):
             for l in f.loops:
                 p = l.vert.co
                 a = (math.atan2(p.x, -p.y) / (2 * math.pi)) + 0.5
-                l[uv].uv = (u0 + (a % 1.0) * (u1 - u0), v0 + ((p.z - bant0) / (bant1 - bant0)) * (v1 - v0))
+                l[uv].uv = (u0 + on_yari(a) * (u1 - u0), v0 + ((p.z - bant0) / (bant1 - bant0)) * (v1 - v0))
     bm.to_mesh(me); bm.free()
     me.materials.append(SISE_MALZ[tur]); me.materials.append(PLASTIK_ET); me.materials.append(KAPAK_RENK[tur])
     for p in me.polygons:
