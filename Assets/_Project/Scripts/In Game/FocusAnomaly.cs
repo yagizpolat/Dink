@@ -24,12 +24,15 @@ public class FocusAnomaly : MonoBehaviour
     private int index;       // sıradaki nesne
     private bool vanished;   // sıradaki nesne şu an yok mu
     private AudioSource source;
+    private static AudioClip whoomp;
 
     private void Start()
     {
         cam = Camera.main;
         normalFov = cam.fieldOfView;
         source = gameObject.AddComponent<AudioSource>();
+        source.ignoreListenerPause = true;  // karanlıkta geri getirilse de duyulsun
+        if (whoomp == null) whoomp = Whoomp();
         if (finishLight != null) finishLight.enabled = false;
         timer.Press(null);
     }
@@ -49,6 +52,7 @@ public class FocusAnomaly : MonoBehaviour
                 timer.Press(null);
             }
         }
+        else darkTime = 0f;  // her karanlık baştan sayılır
 
         // Odaklanma
         bool focusing = Input.GetKey(KeyCode.F) || Input.GetMouseButton(1);
@@ -56,7 +60,8 @@ public class FocusAnomaly : MonoBehaviour
 
         if (!vanished) return;
         Ray ray = cam.ViewportPointToRay(new Vector3(0.5f, 0.5f, 0f));
-        bool looking = focusing && spots[index].Raycast(ray, out _, 20f);
+        bool looking = focusing && spots[index].Raycast(ray, out RaycastHit hit, 20f)
+            && !Physics.Raycast(ray, hit.distance - 0.05f, ~0, QueryTriggerInteraction.Ignore);  // duvar arkasından sayılmaz
         held = looking ? held + Time.deltaTime : 0f;
         if (held >= holdSeconds) Restore();
     }
@@ -80,7 +85,7 @@ public class FocusAnomaly : MonoBehaviour
             "Etwas fehlt. Halte F, um dich zu konzentrieren.", "Il manque quelque chose. Maintiens F pour te concentrer.",
             "Falta algo. Mantén F para concentrarte.", "Falta algo. Segure F para se concentrar.",
             "Чего-то не хватает. Удерживай F, чтобы сосредоточиться.", "少了什么。按住 F 集中注意力。",
-            "何かが足りない。F を長押しして集中しろ。", "무언가 사라졌다. F를 길게 눌러 집중하라."), 999f);
+            "何かが足りない。F を長押しして集中しろ。", "무언가 사라졌다. F를 길게 눌러 집중하라."), 1f);  // her kaybolmada yeniden
     }
 
     private void Restore()
@@ -88,9 +93,13 @@ public class FocusAnomaly : MonoBehaviour
         vanished = false;
         held = 0f;
         targets[index].SetActive(true);
-        source.PlayOneShot(Whoomp());
+        source.PlayOneShot(whoomp);
         index++;
-        if (index < targets.Length) return;
+        if (index < targets.Length)
+        {
+            timer.CutShort(3f);  // sıradaki kaybolma beklemeden gelsin
+            return;
+        }
 
         if (finishLight != null) finishLight.enabled = true;
         onFinished.Invoke();

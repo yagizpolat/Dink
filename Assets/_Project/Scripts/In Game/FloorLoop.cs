@@ -28,12 +28,15 @@ public class FloorLoop : MonoBehaviour
     private int floorNumber = 1;
     private Transform player;
     private AudioSource source;
+    private static AudioClip latch, chime;
     private static readonly int BaseMap = Shader.PropertyToID("_BaseMap");
 
     private void Awake()
     {
         source = gameObject.AddComponent<AudioSource>();
         source.spatialBlend = 0f;
+        source.ignoreListenerPause = true;
+        if (latch == null) { latch = Latch(); chime = Chime(); }
         var walker = FindFirstObjectByType<PlayerWalker>();
         if (walker != null) player = walker.transform;
         SetSign(floorNumber);
@@ -44,7 +47,7 @@ public class FloorLoop : MonoBehaviour
     {
         if (phase != Phase.Closed) return;
         phase = Phase.Open;
-        source.PlayOneShot(Latch(), 0.5f);
+        source.PlayOneShot(latch, 0.5f);
         StartCoroutine(Swing(doorHinge, 0f, doorOpenAngle, 2.2f, 0.4f));
     }
 
@@ -58,7 +61,7 @@ public class FloorLoop : MonoBehaviour
         phase = Phase.Passing;
         // Kapı arkadan kapanır, sızan ışık söner: zifiri karanlık
         yield return Swing(doorHinge, doorOpenAngle, 0f, 0.7f, 0f);
-        source.PlayOneShot(Latch(), 0.8f);
+        source.PlayOneShot(latch, 0.8f);
         if (doorLight != null) doorLight.enabled = false;
 
         // Kabine taşı: girişe göre konum ve bakış 180° döner
@@ -75,7 +78,7 @@ public class FloorLoop : MonoBehaviour
         anomaly.Restart(targets);
 
         yield return new WaitForSeconds(0.9f);
-        source.PlayOneShot(Chime(), 0.6f);
+        source.PlayOneShot(chime, 0.6f);
         yield return Swing(elevatorHinge, 0f, elevatorOpenAngle, 1.6f, 0.3f);
         phase = Phase.Closed;
         yield return new WaitForSeconds(6f);

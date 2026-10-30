@@ -15,6 +15,7 @@ public class HallwayLightTimer : MonoBehaviour
     [SerializeField] private string glowMaterialPrefix = "M_K_Opal";
     [SerializeField] private Color darkAmbient = new Color(0.012f, 0.012f, 0.016f);
     [SerializeField] private Color litAmbient = new Color(0.12f, 0.1f, 0.08f);
+    [SerializeField] private bool manualSwitches = true;  // false: ışığı bir görev yönetir, duvar düğmeleri yalnız tıklar
 
     public bool IsLit => remaining > 0f;
     public float Remaining => remaining;
@@ -67,9 +68,17 @@ public class HallwayLightTimer : MonoBehaviour
     {
         if (buttonSource != null) buttonSource.PlayOneShot(clickOn);
         if (locked) return;  // tık sesi gelir ama hiçbir şey yanmaz
+        // Döngüyü görev yönetiyorsa düğme karanlığı kısaltamaz (yoksa nesne kaybolacak kadar karanlık kalmaz)
+        if (buttonSource != null && !manualSwitches) return;
         if (remaining <= 0f) audioSource.PlayOneShot(clickOn, 0.5f);
         remaining = duration;
         Apply(1f);
+    }
+
+    /// <summary>Kalan yanma süresini en çok <paramref name="seconds"/> saniyeye indirir (sıradaki karanlık çabuk gelsin).</summary>
+    public void CutShort(float seconds)
+    {
+        if (remaining > seconds) remaining = seconds;
     }
 
     private void Update()
