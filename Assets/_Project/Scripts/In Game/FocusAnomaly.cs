@@ -1,14 +1,16 @@
 using UnityEngine;
 
 /// <summary>
-/// Koridor ışığı kendiliğinden söner ve yanar; ilk yanışta petek yok olmuştur.
-/// F (ya da sağ tık) basılı tutulunca kamera odaklanır (FOV daralır); boş yere yeterince odaklanınca petek geri gelir.
+/// Koridor ışığı kendiliğinden söner ve yanar; her yanışta sıradaki nesne (petek, yangın dolabı…) yok olmuştur.
+/// F (ya da sağ tık) basılı tutulunca kamera odaklanır (FOV daralır); boş yere yeterince odaklanınca nesne geri gelir.
+/// Hepsi geri gelince görev biter.
 /// </summary>
 public class FocusAnomaly : MonoBehaviour
 {
     [SerializeField] private HallwayLightTimer timer;
-    [SerializeField] private GameObject target;      // kaybolan nesne (Petek)
-    [SerializeField] private Collider spot;          // nesnenin yeri (PetekYeri); kapalı nesnenin collider'ı ışın yakalamaz
+    [SerializeField] private GameObject[] targets;   // sırayla kaybolan nesneler
+    [SerializeField] private Collider[] spots;       // her nesnenin yeri; kapalı nesnenin collider'ı ışın yakalamaz
+    [SerializeField] private Light finishLight;      // görev bitince yanar
     [SerializeField] private float darkSeconds = 3f;
     [SerializeField] private float focusFov = 35f;
     [SerializeField] private float focusSpeed = 18f; // derece / sn
@@ -18,8 +20,8 @@ public class FocusAnomaly : MonoBehaviour
     private float normalFov;
     private float darkTime;
     private float held;
-    private bool vanished;
-    private bool restored;
+    private int index;       // sıradaki nesne
+    private bool vanished;   // sıradaki nesne şu an yok mu
     private AudioSource source;
 
     private void Start()
@@ -27,6 +29,7 @@ public class FocusAnomaly : MonoBehaviour
         cam = Camera.main;
         normalFov = cam.fieldOfView;
         source = gameObject.AddComponent<AudioSource>();
+        if (finishLight != null) finishLight.enabled = false;
         timer.Press(null);
     }
 
@@ -41,7 +44,7 @@ public class FocusAnomaly : MonoBehaviour
             if (darkTime >= darkSeconds)
             {
                 darkTime = 0f;
-                if (!vanished) Vanish();
+                if (!vanished && index < targets.Length) Vanish();
                 timer.Press(null);
             }
         }
@@ -50,9 +53,9 @@ public class FocusAnomaly : MonoBehaviour
         bool focusing = Input.GetKey(KeyCode.F) || Input.GetMouseButton(1);
         cam.fieldOfView = Mathf.MoveTowards(cam.fieldOfView, focusing ? focusFov : normalFov, focusSpeed * Time.deltaTime);
 
-        if (!vanished || restored) return;
+        if (!vanished) return;
         Ray ray = cam.ViewportPointToRay(new Vector3(0.5f, 0.5f, 0f));
-        bool looking = focusing && spot.Raycast(ray, out _, 20f);
+        bool looking = focusing && spots[index].Raycast(ray, out _, 20f);
         held = looking ? held + Time.deltaTime : 0f;
         if (held >= holdSeconds) Restore();
     }
@@ -60,7 +63,7 @@ public class FocusAnomaly : MonoBehaviour
     private void Vanish()
     {
         vanished = true;
-        target.SetActive(false);
+        targets[index].SetActive(false);
         ScreenHint.Show(DinkLang.T("Something is missing. Hold F to focus.", "Bir şey eksik. Odaklanmak için F'yi basılı tut.",
             "Etwas fehlt. Halte F, um dich zu konzentrieren.", "Il manque quelque chose. Maintiens F pour te concentrer.",
             "Falta algo. Mantén F para concentrarte.", "Falta algo. Segure F para se concentrar.",
@@ -70,9 +73,19 @@ public class FocusAnomaly : MonoBehaviour
 
     private void Restore()
     {
-        restored = true;
-        target.SetActive(true);
+        vanished = false;
+        held = 0f;
+        targets[index].SetActive(true);
         source.PlayOneShot(Whoomp());
+        index++;
+        if (index < targets.Length) return;
+
+        if (finishLight != null) finishLight.enabled = true;
+        ScreenHint.Show(DinkLang.T("Everything is back. A light is on at the end of the hall.", "Her şey yerinde. Koridorun sonunda bir ışık yanıyor.",
+            "Alles ist zurück. Am Ende des Flurs brennt Licht.", "Tout est revenu. Une lumière brille au bout du couloir.",
+            "Todo ha vuelto. Hay una luz al final del pasillo.", "Tudo voltou. Há uma luz no fim do corredor.",
+            "Всё на месте. В конце коридора горит свет.", "一切都回来了。走廊尽头亮着一盏灯。", "全部戻った。廊下の奥に明かりが点いている。",
+            "모두 돌아왔다. 복도 끝에 불빛이 켜져 있다."), 999f);
     }
 
     /// <summary>Geri gelme sesi: alçalan derin bir vuruş.</summary>
