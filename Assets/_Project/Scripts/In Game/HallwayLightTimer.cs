@@ -20,6 +20,7 @@ public class HallwayLightTimer : MonoBehaviour
     public float Remaining => remaining;
 
     private float remaining;
+    private bool locked;
     private float[] baseIntensity;
     private readonly List<Material> glowMaterials = new List<Material>();
     private readonly List<Color> glowBase = new List<Color>();
@@ -50,10 +51,20 @@ public class HallwayLightTimer : MonoBehaviour
         Apply(0f);
     }
 
+    /// <summary>Görev bitti: lambalar söner ve düğmeler artık bir şey yakmaz.</summary>
+    public void Shutdown()
+    {
+        locked = true;
+        if (remaining > 0f) audioSource.PlayOneShot(clickOff);
+        remaining = 0f;
+        Apply(0f);
+    }
+
     /// <summary>Düğmeye basıldı: lambalar yanar, süre baştan başlar.</summary>
     public void Press(AudioSource buttonSource)
     {
         if (buttonSource != null) buttonSource.PlayOneShot(clickOn);
+        if (locked) return;  // tık sesi gelir ama hiçbir şey yanmaz
         if (remaining <= 0f) audioSource.PlayOneShot(clickOn, 0.5f);
         remaining = duration;
         Apply(1f);
