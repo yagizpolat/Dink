@@ -11,9 +11,9 @@
    ],
    "alfa": false
   },
-  "M_K_Asansor_Boya": {
-   "metal": 0.0,
-   "normal": true,
+  "M_K_AsansorPanel": {
+   "metal": 1.0,
+   "normal": false,
    "isik": 0.0,
    "isik_renk": [
     1.0,
@@ -22,9 +22,9 @@
    ],
    "alfa": false
   },
-  "M_K_AsansorPanel": {
-   "metal": 1.0,
-   "normal": false,
+  "M_K_Asansor_Boya": {
+   "metal": 0.0,
+   "normal": true,
    "isik": 0.0,
    "isik_renk": [
     1.0,
@@ -231,6 +231,17 @@
    ],
    "alfa": false
   },
+  "M_K_PVC": {
+   "metal": 0.0,
+   "normal": true,
+   "isik": 0.0,
+   "isik_renk": [
+    1.0,
+    1.0,
+    1.0
+   ],
+   "alfa": false
+  },
   "M_K_Paspas": {
    "metal": 0.0,
    "normal": true,
@@ -286,29 +297,7 @@
    ],
    "alfa": false
   },
-  "M_K_PVC": {
-   "metal": 0.0,
-   "normal": true,
-   "isik": 0.0,
-   "isik_renk": [
-    1.0,
-    1.0,
-    1.0
-   ],
-   "alfa": false
-  },
   "M_K_Tavan": {
-   "metal": 0.0,
-   "normal": true,
-   "isik": 0.0,
-   "isik_renk": [
-    1.0,
-    1.0,
-    1.0
-   ],
-   "alfa": false
-  },
-  "M_K_Yangin_Kirmizi": {
    "metal": 0.0,
    "normal": true,
    "isik": 0.0,
@@ -322,6 +311,17 @@
   "M_K_YanginEtiket": {
    "metal": 0.0,
    "normal": false,
+   "isik": 0.0,
+   "isik_renk": [
+    1.0,
+    1.0,
+    1.0
+   ],
+   "alfa": false
+  },
+  "M_K_Yangin_Kirmizi": {
+   "metal": 0.0,
+   "normal": true,
    "isik": 0.0,
    "isik_renk": [
     1.0,
@@ -409,8 +409,8 @@
    "guc": 80.0,
    "renk": [
     1.0,
-    0.7200000286102295,
-    0.44999998807907104
+    0.6200000047683716,
+    0.3499999940395355
    ],
    "boy": [
     0,
@@ -424,6 +424,81 @@
    "konum": [
     0.949999988079071,
     11.199999809265137,
+    2.559999942779541
+   ],
+   "yon": [
+    0.0,
+    0.0,
+    -1.0
+   ],
+   "guc": 160.0,
+   "renk": [
+    1.0,
+    0.7200000286102295,
+    0.44999998807907104
+   ],
+   "boy": [
+    0,
+    0
+   ],
+   "golge": true
+  },
+  {
+   "ad": "Lamba_Kol1_Isik",
+   "tur": "POINT",
+   "konum": [
+    -1.7999999523162842,
+    11.050000190734863,
+    2.559999942779541
+   ],
+   "yon": [
+    0.0,
+    0.0,
+    -1.0
+   ],
+   "guc": 160.0,
+   "renk": [
+    1.0,
+    0.7200000286102295,
+    0.44999998807907104
+   ],
+   "boy": [
+    0,
+    0
+   ],
+   "golge": true
+  },
+  {
+   "ad": "Lamba_Kol2_Isik",
+   "tur": "POINT",
+   "konum": [
+    -4.300000190734863,
+    11.050000190734863,
+    2.559999942779541
+   ],
+   "yon": [
+    0.0,
+    0.0,
+    -1.0
+   ],
+   "guc": 160.0,
+   "renk": [
+    1.0,
+    0.7200000286102295,
+    0.44999998807907104
+   ],
+   "boy": [
+    0,
+    0
+   ],
+   "golge": true
+  },
+  {
+   "ad": "Lamba_Kol3_Isik",
+   "tur": "POINT",
+   "konum": [
+    -6.800000190734863,
+    11.050000190734863,
     2.559999942779541
    ],
    "yon": [
@@ -515,6 +590,31 @@
    "boy": [
     1.7999999523162842,
     11.5
+   ],
+   "golge": false
+  },
+  {
+   "ad": "Sekme_Kol",
+   "tur": "AREA",
+   "konum": [
+    -4.0,
+    11.050000190734863,
+    0.05000000074505806
+   ],
+   "yon": [
+    0.0,
+    -8.742277657347586e-08,
+    1.0
+   ],
+   "guc": 60.0,
+   "renk": [
+    1.0,
+    0.8500000238418579,
+    0.699999988079071
+   ],
+   "boy": [
+    8.0,
+    1.7999999523162842
    ],
    "golge": false
   }

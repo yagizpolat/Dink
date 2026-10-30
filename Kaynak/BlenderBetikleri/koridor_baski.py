@@ -43,9 +43,9 @@ def pirinc_zemin(boyut, firca_yatay=True):
     return Image.composite(Image.new("RGB", boyut, (82, 60, 30)), im, oks)
 
 
-# ── Daire numaraları (1024x256, 4 hücre): oval pirinç plaka, kazınmış siyah rakam ──
-im = Image.new("RGB", (1024, 256), (0, 0, 0))
-for i in range(4):
+# ── Daire numaraları (1536x256, 6 hücre): oval pirinç plaka, kazınmış siyah rakam ──
+im = Image.new("RGB", (1536, 256), (0, 0, 0))
+for i in range(6):
     p = pirinc_zemin((256, 256))
     d = ImageDraw.Draw(p)
     merkez(d, (0, 10, 256, 246), str(i + 1), font("georgiab.ttf", 190), (24, 18, 10))
@@ -53,9 +53,10 @@ for i in range(4):
     im.paste(p, (i * 256, 0))
 im.save(os.path.join(DOKU, "daire_no.png"))
 
-# ── Zil isimlikleri (1024x256, 4 hücre): beyaz plastik çerçevede kâğıt kart; el yazısı ya da daktilo ──
-isimler = [("MILLER", "consolab.ttf"), ("Novak", "segoepr.ttf"), ("R. ADLER", "arialbd.ttf"), ("", None)]
-im = Image.new("RGB", (1024, 256), (230, 228, 220))
+# ── Zil isimlikleri (1536x256, 6 hücre): beyaz plastik çerçevede kâğıt kart; el yazısı ya da daktilo ──
+isimler = [("MILLER", "consolab.ttf"), ("Novak", "segoepr.ttf"), ("R. ADLER", "arialbd.ttf"), ("", None),
+           ("HARTMANN", "consolab.ttf"), ("P. Lee", "segoepr.ttf")]
+im = Image.new("RGB", (1536, 256), (230, 228, 220))
 for i, (ad, f) in enumerate(isimler):
     x0 = i * 256
     d = ImageDraw.Draw(im)
@@ -69,7 +70,7 @@ for i, (ad, f) in enumerate(isimler):
         for k in range(9):
             d.line([x0 + 34 + random.randint(-4, 4), 108 + k * 4, x0 + 168 + random.randint(-6, 6), 104 + k * 5], fill=(25, 25, 60), width=3)
     d.rectangle([x0 + 22, 70, x0 + 234, 186], outline=(200, 198, 190), width=3)
-im = carp(im, gren((1024, 256), 14).point(lambda v: (v - 128) // 4 + 128))
+im = carp(im, gren((1536, 256), 14).point(lambda v: (v - 128) // 4 + 128))
 im.filter(ImageFilter.GaussianBlur(0.6)).save(os.path.join(DOKU, "isimlik.png"))
 
 # ── Asansör çağırma paneli (256x512): fırçalı çelik, tek buton halkası, kabartma ok, Braille ──

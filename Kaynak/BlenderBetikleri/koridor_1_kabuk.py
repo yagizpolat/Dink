@@ -1,6 +1,7 @@
 # Karanfil Apartmanı kat koridoru 1: kabuk (mozaik zemin, yağlı boya alt duvar, sıva üst duvar, tavan,
 # gidiş-dönüşlü merdiven boşluğu, korkuluklar). Market kalite tarifiyle (market_ortak yardımcıları).
 # Ölçüler (m): lobi x 0..1.9, y 0..3.4; koridor x 0..1.9, y 3.4..12; merdiven boşluğu x 1.9..4.2, y -1.5..3.4.
+# L kolu: koridorun ucunda sola döner, x -8..0, y 10.1..12 (ucunda pencere).
 # Asansör kapısı y=0 duvarında, oyuncu asansörden +y'ye (koridora) bakarak çıkar. Tavan 2.75.
 import bpy
 exec(open(r"C:\Kisisel Dosyalarim\ozel\Oyun Gelistirme\Denemelik projelerim\Dink\Kaynak\BlenderBetikleri\market_ortak.py", encoding="utf-8").read())
@@ -21,6 +22,7 @@ for o in list(koleksiyon(K).objects):
 
 H, T, BOYA = 2.75, 0.15, 1.4  # tavan, duvar kalınlığı, yağlı boya bandının üstü
 KAT = 2.72                     # kat yüksekliği (merdiven: 16 basamak x 0.17)
+KX, KY0 = -8.0, 10.1  # L kolunun ucu (x) ve güney duvarının iç yüzü (y)
 
 # Cilalı mozaik: yıllarca silinmiş, lambaları hafif yansıtır (mat hali çamurlu halı gibiydi)
 zemin = pbr("M_K_Zemin_Mozaik", "old_mosaic_floor", parlaklik=1.0, doygunluk=0.8, puruz_carp=0.45)
@@ -80,22 +82,30 @@ def serit_ciz(eksen, sabit, a, b, yon, delikler=()):
 
 # ── Zemin: lobi + koridor, merdiven başı şeridi (merdiven boşluğu açık) ──
 kutu("Zemin", (0.95, 6.0, -0.1), (1.9, 12.0, 0.2), zemin, K)
+kutu("Zemin_Kol", (KX / 2, (KY0 + 12.0) / 2, -0.1), (-KX, 12.0 - KY0, 0.2), zemin, K)
 kutu("Zemin_MerdivenBasi", (3.05, 3.2, -0.1), (2.3, 0.4, 0.2), basamak, K)
 
 # ── Duvarlar ──
 KAPI = 1.0  # kasa dahil kapı boşluğu
+KAPI5, KAPI6 = -3.0, -5.6  # kol kapılarının x merkezi: 5 kuzey duvarında, 6 güney duvarında
 sol_delik = [(5.0 - KAPI / 2, 5.0 + KAPI / 2, 0, 2.15), (9.0 - KAPI / 2, 9.0 + KAPI / 2, 0, 2.15)]
 sag_delik = [(6.5 - KAPI / 2, 6.5 + KAPI / 2, 0, 2.15), (10.3 - KAPI / 2, 10.3 + KAPI / 2, 0, 2.15)]
 asansor_delik = [(0.95 - 0.55, 0.95 + 0.55, 0, 2.2)]
-pencere = [(0.45, 1.45, 0.95, 2.15)]
-duvar("Duvar_Sol", "y", -T / 2, -T, 12.0 + T, 0, H, sol_delik)
+pencere = [((KY0 + 12.0) / 2 - 0.5, (KY0 + 12.0) / 2 + 0.5, 0.95, 2.15)]
+kuzey_delik = [(KAPI5 - KAPI / 2, KAPI5 + KAPI / 2, 0, 2.15)]
+guney_delik = [(KAPI6 - KAPI / 2, KAPI6 + KAPI / 2, 0, 2.15)]
+duvar("Duvar_Sol", "y", -T / 2, -T, KY0, 0, H, sol_delik)
 duvar("Duvar_Sag", "y", 1.9 + T / 2, 3.4, 12.0 + T, 0, H, sag_delik)
 duvar("Duvar_Asansor", "x", -T / 2, 0, 1.9, 0, H, asansor_delik)
-duvar("Duvar_Son", "x", 12.0 + T / 2, 0, 1.9, 0, H, pencere)
-serit_ciz("y", -T / 2, 0, 12.0, +1, sol_delik)
+duvar("Duvar_Kuzey", "x", 12.0 + T / 2, KX - T, 1.9, 0, H, kuzey_delik)
+duvar("Duvar_Guney", "x", KY0 - T / 2, KX - T, -T, 0, H, guney_delik)
+duvar("Duvar_KolSonu", "y", KX - T / 2, KY0 - T, 12.0 + T, 0, H, pencere)
+serit_ciz("y", -T / 2, 0, KY0, +1, sol_delik)
 serit_ciz("y", 1.9 + T / 2, 3.4, 12.0, -1, sag_delik)
 serit_ciz("x", -T / 2, 0, 1.9, +1, asansor_delik)
-serit_ciz("x", 12.0 + T / 2, 0, 1.9, -1, pencere)
+serit_ciz("x", 12.0 + T / 2, KX, 1.9, -1, kuzey_delik)
+serit_ciz("x", KY0 - T / 2, KX, 0, +1, guney_delik)
+serit_ciz("y", KX - T / 2, KY0, 12.0, +1, pencere)
 
 # Merdiven boşluğu duvarları: bir kat aşağıdan bir kat yukarıya kadar
 ALT, UST = -1.6, KAT + 2.0
@@ -107,6 +117,7 @@ kutu("Merdiven_Tavan", (3.05, 0.95, UST + 0.05), (2.3, 4.9, 0.1), tavan, K)
 
 # ── Tavan: lobi + koridor; merdiven boşluğuna bakan kenarda kiriş ──
 kutu("Tavan", (0.95, 6.0, H + 0.08), (1.9, 12.0, 0.16), tavan, K)
+kutu("Tavan_Kol", (KX / 2, (KY0 + 12.0) / 2, H + 0.08), (-KX, 12.0 - KY0, 0.16), tavan, K)
 kutu("Tavan_Kiris", (1.9, 1.7, H - 0.12), (0.12, 3.4, 0.24), siva, K)
 # Bir üst katın merdiven başı döşemesi (boşluktan yukarı bakınca görünür)
 kutu("UstKat_MerdivenBasi", (3.05, 3.2, KAT - 0.1), (2.3, 0.4, 0.2), basamak, K)

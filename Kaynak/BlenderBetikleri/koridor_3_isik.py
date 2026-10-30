@@ -58,6 +58,8 @@ glob("Lamba_Koridor1", 0.95, 5.7)
 glob("Lamba_Koridor2", 0.95, 8.7, guc=3.5, watt=80)   # eski ampul: kısık, biraz daha turuncu
 bpy.data.lights["Lamba_Koridor2_Isik"].color = (1.0, 0.62, 0.35)
 glob("Lamba_Koridor3", 0.95, 11.2)
+for i, x in enumerate((-1.8, -4.3, -6.8)):   # L kolu
+    glob(f"Lamba_Kol{i + 1}", x, 11.05)
 
 # Merdiven boşluğu: dış duvarda, sahanlık hizasında aplik (aşağı ve yukarı kolu aydınlatır)
 x, y, z = 4.15, -0.4, 2.9
@@ -81,6 +83,10 @@ ld.color = (1.0, 0.85, 0.7)
 lo = bpy.data.objects.new("Sekme", ld); lo.location = (0.95, 6.0, 0.05); lo.rotation_euler = (math.pi, 0, 0)
 koleksiyon(K).objects.link(lo)
 ld.use_shadow = False
+ld = bpy.data.lights.new("Sekme_Kol", "AREA"); ld.shape = "RECTANGLE"; ld.size = 8.0; ld.size_y = 1.8; ld.energy = 60
+ld.color = (1.0, 0.85, 0.7); ld.use_shadow = False
+lo = bpy.data.objects.new("Sekme_Kol", ld); lo.location = (-4.0, 11.05, 0.05); lo.rotation_euler = (math.pi, 0, 0)
+koleksiyon(K).objects.link(lo)
 
 # Dünya: neredeyse siyah (gece), pencerenin dışı ayrı (koridor_4)
 w = bpy.context.scene.world

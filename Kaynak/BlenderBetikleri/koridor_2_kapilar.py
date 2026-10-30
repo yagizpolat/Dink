@@ -14,6 +14,10 @@ random.seed(5)
 
 # (daire no, duvar 'sol' x=0 / 'sag' x=1.9, kapının y merkezi, isimlik hücresi, paspas: 0 yazılı / 1 desenli / None)
 DAIRELER = [(1, "sol", 5.0, 0, 0), (2, "sag", 6.5, 1, None), (3, "sol", 9.0, 2, 1), (4, "sag", 10.3, 3, 0)]
+# L kolu (x -8..0, y 10.1..12): 5 kuzey duvarında, 6 güney duvarında. Sol duvara kurulup döndürülür.
+KOL_DAIRELER = [(5, "kuzey", -3.0, 4, 1), (6, "guney", -5.6, 5, None)]
+KX, KY0 = -8.0, 10.1
+HUCRE = 6  # daire no ve isimlik atlasındaki hücre sayısı
 
 # ── Malzemeler ──
 # Ceviz kaplama: damar dikey (kanat boyunca), koyu cilalı; açık tonu sıcak ışıkta pembe laminat gibi duruyordu
@@ -90,12 +94,12 @@ def kapi(no, duvar, yc, isim, paspas):
     k("Kol", 0.22, 0.365, 0.0, 0.016, 1.07, 1.092, pirinc)
     k("Silindir", 0.345, 0.365, -0.034, -0.026, 0.95, 0.985, pirinc)
     k("Durbun", -0.013, 0.013, -0.04, -0.028, 1.507, 1.533, pirinc)
-    o = plaka(f"D{no}_No", P(0, -0.0335, 1.72), 0.085, 0.085, no_m, n, K); hucre(o, (no - 1) / 4, 0, no / 4, 1)
+    o = plaka(f"D{no}_No", P(0, -0.0335, 1.72), 0.085, 0.085, no_m, n, K); hucre(o, (no - 1) / HUCRE, 0, no / HUCRE, 1)
     k("Esik", -0.5, 0.5, -0.15, 0.02, 0.0, 0.015, mozaik)  # mozaik eşik: kanadın altındaki aralık karanlık boşluk göstermesin
     # Zil + isimlik (menteşe tarafı duvarda) ve ışık otomatiği (kol tarafında)
     k("Zil_Taban", -0.82, -0.75, 0.0, 0.012, 1.28, 1.42, beyaz_pl)
     k("Zil_Dugme", -0.798, -0.772, 0.012, 0.02, 1.3, 1.326, krem_pl)
-    o = plaka(f"D{no}_Isimlik", P(-0.785, 0.0125, 1.38), 0.06, 0.06, isim_m, n, K); hucre(o, isim / 4, 0, (isim + 1) / 4, 1)
+    o = plaka(f"D{no}_Isimlik", P(-0.785, 0.0125, 1.38), 0.06, 0.06, isim_m, n, K); hucre(o, isim / HUCRE, 0, (isim + 1) / HUCRE, 1)
     k("Otomat_Taban", 0.72, 0.79, 0.0, 0.012, 1.17, 1.24, beyaz_pl)
     k("Otomat_Dugme", 0.737, 0.773, 0.012, 0.02, 1.187, 1.223, otomat_isik)
     if paspas is not None:
@@ -111,6 +115,25 @@ def kapi(no, duvar, yc, isim, paspas):
 
 for d in DAIRELER:
     kapi(*d)
+
+
+def tasi(objs, kaynak, aci, hedef):
+    """Nesneleri kaynak (x, y) noktası çevresinde z ekseninde aci kadar döndürüp hedefe taşır."""
+    from mathutils import Matrix
+    M = Matrix.Translation((hedef[0], hedef[1], 0)) @ Matrix.Rotation(aci, 4, "Z") @ Matrix.Translation((-kaynak[0], -kaynak[1], 0))
+    bpy.context.view_layer.update()
+    for o in objs:
+        o.matrix_world = M @ o.matrix_world
+
+
+for no, duvar, xc, isim, paspas in KOL_DAIRELER:
+    once = set(koleksiyon(K).objects)
+    kapi(no, "sol", 40.0, isim, paspas)  # boş bir yerde sol duvar düzeniyle kur
+    yeni = [o for o in koleksiyon(K).objects if o not in once]
+    if duvar == "kuzey":
+        tasi(yeni, (0, 40.0), -math.pi / 2, (xc, 12.0))   # iç yüz +x -> -y
+    else:
+        tasi(yeni, (0, 40.0), math.pi / 2, (xc, KY0))     # iç yüz +x -> +y
 
 # ── Asansör kapısı (y=0 duvarı, koridora +y bakar; boşluk x 0.4..1.5, z 0..2.2) ──
 def a(ad, x0, x1, y0, y1, z0, z1, m):
@@ -177,6 +200,10 @@ for z in (0.25, 0.75):
     kutu("Petek_Boru", (0.95, 11.86, z), (0.83, 0.03, 0.03), petek, K)
 silindir("Petek_Vana", (1.42, 11.86, 0.17), 0.016, 0.1, celik)
 
+# Pencere ve petek y=12 duvarı için kuruldu; L kolunun ucundaki duvara (x=KX, iç yüz +x) taşı
+tasi([o for o in koleksiyon(K).objects if o.name.startswith(("Pencere_", "Denizlik", "Petek_"))],
+     (0.95, 12.0), math.pi / 2, (KX, (KY0 + 12.0) / 2))
+
 # ── Süpürgelik: 8 cm mozaik, kapı ve asansör boşluklarında kesilir ──
 def supurge(eksen, sabit, a0, a1, bosluklar):
     kes = sorted({a0, a1} | {b for d in bosluklar for b in d})
@@ -187,8 +214,10 @@ def supurge(eksen, sabit, a0, a1, bosluklar):
             kutu("Supurgelik", (sabit, (s0 + s1) / 2, 0.04), (0.012, s1 - s0, 0.08), mozaik, K)
         else:
             kutu("Supurgelik", ((s0 + s1) / 2, sabit, 0.04), (s1 - s0, 0.012, 0.08), mozaik, K)
-supurge("y", 0.006, 0, 12, [(4.43, 5.57), (8.43, 9.57)])
+supurge("y", 0.006, 0, KY0, [(4.43, 5.57), (8.43, 9.57)])
 supurge("y", 1.894, 3.4, 12, [(5.93, 7.07), (9.73, 10.87)])
 supurge("x", 0.006, 0, 1.9, [(0.34, 1.56)])
-supurge("x", 11.994, 0, 1.9, [])
+supurge("x", 11.994, KX, 1.9, [(-3.57, -2.43)])
+supurge("x", KY0 + 0.006, KX, 0, [(-6.17, -5.03)])
+supurge("y", KX + 0.006, KY0, 12, [])
 print("koridor kapılar tamam", len(koleksiyon(K).objects))
