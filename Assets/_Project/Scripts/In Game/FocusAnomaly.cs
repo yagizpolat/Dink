@@ -61,6 +61,17 @@ public class FocusAnomaly : MonoBehaviour
         if (held >= holdSeconds) Restore();
     }
 
+    /// <summary>Yeni kat: görev yeni nesnelerle baştan başlar (FloorLoop).</summary>
+    public void Restart(GameObject[] newTargets)
+    {
+        targets = newTargets;
+        index = 0;
+        vanished = false;
+        held = 0f;
+        darkTime = 0f;
+        if (finishLight != null) finishLight.enabled = false;
+    }
+
     private void Vanish()
     {
         vanished = true;
@@ -87,7 +98,7 @@ public class FocusAnomaly : MonoBehaviour
             "Alles ist zurück. Am Ende des Flurs brennt Licht.", "Tout est revenu. Une lumière brille au bout du couloir.",
             "Todo ha vuelto. Hay una luz al final del pasillo.", "Tudo voltou. Há uma luz no fim do corredor.",
             "Всё на месте. В конце коридора горит свет.", "一切都回来了。走廊尽头亮着一盏灯。", "全部戻った。廊下の奥に明かりが点いている。",
-            "모두 돌아왔다. 복도 끝에 불빛이 켜져 있다."), 999f);
+            "모두 돌아왔다. 복도 끝에 불빛이 켜져 있다."), 5f);
     }
 
     /// <summary>Geri gelme sesi: alçalan derin bir vuruş.</summary>

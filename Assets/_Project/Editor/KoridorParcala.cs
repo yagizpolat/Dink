@@ -100,8 +100,13 @@ public static class KoridorParcala
         temiz.subMeshCount = kalan.Length;
         for (int s = 0; s < kalan.Length; s++) temiz.SetTriangles(kalan[s], s);
         temiz.RecalculateBounds();
-        mf.sharedMesh = Kaydet(temiz, "Koridor_Temiz");
-        koridor.GetComponent<MeshCollider>().sharedMesh = mf.sharedMesh;
+        Kaydet(temiz, "Koridor_Temiz");
+        foreach (var f in Object.FindObjectsByType<MeshFilter>(FindObjectsInactive.Include, FindObjectsSortMode.None))
+            if (f.name == "Koridor")
+            {
+                f.sharedMesh = temiz;
+                f.GetComponent<MeshCollider>().sharedMesh = temiz;
+            }
         UnityEditor.SceneManagement.EditorSceneManager.MarkSceneDirty(koridor.scene);
     }
 
@@ -115,31 +120,33 @@ public static class KoridorParcala
         return mesh;
     }
 
-    /// <summary>Sahnedeki aynı adlı nesneye takar; kapı kanadı ise DaireN_Kapi/Menteşe/Kanat'a (yoksa kurar).</summary>
+    /// <summary>Sahnedeki aynı adlı bütün nesnelere (her kat kopyasına) takar; kapı kanadı ise DaireN_Kapi/Menteşe/Kanat'a (yoksa kurar).</summary>
     private static void Bagla(Parca p, Mesh mesh, Material[] malz)
     {
-        GameObject hedef = null;
         bool kapi = p.ad.StartsWith("Kapi");
         string kok = kapi ? "Daire" + p.ad.Substring(4, 1) + "_Kapi" : p.ad;
+        var hedefler = new List<GameObject>();
         foreach (var r in Object.FindObjectsByType<MeshFilter>(FindObjectsInactive.Include, FindObjectsSortMode.None))
         {
-            string ad = r.gameObject.name;
-            if ((!kapi && ad == p.ad) || (kapi && ad == "Kanat" && r.transform.root.name == kok && r.gameObject.scene.IsValid()))
-                hedef = r.gameObject;
+            Transform t = r.transform;
+            if (!kapi && t.name == p.ad) hedefler.Add(t.gameObject);
+            if (kapi && t.name == "Kanat" && t.parent != null && t.parent.parent != null && t.parent.parent.name == kok) hedefler.Add(t.gameObject);
         }
-        if (hedef == null && kapi)
+        if (hedefler.Count == 0 && kapi)
         {
             var k = new GameObject(kok);
             var m = new GameObject("Menteşe"); m.transform.SetParent(k.transform, false);
-            hedef = new GameObject("Kanat"); hedef.transform.SetParent(m.transform, false);
-            hedef.AddComponent<MeshFilter>(); hedef.AddComponent<MeshRenderer>();
+            var h = new GameObject("Kanat"); h.transform.SetParent(m.transform, false);
+            h.AddComponent<MeshFilter>(); h.AddComponent<MeshRenderer>();
+            hedefler.Add(h);
         }
-        if (hedef == null) { Debug.LogWarning("KoridorParcala: sahnede yok " + p.ad); return; }
-        hedef.transform.root.position = p.pivot;
-        hedef.GetComponent<MeshFilter>().sharedMesh = mesh;
-        hedef.GetComponent<MeshRenderer>().sharedMaterials = malz;
-        if (kapi)
+        if (hedefler.Count == 0) { Debug.LogWarning("KoridorParcala: sahnede yok " + p.ad); return; }
+        foreach (var hedef in hedefler)
         {
+            (kapi ? hedef.transform.parent.parent : hedef.transform).position = p.pivot;
+            hedef.GetComponent<MeshFilter>().sharedMesh = mesh;
+            hedef.GetComponent<MeshRenderer>().sharedMaterials = malz;
+            if (!kapi) continue;
             var bc = hedef.GetComponent<BoxCollider>();
             if (bc != null) Object.DestroyImmediate(bc);
             hedef.AddComponent<BoxCollider>();

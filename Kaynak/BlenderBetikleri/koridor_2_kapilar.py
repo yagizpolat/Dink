@@ -162,7 +162,7 @@ plaka("Asansor_Panel", (1.675, 0.0065, 1.14), 0.1, 0.2, panel_m, (0, 1, 0), K)
 
 # ── Lobi duvarı: duyuru (hafif eğri asılmış), kat levhası, ışık otomatiği ──
 o = plaka("Duyuru", (0.008, 1.15, 1.62), 0.21, 0.297, duyuru_m, (1, 0, 0), K)  # boya şeridinin (z 1.4) üstünde; o.rotation_euler.rotate_axis("Y", 0.03)
-plaka("Kat_Levha", (0.006, 2.5, 1.75), 0.3, 0.15, levha_m, (1, 0, 0), K)
+plaka("Kat_Levha", (0.0075, 2.5, 1.75), 0.3, 0.15, levha_m, (1, 0, 0), K)
 kutu("Kat_Levha_Arka", (0.003, 2.5, 1.75), (0.006, 0.31, 0.16), pvc, K)
 kutu("Lobi_Otomat_Taban", (0.006, 0.3, 1.2), (0.012, 0.07, 0.07), beyaz_pl, K)
 kutu("Lobi_Otomat_Dugme", (0.016, 0.3, 1.2), (0.008, 0.036, 0.036), otomat_isik, K)
