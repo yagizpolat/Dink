@@ -11,6 +11,7 @@ public class FocusAnomaly : MonoBehaviour
     [SerializeField] private GameObject[] targets;   // sırayla kaybolan nesneler
     [SerializeField] private Collider[] spots;       // her nesnenin yeri; kapalı nesnenin collider'ı ışın yakalamaz
     [SerializeField] private Light finishLight;      // görev bitince yanar
+    [SerializeField] private UnityEngine.Events.UnityEvent onFinished;  // ör. sıradaki kapı açılır
     [SerializeField] private float darkSeconds = 3f;
     [SerializeField] private float focusFov = 35f;
     [SerializeField] private float focusSpeed = 18f; // derece / sn
@@ -81,6 +82,7 @@ public class FocusAnomaly : MonoBehaviour
         if (index < targets.Length) return;
 
         if (finishLight != null) finishLight.enabled = true;
+        onFinished.Invoke();
         ScreenHint.Show(DinkLang.T("Everything is back. A light is on at the end of the hall.", "Her şey yerinde. Koridorun sonunda bir ışık yanıyor.",
             "Alles ist zurück. Am Ende des Flurs brennt Licht.", "Tout est revenu. Une lumière brille au bout du couloir.",
             "Todo ha vuelto. Hay una luz al final del pasillo.", "Tudo voltou. Há uma luz no fim do corredor.",

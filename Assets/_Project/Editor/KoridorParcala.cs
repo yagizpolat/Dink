@@ -28,6 +28,8 @@ public static class KoridorParcala
         new Parca("Kapi2_Kanat", new Vector3(1.87f, 0.005f, 6.025f), new Vector3(1.995f, 2.125f, 6.975f), new Vector3(1.99f, 0f, 6.03f)),
         new Parca("Petek", new Vector3(-7.995f, 0.03f, 10.5f), new Vector3(-7.7f, 0.86f, 11.6f), new Vector3(-7.86f, 0f, 11.05f)),
         new Parca("YanginDolabi", new Vector3(1.5f, 0.85f, 8.05f), new Vector3(1.905f, 1.7f, 8.75f), new Vector3(1.8f, 0.88f, 8.4f)),
+        // L kolunun güney duvarındaki 6 numara: menteşe zil tarafında (batı), kanat iç yüzü z=10.01
+        new Parca("Kapi6_Kanat", new Vector3(-6.075f, 0.005f, 10.005f), new Vector3(-5.125f, 2.125f, 10.13f), new Vector3(-6.07f, 0f, 10.01f)),
     };
 
     [MenuItem("Dink/Koridoru Parçala")]
@@ -113,20 +115,34 @@ public static class KoridorParcala
         return mesh;
     }
 
-    /// <summary>Sahnedeki aynı adlı nesneye (ya da kapıda Daire2_Kapi/Menteşe/Kanat'a) yeni mesh'i takar.</summary>
+    /// <summary>Sahnedeki aynı adlı nesneye takar; kapı kanadı ise DaireN_Kapi/Menteşe/Kanat'a (yoksa kurar).</summary>
     private static void Bagla(Parca p, Mesh mesh, Material[] malz)
     {
         GameObject hedef = null;
+        bool kapi = p.ad.StartsWith("Kapi");
+        string kok = kapi ? "Daire" + p.ad.Substring(4, 1) + "_Kapi" : p.ad;
         foreach (var r in Object.FindObjectsByType<MeshFilter>(FindObjectsInactive.Include, FindObjectsSortMode.None))
         {
             string ad = r.gameObject.name;
-            if (ad == p.ad || (p.ad == "Kapi2_Kanat" && ad == "Kanat" && r.transform.root.name == "Daire2_Kapi"))
+            if ((!kapi && ad == p.ad) || (kapi && ad == "Kanat" && r.transform.root.name == kok && r.gameObject.scene.IsValid()))
                 hedef = r.gameObject;
         }
+        if (hedef == null && kapi)
+        {
+            var k = new GameObject(kok);
+            var m = new GameObject("Menteşe"); m.transform.SetParent(k.transform, false);
+            hedef = new GameObject("Kanat"); hedef.transform.SetParent(m.transform, false);
+            hedef.AddComponent<MeshFilter>(); hedef.AddComponent<MeshRenderer>();
+        }
         if (hedef == null) { Debug.LogWarning("KoridorParcala: sahnede yok " + p.ad); return; }
-        hedef.transform.root.position = p.ad == "Kapi2_Kanat" ? p.pivot : hedef.transform.root.position;
-        if (hedef.transform.root == hedef.transform) hedef.transform.position = p.pivot;
+        hedef.transform.root.position = p.pivot;
         hedef.GetComponent<MeshFilter>().sharedMesh = mesh;
         hedef.GetComponent<MeshRenderer>().sharedMaterials = malz;
+        if (kapi)
+        {
+            var bc = hedef.GetComponent<BoxCollider>();
+            if (bc != null) Object.DestroyImmediate(bc);
+            hedef.AddComponent<BoxCollider>();
+        }
     }
 }

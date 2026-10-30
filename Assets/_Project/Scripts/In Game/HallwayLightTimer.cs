@@ -11,7 +11,7 @@ public class HallwayLightTimer : MonoBehaviour
     [SerializeField] private float duration = 30f;
     [SerializeField] private float warnSeconds = 4f;
     [SerializeField] private Light[] lights;
-    [SerializeField] private Renderer glowRenderer;            // lamba kürelerini taşıyan birleşik koridor modeli
+    [SerializeField] private Renderer[] glowRenderers;         // lamba kürelerini taşıyan birleşik koridor modelleri (her kat)
     [SerializeField] private string glowMaterialPrefix = "M_K_Opal";
     [SerializeField] private Color darkAmbient = new Color(0.012f, 0.012f, 0.016f);
     [SerializeField] private Color litAmbient = new Color(0.12f, 0.1f, 0.08f);
@@ -34,13 +34,14 @@ public class HallwayLightTimer : MonoBehaviour
         for (int i = 0; i < lights.Length; i++) baseIntensity[i] = lights[i].intensity;
 
         // renderer.materials örnek kopyalar döndürür: proje malzemeleri oyun sırasında değişmez
-        if (glowRenderer != null)
-            foreach (var m in glowRenderer.materials)
-                if (m.name.StartsWith(glowMaterialPrefix))
-                {
-                    glowMaterials.Add(m);
-                    glowBase.Add(m.GetColor(EmissionColor));
-                }
+        foreach (var r in glowRenderers)
+            if (r != null)
+                foreach (var m in r.materials)
+                    if (m.name.StartsWith(glowMaterialPrefix))
+                    {
+                        glowMaterials.Add(m);
+                        glowBase.Add(m.GetColor(EmissionColor));
+                    }
 
         audioSource = gameObject.AddComponent<AudioSource>();
         audioSource.spatialBlend = 0f;
