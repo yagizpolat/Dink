@@ -36,6 +36,8 @@ public static class KoridorParcala
         // Kat 2'de kaybolup geri gelen düz levhalar: lobi duvarındaki yönetim duyurusu, asansör üstü kat göstergesi
         new Parca("Duyuru", new Vector3(-0.001f, 1.47f, 2.89f), new Vector3(0.02f, 1.77f, 3.11f), new Vector3(0.008f, 1.62f, 3f)),
         new Parca("KatGosterge", new Vector3(0.83f, 2.32f, 0.049f), new Vector3(1.07f, 2.45f, 0.052f), new Vector3(0.95f, 2.385f, 0.0505f)),
+        // Kat 3: Daire 4'ün zil isimliği (STONE -> KAYA), düz levha, isimlik atlasının 4. hücresi
+        new Parca("Isimlik4", new Vector3(1.887f, 1.349f, 9.484f), new Vector3(1.889f, 1.411f, 9.546f), new Vector3(1.888f, 1.38f, 9.515f)),
         new Parca("Kapi6_Kanat", new Vector3(-6.075f, 0.005f, 10.005f), new Vector3(-5.125f, 2.125f, 10.13f), new Vector3(-6.07f, 0f, 10.01f)),
     };
 
