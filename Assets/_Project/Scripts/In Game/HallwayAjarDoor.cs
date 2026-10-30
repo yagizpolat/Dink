@@ -20,7 +20,7 @@ public class HallwayAjarDoor : MonoBehaviour
     [SerializeField] private float[] stageAngles = { 0f, 2.5f, 9f, 45f };
     [SerializeField] private float[] stageTv = { 0f, 1.5f, 6f, 0f };
     [SerializeField] private int closesToFinish = 3;
-    [SerializeField] private float darkAdvanceSeconds = 25f;  // ışığı hiç yakmayana da kapı ilerler
+    private const float DarkAdvanceSeconds = 12f;     // ışığı hiç yakmayana da kapı ilerler
     [SerializeField] private float reach = 2f;
 
     private int stage;
@@ -41,7 +41,7 @@ public class HallwayAjarDoor : MonoBehaviour
         source = GetComponent<AudioSource>();
         source.spatialBlend = 1f;
         source.minDistance = 0.8f;
-        source.maxDistance = 12f;
+        source.maxDistance = 16f;
         tvSource = gameObject.AddComponent<AudioSource>();
         tvSource.spatialBlend = 1f;
         tvSource.minDistance = 0.6f;
@@ -58,6 +58,16 @@ public class HallwayAjarDoor : MonoBehaviour
             "让走廊保持原样。", "廊下をいつも通りに保て。", "복도를 그대로 유지하라.");
         if (finishLight != null) finishLight.enabled = false;
         ApplyStage(0, instant: true);
+        Invoke(nameof(FirstHint), 1.5f);
+    }
+
+    // Oyuncu karanlıkta başlar: ilk iş ışığı yakmak
+    private void FirstHint()
+    {
+        if (timer.IsLit) return;
+        ScreenHint.Show(DinkLang.T("The orange switch turns on the light.", "Turuncu düğme ışığı yakar.", "Der orange Schalter macht Licht.",
+            "L'interrupteur orange allume la lumière.", "El interruptor naranja enciende la luz.", "O interruptor laranja acende a luz.",
+            "Оранжевая кнопка включает свет.", "橙色按钮可以开灯。", "オレンジのスイッチで明かりが点く。", "주황색 스위치를 누르면 불이 켜진다."), 30f);
     }
 
     private void Update()
@@ -67,7 +77,7 @@ public class HallwayAjarDoor : MonoBehaviour
         bool lit = timer.IsLit;
         if (wasLit && !lit) Advance();
         darkTime = lit ? 0f : darkTime + Time.deltaTime;
-        if (darkTime > darkAdvanceSeconds) { darkTime = 0f; Advance(); }
+        if (darkTime > DarkAdvanceSeconds) { darkTime = 0f; Advance(); }
         wasLit = lit;
 
         if (busy || stage == 0) return;
@@ -92,6 +102,10 @@ public class HallwayAjarDoor : MonoBehaviour
         if (busy) return;
         if (stage >= stageAngles.Length - 1) { StartCoroutine(Caught()); return; }
         ApplyStage(stage + 1, instant: false);
+        if (stage == 1 && closes == 0)
+            ScreenHint.Show(DinkLang.T("Somewhere, a door creaked.", "Bir yerde bir kapı gıcırdadı.", "Irgendwo knarrte eine Tür.",
+                "Quelque part, une porte a grincé.", "En algún lugar, una puerta crujió.", "Em algum lugar, uma porta rangeu.",
+                "Где-то скрипнула дверь.", "某处有扇门吱呀作响。", "どこかでドアが軋んだ。", "어디선가 문이 삐걱거렸다."), 999f);
     }
 
     private void ApplyStage(int next, bool instant)
@@ -109,7 +123,7 @@ public class HallwayAjarDoor : MonoBehaviour
         if (creak)
         {
             source.pitch = Random.Range(0.85f, 1.1f);
-            source.PlayOneShot(Creak(seconds, Random.Range(0, 1000)), 0.7f);
+            source.PlayOneShot(Creak(seconds, Random.Range(0, 1000)), 1f);
         }
         float from = angle;
         for (float t = 0f; t < seconds; t += Time.deltaTime)
