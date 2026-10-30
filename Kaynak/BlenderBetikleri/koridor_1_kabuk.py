@@ -88,11 +88,11 @@ kutu("Zemin_MerdivenBasi", (3.05, 3.2, -0.1), (2.3, 0.4, 0.2), basamak, K)
 # ── Duvarlar ──
 KAPI = 1.0  # kasa dahil kapı boşluğu
 KAPI5, KAPI6 = -3.0, -5.6  # kol kapılarının x merkezi: 5 kuzey duvarında, 6 güney duvarında
-sol_delik = [(5.0 - KAPI / 2, 5.0 + KAPI / 2, 0, 2.15), (9.0 - KAPI / 2, 9.0 + KAPI / 2, 0, 2.15)]
+sol_delik = [(0.7, 1.9, 0, 2.3), (5.0 - KAPI / 2, 5.0 + KAPI / 2, 0, 2.15), (9.0 - KAPI / 2, 9.0 + KAPI / 2, 0, 2.15)]  # ilki: köşe geçidi çıkışı (lobi)
 sag_delik = [(6.5 - KAPI / 2, 6.5 + KAPI / 2, 0, 2.15), (10.3 - KAPI / 2, 10.3 + KAPI / 2, 0, 2.15)]
 asansor_delik = [(0.95 - 0.55, 0.95 + 0.55, 0, 2.2)]
 pencere = [((KY0 + 12.0) / 2 - 0.5, (KY0 + 12.0) / 2 + 0.5, 0.95, 2.15)]
-kuzey_delik = [(KAPI5 - KAPI / 2, KAPI5 + KAPI / 2, 0, 2.15)]
+kuzey_delik = [(-7.75, -6.55, 0, 2.3), (KAPI5 - KAPI / 2, KAPI5 + KAPI / 2, 0, 2.15)]  # ilki: köşe geçidi girişi
 guney_delik = [(KAPI6 - KAPI / 2, KAPI6 + KAPI / 2, 0, 2.15)]
 duvar("Duvar_Sol", "y", -T / 2, -T, KY0, 0, H, sol_delik)
 duvar("Duvar_Sag", "y", 1.9 + T / 2, 3.4, 12.0 + T, 0, H, sag_delik)

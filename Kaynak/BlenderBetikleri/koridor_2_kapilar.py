@@ -161,7 +161,7 @@ a("Panel_Taban", 1.62, 1.73, -0.005, 0.006, 1.02, 1.26, celik)
 plaka("Asansor_Panel", (1.675, 0.0065, 1.14), 0.1, 0.2, panel_m, (0, 1, 0), K)
 
 # ── Lobi duvarı: duyuru (hafif eğri asılmış), kat levhası, ışık otomatiği ──
-o = plaka("Duyuru", (0.008, 1.15, 1.62), 0.21, 0.297, duyuru_m, (1, 0, 0), K)  # boya şeridinin (z 1.4) üstünde; o.rotation_euler.rotate_axis("Y", 0.03)
+o = plaka("Duyuru", (0.008, 3.0, 1.62), 0.21, 0.297, duyuru_m, (1, 0, 0), K)  # boya şeridinin (z 1.4) üstünde; o.rotation_euler.rotate_axis("Y", 0.03)
 plaka("Kat_Levha", (0.0075, 2.5, 1.75), 0.3, 0.15, levha_m, (1, 0, 0), K)
 kutu("Kat_Levha_Arka", (0.003, 2.5, 1.75), (0.006, 0.31, 0.16), pvc, K)
 kutu("Lobi_Otomat_Taban", (0.006, 0.3, 1.2), (0.012, 0.07, 0.07), beyaz_pl, K)
@@ -214,10 +214,10 @@ def supurge(eksen, sabit, a0, a1, bosluklar):
             kutu("Supurgelik", (sabit, (s0 + s1) / 2, 0.04), (0.012, s1 - s0, 0.08), mozaik, K)
         else:
             kutu("Supurgelik", ((s0 + s1) / 2, sabit, 0.04), (s1 - s0, 0.012, 0.08), mozaik, K)
-supurge("y", 0.006, 0, KY0, [(4.43, 5.57), (8.43, 9.57)])
+supurge("y", 0.006, 0, KY0, [(0.7, 1.9), (4.43, 5.57), (8.43, 9.57)])
 supurge("y", 1.894, 3.4, 12, [(5.93, 7.07), (9.73, 10.87)])
 supurge("x", 0.006, 0, 1.9, [(0.34, 1.56)])
-supurge("x", 11.994, KX, 1.9, [(-3.57, -2.43)])
+supurge("x", 11.994, KX, 1.9, [(-7.75, -6.55), (-3.57, -2.43)])
 supurge("x", KY0 + 0.006, KX, 0, [(-6.17, -5.03)])
 supurge("y", KX + 0.006, KY0, 12, [])
 print("koridor kapılar tamam", len(koleksiyon(K).objects))
