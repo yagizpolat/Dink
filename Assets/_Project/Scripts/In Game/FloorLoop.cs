@@ -14,13 +14,36 @@ public class FloorLoop : MonoBehaviour
     [SerializeField] private Transform exitGate;          // çıkış geçidinin aynı noktası
     [SerializeField] private float crossRight = 1.4f;     // iki dönemecin ortası (yerel x)
     [SerializeField] private float minForward = 2.15f;    // dönemeçler arası bölüm başlangıcı (yerel z)
-    [SerializeField] private GameObject[] targets;        // kat yenilenince yerine dönen nesneler
+    [SerializeField] private FloorTargets[] floors;       // floors[n-1]: n. katta sırayla kaybolan nesneler ve yerleri (son kat tekrarlanır)
     [SerializeField] private Light gateLight;             // görev bitince geçidin ağzında yanan ışık
     [SerializeField] private Transform gateWall;          // geçidin ağzını kapatan duvar tapası
     [SerializeField] private float sinkSeconds = 3.5f;
     [SerializeField] private Renderer koridor;            // kat levhasını taşıyan model
     [SerializeField] private Texture2D[] signs;           // FLOOR 1, FLOOR 2, ...
     [SerializeField] private string signMaterialPrefix = "M_K_KatLevha";
+    [SerializeField] private FloorSwap[] swaps;           // kat başına değişen diğer dokular (duyuru, gösterge...)
+
+    /// <summary>Bir katın kaybolacak nesneleri (sırayla) ve her birinin yeri (FocusAnomaly.spots).</summary>
+    [System.Serializable]
+    private class FloorTargets
+    {
+        public GameObject[] objects;
+        public Collider[] spots;
+    }
+
+    /// <summary>
+    /// Nesne kaybolduğu an dokusu değişir, geri gelince yeni halini taşır. byFloor[n-1] boşsa o katta dokunulmaz;
+    /// değişiklik sonraki katlarda kalır. targetIndex: hangi nesne kaybolunca (o katın hedef sırası).
+    /// </summary>
+    [System.Serializable]
+    private class FloorSwap
+    {
+        public Renderer renderer;
+        public string materialPrefix;
+        public int targetIndex;
+        public Texture2D[] byFloor;
+        public GameObject reveal;     // doku değişirken açılan ek parça (ör. duyuruya zımbalı fiş); boş olabilir
+    }
 
     private bool open;
     private int floorNumber = 1;
@@ -30,6 +53,7 @@ public class FloorLoop : MonoBehaviour
     private AudioSource wallSource;
     private static AudioClip grind;
     private static readonly int BaseMap = Shader.PropertyToID("_BaseMap");
+    private static readonly int EmissionMap = Shader.PropertyToID("_EmissionMap");
 
     private void Awake()
     {
@@ -45,7 +69,13 @@ public class FloorLoop : MonoBehaviour
             wallSource.maxDistance = 25f;
             if (grind == null) grind = Grind();
         }
+        if (anomaly != null) anomaly.TargetVanished += OnTargetVanished;
         SetSign(floorNumber);
+    }
+
+    private void OnDestroy()
+    {
+        if (anomaly != null) anomaly.TargetVanished -= OnTargetVanished;
     }
 
     /// <summary>Görev bitti (FocusAnomaly.onFinished): geçit bir sonraki kata açılır.</summary>
@@ -100,10 +130,12 @@ public class FloorLoop : MonoBehaviour
         open = false;
         if (gateLight != null) gateLight.enabled = false;
         if (gateWall != null) { gateWall.position = wallRest; gateWall.gameObject.SetActive(true); }
-        foreach (var t in targets) t.SetActive(true);
+        foreach (var f in floors)
+            foreach (var t in f.objects) t.SetActive(true);
         floorNumber++;
         SetSign(floorNumber);
-        anomaly.Restart(targets);
+        FloorTargets next = floors[Mathf.Min(floorNumber, floors.Length) - 1];
+        anomaly.Restart(next.objects, next.spots);
     }
 
     /// <summary>Taş sürtünmesi: alçak, pürüzlü gürültü; sonda tok bir oturma.</summary>
@@ -134,5 +166,24 @@ public class FloorLoop : MonoBehaviour
         Texture2D tex = signs[Mathf.Clamp(n - 1, 0, signs.Length - 1)];
         foreach (var m in koridor.materials)
             if (m.name.StartsWith(signMaterialPrefix)) m.SetTexture(BaseMap, tex);
+    }
+
+    private void OnTargetVanished(int index)
+    {
+        if (swaps == null) return;
+        int n = floorNumber;
+        foreach (var swap in swaps)
+        {
+            if (swap.targetIndex != index || swap.renderer == null || swap.byFloor == null || swap.byFloor.Length == 0) continue;
+            Texture2D tex = swap.byFloor[Mathf.Clamp(n - 1, 0, swap.byFloor.Length - 1)];
+            if (tex == null) continue;
+            foreach (var m in swap.renderer.materials)
+            {
+                if (!m.name.StartsWith(swap.materialPrefix)) continue;
+                m.SetTexture(BaseMap, tex);
+                if (m.GetTexture(EmissionMap) != null) m.SetTexture(EmissionMap, tex);   // ışıklı yüzeyler (gösterge)
+            }
+            if (swap.reveal != null) swap.reveal.SetActive(true);
+        }
     }
 }

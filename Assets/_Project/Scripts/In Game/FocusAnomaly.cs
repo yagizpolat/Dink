@@ -30,6 +30,9 @@ public class FocusAnomaly : MonoBehaviour
     private float kick;        // nesne gelince sönen sarsıntı darbesi
     private static AudioClip whoomp, rumble;
 
+    /// <summary>Bir nesne kaybolunca (sıra numarasıyla) tetiklenir; FloorLoop kayıpken doku değiştirir.</summary>
+    public event System.Action<int> TargetVanished;
+
     private void Start()
     {
         cam = Camera.main;
@@ -98,9 +101,10 @@ public class FocusAnomaly : MonoBehaviour
     public void Shake(float amount) => kick = Mathf.Max(kick, amount);
 
     /// <summary>Yeni kat: görev yeni nesnelerle baştan başlar (FloorLoop).</summary>
-    public void Restart(GameObject[] newTargets)
+    public void Restart(GameObject[] newTargets, Collider[] newSpots)
     {
         targets = newTargets;
+        spots = newSpots;
         index = 0;
         vanished = false;
         held = 0f;
@@ -112,6 +116,7 @@ public class FocusAnomaly : MonoBehaviour
     {
         vanished = true;
         targets[index].SetActive(false);
+        TargetVanished?.Invoke(index);
         ScreenHint.Show(DinkLang.T("Something is missing. Hold F to focus.", "Bir şey eksik. Odaklanmak için F'yi basılı tut.",
             "Etwas fehlt. Halte F, um dich zu konzentrieren.", "Il manque quelque chose. Maintiens F pour te concentrer.",
             "Falta algo. Mantén F para concentrarte.", "Falta algo. Segure F para se concentrar.",

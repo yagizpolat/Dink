@@ -33,6 +33,9 @@ public static class KoridorParcala
         new Parca("Asansor_Kanat", new Vector3(0.455f, 0.005f, -0.075f), new Vector3(1.445f, 2.145f, 0.025f), new Vector3(0.46f, 0f, -0.05f)),
         // Köşe geçidi ağzını kapatan duvar tapası (görev bitince gömülür)
         new Parca("Gecit_Tapa", new Vector3(-7.7505f, -0.001f, 11.98f), new Vector3(-6.5495f, 2.3005f, 12.1505f), new Vector3(-7.15f, 0f, 12.075f)),
+        // Kat 2'de kaybolup geri gelen düz levhalar: lobi duvarındaki yönetim duyurusu, asansör üstü kat göstergesi
+        new Parca("Duyuru", new Vector3(-0.001f, 1.47f, 2.89f), new Vector3(0.02f, 1.77f, 3.11f), new Vector3(0.008f, 1.62f, 3f)),
+        new Parca("KatGosterge", new Vector3(0.83f, 2.32f, 0.049f), new Vector3(1.07f, 2.45f, 0.052f), new Vector3(0.95f, 2.385f, 0.0505f)),
         new Parca("Kapi6_Kanat", new Vector3(-6.075f, 0.005f, 10.005f), new Vector3(-5.125f, 2.125f, 10.13f), new Vector3(-6.07f, 0f, 10.01f)),
     };
 
