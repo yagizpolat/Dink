@@ -18,6 +18,7 @@ public class HallwayClueTask : MonoBehaviour
     public AudioClip MuffledClip { get; private set; }
 
     private int count;
+    private readonly System.Collections.Generic.HashSet<HallwayClue.Kind> foundKinds = new System.Collections.Generic.HashSet<HallwayClue.Kind>();
     private TMP_Text label;
     private AudioSource audioSource;
     private AudioClip foundClip;
@@ -38,6 +39,7 @@ public class HallwayClueTask : MonoBehaviour
     {
         if (Done) return;
         count++;
+        foundKinds.Add(clue.ClueKind);
         audioSource.PlayOneShot(foundClip);
         Refresh();
         if (count >= total) Invoke(nameof(Complete), 2.5f);
@@ -59,8 +61,15 @@ public class HallwayClueTask : MonoBehaviour
         string head = DinkLang.T("Find the apartment that is still awake", "Hâlâ uyanık olan daireyi bul", "Finde die Wohnung, in der noch jemand wach ist",
             "Trouve l'appartement encore éveillé", "Encuentra el piso que sigue despierto", "Encontre o apartamento que ainda está acordado",
             "Найди квартиру, где ещё не спят", "找出还醒着的那户", "まだ起きている部屋を探せ", "아직 깨어 있는 집을 찾아라");
-        label.text = $"{head}  {count}/{total}";
+        // Hangi ipucunun kaldığı görünsün: bulunan satır işaretli ve soluk
+        string bell = DinkLang.T("Doorbell", "Zil", "Klingel", "Sonnette", "Timbre", "Campainha", "Звонок", "门铃", "呼び鈴", "초인종");
+        string peep = DinkLang.T("Peephole", "Kapı dürbünü", "Türspion", "Judas", "Mirilla", "Olho mágico", "Глазок", "猫眼", "のぞき穴", "문구멍");
+        string name = DinkLang.T("Nameplate", "İsimlik", "Namensschild", "Plaque", "Placa", "Placa", "Табличка", "名牌", "表札", "명패");
+        label.text = $"{head}  {count}/{total}\n<size=80%>{Line(bell, HallwayClue.Kind.Bell)}\n{Line(peep, HallwayClue.Kind.Peephole)}\n{Line(name, HallwayClue.Kind.Nameplate)}</size>";
     }
+
+    private string Line(string text, HallwayClue.Kind kind) =>
+        foundKinds.Contains(kind) ? $"<color=#8a8578>[x] {text}</color>" : $"[ ] {text}";
 
     private TMP_Text CreateLabel()
     {
@@ -84,7 +93,7 @@ public class HallwayClueTask : MonoBehaviour
         RectTransform r = tmp.rectTransform;
         r.anchorMin = r.anchorMax = r.pivot = new Vector2(0f, 1f);
         r.anchoredPosition = new Vector2(48f, -40f);
-        r.sizeDelta = new Vector2(1100f, 60f);
+        r.sizeDelta = new Vector2(1100f, 180f);
         return tmp;
     }
 

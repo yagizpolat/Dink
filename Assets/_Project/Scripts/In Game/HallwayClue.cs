@@ -20,6 +20,8 @@ public class HallwayClue : MonoBehaviour
     private AudioSource source;
     private bool found;
 
+    public Kind ClueKind => kind;
+
     private void Awake()
     {
         col = GetComponent<Collider>();
