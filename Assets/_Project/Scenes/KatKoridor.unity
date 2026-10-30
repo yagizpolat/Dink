@@ -2130,7 +2130,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4af1b1769ad513e41ae26393a51a5424, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::HallwayLightTimer
-  duration: 30
+  duration: 12
   warnSeconds: 4
   lights:
   - {fileID: 1908406751}
@@ -3068,6 +3068,57 @@ MeshRenderer:
   m_CorrespondingSourceObject: {fileID: -7511558181221131132, guid: 15b464b4ca64a0743877af2f08cd3008, type: 3}
   m_PrefabInstance: {fileID: 1715065272}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &1715572280
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1715572282}
+  - component: {fileID: 1715572281}
+  m_Layer: 0
+  m_Name: OdakGorevi
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &1715572281
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1715572280}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7f835bcd82d4aca4fa4a3f6241b4ff78, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::FocusAnomaly
+  timer: {fileID: 1100208902}
+  target: {fileID: 2131967256}
+  spot: {fileID: 127025755}
+  darkSeconds: 3
+  focusFov: 35
+  focusSpeed: 18
+  holdSeconds: 3
+--- !u!4 &1715572282
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1715572280}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1795435732
 GameObject:
   m_ObjectHideFlags: 0
@@ -3955,3 +4006,4 @@ SceneRoots:
   - {fileID: 1202490344}
   - {fileID: 2131967260}
   - {fileID: 127025756}
+  - {fileID: 1715572282}
