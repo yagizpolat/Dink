@@ -1,0 +1,522 @@
+{
+ "malzeme": {
+  "M_K_Armatur_Taban": {
+   "metal": 0.0,
+   "normal": true,
+   "isik": 0.0,
+   "isik_renk": [
+    1.0,
+    1.0,
+    1.0
+   ],
+   "alfa": false
+  },
+  "M_K_Asansor_Boya": {
+   "metal": 0.0,
+   "normal": true,
+   "isik": 0.0,
+   "isik_renk": [
+    1.0,
+    1.0,
+    1.0
+   ],
+   "alfa": false
+  },
+  "M_K_AsansorPanel": {
+   "metal": 1.0,
+   "normal": false,
+   "isik": 0.0,
+   "isik_renk": [
+    1.0,
+    1.0,
+    1.0
+   ],
+   "alfa": false
+  },
+  "M_K_Basamak_Mozaik": {
+   "metal": 0.0,
+   "normal": true,
+   "isik": 0.0,
+   "isik_renk": [
+    1.0,
+    1.0,
+    1.0
+   ],
+   "alfa": false
+  },
+  "M_K_Boya_Serit": {
+   "metal": 0.0,
+   "normal": true,
+   "isik": 0.0,
+   "isik_renk": [
+    1.0,
+    1.0,
+    1.0
+   ],
+   "alfa": false
+  },
+  "M_K_Celik": {
+   "metal": 1.0,
+   "normal": true,
+   "isik": 0.0,
+   "isik_renk": [
+    1.0,
+    1.0,
+    1.0
+   ],
+   "alfa": false
+  },
+  "M_K_DaireNo": {
+   "metal": 1.0,
+   "normal": false,
+   "isik": 0.0,
+   "isik_renk": [
+    1.0,
+    1.0,
+    1.0
+   ],
+   "alfa": false
+  },
+  "M_K_Demir_Siyah": {
+   "metal": 0.0,
+   "normal": true,
+   "isik": 0.0,
+   "isik_renk": [
+    1.0,
+    1.0,
+    1.0
+   ],
+   "alfa": false
+  },
+  "M_K_Duvar_Siva": {
+   "metal": 0.0,
+   "normal": true,
+   "isik": 0.0,
+   "isik_renk": [
+    1.0,
+    1.0,
+    1.0
+   ],
+   "alfa": false
+  },
+  "M_K_Duvar_YagliBoya": {
+   "metal": 0.0,
+   "normal": true,
+   "isik": 0.0,
+   "isik_renk": [
+    1.0,
+    1.0,
+    1.0
+   ],
+   "alfa": false
+  },
+  "M_K_Duyuru": {
+   "metal": 0.0,
+   "normal": true,
+   "isik": 0.0,
+   "isik_renk": [
+    1.0,
+    1.0,
+    1.0
+   ],
+   "alfa": false
+  },
+  "M_K_Gece": {
+   "metal": 0.0,
+   "normal": false,
+   "isik": 0.8999999761581421,
+   "isik_renk": [
+    1.0,
+    1.0,
+    1.0
+   ],
+   "alfa": false
+  },
+  "M_K_Hortum": {
+   "metal": 0.0,
+   "normal": true,
+   "isik": 0.0,
+   "isik_renk": [
+    1.0,
+    1.0,
+    1.0
+   ],
+   "alfa": false
+  },
+  "M_K_Isimlik": {
+   "metal": 0.0,
+   "normal": true,
+   "isik": 0.0,
+   "isik_renk": [
+    1.0,
+    1.0,
+    1.0
+   ],
+   "alfa": false
+  },
+  "M_K_Kapi_Ceviz": {
+   "metal": 0.0,
+   "normal": true,
+   "isik": 0.0,
+   "isik_renk": [
+    1.0,
+    1.0,
+    1.0
+   ],
+   "alfa": false
+  },
+  "M_K_Kapi_Cita": {
+   "metal": 0.0,
+   "normal": true,
+   "isik": 0.0,
+   "isik_renk": [
+    1.0,
+    1.0,
+    1.0
+   ],
+   "alfa": false
+  },
+  "M_K_KatGosterge": {
+   "metal": 0.0,
+   "normal": false,
+   "isik": 2.5,
+   "isik_renk": [
+    1.0,
+    1.0,
+    1.0
+   ],
+   "alfa": false
+  },
+  "M_K_KatLevha": {
+   "metal": 0.0,
+   "normal": false,
+   "isik": 0.0,
+   "isik_renk": [
+    1.0,
+    1.0,
+    1.0
+   ],
+   "alfa": false
+  },
+  "M_K_Kupeste": {
+   "metal": 0.0,
+   "normal": true,
+   "isik": 0.0,
+   "isik_renk": [
+    1.0,
+    1.0,
+    1.0
+   ],
+   "alfa": false
+  },
+  "M_K_Kuyu_Karanlik": {
+   "metal": 0.0,
+   "normal": false,
+   "isik": 0.0,
+   "isik_renk": [
+    1.0,
+    1.0,
+    1.0
+   ],
+   "alfa": false
+  },
+  "M_K_Otomat_Dugme": {
+   "metal": 0.0,
+   "normal": true,
+   "isik": 1.600000023841858,
+   "isik_renk": [
+    1.0,
+    0.44999998807907104,
+    0.10000000149011612
+   ],
+   "alfa": false
+  },
+  "M_K_Paspas": {
+   "metal": 0.0,
+   "normal": true,
+   "isik": 0.0,
+   "isik_renk": [
+    1.0,
+    1.0,
+    1.0
+   ],
+   "alfa": false
+  },
+  "M_K_Petek": {
+   "metal": 0.0,
+   "normal": true,
+   "isik": 0.0,
+   "isik_renk": [
+    1.0,
+    1.0,
+    1.0
+   ],
+   "alfa": false
+  },
+  "M_K_Pirinc": {
+   "metal": 1.0,
+   "normal": true,
+   "isik": 0.0,
+   "isik_renk": [
+    1.0,
+    1.0,
+    1.0
+   ],
+   "alfa": false
+  },
+  "M_K_Plastik_Beyaz": {
+   "metal": 0.0,
+   "normal": true,
+   "isik": 0.0,
+   "isik_renk": [
+    1.0,
+    1.0,
+    1.0
+   ],
+   "alfa": false
+  },
+  "M_K_Plastik_Krem": {
+   "metal": 0.0,
+   "normal": true,
+   "isik": 0.0,
+   "isik_renk": [
+    1.0,
+    1.0,
+    1.0
+   ],
+   "alfa": false
+  },
+  "M_K_PVC": {
+   "metal": 0.0,
+   "normal": true,
+   "isik": 0.0,
+   "isik_renk": [
+    1.0,
+    1.0,
+    1.0
+   ],
+   "alfa": false
+  },
+  "M_K_Tavan": {
+   "metal": 0.0,
+   "normal": true,
+   "isik": 0.0,
+   "isik_renk": [
+    1.0,
+    1.0,
+    1.0
+   ],
+   "alfa": false
+  },
+  "M_K_Yangin_Kirmizi": {
+   "metal": 0.0,
+   "normal": true,
+   "isik": 0.0,
+   "isik_renk": [
+    1.0,
+    1.0,
+    1.0
+   ],
+   "alfa": false
+  },
+  "M_K_YanginEtiket": {
+   "metal": 0.0,
+   "normal": false,
+   "isik": 0.0,
+   "isik_renk": [
+    1.0,
+    1.0,
+    1.0
+   ],
+   "alfa": false
+  },
+  "M_K_Zemin_Mozaik": {
+   "metal": 0.0,
+   "normal": true,
+   "isik": 0.0,
+   "isik_renk": [
+    1.0,
+    1.0,
+    1.0
+   ],
+   "alfa": false
+  }
+ },
+ "isik": [
+  {
+   "ad": "Lamba_Lobi_Isik",
+   "tur": "POINT",
+   "konum": [
+    0.949999988079071,
+    1.7000000476837158,
+    2.559999942779541
+   ],
+   "yon": [
+    0.0,
+    0.0,
+    -1.0
+   ],
+   "guc": 160.0,
+   "renk": [
+    1.0,
+    0.7200000286102295,
+    0.44999998807907104
+   ],
+   "boy": [
+    0,
+    0
+   ],
+   "golge": true
+  },
+  {
+   "ad": "Lamba_Koridor1_Isik",
+   "tur": "POINT",
+   "konum": [
+    0.949999988079071,
+    5.699999809265137,
+    2.559999942779541
+   ],
+   "yon": [
+    0.0,
+    0.0,
+    -1.0
+   ],
+   "guc": 160.0,
+   "renk": [
+    1.0,
+    0.7200000286102295,
+    0.44999998807907104
+   ],
+   "boy": [
+    0,
+    0
+   ],
+   "golge": true
+  },
+  {
+   "ad": "Lamba_Koridor2_Isik",
+   "tur": "POINT",
+   "konum": [
+    0.949999988079071,
+    8.699999809265137,
+    2.559999942779541
+   ],
+   "yon": [
+    0.0,
+    0.0,
+    -1.0
+   ],
+   "guc": 80.0,
+   "renk": [
+    1.0,
+    0.7200000286102295,
+    0.44999998807907104
+   ],
+   "boy": [
+    0,
+    0
+   ],
+   "golge": true
+  },
+  {
+   "ad": "Lamba_Koridor3_Isik",
+   "tur": "POINT",
+   "konum": [
+    0.949999988079071,
+    11.199999809265137,
+    2.559999942779541
+   ],
+   "yon": [
+    0.0,
+    0.0,
+    -1.0
+   ],
+   "guc": 160.0,
+   "renk": [
+    1.0,
+    0.7200000286102295,
+    0.44999998807907104
+   ],
+   "boy": [
+    0,
+    0
+   ],
+   "golge": true
+  },
+  {
+   "ad": "Aplik_Isik",
+   "tur": "POINT",
+   "konum": [
+    4.039999961853027,
+    -0.4000000059604645,
+    2.9000000953674316
+   ],
+   "yon": [
+    0.0,
+    0.0,
+    -1.0
+   ],
+   "guc": 130.0,
+   "renk": [
+    1.0,
+    0.7200000286102295,
+    0.44999998807907104
+   ],
+   "boy": [
+    0,
+    0
+   ],
+   "golge": true
+  },
+  {
+   "ad": "AltKat_Sizinti",
+   "tur": "POINT",
+   "konum": [
+    3.5,
+    -0.6000000238418579,
+    -0.30000001192092896
+   ],
+   "yon": [
+    0.0,
+    0.0,
+    -1.0
+   ],
+   "guc": 40.0,
+   "renk": [
+    1.0,
+    0.7200000286102295,
+    0.44999998807907104
+   ],
+   "boy": [
+    0,
+    0
+   ],
+   "golge": true
+  },
+  {
+   "ad": "Sekme",
+   "tur": "AREA",
+   "konum": [
+    0.949999988079071,
+    6.0,
+    0.05000000074505806
+   ],
+   "yon": [
+    0.0,
+    -8.742277657347586e-08,
+    1.0
+   ],
+   "guc": 90.0,
+   "renk": [
+    1.0,
+    0.8500000238418579,
+    0.699999988079071
+   ],
+   "boy": [
+    1.7999999523162842,
+    11.5
+   ],
+   "golge": false
+  }
+ ]
+}

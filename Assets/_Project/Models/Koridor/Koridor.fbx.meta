@@ -1,0 +1,290 @@
+fileFormatVersion: 2
+guid: 15b464b4ca64a0743877af2f08cd3008
+ModelImporter:
+  serializedVersion: 24200
+  internalIDToNameTable: []
+  externalObjects:
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: M_K_Armatur_Taban
+    second: {fileID: 2100000, guid: cf4842faec0be2d46b69801ecb268017, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: M_K_AsansorPanel
+    second: {fileID: 2100000, guid: 0cc51b3a58e3e9e47980b3178ff7b562, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: M_K_Asansor_Boya
+    second: {fileID: 2100000, guid: 05abadf9cc3ff334e91230ec8ba9e998, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: M_K_Basamak_Mozaik
+    second: {fileID: 2100000, guid: 685a67f9c1ca585479c59f40298e050d, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: M_K_Boya_Serit
+    second: {fileID: 2100000, guid: caae295cc8e2e7a46b2e8618d3becc83, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: M_K_Cam
+    second: {fileID: 2100000, guid: ed3ebbe8fbd92f941bcaaaf3b2b8ba3b, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: M_K_Celik
+    second: {fileID: 2100000, guid: b987bc9eb65d6f3468db863187f4c92c, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: M_K_DaireNo
+    second: {fileID: 2100000, guid: 786894ea4a244c74ea1091b4adbf7f9d, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: M_K_Demir_Siyah
+    second: {fileID: 2100000, guid: 5bf2e0cceed617e48a05a7e415fc3f9a, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: M_K_Duvar_Siva
+    second: {fileID: 2100000, guid: 95ee5439ad03abf4d8a8501689cfd36f, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: M_K_Duvar_YagliBoya
+    second: {fileID: 2100000, guid: 87642fff32e776b4bad1e048d2a5a2b6, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: M_K_Duyuru
+    second: {fileID: 2100000, guid: 7a86731fab0a3ca43bdc1d5ed5509680, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: M_K_Gece
+    second: {fileID: 2100000, guid: 18339d58244361a48afac82b11ea111a, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: M_K_Hortum
+    second: {fileID: 2100000, guid: 093735932fa9d674dac8adfb588c64b4, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: M_K_Isimlik
+    second: {fileID: 2100000, guid: f726cecaa03dac344bf968d49ab6cdd4, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: M_K_Kapi_Ceviz
+    second: {fileID: 2100000, guid: 07abb67ea13327a40b001d556271190b, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: M_K_Kapi_Cita
+    second: {fileID: 2100000, guid: ece4714ad4329884b9b9d7a0058a59a8, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: M_K_KatGosterge
+    second: {fileID: 2100000, guid: 5f85bf913d0d7384bbac1ec0b4bf8f88, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: M_K_KatLevha
+    second: {fileID: 2100000, guid: f82726d9dd6fafb4ab909eee4646dee9, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: M_K_Kupeste
+    second: {fileID: 2100000, guid: 58d0264792ce35540871033a7e3f1cfc, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: M_K_Kuyu_Karanlik
+    second: {fileID: 2100000, guid: 6f66ea512f57ea64c8566c006af221be, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: M_K_Opal_3.5
+    second: {fileID: 2100000, guid: 2e04f22e760c2fe49b62c28379fb4581, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: M_K_Opal_5.0
+    second: {fileID: 2100000, guid: 9747779d06359e640b767533284c07a6, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: M_K_Opal_6.0
+    second: {fileID: 2100000, guid: b6ef4cc8411d1d14cbebef93bd440698, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: M_K_Otomat_Dugme
+    second: {fileID: 2100000, guid: 7ddfe7853e3049945b9ed1af9a117367, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: M_K_PVC
+    second: {fileID: 2100000, guid: c60556fba3b015145a044526e6fa275f, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: M_K_Paspas
+    second: {fileID: 2100000, guid: 24786bfb81d63514d80a8181ff22a9f2, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: M_K_Petek
+    second: {fileID: 2100000, guid: b93ecc2cee35eba4ba00552781fce1fd, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: M_K_Pirinc
+    second: {fileID: 2100000, guid: 27c412c8f97491141a59a5d382f36eec, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: M_K_Plastik_Beyaz
+    second: {fileID: 2100000, guid: cd5c11c0f8a193a44a6b90f1cf963bcf, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: M_K_Plastik_Krem
+    second: {fileID: 2100000, guid: 3a414bd9b7b3c6d42b81581fb5fbc636, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: M_K_Tavan
+    second: {fileID: 2100000, guid: 526b4f3077258574b8ab67da48094c94, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: M_K_TelCam
+    second: {fileID: 2100000, guid: 148a232af2a28554b9cd4765ac381e48, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: M_K_YanginEtiket
+    second: {fileID: 2100000, guid: 9002a5548b82d894d98d411226d229a4, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: M_K_Yangin_Kirmizi
+    second: {fileID: 2100000, guid: 141359f67c3e74b49a75cdb9557be5ba, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: M_K_Zemin_Mozaik
+    second: {fileID: 2100000, guid: 9f1a6769f2201774c818cc3079856785, type: 2}
+  materials:
+    materialImportMode: 2
+    materialName: 0
+    materialSearch: 1
+    materialLocation: 1
+  animations:
+    legacyGenerateAnimations: 4
+    bakeSimulation: 0
+    resampleCurves: 1
+    optimizeGameObjects: 0
+    removeConstantScaleCurves: 0
+    motionNodeName: 
+    animationImportErrors: 
+    animationImportWarnings: 
+    animationRetargetingWarnings: 
+    animationDoRetargetingWarnings: 0
+    importAnimatedCustomProperties: 0
+    importConstraints: 0
+    animationCompression: 1
+    animationRotationError: 0.5
+    animationPositionError: 0.5
+    animationScaleError: 0.5
+    animationWrapMode: 0
+    extraExposedTransformPaths: []
+    extraUserProperties: []
+    clipAnimations: []
+    isReadable: 0
+  meshes:
+    lODScreenPercentages: []
+    globalScale: 1
+    meshCompression: 0
+    addColliders: 0
+    useSRGBMaterialColor: 1
+    sortHierarchyByName: 1
+    importPhysicalCameras: 1
+    importVisibility: 1
+    importBlendShapes: 1
+    importCameras: 1
+    importLights: 1
+    nodeNameCollisionStrategy: 1
+    fileIdsGeneration: 2
+    swapUVChannels: 0
+    generateSecondaryUV: 0
+    useFileUnits: 1
+    keepQuads: 0
+    weldVertices: 1
+    bakeAxisConversion: 0
+    preserveHierarchy: 0
+    skinWeightsMode: 0
+    maxBonesPerVertex: 4
+    minBoneWeight: 0.001
+    optimizeBones: 1
+    generateMeshLods: 0
+    meshLodGenerationFlags: 0
+    maximumMeshLod: -1
+    meshOptimizationFlags: -1
+    indexFormat: 0
+    secondaryUVAngleDistortion: 8
+    secondaryUVAreaDistortion: 15.000001
+    secondaryUVHardAngle: 88
+    secondaryUVMarginMethod: 1
+    secondaryUVMinLightmapResolution: 40
+    secondaryUVMinObjectScale: 1
+    secondaryUVPackMargin: 4
+    useFileScale: 1
+    strictVertexDataChecks: 0
+  tangentSpace:
+    normalSmoothAngle: 60
+    normalImportMode: 0
+    tangentImportMode: 3
+    normalCalculationMode: 4
+    legacyComputeAllNormalsFromSmoothingGroupsWhenMeshHasBlendShapes: 0
+    blendShapeNormalImportMode: 1
+    normalSmoothingSource: 0
+  referencedClips: []
+  importAnimation: 1
+  humanDescription:
+    serializedVersion: 3
+    human: []
+    skeleton: []
+    armTwist: 0.5
+    foreArmTwist: 0.5
+    upperLegTwist: 0.5
+    legTwist: 0.5
+    armStretch: 0.05
+    legStretch: 0.05
+    feetSpacing: 0
+    globalScale: 1
+    rootMotionBoneName: 
+    hasTranslationDoF: 0
+    hasExtraRoot: 0
+    skeletonHasParents: 1
+  lastHumanDescriptionAvatarSource: {instanceID: 0}
+  autoGenerateAvatarMappingIfUnspecified: 1
+  animationType: 2
+  humanoidOversampling: 1
+  avatarSetup: 0
+  addHumanoidExtraRootOnlyWhenUsingAvatar: 1
+  importBlendShapeDeformPercent: 1
+  remapMaterialsIfMaterialImportModeIsNone: 0
+  additionalBone: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
