@@ -77,6 +77,12 @@ def gecit(ad, O, F, R, kapali):
 
 # Giriş: L kolunun kuzey duvarı (y=12), köşenin yanında; içeri +y, sağ +x. B'nin ardı kol duvarı (kapalı).
 gecit("Gecit_Giris", (-7.15, 12.0), (0, 1), (1, 0), {"B"})
+# Tapa: görev bitene kadar girişin ağzını kapatan duvar parçası (koridordan düz duvar görünür). Unity'de
+# KoridorParcala ayırır, görev bitince FloorLoop yere gömer. Ağız x -7.75..-6.55, z 0..2.3; duvar y 12..12.15.
+for z0, z1, m in ((0, BOYA, boya), (BOYA, 2.3, siva)):
+    kutu("Gecit_Tapa", (-7.15, 12.075, (z0 + z1) / 2), (1.2, 0.15, z1 - z0), m, K)
+kutu("Gecit_Tapa_Serit", (-7.15, 11.997, BOYA), (1.2, 0.006, 0.03), serit, K)
+kutu("Gecit_Tapa_Supurgelik", (-7.15, 11.994, 0.04), (1.2, 0.012, 0.08), mozaik, K)
 # Çıkış: lobinin batı duvarı (x=0); içeri -x, sağ +y. A'nın ardında duvar yok (kapak), B lobiye açılır.
 gecit("Gecit_Cikis", (0.0, -1.5), (-1, 0), (0, 1), {"A"})
 print("koridor geçit tamam", len(koleksiyon(K).objects))

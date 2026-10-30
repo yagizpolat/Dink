@@ -31,6 +31,8 @@ public static class KoridorParcala
         // L kolunun güney duvarındaki 6 numara: menteşe zil tarafında (batı), kanat iç yüzü z=10.01
         // Asansör kapısı: menteşe batıda (x 0.46), kol doğuda; lobiye (+z) açılır
         new Parca("Asansor_Kanat", new Vector3(0.455f, 0.005f, -0.075f), new Vector3(1.445f, 2.145f, 0.025f), new Vector3(0.46f, 0f, -0.05f)),
+        // Köşe geçidi ağzını kapatan duvar tapası (görev bitince gömülür)
+        new Parca("Gecit_Tapa", new Vector3(-7.7505f, -0.001f, 11.98f), new Vector3(-6.5495f, 2.3005f, 12.1505f), new Vector3(-7.15f, 0f, 12.075f)),
         new Parca("Kapi6_Kanat", new Vector3(-6.075f, 0.005f, 10.005f), new Vector3(-5.125f, 2.125f, 10.13f), new Vector3(-6.07f, 0f, 10.01f)),
     };
 
