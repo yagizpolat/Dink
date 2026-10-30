@@ -41,8 +41,13 @@ public class FocusAnomaly : MonoBehaviour
     {
         if (PauseService.IsPaused) return;
 
+        // Görev bitti: yeni kata geçene kadar ışık sürekli yanık (titreme başlamadan tazelenir)
+        if (index >= targets.Length)
+        {
+            if (timer.Remaining < 5f) timer.Press(null);
+        }
         // Otomatik ışık: sönük kaldıkça say, süre dolunca yeniden yak
-        if (!timer.IsLit)
+        else if (!timer.IsLit)
         {
             darkTime += Time.deltaTime;
             if (darkTime >= darkSeconds)
