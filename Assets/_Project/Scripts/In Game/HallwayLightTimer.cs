@@ -45,6 +45,7 @@ public class HallwayLightTimer : MonoBehaviour
         audioSource = gameObject.AddComponent<AudioSource>();
         audioSource.spatialBlend = 0f;
         audioSource.volume = 0.55f;
+        audioSource.ignoreListenerPause = true;
         clickOn = MakeClick(0.035f, 2400f, 0.9f);
         clickOff = MakeClick(0.06f, 900f, 1f);
 
@@ -99,6 +100,15 @@ public class HallwayLightTimer : MonoBehaviour
         for (int i = 0; i < glowMaterials.Count; i++)
             glowMaterials[i].SetColor(EmissionColor, glowBase[i] * k);
         RenderSettings.ambientLight = Color.Lerp(darkAmbient, litAmbient, k);
+        RenderSettings.reflectionIntensity = k;  // ortam yansıması açık kalırsa karanlıkta duvarlar mavimsi parlar
+        // Karanlıkta bütün sesler durur, ışık gelince kaldığı yerden sürer (röle tıkı bundan etkilenmez)
+        if (!PauseService.IsPaused) AudioListener.pause = k <= 0f;
+    }
+
+    private void OnDestroy()
+    {
+        AudioListener.pause = false;
+        RenderSettings.reflectionIntensity = 1f;
     }
 
     /// <summary>Röle/düğme tıkı: kısa sönümlü gürültü + düşük tını.</summary>
