@@ -3031,16 +3031,20 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::DarkWhisper
   timer: {fileID: 1100208902}
   whispers:
-  - {fileID: 8300000, guid: 8b84d4ed0a475584897c09aa3c13b5c4, type: 3}
-  - {fileID: 8300000, guid: 2a3ad01fc83f1064aa13590f8dbbfc53, type: 3}
-  - {fileID: 8300000, guid: f39bf314d67ebcc479eb4ab1262a4ef6, type: 3}
-  - {fileID: 8300000, guid: 9518bfe056af83645847ea6865e0d176, type: 3}
-  - {fileID: 8300000, guid: 88e3a8eb027d72440826a65a412a1887, type: 3}
-  - {fileID: 8300000, guid: 57521c907f9414642b055ea477735032, type: 3}
-  - {fileID: 8300000, guid: 5b350c129a5eb884aacd37d3a3e3d76d, type: 3}
+  - {fileID: 8300000, guid: 3db6287454ac6c74684b69b98c90a6e2, type: 3}
+  - {fileID: 8300000, guid: 47fe93469ad4e244ba540ba74e0f0c0f, type: 3}
+  - {fileID: 8300000, guid: 499b7e7df496d884ba3d55d79a869cbf, type: 3}
+  - {fileID: 8300000, guid: 80e523b1db911304abbe4105a4de071e, type: 3}
+  - {fileID: 8300000, guid: 3356f282a6f316242b52ad583dc10f18, type: 3}
+  - {fileID: 8300000, guid: 18058dd5ce09ce742800d74d4b8226f6, type: 3}
+  - {fileID: 8300000, guid: 1351fb3c1843b184a9f22c42bcbc5485, type: 3}
+  - {fileID: 8300000, guid: 5e730518680c9294b81691b696a2251a, type: 3}
+  - {fileID: 8300000, guid: 1826f800c4da53d43a70f7025d5e6015, type: 3}
+  - {fileID: 8300000, guid: a2d80fc2d9c5dd04b976dda9afb9b812, type: 3}
+  - {fileID: 8300000, guid: 01591c6e751c85648b951622972da974, type: 3}
   chance: 0.6
   delay: {x: 0.25, y: 0.6}
-  volume: 0.55
+  volume: 0.7
 --- !u!1 &719682896
 GameObject:
   m_ObjectHideFlags: 0
