@@ -29,6 +29,10 @@ public static class KoridorParcala
         new Parca("Petek", new Vector3(-7.995f, 0.03f, 10.5f), new Vector3(-7.7f, 0.86f, 11.6f), new Vector3(-7.86f, 0f, 11.05f)),
         new Parca("YanginDolabi", new Vector3(1.5f, 0.85f, 8.05f), new Vector3(1.905f, 1.7f, 8.75f), new Vector3(1.8f, 0.88f, 8.4f)),
         // L kolunun güney duvarındaki 6 numara: menteşe zil tarafında (batı), kanat iç yüzü z=10.01
+        // Asansör kapısı: menteşe batıda (x 0.46), kol doğuda; lobiye (+z) açılır
+        new Parca("Asansor_Kanat", new Vector3(0.455f, 0.005f, -0.075f), new Vector3(1.445f, 2.145f, 0.025f), new Vector3(0.46f, 0f, -0.05f)),
+        // Kuyunun karanlık düzlemi: kabine yer açmak için yalnız kaldırılır (sahnede karşılığı yok)
+        new Parca("Asansor_Kuyu", new Vector3(0.39f, -0.21f, -0.61f), new Vector3(1.51f, 2.61f, -0.49f), new Vector3(0.95f, 0f, -0.55f)),
         new Parca("Kapi6_Kanat", new Vector3(-6.075f, 0.005f, 10.005f), new Vector3(-5.125f, 2.125f, 10.13f), new Vector3(-6.07f, 0f, 10.01f)),
     };
 
@@ -123,8 +127,8 @@ public static class KoridorParcala
     /// <summary>Sahnedeki aynı adlı bütün nesnelere (her kat kopyasına) takar; kapı kanadı ise DaireN_Kapi/Menteşe/Kanat'a (yoksa kurar).</summary>
     private static void Bagla(Parca p, Mesh mesh, Material[] malz)
     {
-        bool kapi = p.ad.StartsWith("Kapi");
-        string kok = kapi ? "Daire" + p.ad.Substring(4, 1) + "_Kapi" : p.ad;
+        bool kapi = p.ad.EndsWith("_Kanat");
+        string kok = !kapi ? p.ad : p.ad.StartsWith("Kapi") ? "Daire" + p.ad.Substring(4, 1) + "_Kapi" : p.ad.Replace("_Kanat", "_Kapi");
         var hedefler = new List<GameObject>();
         foreach (var r in Object.FindObjectsByType<MeshFilter>(FindObjectsInactive.Include, FindObjectsSortMode.None))
         {
@@ -140,7 +144,7 @@ public static class KoridorParcala
             h.AddComponent<MeshFilter>(); h.AddComponent<MeshRenderer>();
             hedefler.Add(h);
         }
-        if (hedefler.Count == 0) { Debug.LogWarning("KoridorParcala: sahnede yok " + p.ad); return; }
+        if (hedefler.Count == 0) { Debug.Log("KoridorParcala: yalnız kaldırıldı " + p.ad); return; }
         foreach (var hedef in hedefler)
         {
             (kapi ? hedef.transform.parent.parent : hedef.transform).position = p.pivot;

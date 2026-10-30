@@ -2,34 +2,29 @@ using System.Collections;
 using UnityEngine;
 
 /// <summary>
-/// Canlı kat döngüsü: aynı yerde duran iki kat kopyasından biri açıktır. Görev bitince açık katın 6 numaralı kapısı
-/// açılır; oyuncu kapının ardındaki karanlık girişe adım atınca açık kat kapanır, öteki kat kapısı açık halde
-/// belirir (kararma yok). Oyuncu dönüp kapıdan çıkınca kapı arkasından kapanır; kat numarası artar, görev baştan başlar.
+/// Kat döngüsü, hep ileri: görev bitince 6 numaralı kapı açılır; oyuncu ardındaki karanlık girişe girince kapı
+/// arkasından kapanır. Zifiri karanlıkta oyuncu fark ettirmeden asansör kabinine taşınır, kat yeni kat olarak
+/// kurulur (levha FLOOR n, kaybolan nesneler yerinde, görev baştan). Sonra önündeki asansör kapısı açılır.
 /// </summary>
 public class FloorLoop : MonoBehaviour
 {
-    [System.Serializable]
-    private class Floor
-    {
-        public GameObject root;
-        public Transform hinge;          // 6 numaralı kapının menteşesi; +Y içeri açar
-        public GameObject[] targets;     // FocusAnomaly'nin bu katta kaybettiği nesneler (sırayla)
-        public Renderer koridor;         // kat levhasını taşıyan birleşik model
-    }
-
     [SerializeField] private FocusAnomaly anomaly;
-    [SerializeField] private Floor[] floors;
-    [SerializeField] private Bounds passZone;     // kapının ardındaki giriş (dünya)
-    [SerializeField] private Bounds exitZone;     // kapının önü, koridor tarafı (dünya)
-    [SerializeField] private Texture2D[] signs;   // FLOOR 1, FLOOR 2, ...
+    [SerializeField] private Transform doorHinge;         // 6 numara; +Y içeri açar
+    [SerializeField] private Transform elevatorHinge;     // asansör kapısı; lobiye açılır
+    [SerializeField] private GameObject[] targets;        // kat yenilenince yerine dönen nesneler
+    [SerializeField] private Light doorLight;             // 6 numaranın altından sızan ışık
+    [SerializeField] private Renderer koridor;            // kat levhasını taşıyan model
+    [SerializeField] private Texture2D[] signs;           // FLOOR 1, FLOOR 2, ...
     [SerializeField] private string signMaterialPrefix = "M_K_KatLevha";
-    [SerializeField] private float openAngle = 80f;
-    [SerializeField] private float openSeconds = 2.2f;
+    [SerializeField] private Bounds passZone;             // kapının ardındaki girişin derini (dünya)
+    [SerializeField] private Vector3 vestibuleCenter = new Vector3(-5.6f, 0f, 9.1f);  // giriş: içeri bakış -z
+    [SerializeField] private Vector3 cabinCenter = new Vector3(0.95f, 0f, -0.8f);     // kabin: dışarı bakış +z
+    [SerializeField] private float doorOpenAngle = 80f;
+    [SerializeField] private float elevatorOpenAngle = -100f;
 
-    private enum Phase { Closed, Open, Swapped }
+    private enum Phase { Closed, Open, Passing }
 
     private Phase phase;
-    private int current;
     private int floorNumber = 1;
     private Transform player;
     private AudioSource source;
@@ -38,72 +33,72 @@ public class FloorLoop : MonoBehaviour
     private void Awake()
     {
         source = gameObject.AddComponent<AudioSource>();
-        source.spatialBlend = 1f;
-        source.maxDistance = 10f;
+        source.spatialBlend = 0f;
         var walker = FindFirstObjectByType<PlayerWalker>();
         if (walker != null) player = walker.transform;
-        for (int i = 0; i < floors.Length; i++) floors[i].root.SetActive(i == current);
-        SetSign(floors[current], floorNumber);
+        SetSign(floorNumber);
     }
 
-    /// <summary>Görev bitti (FocusAnomaly.onFinished): açık katın kapısı aralanır.</summary>
+    /// <summary>Görev bitti (FocusAnomaly.onFinished): kapı aralanır.</summary>
     public void Open()
     {
         if (phase != Phase.Closed) return;
         phase = Phase.Open;
-        transform.position = floors[current].hinge.position;
-        source.PlayOneShot(Latch());
-        StartCoroutine(Swing(floors[current].hinge, 0f, openAngle, openSeconds, 0.4f));
+        source.PlayOneShot(Latch(), 0.5f);
+        StartCoroutine(Swing(doorHinge, 0f, doorOpenAngle, 2.2f, 0.4f));
     }
 
     private void Update()
     {
-        if (player == null) return;
-        if (phase == Phase.Open && passZone.Contains(player.position)) Swap();
-        else if (phase == Phase.Swapped && exitZone.Contains(player.position))
-        {
-            phase = Phase.Closed;
-            StartCoroutine(Swing(floors[current].hinge, openAngle, 0f, 1.4f, 0.8f));
-        }
+        if (phase == Phase.Open && player != null && passZone.Contains(player.position)) StartCoroutine(Pass());
     }
 
-    private void Swap()
+    private IEnumerator Pass()
     {
-        Floor old = floors[current];
-        current = (current + 1) % floors.Length;
-        Floor next = floors[current];
+        phase = Phase.Passing;
+        // Kapı arkadan kapanır, sızan ışık söner: zifiri karanlık
+        yield return Swing(doorHinge, doorOpenAngle, 0f, 0.7f, 0f);
+        source.PlayOneShot(Latch(), 0.8f);
+        if (doorLight != null) doorLight.enabled = false;
 
-        // Yeni kat, eskisinin bıraktığı halde: kapı açık; kaybolan nesneler yerinde
-        next.hinge.localRotation = Quaternion.Euler(0f, openAngle, 0f);
-        foreach (var t in next.targets) t.SetActive(true);
-        next.root.SetActive(true);
-        old.root.SetActive(false);
-        old.hinge.localRotation = Quaternion.identity;
+        // Kabine taşı: girişe göre konum ve bakış 180° döner
+        Vector3 rel = player.position - vestibuleCenter;
+        var cc = player.GetComponent<CharacterController>();
+        if (cc != null) cc.enabled = false;
+        player.SetPositionAndRotation(cabinCenter + new Vector3(-rel.x, rel.y, -rel.z), Quaternion.Euler(0f, player.eulerAngles.y + 180f, 0f));
+        if (cc != null) cc.enabled = true;
 
+        // Yeni kat
+        foreach (var t in targets) t.SetActive(true);
         floorNumber++;
-        SetSign(next, floorNumber);
-        anomaly.Restart(next.targets);
-        phase = Phase.Swapped;
+        SetSign(floorNumber);
+        anomaly.Restart(targets);
+
+        yield return new WaitForSeconds(0.9f);
+        source.PlayOneShot(Chime(), 0.6f);
+        yield return Swing(elevatorHinge, 0f, elevatorOpenAngle, 1.6f, 0.3f);
+        phase = Phase.Closed;
+        yield return new WaitForSeconds(6f);
+        yield return Swing(elevatorHinge, elevatorOpenAngle, 0f, 1.6f, 0f);
     }
 
-    private void SetSign(Floor f, int n)
+    private void SetSign(int n)
     {
-        if (signs == null || signs.Length == 0 || f.koridor == null) return;
+        if (signs == null || signs.Length == 0 || koridor == null) return;
         Texture2D tex = signs[Mathf.Clamp(n - 1, 0, signs.Length - 1)];
-        foreach (var m in f.koridor.materials)
+        foreach (var m in koridor.materials)
             if (m.name.StartsWith(signMaterialPrefix)) m.SetTexture(BaseMap, tex);
     }
 
-    private IEnumerator Swing(Transform hinge, float from, float to, float seconds, float delay)
+    private static IEnumerator Swing(Transform hinge, float from, float to, float seconds, float delay)
     {
-        yield return new WaitForSeconds(delay);
+        if (delay > 0f) yield return new WaitForSeconds(delay);
         for (float t = 0f; t < seconds; t += Time.deltaTime)
         {
             hinge.localRotation = Quaternion.Euler(0f, Mathf.Lerp(from, to, Mathf.SmoothStep(0f, 1f, t / seconds)), 0f);
             yield return null;
         }
         hinge.localRotation = Quaternion.Euler(0f, to, 0f);
-        if (to == 0f) source.PlayOneShot(Latch(), 0.6f);
     }
 
     /// <summary>Kilit dili: iki kısa metal tık.</summary>
@@ -121,6 +116,23 @@ public class FloorLoop : MonoBehaviour
             data[i] = 0.7f * (a + 0.8f * b) * (0.6f * noise + 0.4f * Mathf.Sin(2 * Mathf.PI * 1400f * t));
         }
         var clip = AudioClip.Create("Latch", n, 1, rate, false);
+        clip.SetData(data, 0);
+        return clip;
+    }
+
+    /// <summary>Asansör varış sesi: tek, yumuşak çan.</summary>
+    private static AudioClip Chime()
+    {
+        const int rate = 44100;
+        int n = Mathf.CeilToInt(1.2f * rate);
+        var data = new float[n];
+        for (int i = 0; i < n; i++)
+        {
+            float t = i / (float)rate;
+            float env = Mathf.Min(1f, t * 300f) * Mathf.Exp(-t * 3.5f);
+            data[i] = 0.5f * env * (Mathf.Sin(2 * Mathf.PI * 1046f * t) + 0.35f * Mathf.Sin(2 * Mathf.PI * 2093f * t) + 0.15f * Mathf.Sin(2 * Mathf.PI * 3140f * t));
+        }
+        var clip = AudioClip.Create("Chime", n, 1, rate, false);
         clip.SetData(data, 0);
         return clip;
     }
