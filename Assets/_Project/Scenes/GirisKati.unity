@@ -1113,7 +1113,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::ElevatorController
   arrival: 0
-  targetScene: Kat1
+  targetScene: HafizaMarket
   door: {fileID: 649258245}
   openAngle: 95
   doorSeconds: 0.9

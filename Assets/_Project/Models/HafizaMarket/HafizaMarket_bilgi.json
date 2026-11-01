@@ -1,0 +1,724 @@
+{
+ "malzeme": {
+  "M_Aluminyum": {
+   "metal": 1.0,
+   "normal": true,
+   "isik": 0.0,
+   "isik_renk": [
+    1.0,
+    1.0,
+    1.0
+   ],
+   "alfa": false
+  },
+  "M_Armatur_Difuzor_0": {
+   "metal": 0.0,
+   "normal": false,
+   "isik": 9.0,
+   "isik_renk": [
+    1.0,
+    1.0,
+    1.0
+   ],
+   "alfa": false
+  },
+  "M_Armatur_Difuzor_1": {
+   "metal": 0.0,
+   "normal": false,
+   "isik": 9.0,
+   "isik_renk": [
+    1.0,
+    1.0,
+    1.0
+   ],
+   "alfa": false
+  },
+  "M_Armatur_Difuzor_2": {
+   "metal": 0.0,
+   "normal": false,
+   "isik": 9.0,
+   "isik_renk": [
+    1.0,
+    1.0,
+    1.0
+   ],
+   "alfa": false
+  },
+  "M_Armatur_Difuzor_3": {
+   "metal": 0.0,
+   "normal": false,
+   "isik": 3.5,
+   "isik_renk": [
+    1.0,
+    1.0,
+    1.0
+   ],
+   "alfa": false
+  },
+  "M_Armatur_Difuzor_4": {
+   "metal": 0.0,
+   "normal": false,
+   "isik": 9.0,
+   "isik_renk": [
+    1.0,
+    1.0,
+    1.0
+   ],
+   "alfa": false
+  },
+  "M_Armatur_Kasa": {
+   "metal": 0.0,
+   "normal": true,
+   "isik": 0.0,
+   "isik_renk": [
+    1.0,
+    1.0,
+    1.0
+   ],
+   "alfa": false
+  },
+  "M_Dolap_Baslik": {
+   "metal": 0.0,
+   "normal": false,
+   "isik": 1.2000000476837158,
+   "isik_renk": [
+    1.0,
+    1.0,
+    1.0
+   ],
+   "alfa": false
+  },
+  "M_Dolap_Isik": {
+   "metal": 0.0,
+   "normal": false,
+   "isik": 6.0,
+   "isik_renk": [
+    0.8500000238418579,
+    0.9200000166893005,
+    1.0
+   ],
+   "alfa": false
+  },
+  "M_Dolap_LED": {
+   "metal": 0.0,
+   "normal": false,
+   "isik": 8.0,
+   "isik_renk": [
+    0.8500000238418579,
+    0.9300000071525574,
+    1.0
+   ],
+   "alfa": false
+  },
+  "M_Duvar_Fayans": {
+   "metal": 0.0,
+   "normal": true,
+   "isik": 0.0,
+   "isik_renk": [
+    1.0,
+    1.0,
+    1.0
+   ],
+   "alfa": false
+  },
+  "M_Duvar_Siva": {
+   "metal": 0.0,
+   "normal": true,
+   "isik": 0.0,
+   "isik_renk": [
+    1.0,
+    1.0,
+    1.0
+   ],
+   "alfa": false
+  },
+  "M_Fis_Kagidi": {
+   "metal": 0.0,
+   "normal": false,
+   "isik": 0.0,
+   "isik_renk": [
+    1.0,
+    1.0,
+    1.0
+   ],
+   "alfa": false
+  },
+  "M_Fis_Yazici": {
+   "metal": 0.0,
+   "normal": true,
+   "isik": 0.0,
+   "isik_renk": [
+    1.0,
+    1.0,
+    1.0
+   ],
+   "alfa": false
+  },
+  "M_Fiyat_Etiketi": {
+   "metal": 0.0,
+   "normal": false,
+   "isik": 0.0,
+   "isik_renk": [
+    1.0,
+    1.0,
+    1.0
+   ],
+   "alfa": false
+  },
+  "M_Kapak_Mavi": {
+   "metal": 0.0,
+   "normal": true,
+   "isik": 0.0,
+   "isik_renk": [
+    1.0,
+    1.0,
+    1.0
+   ],
+   "alfa": false
+  },
+  "M_Kapak_Sari": {
+   "metal": 0.0,
+   "normal": true,
+   "isik": 0.0,
+   "isik_renk": [
+    1.0,
+    1.0,
+    1.0
+   ],
+   "alfa": false
+  },
+  "M_Kapak_Yesil": {
+   "metal": 0.0,
+   "normal": true,
+   "isik": 0.0,
+   "isik_renk": [
+    1.0,
+    1.0,
+    1.0
+   ],
+   "alfa": false
+  },
+  "M_Kapi_Etiketleri": {
+   "metal": 0.0,
+   "normal": false,
+   "isik": 0.0,
+   "isik_renk": [
+    1.0,
+    1.0,
+    1.0
+   ],
+   "alfa": true
+  },
+  "M_Koli_Bant": {
+   "metal": 0.0,
+   "normal": true,
+   "isik": 0.0,
+   "isik_renk": [
+    1.0,
+    1.0,
+    1.0
+   ],
+   "alfa": false
+  },
+  "M_Koli_Karton": {
+   "metal": 0.0,
+   "normal": true,
+   "isik": 0.0,
+   "isik_renk": [
+    1.0,
+    1.0,
+    1.0
+   ],
+   "alfa": false
+  },
+  "M_Krom": {
+   "metal": 1.0,
+   "normal": true,
+   "isik": 0.0,
+   "isik_renk": [
+    1.0,
+    1.0,
+    1.0
+   ],
+   "alfa": false
+  },
+  "M_Plastik_Koyu": {
+   "metal": 0.0,
+   "normal": true,
+   "isik": 0.0,
+   "isik_renk": [
+    1.0,
+    1.0,
+    1.0
+   ],
+   "alfa": false
+  },
+  "M_Raf_Boyali": {
+   "metal": 0.0,
+   "normal": true,
+   "isik": 0.0,
+   "isik_renk": [
+    1.0,
+    1.0,
+    1.0
+   ],
+   "alfa": false
+  },
+  "M_Raf_Etek": {
+   "metal": 0.0,
+   "normal": true,
+   "isik": 0.0,
+   "isik_renk": [
+    1.0,
+    1.0,
+    1.0
+   ],
+   "alfa": false
+  },
+  "M_Sise_Deterjan": {
+   "metal": 0.0,
+   "normal": true,
+   "isik": 0.0,
+   "isik_renk": [
+    1.0,
+    1.0,
+    1.0
+   ],
+   "alfa": false
+  },
+  "M_Supurgelik": {
+   "metal": 0.0,
+   "normal": true,
+   "isik": 0.0,
+   "isik_renk": [
+    1.0,
+    1.0,
+    1.0
+   ],
+   "alfa": false
+  },
+  "M_Tavan_Panel": {
+   "metal": 0.0,
+   "normal": true,
+   "isik": 0.0,
+   "isik_renk": [
+    1.0,
+    1.0,
+    1.0
+   ],
+   "alfa": false
+  },
+  "M_Tavan_Profil": {
+   "metal": 0.0,
+   "normal": true,
+   "isik": 0.0,
+   "isik_renk": [
+    1.0,
+    1.0,
+    1.0
+   ],
+   "alfa": false
+  },
+  "M_Tezgah_Ust": {
+   "metal": 0.0,
+   "normal": true,
+   "isik": 0.0,
+   "isik_renk": [
+    1.0,
+    1.0,
+    1.0
+   ],
+   "alfa": false
+  },
+  "M_Urun_Kapak": {
+   "metal": 1.0,
+   "normal": true,
+   "isik": 0.0,
+   "isik_renk": [
+    1.0,
+    1.0,
+    1.0
+   ],
+   "alfa": false
+  },
+  "M_Urun_Karton": {
+   "metal": 0.0,
+   "normal": true,
+   "isik": 0.0,
+   "isik_renk": [
+    1.0,
+    1.0,
+    1.0
+   ],
+   "alfa": false
+  },
+  "M_Urun_PlastikEtiket": {
+   "metal": 0.0,
+   "normal": true,
+   "isik": 0.0,
+   "isik_renk": [
+    1.0,
+    1.0,
+    1.0
+   ],
+   "alfa": false
+  },
+  "M_Urun_Teneke": {
+   "metal": 0.3499999940395355,
+   "normal": true,
+   "isik": 0.0,
+   "isik_renk": [
+    1.0,
+    1.0,
+    1.0
+   ],
+   "alfa": false
+  },
+  "M_YK_Govde": {
+   "metal": 0.0,
+   "normal": true,
+   "isik": 0.0,
+   "isik_renk": [
+    1.0,
+    1.0,
+    1.0
+   ],
+   "alfa": false
+  },
+  "M_YK_Klavye": {
+   "metal": 0.0,
+   "normal": true,
+   "isik": 0.0,
+   "isik_renk": [
+    1.0,
+    1.0,
+    1.0
+   ],
+   "alfa": false
+  },
+  "M_YK_LCD": {
+   "metal": 0.0,
+   "normal": false,
+   "isik": 1.600000023841858,
+   "isik_renk": [
+    1.0,
+    1.0,
+    1.0
+   ],
+   "alfa": false
+  },
+  "M_Zemin_Granit": {
+   "metal": 0.0,
+   "normal": true,
+   "isik": 0.0,
+   "isik_renk": [
+    1.0,
+    1.0,
+    1.0
+   ],
+   "alfa": false
+  }
+ },
+ "isik": [
+  {
+   "ad": "Armatur_0_Isik",
+   "tur": "AREA",
+   "konum": [
+    1.5,
+    1.2000000476837158,
+    2.8499999046325684
+   ],
+   "yon": [
+    0.0,
+    0.0,
+    -1.0
+   ],
+   "guc": 260.0,
+   "renk": [
+    0.8799999952316284,
+    0.9399999976158142,
+    1.0
+   ],
+   "boy": [
+    0.5799999833106995,
+    1.1799999475479126
+   ],
+   "golge": true
+  },
+  {
+   "ad": "Armatur_1_Isik",
+   "tur": "AREA",
+   "konum": [
+    4.5,
+    1.2000000476837158,
+    2.8499999046325684
+   ],
+   "yon": [
+    0.0,
+    0.0,
+    -1.0
+   ],
+   "guc": 260.0,
+   "renk": [
+    0.8799999952316284,
+    0.9399999976158142,
+    1.0
+   ],
+   "boy": [
+    0.5799999833106995,
+    1.1799999475479126
+   ],
+   "golge": true
+  },
+  {
+   "ad": "Armatur_2_Isik",
+   "tur": "AREA",
+   "konum": [
+    1.5,
+    3.0,
+    2.8499999046325684
+   ],
+   "yon": [
+    0.0,
+    0.0,
+    -1.0
+   ],
+   "guc": 260.0,
+   "renk": [
+    0.8799999952316284,
+    0.9399999976158142,
+    1.0
+   ],
+   "boy": [
+    0.5799999833106995,
+    1.1799999475479126
+   ],
+   "golge": true
+  },
+  {
+   "ad": "Armatur_3_Isik",
+   "tur": "AREA",
+   "konum": [
+    4.5,
+    3.0,
+    2.8499999046325684
+   ],
+   "yon": [
+    0.0,
+    0.0,
+    -1.0
+   ],
+   "guc": 90.0,
+   "renk": [
+    0.8799999952316284,
+    0.9399999976158142,
+    1.0
+   ],
+   "boy": [
+    0.5799999833106995,
+    1.1799999475479126
+   ],
+   "golge": true
+  },
+  {
+   "ad": "Armatur_4_Isik",
+   "tur": "AREA",
+   "konum": [
+    3.0,
+    2.0999999046325684,
+    2.8499999046325684
+   ],
+   "yon": [
+    0.0,
+    0.0,
+    -1.0
+   ],
+   "guc": 260.0,
+   "renk": [
+    0.8799999952316284,
+    0.9399999976158142,
+    1.0
+   ],
+   "boy": [
+    0.5799999833106995,
+    1.1799999475479126
+   ],
+   "golge": true
+  },
+  {
+   "ad": "Tavan_Sekme",
+   "tur": "AREA",
+   "konum": [
+    3.0,
+    2.25,
+    0.30000001192092896
+   ],
+   "yon": [
+    0.0,
+    -8.742277657347586e-08,
+    1.0
+   ],
+   "guc": 140.0,
+   "renk": [
+    0.8500000238418579,
+    0.8500000238418579,
+    0.8199999928474426
+   ],
+   "boy": [
+    5.5,
+    4.0
+   ],
+   "golge": true
+  },
+  {
+   "ad": "Dolap_Isik",
+   "tur": "AREA",
+   "konum": [
+    5.619999885559082,
+    3.299999952316284,
+    1.899999976158142
+   ],
+   "yon": [
+    0.0,
+    0.0,
+    -1.0
+   ],
+   "guc": 90.0,
+   "renk": [
+    0.800000011920929,
+    0.8999999761581421,
+    1.0
+   ],
+   "boy": [
+    0.5,
+    1.2000000476837158
+   ],
+   "golge": true
+  },
+  {
+   "ad": "Dolap_LED_Isik",
+   "tur": "AREA",
+   "konum": [
+    5.369999885559082,
+    2.7100000381469727,
+    1.0399999618530273
+   ],
+   "yon": [
+    0.0,
+    1.0,
+    4.371138828673793e-08
+   ],
+   "guc": 45.0,
+   "renk": [
+    0.8500000238418579,
+    0.9300000071525574,
+    1.0
+   ],
+   "boy": [
+    0.029999999329447746,
+    1.7000000476837158
+   ],
+   "golge": true
+  },
+  {
+   "ad": "Dolap_LED_Isik.001",
+   "tur": "AREA",
+   "konum": [
+    5.369999885559082,
+    3.890000104904175,
+    1.0399999618530273
+   ],
+   "yon": [
+    0.0,
+    -1.0,
+    4.371138828673793e-08
+   ],
+   "guc": 45.0,
+   "renk": [
+    0.8500000238418579,
+    0.9300000071525574,
+    1.0
+   ],
+   "boy": [
+    0.029999999329447746,
+    1.7000000476837158
+   ],
+   "golge": true
+  },
+  {
+   "ad": "Dolap_Raf_Isik",
+   "tur": "AREA",
+   "konum": [
+    5.650000095367432,
+    3.299999952316284,
+    0.5299999713897705
+   ],
+   "yon": [
+    0.0,
+    0.0,
+    -1.0
+   ],
+   "guc": 18.0,
+   "renk": [
+    0.8500000238418579,
+    0.9300000071525574,
+    1.0
+   ],
+   "boy": [
+    0.44999998807907104,
+    1.100000023841858
+   ],
+   "golge": true
+  },
+  {
+   "ad": "Dolap_Raf_Isik.001",
+   "tur": "AREA",
+   "konum": [
+    5.650000095367432,
+    3.299999952316284,
+    0.9300000071525574
+   ],
+   "yon": [
+    0.0,
+    0.0,
+    -1.0
+   ],
+   "guc": 18.0,
+   "renk": [
+    0.8500000238418579,
+    0.9300000071525574,
+    1.0
+   ],
+   "boy": [
+    0.44999998807907104,
+    1.100000023841858
+   ],
+   "golge": true
+  },
+  {
+   "ad": "Dolap_Raf_Isik.002",
+   "tur": "AREA",
+   "konum": [
+    5.650000095367432,
+    3.299999952316284,
+    1.3300000429153442
+   ],
+   "yon": [
+    0.0,
+    0.0,
+    -1.0
+   ],
+   "guc": 18.0,
+   "renk": [
+    0.8500000238418579,
+    0.9300000071525574,
+    1.0
+   ],
+   "boy": [
+    0.44999998807907104,
+    1.100000023841858
+   ],
+   "golge": true
+  }
+ ]
+}

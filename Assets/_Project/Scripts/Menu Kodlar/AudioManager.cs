@@ -1,4 +1,4 @@
-using System.Collections;
+﻿using System.Collections;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
@@ -30,9 +30,8 @@ public class AudioManager : MonoBehaviour
     public AudioSource musicSource;
     public AudioSource sfxSource;
 
-    [Header("Müzikler & Ambiyans")]
+    [Header("Müzik")]
     public AudioClip menuMusic;   // in_menu.mp3
-    public AudioClip gameAmbience; // in_game.mp3
 
     [Header("Ortak Ses Efektleri")]
     public AudioClip buttonClickSFX;
@@ -63,33 +62,29 @@ public class AudioManager : MonoBehaviour
         PlayMusic(MusicFor(SceneManager.GetActiveScene()));
     }
 
-    // Apartman, ESC menüsü dahil, müziksizdir: oradaki her şey dünyanın kendi sesi
-    private AudioClip MusicFor(Scene scene)
-    {
-        if (DinkScenes.IsApartment(scene)) return null;
-        return DinkScenes.IsMainMenu(scene) ? menuMusic : gameAmbience;
-    }
+    // Müzik yalnız ana menüde çalar; oyunun içi, ESC menüsü dahil, müziksizdir: oradaki her şey dünyanın kendi sesi
+    private AudioClip MusicFor(Scene scene) => DinkScenes.IsMainMenu(scene) ? menuMusic : null;
 
-    // Apartman sahnelerinde ses kaynakları sahneye dağılmış durumda (asansör, floresan, kalem...);
+    // Oyun sahnelerinde ses kaynakları sahneye dağılmış durumda (asansör, floresan, kalem...);
     // müzik olmadığı için Ses Efekti ayarı hepsine dinleyici üzerinden uygulanır
     private void ApplyListenerVolume()
     {
-        bool apartment = DinkScenes.IsApartment(SceneManager.GetActiveScene());
-        AudioListener.volume = GetMasterVolume() * (apartment ? GetSFXVolume() : 1f);
+        bool inGame = DinkScenes.IsInGame(SceneManager.GetActiveScene());
+        AudioListener.volume = GetMasterVolume() * (inGame ? GetSFXVolume() : 1f);
         if (sfxSource != null) sfxSource.volume = SFXSourceScale;
     }
 
     /// <summary>
-    /// Ses efekti kaynağına verilecek çarpan. Apartmanda Ses Efekti ayarı zaten dinleyicide olduğu için 1;
+    /// Ses efekti kaynağına verilecek çarpan. Oyunun içinde Ses Efekti ayarı zaten dinleyicide olduğu için 1;
     /// başka yerde ayarın kendisi. Kendi AudioSource'unu SFX ayarıyla kısan betikler bunu kullanmalı.
     /// </summary>
-    public float SFXSourceScale => DinkScenes.IsApartment(SceneManager.GetActiveScene()) ? 1f : GetSFXVolume();
+    public float SFXSourceScale => DinkScenes.IsInGame(SceneManager.GetActiveScene()) ? 1f : GetSFXVolume();
 
-    // Apartman sahnesi doğrudan açıldığında da (editör, Yeni Oyun) yönetici baştan kurulsun
+    // Oyun sahnesi doğrudan açıldığında da (editör, Yeni Oyun) yönetici baştan kurulsun
     [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.AfterSceneLoad)]
     private static void Boot()
     {
-        if (DinkScenes.IsApartment(SceneManager.GetActiveScene())) _ = instance;
+        if (DinkScenes.IsInGame(SceneManager.GetActiveScene())) _ = instance;
     }
 
     private void SetupAudioSources()
@@ -110,10 +105,6 @@ public class AudioManager : MonoBehaviour
         if (menuMusic == null)
         {
             menuMusic = Resources.Load<AudioClip>("Audio/in_menu");
-        }
-        if (gameAmbience == null)
-        {
-            gameAmbience = Resources.Load<AudioClip>("Audio/in_game");
         }
     }
 

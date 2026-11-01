@@ -1,4 +1,4 @@
-using UnityEngine.SceneManagement;
+﻿using UnityEngine.SceneManagement;
 
 /// <summary>
 /// Dink sahne isimlerinin tek kaynağı.
@@ -13,9 +13,8 @@ public static class DinkScenes
 
     public static bool IsMainMenu(Scene scene) => scene.name == MainMenu;
 
-    /// <summary>Karanfil Apt. bölümü: prolog, giriş katı ve "KatN" sahneleri. Bu sahnelerde müzik çalmaz.</summary>
-    public static bool IsApartment(Scene scene) =>
-        scene.name == Prologue || scene.name == "GirisKati" || (scene.name.StartsWith("Kat") && scene.name.Length > 3 && char.IsDigit(scene.name[3]));
+    /// <summary>Ana menü dışındaki her sahne oyunun içidir. Oyunun içinde müzik çalmaz, yalnız dünyanın kendi sesi.</summary>
+    public static bool IsInGame(Scene scene) => !IsMainMenu(scene);
 
     public static void LoadMainMenu() => SceneManager.LoadScene(MainMenu);
 
