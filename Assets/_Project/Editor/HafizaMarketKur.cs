@@ -136,6 +136,14 @@ public static class HafizaMarketKur
         void Liste(string ad, List<Transform> l) { var p = so.FindProperty(ad); p.arraySize = l.Count; for (int i = 0; i < l.Count; i++) p.GetArrayElementAtIndex(i).objectReferenceValue = l[i]; }
         Liste("boxPackets", koli); Liste("shelfSlots", raf);
         so.ApplyModifiedPropertiesWithoutUndo();
+
+        // P3: raf dolunca karanlıktan çıkış yok
+        var cik = oyun.AddComponent<MarketNoExit>();
+        var so2 = new SerializedObject(cik);
+        so2.FindProperty("stocking").objectReferenceValue = d;
+        var oyuncu = Object.FindObjectOfType<PlayerWalker>();
+        so2.FindProperty("player").objectReferenceValue = oyuncu != null ? oyuncu.transform : null;
+        so2.ApplyModifiedPropertiesWithoutUndo();
     }
 
     // Nesnelerin dünya sınırlarını saran tetik kutu (oyuncuyu engellemez, ışın görür)
