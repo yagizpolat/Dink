@@ -95,6 +95,26 @@ for o in s.objects:
                         "guc": L.energy, "renk": list(L.color), "boy": [getattr(L, "size", 0), getattr(L, "size_y", 0)], "golge": L.use_shadow})
 json.dump({"malzeme": bilgi, "isik": isiklar}, open(os.path.join(MDL, "HafizaMarket_bilgi.json"), "w"), indent=1)
 
+# Taşınabilir makarnalar (P2): koli içindekiler + rafın boş bölmesindeki hedef yerler ayrı FBX'te, her biri kendi nesnesi.
+# Unity'de koli makarnaları alınır, hedef yerler (Raf_*) görünmez başlar ve sırayla dolar.
+koli_mak = sorted([o for o in bpy.data.collections["Hafiza_Koli"].objects if o.name.startswith("U_Makarna")], key=lambda o: o.name)
+hedefler = sorted(bpy.data.collections["Eksik_Makarna"].objects, key=lambda o: o.name)
+tasinan = []
+for i, o in enumerate(koli_mak):
+    c = o.copy(); c.name = "Koli_%02d" % i; s.collection.objects.link(c); tasinan.append(c)
+for i, o in enumerate(hedefler):
+    c = o.copy(); c.name = "Raf_%02d" % i; s.collection.objects.link(c); c.hide_set(False); c.hide_viewport = False; tasinan.append(c)
+bpy.context.view_layer.update()
+for o in s.objects:
+    o.select_set(o in tasinan)
+with bpy.context.temp_override(object=tasinan[0], active_object=tasinan[0], selected_objects=tasinan):
+    bpy.ops.export_scene.fbx(filepath=os.path.join(MDL, "HafizaMakarna.fbx"), use_selection=True, object_types={"MESH"},
+                             apply_scale_options="FBX_SCALE_UNITS", bake_space_transform=True, path_mode="STRIP")
+for c in tasinan:
+    bpy.data.objects.remove(c, do_unlink=True)
+for o in koli_mak:  # ana gövdeye girmesin
+    o.hide_set(True)
+
 # Birleştir ve dışa aktar (dosya kaydedilmez: birleştirme yalnız aktarım için)
 meshler = [o for o in s.objects if o.type == "MESH" and o.visible_get() and o.name != "Bosluk_Zemin"]
 for o in s.objects:

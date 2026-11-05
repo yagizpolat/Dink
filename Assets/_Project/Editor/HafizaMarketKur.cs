@@ -102,6 +102,54 @@ public static class HafizaMarketKur
         mi.Invoke(null, args);
     }
 
+    const string MakarnaFbx = "Assets/_Project/Models/HafizaMarket/HafizaMakarna.fbx";
+
+    // P2: koli makarnaları + raf hedef yerleri ayrı nesneler; MarketShelfStocking bağlanır
+    static void Makarnalar(UnityEngine.SceneManagement.Scene sahne)
+    {
+        var eski = GameObject.Find("HafizaMakarna");
+        if (eski != null) Object.DestroyImmediate(eski);
+        var model = AssetDatabase.LoadAssetAtPath<GameObject>(MakarnaFbx);
+        if (model == null) return;
+        var karton = AssetDatabase.LoadAssetAtPath<Material>($"{Mat}/HM_Urun_Karton.mat");
+        var kok = (GameObject)PrefabUtility.InstantiatePrefab(model, sahne);
+        kok.name = "HafizaMakarna";
+        kok.transform.SetPositionAndRotation(Vector3.zero, Quaternion.Euler(0, 180, 0));
+
+        var koli = new List<Transform>(); var raf = new List<Transform>();
+        foreach (var r in kok.GetComponentsInChildren<MeshRenderer>(true))
+        {
+            r.sharedMaterials = new[] { karton };
+            (r.name.StartsWith("Koli_") ? koli : raf).Add(r.transform);
+        }
+        koli.Sort((a, b) => string.CompareOrdinal(a.name, b.name));
+
+        var oyun = new GameObject("Makarna_Dizme");
+        oyun.transform.SetParent(kok.transform, false);
+        var kb = Kutu(oyun.transform, "Koli_Al", koli, 0.06f); kb.gameObject.AddComponent<InteractionTarget>().Configure(InteractionTarget.Verb.Take, 2.2f);
+        var rb = Kutu(oyun.transform, "Raf_Bosluk", raf, 0.03f); rb.gameObject.AddComponent<InteractionTarget>().Configure(InteractionTarget.Verb.Place, 2.2f);
+
+        var d = oyun.AddComponent<MarketShelfStocking>();
+        var so = new SerializedObject(d);
+        so.FindProperty("box").objectReferenceValue = kb;
+        so.FindProperty("shelfGap").objectReferenceValue = rb;
+        void Liste(string ad, List<Transform> l) { var p = so.FindProperty(ad); p.arraySize = l.Count; for (int i = 0; i < l.Count; i++) p.GetArrayElementAtIndex(i).objectReferenceValue = l[i]; }
+        Liste("boxPackets", koli); Liste("shelfSlots", raf);
+        so.ApplyModifiedPropertiesWithoutUndo();
+    }
+
+    // Nesnelerin dünya sınırlarını saran tetik kutu (oyuncuyu engellemez, ışın görür)
+    static BoxCollider Kutu(Transform ust, string ad, List<Transform> l, float pay)
+    {
+        var b = l[0].GetComponent<Renderer>().bounds;
+        foreach (var t in l) b.Encapsulate(t.GetComponent<Renderer>().bounds);
+        b.Expand(pay * 2);
+        var g = new GameObject(ad); g.transform.SetParent(ust, false);
+        g.transform.SetPositionAndRotation(b.center, Quaternion.identity);
+        var c = g.AddComponent<BoxCollider>(); c.isTrigger = true; c.size = b.size;
+        return c;
+    }
+
     static void Yerlestir()
     {
         var sahne = EditorSceneManager.GetActiveScene();
@@ -122,6 +170,7 @@ public static class HafizaMarketKur
         }
         if (engel != null) engel.SetParent(kok.transform, true);
         if (eski != null) Object.DestroyImmediate(eski);
+        Makarnalar(sahne);
 
         EditorSceneManager.MarkSceneDirty(sahne);
         EditorSceneManager.SaveScene(sahne);
