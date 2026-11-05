@@ -307,8 +307,8 @@ public static class HafizaMarketKur
             }
             var mi = new GameObject("Mutfak_Isigi").AddComponent<Light>();
             mi.transform.SetParent(kok.transform, false);
-            mi.transform.position = new Vector3(25.45f, 2.3f, 6.4f);
-            mi.type = LightType.Point; mi.range = 5f; mi.intensity = 3.5f; mi.color = new Color(1f, 0.78f, 0.5f); mi.shadows = LightShadows.Soft;
+            mi.transform.position = new Vector3(26.0f, 2.0f, 7.3f);              // M1: mutfak masasının üstü
+            mi.type = LightType.Point; mi.range = 6.5f; mi.intensity = 1.8f; mi.color = new Color(1f, 0.78f, 0.5f); mi.shadows = LightShadows.Soft;
             var holder = new GameObject("ArkaKapi"); holder.transform.SetParent(kok.transform, false);
             var ik2 = holder.AddComponent<ItmeKapi>();
             var so6 = new SerializedObject(ik2);

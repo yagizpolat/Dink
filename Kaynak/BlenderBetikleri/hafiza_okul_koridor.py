@@ -157,24 +157,46 @@ k = kutu("ArkaKapi_Kanat_Kol", (0.75, -0.07, 1.0), (0.85, -0.02, 1.03), "M_Krom"
 # kapinin ardinda mutfaga acilan kisa sicak gecit (mutfak bolgesi sonraki is)
 M_MFAYANS = pbr("M_Mutfak_Fayans", "Market", "long_white_tiles")
 M_MDUVAR = pbr("M_Mutfak_Duvar", "Koridor", "beige_wall_001")
-KY0, KY1 = SY1 + 0.15, SY1 + 3.15
-kutu("Mutfak_Gecit_Zemin", (AX0 - 0.9, KY0, -0.1), (AX1 + 0.9, KY1, 0.0), M_MFAYANS, 0.6)
-kutu("Mutfak_Gecit_DuvarA", (AX0 - 1.05, KY0, 0), (AX0 - 0.9, KY1, 2.6), M_MDUVAR, 2.0)
-kutu("Mutfak_Gecit_DuvarB", (AX1 + 0.9, KY0, 0), (AX1 + 1.05, KY1, 2.6), M_MDUVAR, 2.0)
-kutu("Mutfak_Gecit_Son", (AX0 - 1.05, KY1, 0), (AX1 + 1.05, KY1 + 0.15, 2.6), M_MDUVAR, 2.0)
-kutu("Mutfak_Gecit_Tavan", (AX0 - 1.05, KY0, 2.6), (AX1 + 1.05, KY1 + 0.15, 2.7), M_MDUVAR, 2.0)
-kutu("Okul_Sinif_DuvarSon", (SX1, SY0 - 0.15, 0), (SX1 + 0.15, SY1 + 0.15, H), M_SIVA, 2.0)
-kutu("Okul_Sinif_DuvarOn_A", (SX0 - 0.15, SY0 - 0.15, 0), (SX0, YA - 0.15, H), M_SIVA, 2.0)
-kutu("Okul_Sinif_DuvarOn_B", (SX0 - 0.15, YB + 0.15, 0), (SX0, SY1 + 0.15, H), M_SIVA, 2.0)
-kutu("Okul_Sinif_Tahta", (SX1 - 0.04, YO - 3.0 + 0.1, 0.6), (SX1, YO + 3.0 - 0.1, 3.4), M_TAHTA, 2.0)
-kutu("Okul_Sinif_TahtaCerceve", (SX1 - 0.06, YO - 2.95, 0.55), (SX1 - 0.04, YO + 2.95, 0.6), "M_Aluminyum")
-kutu("Okul_Sinif_TahtaArmatur", (SX1 - 0.5, YO - 2.0, 3.45), (SX1 - 0.3, YO + 2.0, 3.55), "M_Armatur_Kasa")
-kutu("Okul_Sinif_TahtaDifuzor", (SX1 - 0.48, YO - 1.97, 3.445), (SX1 - 0.32, YO + 1.97, 3.45), "M_Armatur_Difuzor_0")
-for r in range(4):
-    for c in range(3):
-        x = SX0 + 1.6 + r * 1.3; y = YO - 2.0 + c * 2.0
-        kutu(f"Okul_Sira_{r}{c}_Ust", (x, y - 0.6, 0.72), (x + 0.5, y + 0.6, 0.75), M_SIRA, 1.0)
-        for dx in (0.03, 0.44):
-            for dy in (-0.57, 0.54):
-                kutu(f"Okul_Sira_{r}{c}_Ayak{dx}{dy}", (x + dx, y + dy, 0), (x + dx + 0.03, y + dy + 0.03, 0.72), "M_Aluminyum")
-print("okul koridoru kuruldu, dolap sayisi", i * 2)
+# M1: Hakan'larin mutfagi (5 x 4.5 m, tavan 2.6). Masa dev (aile sofrasi: hafizada agir yer), gerisi normal.
+# Karsi duvarda pencere: gece sokagi (23:42) sonraki bolge.
+KY0 = SY1 + 0.15
+MX0, MX1, MY0, MY1, MH = AX0 - 1.6, AX0 + 3.4, KY0, KY0 + 4.5, 2.6
+M_MASA = pbr("M_Mutfak_Masa", "Market", "lacquered_cherry_wood")
+kutu("Mutfak_Zemin", (MX0, MY0, -0.1), (MX1, MY1, 0.0), M_MFAYANS, 0.6)
+kutu("Mutfak_Tavan", (MX0 - 0.15, MY0, MH), (MX1 + 0.15, MY1 + 0.15, MH + 0.1), M_MDUVAR, 2.0)
+kutu("Mutfak_DuvarA", (MX0 - 0.15, MY0, 0), (MX0, MY1 + 0.15, MH), M_MDUVAR, 2.0)
+kutu("Mutfak_DuvarB", (MX1, MY0, 0), (MX1 + 0.15, MY1 + 0.15, MH), M_MDUVAR, 2.0)
+kutu("Mutfak_DuvarOnA", (MX0, MY0 - 0.15, 0), (AX0, MY0, MH), M_MDUVAR, 2.0)
+kutu("Mutfak_DuvarOnB", (AX1, MY0 - 0.15, 0), (MX1, MY0, MH), M_MDUVAR, 2.0)
+kutu("Mutfak_DuvarOnUst", (AX0, MY0 - 0.15, 2.15), (AX1, MY0, MH), M_MDUVAR, 2.0)
+# arka duvar pencereli (pencere x PX0..PX1, z 0.95..2.05)
+PX0, PX1 = MX0 + 1.9, MX0 + 3.1
+kutu("Mutfak_ArkaA", (MX0, MY1, 0), (PX0, MY1 + 0.15, MH), M_MDUVAR, 2.0)
+kutu("Mutfak_ArkaB", (PX1, MY1, 0), (MX1, MY1 + 0.15, MH), M_MDUVAR, 2.0)
+kutu("Mutfak_ArkaAlt", (PX0, MY1, 0), (PX1, MY1 + 0.15, 0.95), M_MDUVAR, 2.0)
+kutu("Mutfak_ArkaUst", (PX0, MY1, 2.05), (PX1, MY1 + 0.15, MH), M_MDUVAR, 2.0)
+for ad, a_, b_ in (("Alt", (PX0, MY1 - 0.02, 0.92), (PX1, MY1 + 0.17, 0.95)), ("Ust", (PX0, MY1 - 0.02, 2.05), (PX1, MY1 + 0.17, 2.08)),
+                   ("SolK", (PX0, MY1 - 0.02, 0.95), (PX0 + 0.04, MY1 + 0.17, 2.05)), ("SagK", (PX1 - 0.04, MY1 - 0.02, 0.95), (PX1, MY1 + 0.17, 2.05)),
+                   ("Orta", ((PX0 + PX1) / 2 - 0.02, MY1 - 0.02, 0.95), ((PX0 + PX1) / 2 + 0.02, MY1 + 0.17, 2.05))):
+    kutu("Mutfak_Pencere_" + ad, a_, b_, "M_Aluminyum")
+kutu("Mutfak_Pencere_Cam", (PX0 + 0.04, MY1 + 0.07, 0.95), (PX1 - 0.04, MY1 + 0.08, 2.05), "M_Cam")
+# tezgah (sol duvar boyunca) + ust dolaplar + buzdolabi
+kutu("Mutfak_Tezgah_Govde", (MX0, MY0 + 0.6, 0), (MX0 + 0.6, MY1 - 0.1, 0.86), M_MASA, 1.0)
+kutu("Mutfak_Tezgah_Ust", (MX0, MY0 + 0.55, 0.86), (MX0 + 0.63, MY1 - 0.05, 0.9), "M_Tezgah_Ust", 1.0)
+kutu("Mutfak_UstDolap", (MX0, MY0 + 0.6, 1.5), (MX0 + 0.35, MY1 - 0.1, 2.2), M_MASA, 1.0)
+kutu("Mutfak_Buzdolabi", (MX1 - 0.7, MY1 - 0.75, 0), (MX1 - 0.02, MY1 - 0.05, 1.85), "M_Raf_Boyali", 1.0)
+kutu("Mutfak_Buzdolabi_Kulp", (MX1 - 0.74, MY1 - 0.2, 0.9), (MX1 - 0.7, MY1 - 0.17, 1.5), "M_Krom")
+# dev aile masasi: normalde 0.75 m, burada 1.25 m; ayaklar kalin
+TX0, TX1, TY0, TY1, TH = MX0 + 1.4, MX0 + 3.6, MY0 + 1.5, MY0 + 3.1, 1.25
+kutu("Mutfak_Masa_Ust", (TX0, TY0, TH - 0.06), (TX1, TY1, TH), M_MASA, 1.0)
+for i, (x, y) in enumerate(((TX0 + 0.05, TY0 + 0.05), (TX1 - 0.13, TY0 + 0.05), (TX0 + 0.05, TY1 - 0.13), (TX1 - 0.13, TY1 - 0.13))):
+    kutu("Mutfak_Masa_Ayak%d" % i, (x, y, 0), (x + 0.08, y + 0.08, TH - 0.06), M_MASA, 1.0)
+# iki sandalye (normal boy: masanin altinda kalir, cocuk gibi hissettirir)
+for i, x in enumerate((TX0 + 0.4, TX1 - 0.85)):
+    y = TY0 - 0.5
+    kutu("Mutfak_Sandalye%d_Oturak" % i, (x, y, 0.44), (x + 0.45, y + 0.45, 0.48), M_MASA, 1.0)
+    kutu("Mutfak_Sandalye%d_Arka" % i, (x, y - 0.03, 0.48), (x + 0.45, y, 0.95), M_MASA, 1.0)
+    for j, (dx, dy) in enumerate(((0, 0), (0.41, 0), (0, 0.41), (0.41, 0.41))):
+        kutu("Mutfak_Sandalye%d_Ayak%d" % (i, j), (x + dx, y + dy, 0), (x + dx + 0.04, y + dy + 0.04, 0.44), "M_Aluminyum")
+kutu("Mutfak_Lamba", ((TX0 + TX1) / 2 - 0.2, (TY0 + TY1) / 2 - 0.2, 2.45), ((TX0 + TX1) / 2 + 0.2, (TY0 + TY1) / 2 + 0.2, 2.55), "M_Armatur_Difuzor_3")
+print("okul koridoru + sinif + mutfak kuruldu")
