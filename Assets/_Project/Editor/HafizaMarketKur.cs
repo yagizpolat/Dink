@@ -283,6 +283,47 @@ public static class HafizaMarketKur
         sl.GetArrayElementAtIndex(0).objectReferenceValue = AssetDatabase.LoadAssetAtPath<AudioClip>(Ses + "Door_Close_1.wav");
         sl.GetArrayElementAtIndex(1).objectReferenceValue = AssetDatabase.LoadAssetAtPath<AudioClip>(Ses + "Door_Close_2.wav");
         so5.FindProperty("doorSlam").objectReferenceValue = AssetDatabase.LoadAssetAtPath<AudioClip>(Ses + "Door_Close_1.wav");
+        // S4: arka kapı (mutfağa), kilitli başlar; ardında sıcak ışık
+        var am = AssetDatabase.LoadAssetAtPath<GameObject>("Assets/_Project/Models/HafizaMarket/HafizaArkaKapi.fbx");
+        if (am != null)
+        {
+            var ah = new GameObject("ArkaKapi_Mentese").transform;           // Blender (25.0, 4.87, 0)
+            ah.SetParent(kok.transform, false);
+            ah.SetPositionAndRotation(new Vector3(25.0f, 0f, 4.87f), Quaternion.Euler(0, 180, 0));
+            var ag = (GameObject)PrefabUtility.InstantiatePrefab(am, sahne);
+            ag.transform.SetParent(ah, false); ag.transform.localPosition = Vector3.zero; ag.transform.localRotation = Quaternion.identity;
+            foreach (var r in ag.GetComponentsInChildren<MeshRenderer>(true))
+            {
+                var ms = r.sharedMaterials;
+                for (int i = 0; i < ms.Length; i++)
+                {
+                    if (ms[i] == null) continue;
+                    string ad = ms[i].name.StartsWith("M_") ? ms[i].name.Substring(2) : ms[i].name;
+                    var hm = AssetDatabase.LoadAssetAtPath<Material>($"{Mat}/HM_{ad}.mat");
+                    if (hm != null) ms[i] = hm;
+                }
+                r.sharedMaterials = ms;
+                r.gameObject.AddComponent<BoxCollider>();
+            }
+            var mi = new GameObject("Mutfak_Isigi").AddComponent<Light>();
+            mi.transform.SetParent(kok.transform, false);
+            mi.transform.position = new Vector3(25.45f, 2.3f, 6.4f);
+            mi.type = LightType.Point; mi.range = 5f; mi.intensity = 3.5f; mi.color = new Color(1f, 0.78f, 0.5f); mi.shadows = LightShadows.Soft;
+            var holder = new GameObject("ArkaKapi"); holder.transform.SetParent(kok.transform, false);
+            var ik2 = holder.AddComponent<ItmeKapi>();
+            var so6 = new SerializedObject(ik2);
+            so6.FindProperty("leaf").objectReferenceValue = ah;
+            so6.FindProperty("player").objectReferenceValue = oy != null ? oy.transform : null;
+            so6.FindProperty("pushPoint").vector3Value = new Vector3(25.45f, 0f, 4.3f);
+            so6.FindProperty("openAngle").floatValue = -85f;
+            so6.FindProperty("startLocked").boolValue = true;
+            so6.FindProperty("revealLight").objectReferenceValue = mi;
+            so6.FindProperty("openSound").objectReferenceValue = AssetDatabase.LoadAssetAtPath<AudioClip>(Ses + "Door_Open_2.wav");
+            so6.ApplyModifiedPropertiesWithoutUndo();
+            so5.FindProperty("backDoor").objectReferenceValue = ik2;
+        }
+        var tahtaIsik = GameObject.Find("Sinif_TahtaIsigi");
+        so5.FindProperty("boardLight").objectReferenceValue = tahtaIsik != null ? tahtaIsik.GetComponent<Light>() : null;
         so5.ApplyModifiedPropertiesWithoutUndo();
 
         // sınıf marketten ~29 m uzakta: çıkışsızlık yarıçapı onu kapsamalı

@@ -12,12 +12,26 @@ public class ItmeKapi : MonoBehaviour
     [SerializeField] private float openAngle = -85f;
     [SerializeField] private float seconds = 0.9f;
     [SerializeField] private AudioClip openSound;
+    [SerializeField] private bool startLocked;
+    [SerializeField] private Light revealLight;               // kilit açılınca yanar (kapı ardındaki sızıntı)
 
     private bool opened, locked;
     private Quaternion closedRot;
     private bool closedSet;
 
-    private void Awake() { if (leaf != null) { closedRot = leaf.localRotation; closedSet = true; } }
+    private void Awake()
+    {
+        if (leaf != null) { closedRot = leaf.localRotation; closedSet = true; }
+        locked = startLocked;
+        if (revealLight != null) revealLight.enabled = !startLocked;
+    }
+
+    /// <summary>Kilidi açar; ardındaki ışık yanar, kapı artık itilebilir.</summary>
+    public void Unlock()
+    {
+        locked = false;
+        if (revealLight != null) revealLight.enabled = true;
+    }
 
     /// <summary>Kapıyı bir anda kapatır ve kilitler (bir daha itilmez).</summary>
     public void SlamShut()

@@ -134,7 +134,35 @@ M_TAHTA = pbr("M_Sinif_Tahta", "Koridor", "painted_plaster_wall", (0.12, 0.2, 0.
 kutu("Okul_Sinif_Zemin", (SX0, SY0, -0.1), (SX1, SY1, 0.0), M_PARKE, 1.5)
 kutu("Okul_Sinif_Tavan", (SX0, SY0, H), (SX1, SY1, H + 0.1), M_SIVA, 2.0)
 kutu("Okul_Sinif_DuvarA", (SX0, SY0 - 0.15, 0), (SX1, SY0, H), M_SIVA, 2.0)
-kutu("Okul_Sinif_DuvarB", (SX0, SY1, 0), (SX1, SY1 + 0.15, H), M_SIVA, 2.0)
+# arka kapi acikligi (sol duvar, sinifin arkasi): x AX0..AX1, 2.1 m
+AX0, AX1 = SX0 + 0.85, SX0 + 1.75
+kutu("Okul_Sinif_DuvarB_A", (SX0, SY1, 0), (AX0, SY1 + 0.15, H), M_SIVA, 2.0)
+kutu("Okul_Sinif_DuvarB_B", (AX1, SY1, 0), (SX1, SY1 + 0.15, H), M_SIVA, 2.0)
+kutu("Okul_Sinif_DuvarB_Ust", (AX0, SY1, 2.15), (AX1, SY1 + 0.15, H), M_SIVA, 2.0)
+for ad, a, b in (("A", (AX0 - 0.05, SY1 - 0.04, 0), (AX0, SY1, 2.15)), ("B", (AX1, SY1 - 0.04, 0), (AX1 + 0.05, SY1, 2.15)),
+                 ("Ust", (AX0 - 0.05, SY1 - 0.04, 2.1), (AX1 + 0.05, SY1, 2.15))):
+    kutu("Okul_ArkaKapi_Kasa_" + ad, a, b, "M_Aluminyum")
+for o in [o for o in col.objects if o.name.startswith("ArkaKapi_Kanat")]:
+    bpy.data.objects.remove(o, do_unlink=True)
+ak = bpy.data.objects.new("ArkaKapi_Kanat", None); col.objects.link(ak)
+ak.location = (AX0, SY1 + 0.02, 0.0)            # mentese x=AX0, mutfaga (+y) acilir
+def ap(ad, x0, z0, x1, z1, m):
+    o = kutu(ad, (x0, -0.02, z0), (x1, 0.02, z1), m, 1.0); o.parent = ak; return o
+ap("ArkaKapi_Kanat_Alt", 0.0, 0.03, 0.9, 1.1, M_KAPI)
+ap("ArkaKapi_Kanat_Ust", 0.0, 1.85, 0.9, 2.1, M_KAPI)
+ap("ArkaKapi_Kanat_YanA", 0.0, 1.1, 0.2, 1.85, M_KAPI)
+ap("ArkaKapi_Kanat_YanB", 0.7, 1.1, 0.9, 1.85, M_KAPI)
+ap("ArkaKapi_Kanat_Cam", 0.2, 1.1, 0.7, 1.85, "M_Cam")
+k = kutu("ArkaKapi_Kanat_Kol", (0.75, -0.07, 1.0), (0.85, -0.02, 1.03), "M_Krom"); k.parent = ak
+# kapinin ardinda mutfaga acilan kisa sicak gecit (mutfak bolgesi sonraki is)
+M_MFAYANS = pbr("M_Mutfak_Fayans", "Market", "long_white_tiles")
+M_MDUVAR = pbr("M_Mutfak_Duvar", "Koridor", "beige_wall_001")
+KY0, KY1 = SY1 + 0.15, SY1 + 3.15
+kutu("Mutfak_Gecit_Zemin", (AX0 - 0.9, KY0, -0.1), (AX1 + 0.9, KY1, 0.0), M_MFAYANS, 0.6)
+kutu("Mutfak_Gecit_DuvarA", (AX0 - 1.05, KY0, 0), (AX0 - 0.9, KY1, 2.6), M_MDUVAR, 2.0)
+kutu("Mutfak_Gecit_DuvarB", (AX1 + 0.9, KY0, 0), (AX1 + 1.05, KY1, 2.6), M_MDUVAR, 2.0)
+kutu("Mutfak_Gecit_Son", (AX0 - 1.05, KY1, 0), (AX1 + 1.05, KY1 + 0.15, 2.6), M_MDUVAR, 2.0)
+kutu("Mutfak_Gecit_Tavan", (AX0 - 1.05, KY0, 2.6), (AX1 + 1.05, KY1 + 0.15, 2.7), M_MDUVAR, 2.0)
 kutu("Okul_Sinif_DuvarSon", (SX1, SY0 - 0.15, 0), (SX1 + 0.15, SY1 + 0.15, H), M_SIVA, 2.0)
 kutu("Okul_Sinif_DuvarOn_A", (SX0 - 0.15, SY0 - 0.15, 0), (SX0, YA - 0.15, H), M_SIVA, 2.0)
 kutu("Okul_Sinif_DuvarOn_B", (SX0 - 0.15, YB + 0.15, 0), (SX0, SY1 + 0.15, H), M_SIVA, 2.0)

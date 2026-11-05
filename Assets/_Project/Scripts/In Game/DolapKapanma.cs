@@ -8,6 +8,8 @@ public class DolapKapanma : MonoBehaviour
 {
     [SerializeField] private SinifKagit paper;
     [SerializeField] private ItmeKapi classDoor;
+    [SerializeField] private ItmeKapi backDoor;                // S4: ön kapı kapanınca arka kapı (mutfak) açılır
+    [SerializeField] private Light boardLight;
     [SerializeField] private AudioClip[] slams;               // gerçek kapı kapanma kayıtları, tiz çalınır (metal)
     [SerializeField] private AudioClip doorSlam;
     [SerializeField] private float startDelay = 2f;
@@ -36,6 +38,15 @@ public class DolapKapanma : MonoBehaviour
         while (cam != null && cam.transform.position.x < 24.6f) yield return null;
         Play(doorSlam, new Vector3(24.2f, 1.2f, 1.85f), 0.92f, 1f);
         if (classDoor != null) classDoor.SlamShut();
+        yield return new WaitForSeconds(2.5f);
+        if (boardLight != null)                                // tahta ışığı tökezleyip söner, arka kapının altından sıcak ışık
+        {
+            float b = boardLight.intensity;
+            float[] f = { 0.2f, 1f, 0f, 0.6f, 0f };
+            foreach (var k in f) { boardLight.intensity = b * k; yield return new WaitForSeconds(0.08f); }
+            boardLight.enabled = false;
+        }
+        if (backDoor != null) backDoor.Unlock();
     }
 
     private void Play(AudioClip c, Vector3 pos, float pitch, float vol)
