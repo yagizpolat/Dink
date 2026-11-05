@@ -61,7 +61,7 @@ def kutu(ad, mn, mx, m, olcek=1.0):
 for n in ("DepoGecit_Zemin", "DepoGecit_Duvar_A", "DepoGecit_Duvar_B", "DepoGecit_Son", "DepoGecit_Tavan"):
     o = bpy.data.objects.get(n)
     if o: bpy.data.objects.remove(o, do_unlink=True)
-for o in [o for o in col.objects if o.name.startswith("Okul_")]:
+for o in [o for o in col.objects if o.name.startswith(("Okul_", "Mutfak_"))]:
     bpy.data.objects.remove(o, do_unlink=True)
 
 kutu("Okul_DepoZemin", (X_DIS,YA,-0.1), (XS,YB,0.0), M_BETON, 2.0)
@@ -76,7 +76,9 @@ for o in col.objects:
         pass
 for o in [o for o in col.objects if o.name.startswith(("DepoGecit_Armatur", "DepoGecit_Difuzor"))]:
     if sum((o.matrix_world @ __import__("mathutils").Vector(c)).x for c in o.bound_box) / 8 > XS:
-        for v in o.data.vertices: v.co.z += H - HD
+        # mutlak hedefe tasi: betik tekrar calisinca lambalar yukari kaymasin
+        dz = (H - 0.08) - min(v.co.z for v in o.data.vertices)
+        for v in o.data.vertices: v.co.z += dz
 kutu("Okul_Zemin", (XS,YA,-0.1), (XE,YB,0.0), M_MOZAIK, 1.2)
 kutu("Okul_Duvar_A", (XS,YA-0.15,0), (XE,YA,H), M_SIVA, 2.0)
 kutu("Okul_Duvar_B", (XS,YB,0), (XE,YB+0.15,H), M_SIVA, 2.0)
@@ -154,6 +156,20 @@ ap("ArkaKapi_Kanat_YanA", 0.0, 1.1, 0.2, 1.85, M_KAPI)
 ap("ArkaKapi_Kanat_YanB", 0.7, 1.1, 0.9, 1.85, M_KAPI)
 ap("ArkaKapi_Kanat_Cam", 0.2, 1.1, 0.7, 1.85, "M_Cam")
 k = kutu("ArkaKapi_Kanat_Kol", (0.75, -0.07, 1.0), (0.85, -0.02, 1.03), "M_Krom"); k.parent = ak
+kutu("Okul_Sinif_DuvarSon", (SX1, SY0 - 0.15, 0), (SX1 + 0.15, SY1 + 0.15, H), M_SIVA, 2.0)
+kutu("Okul_Sinif_DuvarOn_A", (SX0 - 0.15, SY0 - 0.15, 0), (SX0, YA - 0.15, H), M_SIVA, 2.0)
+kutu("Okul_Sinif_DuvarOn_B", (SX0 - 0.15, YB + 0.15, 0), (SX0, SY1 + 0.15, H), M_SIVA, 2.0)
+kutu("Okul_Sinif_Tahta", (SX1 - 0.04, YO - 3.0 + 0.1, 0.6), (SX1, YO + 3.0 - 0.1, 3.4), M_TAHTA, 2.0)
+kutu("Okul_Sinif_TahtaCerceve", (SX1 - 0.06, YO - 2.95, 0.55), (SX1 - 0.04, YO + 2.95, 0.6), "M_Aluminyum")
+kutu("Okul_Sinif_TahtaArmatur", (SX1 - 0.5, YO - 2.0, 3.45), (SX1 - 0.3, YO + 2.0, 3.55), "M_Armatur_Kasa")
+kutu("Okul_Sinif_TahtaDifuzor", (SX1 - 0.48, YO - 1.97, 3.445), (SX1 - 0.32, YO + 1.97, 3.45), "M_Armatur_Difuzor_0")
+for r in range(4):
+    for c in range(3):
+        x = SX0 + 1.6 + r * 1.3; y = YO - 2.0 + c * 2.0
+        kutu(f"Okul_Sira_{r}{c}_Ust", (x, y - 0.6, 0.72), (x + 0.5, y + 0.6, 0.75), M_SIRA, 1.0)
+        for dx in (0.03, 0.44):
+            for dy in (-0.57, 0.54):
+                kutu(f"Okul_Sira_{r}{c}_Ayak{dx}{dy}", (x + dx, y + dy, 0), (x + dx + 0.03, y + dy + 0.03, 0.72), "M_Aluminyum")
 # kapinin ardinda mutfaga acilan kisa sicak gecit (mutfak bolgesi sonraki is)
 M_MFAYANS = pbr("M_Mutfak_Fayans", "Market", "long_white_tiles")
 M_MDUVAR = pbr("M_Mutfak_Duvar", "Koridor", "beige_wall_001")
@@ -199,4 +215,14 @@ for i, x in enumerate((TX0 + 0.4, TX1 - 0.85)):
     for j, (dx, dy) in enumerate(((0, 0), (0.41, 0), (0, 0.41), (0.41, 0.41))):
         kutu("Mutfak_Sandalye%d_Ayak%d" % (i, j), (x + dx, y + dy, 0), (x + dx + 0.04, y + dy + 0.04, 0.44), "M_Aluminyum")
 kutu("Mutfak_Lamba", ((TX0 + TX1) / 2 - 0.2, (TY0 + TY1) / 2 - 0.2, 2.45), ((TX0 + TX1) / 2 + 0.2, (TY0 + TY1) / 2 + 0.2, 2.55), "M_Armatur_Difuzor_3")
+# Depo kolileri duvar diplerine: ortada 1.5 m gecit acik kalsin (rastgele yerlesim koridoru tikiyordu)
+for o in [o for o in col.objects if o.name.startswith("DepoGecit_Koli_")]:
+    bpy.data.objects.remove(o, do_unlink=True)
+for i, (x, duvar, boy) in enumerate(((6.7, 0, 2), (7.5, 1, 1), (8.2, 0, 1), (8.8, 1, 3), (9.4, 0, 3), (6.6, 1, 2))):
+    ya0 = YA + 0.02 if duvar == 0 else YB - 0.5
+    z = 0.0
+    for k in range(boy):
+        h = (0.42, 0.34, 0.38)[k]; dx = (0.0, 0.04, -0.03)[k]
+        kutu("DepoGecit_Koli_%d_%d" % (i, k), (x + dx, ya0, z), (x + dx + 0.52, ya0 + 0.48, z + h), "M_Koli_Karton")
+        z += h
 print("okul koridoru + sinif + mutfak kuruldu")

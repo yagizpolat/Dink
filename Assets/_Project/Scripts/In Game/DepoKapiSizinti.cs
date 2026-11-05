@@ -8,7 +8,8 @@ public class DepoKapiSizinti : MonoBehaviour
 {
     [SerializeField] private MarketShelfStocking stocking;
     [SerializeField] private Transform leaf;                 // DepoKapi_KanatSag (köken menteşede)
-    [SerializeField] private Light backLight;                // kapı ardındaki floresan
+    [SerializeField] private Transform leafB;                // karşı kanat: itilince ters yöne açılır (tek kanat oyuncuya dar)
+    [SerializeField] private Light backLight;              // kapı ardındaki floresan
     [SerializeField] private AudioSource hum;                // ardındaki vızıltı (döngü, 3D)
     [SerializeField] private float delay = 2.5f;
     [SerializeField] private float lightIntensity = 6f;
@@ -74,18 +75,23 @@ public class DepoKapiSizinti : MonoBehaviour
         if (d.magnitude > pushRadius) return;
         pushed = true;
         foreach (var c in leaf.GetComponentsInChildren<Collider>()) c.enabled = false;
-        StartCoroutine(Push());
+        StartCoroutine(Push(leaf, pushAngle));
+        if (leafB != null)
+        {
+            foreach (var c in leafB.GetComponentsInChildren<Collider>()) c.enabled = false;
+            StartCoroutine(Push(leafB, -pushAngle));
+        }
     }
 
-    private IEnumerator Push()
+    private static IEnumerator Push(Transform kanat, float aci)
     {
-        var from = leaf.localRotation; var to = closed * Quaternion.Euler(0f, pushAngle, 0f);
+        var from = kanat.localRotation; var to = from * Quaternion.Euler(0f, aci, 0f);
         for (float t = 0f; t < 1f; t += Time.deltaTime / 0.7f)
         {
-            leaf.localRotation = Quaternion.Slerp(from, to, 1f - Mathf.Pow(1f - t, 2f));
+            kanat.localRotation = Quaternion.Slerp(from, to, 1f - Mathf.Pow(1f - t, 2f));
             yield return null;
         }
-        leaf.localRotation = to;
+        kanat.localRotation = to;
     }
 
     private static IEnumerator Fade(AudioSource s, float to, float sec)

@@ -116,7 +116,8 @@ for o in koli_mak:  # ana gövdeye girmesin
     o.hide_set(True)
 
 # G1: depo kapısının sağ kanadı ayrı FBX (köken menteşede, Unity'de açılır)
-for kad, dosya in (("DepoKapi_KanatSag", "HafizaDepoKapi.fbx"), ("SinifKapi_Kanat", "HafizaSinifKapi.fbx"), ("ArkaKapi_Kanat", "HafizaArkaKapi.fbx")):
+for kad, dosya in (("DepoKapi_KanatSag", "HafizaDepoKapi.fbx"), ("SinifKapi_Kanat", "HafizaSinifKapi.fbx"), ("ArkaKapi_Kanat", "HafizaArkaKapi.fbx"),
+                  ("DepoKapi_KanatSol", "HafizaDepoKapiSol.fbx"), ("MarketKapi_KanatSol", "HafizaMarketKapiSol.fbx"), ("MarketKapi_KanatSag", "HafizaMarketKapiSag.fbx")):
   kb = bpy.data.objects.get(kad)
   if kb:
     parca = []

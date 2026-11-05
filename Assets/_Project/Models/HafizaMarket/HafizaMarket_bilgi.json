@@ -396,6 +396,28 @@
    ],
    "alfa": false
   },
+  "M_Sinif_Sira": {
+   "metal": 0.0,
+   "normal": true,
+   "isik": 0.0,
+   "isik_renk": [
+    1.0,
+    1.0,
+    1.0
+   ],
+   "alfa": false
+  },
+  "M_Sinif_Tahta": {
+   "metal": 0.0,
+   "normal": true,
+   "isik": 0.0,
+   "isik_renk": [
+    1.0,
+    1.0,
+    1.0
+   ],
+   "alfa": false
+  },
   "M_Sise_Deterjan": {
    "metal": 0.0,
    "normal": true,

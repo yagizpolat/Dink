@@ -146,6 +146,51 @@ public static class HafizaMarketKur
         so2.ApplyModifiedPropertiesWithoutUndo();
 
         DepoKapi(sahne, d);
+        MarketKapi(sahne);
+    }
+
+    // Ön kapı: iki kanat; oyuncu önüne (ya da içeriden arkasına) gelince içeri açılır, açık kalır
+    static void MarketKapi(UnityEngine.SceneManagement.Scene sahne)
+    {
+        var eski = GameObject.Find("MarketKapi");
+        if (eski != null) Object.DestroyImmediate(eski);
+        var kok = new GameObject("MarketKapi");
+        UnityEngine.SceneManagement.SceneManager.MoveGameObjectToScene(kok, sahne);
+        var oy = Object.FindFirstObjectByType<PlayerWalker>();
+        var ses = AssetDatabase.LoadAssetAtPath<AudioClip>("Assets/gorseller/Sesler/Audios/Environment/Entrances/Door_Open_2.wav");
+        (string fbx, float x, float aci)[] kanatlar = { ("Sol", 0.545f, 85f), ("Sag", 1.455f, -85f) };
+        foreach (var k in kanatlar)
+        {
+            var model = AssetDatabase.LoadAssetAtPath<GameObject>($"Assets/_Project/Models/HafizaMarket/HafizaMarketKapi{k.fbx}.fbx");
+            if (model == null) continue;
+            var m = new GameObject("Kanat" + k.fbx + "_Mentese").transform;
+            m.SetParent(kok.transform, false);
+            m.SetPositionAndRotation(new Vector3(k.x, 0f, -0.08f), Quaternion.Euler(0, 180, 0));
+            var g = (GameObject)PrefabUtility.InstantiatePrefab(model, sahne);
+            g.transform.SetParent(m, false); g.transform.localPosition = Vector3.zero; g.transform.localRotation = Quaternion.identity;
+            foreach (var r in g.GetComponentsInChildren<MeshRenderer>(true))
+            {
+                var ms = r.sharedMaterials;
+                for (int i = 0; i < ms.Length; i++)
+                {
+                    if (ms[i] == null) continue;
+                    string ad = ms[i].name.StartsWith("M_") ? ms[i].name.Substring(2) : ms[i].name;
+                    var hm = AssetDatabase.LoadAssetAtPath<Material>($"{Mat}/HM_{ad}.mat");
+                    if (hm != null) ms[i] = hm;
+                }
+                r.sharedMaterials = ms;
+                r.gameObject.AddComponent<BoxCollider>();
+            }
+            var ik = m.gameObject.AddComponent<ItmeKapi>();
+            var so = new SerializedObject(ik);
+            so.FindProperty("leaf").objectReferenceValue = m;
+            so.FindProperty("player").objectReferenceValue = oy != null ? oy.transform : null;
+            so.FindProperty("pushPoint").vector3Value = new Vector3(1f, 0f, -0.08f);
+            so.FindProperty("pushRadius").floatValue = 1.1f;
+            so.FindProperty("openAngle").floatValue = k.aci;
+            if (k.fbx == "Sol") so.FindProperty("openSound").objectReferenceValue = ses;
+            so.ApplyModifiedPropertiesWithoutUndo();
+        }
     }
 
     const string DepoFbx = "Assets/_Project/Models/HafizaMarket/HafizaDepoKapi.fbx";
@@ -194,6 +239,30 @@ public static class HafizaMarketKur
         var so = new SerializedObject(g);
         so.FindProperty("stocking").objectReferenceValue = d;
         so.FindProperty("leaf").objectReferenceValue = mentese;
+        // Tek kanat 0.5 m: oyuncu sığmaz, itilince ikinci kanat da açılır
+        var solModel = AssetDatabase.LoadAssetAtPath<GameObject>("Assets/_Project/Models/HafizaMarket/HafizaDepoKapiSol.fbx");
+        if (solModel != null)
+        {
+            var sm2 = new GameObject("KanatSol_Mentese").transform;          // Blender (6.08, 1.35, 0.02)
+            sm2.SetParent(kok.transform, false);
+            sm2.SetPositionAndRotation(new Vector3(6.08f, 0.02f, 1.35f), Quaternion.Euler(0, 180, 0));
+            var sg2 = (GameObject)PrefabUtility.InstantiatePrefab(solModel, sahne);
+            sg2.transform.SetParent(sm2, false); sg2.transform.localPosition = Vector3.zero; sg2.transform.localRotation = Quaternion.identity;
+            foreach (var r in sg2.GetComponentsInChildren<MeshRenderer>(true))
+            {
+                var ms = r.sharedMaterials;
+                for (int i = 0; i < ms.Length; i++)
+                {
+                    if (ms[i] == null) continue;
+                    string ad = ms[i].name.StartsWith("M_") ? ms[i].name.Substring(2) : ms[i].name;
+                    var hm = AssetDatabase.LoadAssetAtPath<Material>($"{Mat}/HM_{ad}.mat");
+                    if (hm != null) ms[i] = hm;
+                }
+                r.sharedMaterials = ms;
+                r.gameObject.AddComponent<BoxCollider>();
+            }
+            so.FindProperty("leafB").objectReferenceValue = sm2;
+        }
         so.FindProperty("backLight").objectReferenceValue = isik;
         so.FindProperty("hum").objectReferenceValue = ses;
         // G2: koridor ışıkları (URP nesne başına 8 ışık sınırı: market 5 + depo 1 + koridor 2)
