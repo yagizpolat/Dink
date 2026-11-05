@@ -249,6 +249,30 @@ public static class HafizaMarketKur
             tl.type = LightType.Spot; tl.spotAngle = 110f; tl.range = 9f; tl.intensity = 6f;
             tl.color = new Color(0.85f, 0.93f, 1f); tl.shadows = LightShadows.Soft;
         }
+        // S2: Hakan'ın sırasında yarım sınav kâğıdı (3. sıra, orta; kâğıdın üstü tahtaya bakar)
+        var kag = GameObject.CreatePrimitive(PrimitiveType.Quad);
+        Object.DestroyImmediate(kag.GetComponent<Collider>());
+        kag.name = "Sinif_SinavKagidi";
+        kag.transform.SetParent(kok.transform, false);
+        kag.transform.SetPositionAndRotation(new Vector3(28.74f, 0.752f, 1.83f), Quaternion.Euler(90f, 97f, 0f));
+        kag.transform.localScale = new Vector3(0.21f, 0.297f, 1f);
+        string kyol = $"{Mat}/HM_SinavKagidi.mat";
+        var km = AssetDatabase.LoadAssetAtPath<Material>(kyol);
+        if (km == null) { km = new Material(Shader.Find("Universal Render Pipeline/Lit")); AssetDatabase.CreateAsset(km, kyol); }
+        km.SetTexture("_BaseMap", AssetDatabase.LoadAssetAtPath<Texture2D>($"{Tex}HM_SinavKagidi_Renk.png"));
+        km.SetFloat("_Smoothness", 0.08f); EditorUtility.SetDirty(km);
+        kag.GetComponent<MeshRenderer>().sharedMaterial = km;
+        var hedef = new GameObject("Sinif_Kagit_Hedef");
+        hedef.transform.SetParent(kok.transform, false);
+        hedef.transform.position = new Vector3(28.74f, 0.78f, 1.83f);
+        var hc = hedef.AddComponent<BoxCollider>(); hc.isTrigger = true; hc.size = new Vector3(0.4f, 0.08f, 0.45f);
+        hedef.AddComponent<InteractionTarget>().Configure(InteractionTarget.Verb.Read, 1.8f);
+        var sk2 = kok.AddComponent<SinifKagit>();
+        var so4 = new SerializedObject(sk2);
+        so4.FindProperty("paper").objectReferenceValue = kag.transform;
+        so4.FindProperty("target").objectReferenceValue = hc;
+        so4.ApplyModifiedPropertiesWithoutUndo();
+
         // sınıf marketten ~29 m uzakta: çıkışsızlık yarıçapı onu kapsamalı
         var ne = Object.FindFirstObjectByType<MarketNoExit>();
         if (ne != null) { var sn = new SerializedObject(ne); sn.FindProperty("escapeRadius").floatValue = 34f; sn.ApplyModifiedPropertiesWithoutUndo(); }
