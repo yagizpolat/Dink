@@ -115,6 +115,26 @@ for c in tasinan:
 for o in koli_mak:  # ana gövdeye girmesin
     o.hide_set(True)
 
+# G1: depo kapısının sağ kanadı ayrı FBX (köken menteşede, Unity'de açılır)
+kb = bpy.data.objects.get("DepoKapi_KanatSag")
+if kb:
+    parca = []
+    for c in kb.children:
+        d = c.copy(); d.data = c.data.copy(); d.parent = None
+        d.matrix_world = kb.matrix_world.inverted() @ c.matrix_world  # menteşe yerel uzayı
+        s.collection.objects.link(d); parca.append(d)
+    for o in s.objects: o.select_set(o in parca)
+    with bpy.context.temp_override(object=parca[0], active_object=parca[0], selected_objects=parca, selected_editable_objects=parca):
+        bpy.ops.object.join()
+    parca[0].name = "DepoKapi_KanatSag"
+    for o in s.objects: o.select_set(o is parca[0])
+    with bpy.context.temp_override(object=parca[0], active_object=parca[0], selected_objects=[parca[0]]):
+        bpy.ops.export_scene.fbx(filepath=os.path.join(MDL, "HafizaDepoKapi.fbx"), use_selection=True, object_types={"MESH"},
+                                 apply_scale_options="FBX_SCALE_UNITS", bake_space_transform=True, path_mode="STRIP")
+    bpy.data.objects.remove(parca[0], do_unlink=True)
+    for c in kb.children: c.hide_set(True)
+    print("depo kanadı menteşe", tuple(round(v, 3) for v in kb.location))
+
 # Birleştir ve dışa aktar (dosya kaydedilmez: birleştirme yalnız aktarım için)
 meshler = [o for o in s.objects if o.type == "MESH" and o.visible_get() and o.name != "Bosluk_Zemin"]
 for o in s.objects:

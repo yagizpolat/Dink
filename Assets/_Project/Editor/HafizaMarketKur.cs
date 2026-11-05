@@ -1,4 +1,4 @@
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.IO;
 using UnityEditor;
 using UnityEditor.SceneManagement;
@@ -144,6 +144,59 @@ public static class HafizaMarketKur
         var oyuncu = Object.FindObjectOfType<PlayerWalker>();
         so2.FindProperty("player").objectReferenceValue = oyuncu != null ? oyuncu.transform : null;
         so2.ApplyModifiedPropertiesWithoutUndo();
+
+        DepoKapi(sahne, d);
+    }
+
+    const string DepoFbx = "Assets/_Project/Models/HafizaMarket/HafizaDepoKapi.fbx";
+
+    // G1: raf dolunca sağ duvardaki depo kapısının ardında ışık yanar, sağ kanat aralanır
+    static void DepoKapi(UnityEngine.SceneManagement.Scene sahne, MarketShelfStocking d)
+    {
+        var eski = GameObject.Find("DepoKapi");
+        if (eski != null) Object.DestroyImmediate(eski);
+        var model = AssetDatabase.LoadAssetAtPath<GameObject>(DepoFbx);
+        if (model == null) return;
+
+        var kok = new GameObject("DepoKapi");
+        UnityEngine.SceneManagement.SceneManager.MoveGameObjectToScene(kok, sahne);
+        var mentese = new GameObject("KanatSag_Mentese").transform;      // Blender (6.08, 2.35, 0.02)
+        mentese.SetParent(kok.transform, false);
+        mentese.SetPositionAndRotation(new Vector3(6.08f, 0.02f, 2.35f), Quaternion.Euler(0, 180, 0));
+        var kanat = (GameObject)PrefabUtility.InstantiatePrefab(model, sahne);
+        kanat.transform.SetParent(mentese, false);
+        kanat.transform.localPosition = Vector3.zero; kanat.transform.localRotation = Quaternion.identity;
+        foreach (var r in kanat.GetComponentsInChildren<MeshRenderer>(true))
+        {
+            var ms = r.sharedMaterials;
+            for (int i = 0; i < ms.Length; i++)
+            {
+                if (ms[i] == null) continue;
+                string ad = ms[i].name.StartsWith("M_") ? ms[i].name.Substring(2) : ms[i].name;
+                var hm = AssetDatabase.LoadAssetAtPath<Material>($"{Mat}/HM_{ad}.mat");
+                if (hm != null) ms[i] = hm;
+            }
+            r.sharedMaterials = ms;
+            var bc = r.gameObject.AddComponent<BoxCollider>();         // geçit G2'ye dek kapalı
+        }
+
+        var isik = new GameObject("Depo_Floresan").AddComponent<Light>();
+        isik.transform.SetParent(kok.transform, false);
+        isik.transform.position = new Vector3(7.4f, 2.45f, 1.85f);
+        isik.type = LightType.Point; isik.range = 4.5f; isik.color = new Color(0.82f, 0.93f, 1f);
+        isik.shadows = LightShadows.Soft;
+        var ses = isik.gameObject.AddComponent<AudioSource>();
+        ses.clip = AssetDatabase.LoadAssetAtPath<AudioClip>("Assets/_Project/Audio/HafizaMarket/BuzdolabiVizilti.wav");
+        ses.loop = true; ses.playOnAwake = false; ses.spatialBlend = 1f; ses.rolloffMode = AudioRolloffMode.Linear;
+        ses.minDistance = 0.5f; ses.maxDistance = 9f; ses.pitch = 1.35f;
+
+        var g = kok.AddComponent<DepoKapiSizinti>();
+        var so = new SerializedObject(g);
+        so.FindProperty("stocking").objectReferenceValue = d;
+        so.FindProperty("leaf").objectReferenceValue = mentese;
+        so.FindProperty("backLight").objectReferenceValue = isik;
+        so.FindProperty("hum").objectReferenceValue = ses;
+        so.ApplyModifiedPropertiesWithoutUndo();
     }
 
     // Nesnelerin dünya sınırlarını saran tetik kutu (oyuncuyu engellemez, ışın görür)

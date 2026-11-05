@@ -77,6 +77,17 @@
    ],
    "alfa": false
   },
+  "M_DepoKapi_Boya": {
+   "metal": 0.0,
+   "normal": true,
+   "isik": 0.0,
+   "isik_renk": [
+    1.0,
+    1.0,
+    1.0
+   ],
+   "alfa": false
+  },
   "M_Dolap_Baslik": {
    "metal": 0.0,
    "normal": false,

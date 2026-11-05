@@ -47,6 +47,11 @@ ModelImporter:
   - first:
       type: UnityEngine:Material
       assembly: UnityEngine.CoreModule
+      name: M_DepoKapi_Boya
+    second: {fileID: 2100000, guid: d7cb50b390c540a438fbd7c3c417f38b, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
       name: M_Dolap_Baslik
     second: {fileID: 2100000, guid: dd9bb2d03d0866348a97a11c7987c7b8, type: 2}
   - first:
