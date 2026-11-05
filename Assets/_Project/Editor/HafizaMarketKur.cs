@@ -203,8 +203,8 @@ public static class HafizaMarketKur
         {
             var k = new GameObject("Koridor_Floresan_" + i).AddComponent<Light>();
             k.transform.SetParent(kok.transform, false);
-            k.transform.position = new Vector3(xs[i], 2.4f, 1.85f);
-            k.type = LightType.Point; k.range = 5.5f; k.color = new Color(0.82f, 0.93f, 1f);
+            k.transform.position = new Vector3(xs[i], 3.35f, 1.85f);            // G3: okul tavanı 3.6
+            k.type = LightType.Point; k.range = 6.5f; k.color = new Color(0.82f, 0.93f, 1f);
             k.intensity = i == 1 ? 2.5f : 5f; k.shadows = LightShadows.Soft;
             kor.GetArrayElementAtIndex(i).objectReferenceValue = k;
         }

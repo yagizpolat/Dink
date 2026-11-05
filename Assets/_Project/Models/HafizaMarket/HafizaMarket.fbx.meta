@@ -52,6 +52,16 @@ ModelImporter:
   - first:
       type: UnityEngine:Material
       assembly: UnityEngine.CoreModule
+      name: M_Depo_Beton
+    second: {fileID: 2100000, guid: d20d739e1507a4741ad2d6fc519d67a3, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: M_Depo_Siva
+    second: {fileID: 2100000, guid: b7fb3ea284135144592749c48a3a69b5, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
       name: M_Dolap_Baslik
     second: {fileID: 2100000, guid: dd9bb2d03d0866348a97a11c7987c7b8, type: 2}
   - first:
@@ -124,6 +134,26 @@ ModelImporter:
       assembly: UnityEngine.CoreModule
       name: M_Krom
     second: {fileID: 2100000, guid: 5ec1b17d4126e8740b62f36fd263a8e8, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: M_Okul_Dolap
+    second: {fileID: 2100000, guid: 9d6290864f4d4f842a773210a79694a3, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: M_Okul_Kapi
+    second: {fileID: 2100000, guid: 438eb2fb774444b48b5215b445e9d5b4, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: M_Okul_Mozaik
+    second: {fileID: 2100000, guid: 4c568588c5d9e634ca01e21a1c4715e3, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: M_Okul_Siva
+    second: {fileID: 2100000, guid: 5cad62239ee4ab54a85c72d5a8ec8e05, type: 2}
   - first:
       type: UnityEngine:Material
       assembly: UnityEngine.CoreModule

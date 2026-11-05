@@ -88,6 +88,28 @@
    ],
    "alfa": false
   },
+  "M_Depo_Beton": {
+   "metal": 0.0,
+   "normal": true,
+   "isik": 0.0,
+   "isik_renk": [
+    1.0,
+    1.0,
+    1.0
+   ],
+   "alfa": false
+  },
+  "M_Depo_Siva": {
+   "metal": 0.0,
+   "normal": true,
+   "isik": 0.0,
+   "isik_renk": [
+    1.0,
+    1.0,
+    1.0
+   ],
+   "alfa": false
+  },
   "M_Dolap_Baslik": {
    "metal": 0.0,
    "normal": false,
@@ -244,6 +266,50 @@
   },
   "M_Krom": {
    "metal": 1.0,
+   "normal": true,
+   "isik": 0.0,
+   "isik_renk": [
+    1.0,
+    1.0,
+    1.0
+   ],
+   "alfa": false
+  },
+  "M_Okul_Dolap": {
+   "metal": 0.0,
+   "normal": true,
+   "isik": 0.0,
+   "isik_renk": [
+    1.0,
+    1.0,
+    1.0
+   ],
+   "alfa": false
+  },
+  "M_Okul_Kapi": {
+   "metal": 0.0,
+   "normal": true,
+   "isik": 0.0,
+   "isik_renk": [
+    1.0,
+    1.0,
+    1.0
+   ],
+   "alfa": false
+  },
+  "M_Okul_Mozaik": {
+   "metal": 0.0,
+   "normal": true,
+   "isik": 0.0,
+   "isik_renk": [
+    1.0,
+    1.0,
+    1.0
+   ],
+   "alfa": false
+  },
+  "M_Okul_Siva": {
+   "metal": 0.0,
    "normal": true,
    "isik": 0.0,
    "isik_renk": [
