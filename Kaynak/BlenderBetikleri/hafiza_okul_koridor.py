@@ -80,7 +80,10 @@ for o in [o for o in col.objects if o.name.startswith(("DepoGecit_Armatur", "Dep
 kutu("Okul_Zemin", (XS,YA,-0.1), (XE,YB,0.0), M_MOZAIK, 1.2)
 kutu("Okul_Duvar_A", (XS,YA-0.15,0), (XE,YA,H), M_SIVA, 2.0)
 kutu("Okul_Duvar_B", (XS,YB,0), (XE,YB+0.15,H), M_SIVA, 2.0)
-kutu("Okul_SonDuvar", (XE,YA-0.15,0), (XE+0.15,YB+0.15,H+0.1), M_SIVA, 2.0)
+YO = (Y0 + Y1) / 2
+kutu("Okul_SonDuvar_A", (XE,YA-0.15,0), (XE+0.15,YO-0.5,H+0.1), M_SIVA, 2.0)
+kutu("Okul_SonDuvar_B", (XE,YO+0.5,0), (XE+0.15,YB+0.15,H+0.1), M_SIVA, 2.0)
+kutu("Okul_SonDuvar_Ust", (XE,YO-0.5,2.15), (XE+0.15,YO+0.5,H+0.1), M_SIVA, 2.0)
 
 # duzensiz sinir: mozaik yamalari betona tasar (0.3 m karo parcalari, zeminden 2 mm yukarida)
 for i in range(16):
@@ -109,10 +112,41 @@ YO = (Y0 + Y1) / 2
 kutu("Okul_SinifKapi_Kasa_A", (XE - 0.04, YO - 0.5, 0), (XE, YO - 0.45, 2.15), "M_Aluminyum")
 kutu("Okul_SinifKapi_Kasa_B", (XE - 0.04, YO + 0.45, 0), (XE, YO + 0.5, 2.15), "M_Aluminyum")
 kutu("Okul_SinifKapi_Kasa_Ust", (XE - 0.04, YO - 0.5, 2.1), (XE, YO + 0.5, 2.15), "M_Aluminyum")
-kutu("Okul_SinifKapi_Alt", (XE - 0.03, YO - 0.45, 0), (XE - 0.01, YO + 0.45, 1.1), M_KAPI, 1.0)
-kutu("Okul_SinifKapi_Ust", (XE - 0.03, YO - 0.45, 1.85), (XE - 0.01, YO + 0.45, 2.1), M_KAPI, 1.0)
-kutu("Okul_SinifKapi_YanA", (XE - 0.03, YO - 0.45, 1.1), (XE - 0.01, YO - 0.25, 1.85), M_KAPI, 1.0)
-kutu("Okul_SinifKapi_YanB", (XE - 0.03, YO + 0.25, 1.1), (XE - 0.01, YO + 0.45, 1.85), M_KAPI, 1.0)
-kutu("Okul_SinifKapi_Cam", (XE - 0.022, YO - 0.25, 1.1), (XE - 0.018, YO + 0.25, 1.85), "M_Armatur_Difuzor_3", 1.0)
-kutu("Okul_SinifKapi_Kol", (XE - 0.08, YO + 0.3, 1.0), (XE - 0.03, YO + 0.4, 1.03), "M_Krom")
+import math
+for o in [o for o in col.objects if o.name.startswith("SinifKapi_Kanat")]:
+    bpy.data.objects.remove(o, do_unlink=True)
+kb = bpy.data.objects.new("SinifKapi_Kanat", None); col.objects.link(kb)
+kb.location = (XE + 0.02, YO - 0.45, 0.0)       # mentese sol kenarda, sinifa (+x) acilir
+def kp(ad, y0, z0, y1, z1, m, olc=1.0):
+    o = kutu(ad, (-0.02, y0, z0), (0.02, y1, z1), m, olc); o.parent = kb; return o
+kp("SinifKapi_Kanat_Alt", 0.0, 0.0, 0.9, 1.1, M_KAPI)
+kp("SinifKapi_Kanat_Ust", 0.0, 1.85, 0.9, 2.1, M_KAPI)
+kp("SinifKapi_Kanat_YanA", 0.0, 1.1, 0.2, 1.85, M_KAPI)
+kp("SinifKapi_Kanat_YanB", 0.7, 1.1, 0.9, 1.85, M_KAPI)
+kp("SinifKapi_Kanat_Cam", 0.2, 1.1, 0.7, 1.85, "M_Cam")
+k = kutu("SinifKapi_Kanat_Kol", (-0.07, 0.75, 1.0), (-0.02, 0.85, 1.03), "M_Krom"); k.parent = kb
+
+# S1: sinif (8 x 6 m, tavan 3.6); tahta dev (6 x 2.8 m), siralar normal
+SX0, SX1, SY0, SY1 = XE + 0.15, XE + 8.15, YO - 3.0, YO + 3.0
+M_PARKE = pbr("M_Sinif_Parke", "Market", "laminate_floor_02")
+M_SIRA = pbr("M_Sinif_Sira", "Market", "wood_table_001")
+M_TAHTA = pbr("M_Sinif_Tahta", "Koridor", "painted_plaster_wall", (0.12, 0.2, 0.15))
+kutu("Okul_Sinif_Zemin", (SX0, SY0, -0.1), (SX1, SY1, 0.0), M_PARKE, 1.5)
+kutu("Okul_Sinif_Tavan", (SX0, SY0, H), (SX1, SY1, H + 0.1), M_SIVA, 2.0)
+kutu("Okul_Sinif_DuvarA", (SX0, SY0 - 0.15, 0), (SX1, SY0, H), M_SIVA, 2.0)
+kutu("Okul_Sinif_DuvarB", (SX0, SY1, 0), (SX1, SY1 + 0.15, H), M_SIVA, 2.0)
+kutu("Okul_Sinif_DuvarSon", (SX1, SY0 - 0.15, 0), (SX1 + 0.15, SY1 + 0.15, H), M_SIVA, 2.0)
+kutu("Okul_Sinif_DuvarOn_A", (SX0 - 0.15, SY0 - 0.15, 0), (SX0, YA - 0.15, H), M_SIVA, 2.0)
+kutu("Okul_Sinif_DuvarOn_B", (SX0 - 0.15, YB + 0.15, 0), (SX0, SY1 + 0.15, H), M_SIVA, 2.0)
+kutu("Okul_Sinif_Tahta", (SX1 - 0.04, YO - 3.0 + 0.1, 0.6), (SX1, YO + 3.0 - 0.1, 3.4), M_TAHTA, 2.0)
+kutu("Okul_Sinif_TahtaCerceve", (SX1 - 0.06, YO - 2.95, 0.55), (SX1 - 0.04, YO + 2.95, 0.6), "M_Aluminyum")
+kutu("Okul_Sinif_TahtaArmatur", (SX1 - 0.5, YO - 2.0, 3.45), (SX1 - 0.3, YO + 2.0, 3.55), "M_Armatur_Kasa")
+kutu("Okul_Sinif_TahtaDifuzor", (SX1 - 0.48, YO - 1.97, 3.445), (SX1 - 0.32, YO + 1.97, 3.45), "M_Armatur_Difuzor_0")
+for r in range(4):
+    for c in range(3):
+        x = SX0 + 1.6 + r * 1.3; y = YO - 2.0 + c * 2.0
+        kutu(f"Okul_Sira_{r}{c}_Ust", (x, y - 0.6, 0.72), (x + 0.5, y + 0.6, 0.75), M_SIRA, 1.0)
+        for dx in (0.03, 0.44):
+            for dy in (-0.57, 0.54):
+                kutu(f"Okul_Sira_{r}{c}_Ayak{dx}{dy}", (x + dx, y + dy, 0), (x + dx + 0.03, y + dy + 0.03, 0.72), "M_Aluminyum")
 print("okul koridoru kuruldu, dolap sayisi", i * 2)

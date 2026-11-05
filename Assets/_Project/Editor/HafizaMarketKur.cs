@@ -211,6 +211,48 @@ public static class HafizaMarketKur
         var oy = Object.FindFirstObjectByType<PlayerWalker>();
         so.FindProperty("player").objectReferenceValue = oy != null ? oy.transform : null;
         so.ApplyModifiedPropertiesWithoutUndo();
+
+        // S1: sınıf kapısı (koridor sonu), itince sınıfa açılır; sınıf yalnız tahta ışığıyla
+        var sm = AssetDatabase.LoadAssetAtPath<GameObject>("Assets/_Project/Models/HafizaMarket/HafizaSinifKapi.fbx");
+        if (sm != null)
+        {
+            var sk = new GameObject("SinifKapi_Mentese").transform;          // Blender (24.17, 1.35, 0)
+            sk.SetParent(kok.transform, false);
+            sk.SetPositionAndRotation(new Vector3(24.17f, 0f, 1.35f), Quaternion.Euler(0, 180, 0));
+            var sg = (GameObject)PrefabUtility.InstantiatePrefab(sm, sahne);
+            sg.transform.SetParent(sk, false); sg.transform.localPosition = Vector3.zero; sg.transform.localRotation = Quaternion.identity;
+            foreach (var r in sg.GetComponentsInChildren<MeshRenderer>(true))
+            {
+                var ms = r.sharedMaterials;
+                for (int i = 0; i < ms.Length; i++)
+                {
+                    if (ms[i] == null) continue;
+                    string ad = ms[i].name.StartsWith("M_") ? ms[i].name.Substring(2) : ms[i].name;
+                    var hm = AssetDatabase.LoadAssetAtPath<Material>($"{Mat}/HM_{ad}.mat");
+                    if (hm != null) ms[i] = hm;
+                }
+                r.sharedMaterials = ms;
+                r.gameObject.AddComponent<BoxCollider>();
+            }
+            var ik = kok.AddComponent<ItmeKapi>();
+            var so3 = new SerializedObject(ik);
+            so3.FindProperty("leaf").objectReferenceValue = sk;
+            so3.FindProperty("player").objectReferenceValue = oy != null ? oy.transform : null;
+            so3.FindProperty("pushPoint").vector3Value = new Vector3(23.6f, 0f, 1.85f);
+            so3.FindProperty("openAngle").floatValue = 85f;
+            so3.FindProperty("openSound").objectReferenceValue = AssetDatabase.LoadAssetAtPath<AudioClip>("Assets/gorseller/Sesler/Audios/Environment/Entrances/Door_Open_2.wav");
+            so3.ApplyModifiedPropertiesWithoutUndo();
+
+            var tl = new GameObject("Sinif_TahtaIsigi").AddComponent<Light>();
+            tl.transform.SetParent(kok.transform, false);
+            tl.transform.SetPositionAndRotation(new Vector3(31.4f, 3.4f, 1.85f), Quaternion.Euler(60, 90, 0));
+            tl.type = LightType.Spot; tl.spotAngle = 110f; tl.range = 9f; tl.intensity = 6f;
+            tl.color = new Color(0.85f, 0.93f, 1f); tl.shadows = LightShadows.Soft;
+        }
+        // sınıf marketten ~29 m uzakta: çıkışsızlık yarıçapı onu kapsamalı
+        var ne = Object.FindFirstObjectByType<MarketNoExit>();
+        if (ne != null) { var sn = new SerializedObject(ne); sn.FindProperty("escapeRadius").floatValue = 34f; sn.ApplyModifiedPropertiesWithoutUndo(); }
+        so.ApplyModifiedPropertiesWithoutUndo();
     }
 
     // Nesnelerin dünya sınırlarını saran tetik kutu (oyuncuyu engellemez, ışın görür)

@@ -172,6 +172,21 @@ ModelImporter:
   - first:
       type: UnityEngine:Material
       assembly: UnityEngine.CoreModule
+      name: M_Sinif_Parke
+    second: {fileID: 2100000, guid: c060989351901f1439ec88c57fdf5043, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: M_Sinif_Sira
+    second: {fileID: 2100000, guid: c27d4ee40b657db44a9128d140a92789, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: M_Sinif_Tahta
+    second: {fileID: 2100000, guid: 1b6d39de80da1f94ca6aac86a0abdade, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
       name: M_Sise_Deterjan
     second: {fileID: 2100000, guid: 9affe6681fc14754bb4d814fa663f00b, type: 2}
   - first:
