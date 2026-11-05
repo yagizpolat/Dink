@@ -266,15 +266,15 @@ public static class HafizaMarketKur
         so.FindProperty("backLight").objectReferenceValue = isik;
         so.FindProperty("hum").objectReferenceValue = ses;
         // G2: koridor ışıkları (URP nesne başına 8 ışık sınırı: market 5 + depo 1 + koridor 2)
-        var kor = so.FindProperty("corridorLights"); kor.arraySize = 2;
-        float[] xs = { 10.65f, 16.65f };
+        var kor = so.FindProperty("corridorLights"); kor.arraySize = 3;
+        float[] xs = { 10.65f, 16.65f, 21.65f };
         for (int i = 0; i < xs.Length; i++)
         {
             var k = new GameObject("Koridor_Floresan_" + i).AddComponent<Light>();
             k.transform.SetParent(kok.transform, false);
-            k.transform.position = new Vector3(xs[i], 3.35f, 1.85f);            // G3: okul tavanı 3.6
-            k.type = LightType.Point; k.range = 6.5f; k.color = new Color(0.82f, 0.93f, 1f);
-            k.intensity = i == 1 ? 2.5f : 5f; k.shadows = LightShadows.Soft;
+            k.transform.position = new Vector3(xs[i], 2.9f, 1.85f);            // dolap tepesinin (3.2) altında: yüzleri aydınlatır
+            k.type = LightType.Point; k.range = 8f; k.color = new Color(0.82f, 0.93f, 1f);
+            k.intensity = i == 2 ? 5f : 9f; k.shadows = LightShadows.Soft;
             kor.GetArrayElementAtIndex(i).objectReferenceValue = k;
         }
         var oy = Object.FindFirstObjectByType<PlayerWalker>();
@@ -355,7 +355,7 @@ public static class HafizaMarketKur
             var ol = new GameObject("Sinif_Tavan_" + i).AddComponent<Light>();
             ol.transform.SetParent(kok.transform, false);
             ol.transform.position = new Vector3(odaX[i], 2.5f, 1.85f);       // tavanda leke yapmasın diye alçakta
-            ol.type = LightType.Point; ol.range = 10f; ol.intensity = 5f;
+            ol.type = LightType.Point; ol.range = 10f; ol.intensity = 12f;
             ol.color = new Color(0.86f, 0.93f, 1f); ol.shadows = LightShadows.Soft;
             oda.GetArrayElementAtIndex(i).objectReferenceValue = ol;
         }
@@ -368,9 +368,9 @@ public static class HafizaMarketKur
         var am = AssetDatabase.LoadAssetAtPath<GameObject>("Assets/_Project/Models/HafizaMarket/HafizaArkaKapi.fbx");
         if (am != null)
         {
-            var ah = new GameObject("ArkaKapi_Mentese").transform;           // Blender (25.0, 4.87, 0)
+            var ah = new GameObject("ArkaKapi_Mentese").transform;           // Blender (25.15, 4.87, 0) = AX0
             ah.SetParent(kok.transform, false);
-            ah.SetPositionAndRotation(new Vector3(25.0f, 0f, 4.87f), Quaternion.Euler(0, 180, 0));
+            ah.SetPositionAndRotation(new Vector3(25.15f, 0f, 4.87f), Quaternion.Euler(0, 180, 0));
             var ag = (GameObject)PrefabUtility.InstantiatePrefab(am, sahne);
             ag.transform.SetParent(ah, false); ag.transform.localPosition = Vector3.zero; ag.transform.localRotation = Quaternion.identity;
             foreach (var r in ag.GetComponentsInChildren<MeshRenderer>(true))
@@ -389,16 +389,22 @@ public static class HafizaMarketKur
             var mi = new GameObject("Mutfak_Isigi").AddComponent<Light>();
             mi.transform.SetParent(kok.transform, false);
             mi.transform.position = new Vector3(26.0f, 2.0f, 7.3f);              // M1: mutfak masasının üstü
-            mi.type = LightType.Point; mi.range = 6.5f; mi.intensity = 1.8f; mi.color = new Color(1f, 0.78f, 0.5f); mi.shadows = LightShadows.Soft;
+            mi.type = LightType.Point; mi.range = 7f; mi.intensity = 7f; mi.color = new Color(1f, 0.78f, 0.5f); mi.shadows = LightShadows.Soft;
+            // Masa tavan ışığını kesip zemini zifiri bırakıyordu: gölgesiz, kısa menzilli dolgu (sınıfa sızmaz)
+            var md = new GameObject("Mutfak_Dolgu").AddComponent<Light>();
+            md.transform.SetParent(kok.transform, false);
+            md.transform.SetPositionAndRotation(new Vector3(26.0f, 1.15f, 7.3f), Quaternion.Euler(90f, 0f, 0f));
+            md.type = LightType.Spot; md.spotAngle = 165f; md.range = 3.5f; md.intensity = 4f; md.color = new Color(1f, 0.8f, 0.58f); md.shadows = LightShadows.None;
             var holder = new GameObject("ArkaKapi"); holder.transform.SetParent(kok.transform, false);
             var ik2 = holder.AddComponent<ItmeKapi>();
             var so6 = new SerializedObject(ik2);
             so6.FindProperty("leaf").objectReferenceValue = ah;
             so6.FindProperty("player").objectReferenceValue = oy != null ? oy.transform : null;
-            so6.FindProperty("pushPoint").vector3Value = new Vector3(25.45f, 0f, 4.3f);
+            so6.FindProperty("pushPoint").vector3Value = new Vector3(25.6f, 0f, 4.3f);
             so6.FindProperty("openAngle").floatValue = -85f;
             so6.FindProperty("startLocked").boolValue = true;
             so6.FindProperty("revealLight").objectReferenceValue = mi;
+            so6.FindProperty("revealLight2").objectReferenceValue = md;
             so6.FindProperty("openSound").objectReferenceValue = AssetDatabase.LoadAssetAtPath<AudioClip>(Ses + "Door_Open_2.wav");
             so6.ApplyModifiedPropertiesWithoutUndo();
             so5.FindProperty("backDoor").objectReferenceValue = ik2;

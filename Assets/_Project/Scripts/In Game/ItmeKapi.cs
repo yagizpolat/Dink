@@ -1,4 +1,4 @@
-using System.Collections;
+﻿using System.Collections;
 using UnityEngine;
 
 /// <summary>Oyuncu kapının önüne yürüyünce kanat itilir gibi açılır ve öyle kalır (kol/E yok).
@@ -14,6 +14,7 @@ public class ItmeKapi : MonoBehaviour
     [SerializeField] private AudioClip openSound;
     [SerializeField] private bool startLocked;
     [SerializeField] private Light revealLight;               // kilit açılınca yanar (kapı ardındaki sızıntı)
+    [SerializeField] private Light revealLight2;              // aynı anda yanan ikinci ışık (oda dolgusu)
 
     private bool opened, locked;
     private Quaternion closedRot;
@@ -24,6 +25,7 @@ public class ItmeKapi : MonoBehaviour
         if (leaf != null) { closedRot = leaf.localRotation; closedSet = true; }
         locked = startLocked;
         if (revealLight != null) revealLight.enabled = !startLocked;
+        if (revealLight2 != null) revealLight2.enabled = !startLocked;
     }
 
     /// <summary>Kilidi açar; ardındaki ışık yanar, kapı artık itilebilir.</summary>
@@ -31,6 +33,7 @@ public class ItmeKapi : MonoBehaviour
     {
         locked = false;
         if (revealLight != null) revealLight.enabled = true;
+        if (revealLight2 != null) revealLight2.enabled = true;
     }
 
     /// <summary>Kapıyı bir anda kapatır ve kilitler (bir daha itilmez).</summary>
