@@ -10,7 +10,9 @@ public class DolapKapanma : MonoBehaviour
     [SerializeField] private ItmeKapi classDoor;
     [SerializeField] private ItmeKapi backDoor;                // S4: ön kapı kapanınca arka kapı (mutfak) açılır
     [SerializeField] private Light boardLight;
-    [SerializeField] private AudioClip[] slams;               // gerçek kapı kapanma kayıtları, tiz çalınır (metal)
+    [SerializeField] private Light[] roomLights;              // tavan floresanları: kapı çarpınca tökezleyip sönükleşir
+    [SerializeField] private float roomDim = 0.35f;          // kalan ışık: arka kapıya giden yol görünür kalsın
+    [SerializeField] private AudioClip[] slams;              // gerçek kapı kapanma kayıtları, tiz çalınır (metal)
     [SerializeField] private AudioClip doorSlam;
     [SerializeField] private float startDelay = 2f;
     [SerializeField] private float xFrom = 11.6f, xTo = 23.4f;
@@ -46,6 +48,8 @@ public class DolapKapanma : MonoBehaviour
             foreach (var k in f) { boardLight.intensity = b * k; yield return new WaitForSeconds(0.08f); }
             boardLight.enabled = false;
         }
+        if (roomLights != null)
+            foreach (var l in roomLights) if (l != null) l.intensity *= roomDim;
         if (backDoor != null) backDoor.Unlock();
     }
 

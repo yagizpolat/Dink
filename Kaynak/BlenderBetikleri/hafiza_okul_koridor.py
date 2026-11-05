@@ -163,6 +163,11 @@ kutu("Okul_Sinif_Tahta", (SX1 - 0.04, YO - 3.0 + 0.1, 0.6), (SX1, YO + 3.0 - 0.1
 kutu("Okul_Sinif_TahtaCerceve", (SX1 - 0.06, YO - 2.95, 0.55), (SX1 - 0.04, YO + 2.95, 0.6), "M_Aluminyum")
 kutu("Okul_Sinif_TahtaArmatur", (SX1 - 0.5, YO - 2.0, 3.45), (SX1 - 0.3, YO + 2.0, 3.55), "M_Armatur_Kasa")
 kutu("Okul_Sinif_TahtaDifuzor", (SX1 - 0.48, YO - 1.97, 3.445), (SX1 - 0.32, YO + 1.97, 3.45), "M_Armatur_Difuzor_0")
+# sira uzerinde iki sira tavan floresani: sinif gorunur olsun (isik Unity'de)
+for i, ax in enumerate((SX0 + 2.0, SX0 + 5.0)):
+    for j, ay in enumerate((YO - 1.5, YO + 1.5)):
+        kutu("Okul_Sinif_Armatur_%d%d" % (i, j), (ax - 0.6, ay - 0.12, H - 0.08), (ax + 0.6, ay + 0.12, H), "M_Armatur_Kasa")
+        kutu("Okul_Sinif_Difuzor_%d%d" % (i, j), (ax - 0.57, ay - 0.09, H - 0.085), (ax + 0.57, ay + 0.09, H - 0.08), "M_Armatur_Difuzor_0")
 for r in range(4):
     for c in range(3):
         x = SX0 + 1.6 + r * 1.3; y = YO - 2.0 + c * 2.0

@@ -347,6 +347,18 @@ public static class HafizaMarketKur
         var so5 = new SerializedObject(dk);
         so5.FindProperty("paper").objectReferenceValue = sk2;
         so5.FindProperty("classDoor").objectReferenceValue = kok.GetComponent<ItmeKapi>();
+        // Sınıf tavan floresanları: oda göz için okunur; kapı çarpınca sönükleşir, tamamen kararmaz
+        var oda = so5.FindProperty("roomLights"); oda.arraySize = 2;
+        float[] odaX = { 26.3f, 29.3f };
+        for (int i = 0; i < odaX.Length; i++)
+        {
+            var ol = new GameObject("Sinif_Tavan_" + i).AddComponent<Light>();
+            ol.transform.SetParent(kok.transform, false);
+            ol.transform.position = new Vector3(odaX[i], 2.5f, 1.85f);       // tavanda leke yapmasın diye alçakta
+            ol.type = LightType.Point; ol.range = 10f; ol.intensity = 5f;
+            ol.color = new Color(0.86f, 0.93f, 1f); ol.shadows = LightShadows.Soft;
+            oda.GetArrayElementAtIndex(i).objectReferenceValue = ol;
+        }
         const string Ses = "Assets/gorseller/Sesler/Audios/Environment/Entrances/";
         var sl = so5.FindProperty("slams"); sl.arraySize = 2;
         sl.GetArrayElementAtIndex(0).objectReferenceValue = AssetDatabase.LoadAssetAtPath<AudioClip>(Ses + "Door_Close_1.wav");
