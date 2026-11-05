@@ -5,7 +5,7 @@ import bpy, math
 KOL = "Market_Depo"
 Y0, Y1, H = 1.35, 2.35, 2.1      # aciklik (y araligi, yukseklik)
 X_IC, X_DIS = 6.0, 6.15          # duvar kalinligi
-DERIN = 2.4                      # gecit kutusu derinligi (+x)
+DERIN = 18.0                     # G2: depo + okul koridoru uzunlugu (+x)
 
 col = bpy.data.collections.get(KOL)
 if col is None:
@@ -86,4 +86,24 @@ kutu("DepoGecit_Duvar_A", (X_DIS,Y0-0.75,0), (X_DIS+DERIN,Y0-0.6,2.6), "M_Duvar_
 kutu("DepoGecit_Duvar_B", (X_DIS,Y1+0.6,0), (X_DIS+DERIN,Y1+0.75,2.6), "M_Duvar_Siva")
 kutu("DepoGecit_Tavan", (X_DIS,Y0-0.75,2.6), (X_DIS+DERIN,Y1+0.75,2.7), "M_Tavan_Panel")
 kutu("DepoGecit_Son", (X_DIS+DERIN,Y0-0.75,0), (X_DIS+DERIN+0.15,Y1+0.75,2.7), "M_Duvar_Siva")
-print("depo kapisi kuruldu")
+
+# G2: floresan armaturler (her 3 m, sonuncusu sonuk) + ilk 4 m depo kolileri
+import random
+random.seed(11)
+YO = (Y0 + Y1) / 2
+n = int(DERIN // 3)
+for i in range(n):
+    x = X_DIS + 1.5 + i * 3
+    kutu("DepoGecit_Armatur_%02d" % i, (x-0.6,YO-0.1,2.52), (x+0.6,YO+0.1,2.6), "M_Armatur_Kasa")
+    kutu("DepoGecit_Difuzor_%02d" % i, (x-0.57,YO-0.07,2.515), (x+0.57,YO+0.07,2.52),
+         "M_Armatur_Difuzor_3" if i == n-1 else "M_Armatur_Difuzor_0")
+for i in range(7):
+    x = X_DIS + 0.4 + random.uniform(0, 3.4)
+    yan = Y0 - 0.6 if i % 2 else Y1 + 0.6 - 0.55
+    yuk = 0.0
+    for k in range(random.randint(1, 3)):
+        w, d, h = random.uniform(0.4,0.6), 0.5, random.uniform(0.3,0.45)
+        o = kutu("DepoGecit_Koli_%d_%d" % (i,k), (x, yan, yuk), (x+w, yan+d, yuk+h), "M_Koli_Karton")
+        o.rotation_euler.z = random.uniform(-0.08, 0.08)
+        yuk += h
+print("depo kapisi + koridor kuruldu")

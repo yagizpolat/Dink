@@ -196,6 +196,20 @@ public static class HafizaMarketKur
         so.FindProperty("leaf").objectReferenceValue = mentese;
         so.FindProperty("backLight").objectReferenceValue = isik;
         so.FindProperty("hum").objectReferenceValue = ses;
+        // G2: koridor ışıkları (URP nesne başına 8 ışık sınırı: market 5 + depo 1 + koridor 2)
+        var kor = so.FindProperty("corridorLights"); kor.arraySize = 2;
+        float[] xs = { 10.65f, 16.65f };
+        for (int i = 0; i < xs.Length; i++)
+        {
+            var k = new GameObject("Koridor_Floresan_" + i).AddComponent<Light>();
+            k.transform.SetParent(kok.transform, false);
+            k.transform.position = new Vector3(xs[i], 2.4f, 1.85f);
+            k.type = LightType.Point; k.range = 5.5f; k.color = new Color(0.82f, 0.93f, 1f);
+            k.intensity = i == 1 ? 2.5f : 5f; k.shadows = LightShadows.Soft;
+            kor.GetArrayElementAtIndex(i).objectReferenceValue = k;
+        }
+        var oy = Object.FindFirstObjectByType<PlayerWalker>();
+        so.FindProperty("player").objectReferenceValue = oy != null ? oy.transform : null;
         so.ApplyModifiedPropertiesWithoutUndo();
     }
 

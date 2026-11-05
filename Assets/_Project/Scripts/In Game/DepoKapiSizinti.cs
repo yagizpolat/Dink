@@ -15,6 +15,13 @@ public class DepoKapiSizinti : MonoBehaviour
     [SerializeField] private float humVolume = 0.05f;
     [SerializeField] private float openAngle = -7f;
     [SerializeField] private float openSeconds = 3.5f;
+    [SerializeField] private Light[] corridorLights;         // G2: koridor floresanları (backLight ile yanar)
+    [SerializeField] private Transform player;
+    [SerializeField] private Vector3 pushPoint = new Vector3(5.7f, 0f, 1.85f);  // kapının market yüzü
+    [SerializeField] private float pushRadius = 0.9f;
+    [SerializeField] private float pushAngle = -82f;
+
+    private bool ajar, pushed;
 
     private Quaternion closed;
 
@@ -22,6 +29,7 @@ public class DepoKapiSizinti : MonoBehaviour
     {
         if (leaf != null) closed = leaf.localRotation;
         if (backLight != null) { backLight.intensity = 0f; backLight.enabled = false; }
+        if (corridorLights != null) foreach (var l in corridorLights) if (l != null) l.enabled = false;
         if (hum != null) { hum.volume = 0f; hum.Stop(); }
     }
 
@@ -42,6 +50,7 @@ public class DepoKapiSizinti : MonoBehaviour
             for (int i = 0; i < flick.Length; i++) { backLight.intensity = flick[i] * lightIntensity; yield return new WaitForSeconds(wait[i]); }
             backLight.intensity = lightIntensity;
         }
+        if (corridorLights != null) foreach (var l in corridorLights) if (l != null) l.enabled = true;
         if (hum != null) { hum.Play(); StartCoroutine(Fade(hum, humVolume, 2f)); }
 
         yield return new WaitForSeconds(1.2f);
@@ -54,6 +63,29 @@ public class DepoKapiSizinti : MonoBehaviour
             yield return null;
         }
         leaf.localRotation = open;
+        ajar = true;
+    }
+
+    // G2: aralık kanada yürüyen oyuncu kapıyı iter; kanat koridora açılır ve öyle kalır
+    private void Update()
+    {
+        if (!ajar || pushed || player == null || leaf == null) return;
+        var d = player.position - pushPoint; d.y = 0f;
+        if (d.magnitude > pushRadius) return;
+        pushed = true;
+        foreach (var c in leaf.GetComponentsInChildren<Collider>()) c.enabled = false;
+        StartCoroutine(Push());
+    }
+
+    private IEnumerator Push()
+    {
+        var from = leaf.localRotation; var to = closed * Quaternion.Euler(0f, pushAngle, 0f);
+        for (float t = 0f; t < 1f; t += Time.deltaTime / 0.7f)
+        {
+            leaf.localRotation = Quaternion.Slerp(from, to, 1f - Mathf.Pow(1f - t, 2f));
+            yield return null;
+        }
+        leaf.localRotation = to;
     }
 
     private static IEnumerator Fade(AudioSource s, float to, float sec)
