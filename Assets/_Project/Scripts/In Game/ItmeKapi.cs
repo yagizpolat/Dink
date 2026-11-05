@@ -13,11 +13,36 @@ public class ItmeKapi : MonoBehaviour
     [SerializeField] private float seconds = 0.9f;
     [SerializeField] private AudioClip openSound;
 
-    private bool opened;
+    private bool opened, locked;
+    private Quaternion closedRot;
+    private bool closedSet;
+
+    private void Awake() { if (leaf != null) { closedRot = leaf.localRotation; closedSet = true; } }
+
+    /// <summary>Kapıyı bir anda kapatır ve kilitler (bir daha itilmez).</summary>
+    public void SlamShut()
+    {
+        locked = true; opened = true;
+        StopAllCoroutines();
+        if (leaf == null || !closedSet) return;
+        StartCoroutine(Shut());
+    }
+
+    private IEnumerator Shut()
+    {
+        var from = leaf.localRotation;
+        for (float t = 0f; t < 1f; t += Time.deltaTime / 0.22f)
+        {
+            leaf.localRotation = Quaternion.Slerp(from, closedRot, t * t);
+            yield return null;
+        }
+        leaf.localRotation = closedRot;
+        foreach (var c in leaf.GetComponentsInChildren<Collider>()) c.enabled = true;
+    }
 
     private void Update()
     {
-        if (opened || player == null || leaf == null) return;
+        if (opened || locked || player == null || leaf == null) return;
         var d = player.position - pushPoint; d.y = 0f;
         if (d.magnitude > pushRadius) return;
         opened = true;

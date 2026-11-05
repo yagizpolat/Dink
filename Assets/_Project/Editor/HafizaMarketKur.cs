@@ -273,6 +273,18 @@ public static class HafizaMarketKur
         so4.FindProperty("target").objectReferenceValue = hc;
         so4.ApplyModifiedPropertiesWithoutUndo();
 
+        // S3: kâğıt okununca dolaplar sınıfa doğru çarpar, sonunda sınıf kapısı kapanır
+        var dk = kok.AddComponent<DolapKapanma>();
+        var so5 = new SerializedObject(dk);
+        so5.FindProperty("paper").objectReferenceValue = sk2;
+        so5.FindProperty("classDoor").objectReferenceValue = kok.GetComponent<ItmeKapi>();
+        const string Ses = "Assets/gorseller/Sesler/Audios/Environment/Entrances/";
+        var sl = so5.FindProperty("slams"); sl.arraySize = 2;
+        sl.GetArrayElementAtIndex(0).objectReferenceValue = AssetDatabase.LoadAssetAtPath<AudioClip>(Ses + "Door_Close_1.wav");
+        sl.GetArrayElementAtIndex(1).objectReferenceValue = AssetDatabase.LoadAssetAtPath<AudioClip>(Ses + "Door_Close_2.wav");
+        so5.FindProperty("doorSlam").objectReferenceValue = AssetDatabase.LoadAssetAtPath<AudioClip>(Ses + "Door_Close_1.wav");
+        so5.ApplyModifiedPropertiesWithoutUndo();
+
         // sınıf marketten ~29 m uzakta: çıkışsızlık yarıçapı onu kapsamalı
         var ne = Object.FindFirstObjectByType<MarketNoExit>();
         if (ne != null) { var sn = new SerializedObject(ne); sn.FindProperty("escapeRadius").floatValue = 34f; sn.ApplyModifiedPropertiesWithoutUndo(); }
