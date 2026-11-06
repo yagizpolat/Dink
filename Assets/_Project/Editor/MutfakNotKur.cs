@@ -19,7 +19,8 @@ public static class MutfakNotKur
 
     public static void Kur(GameObject kok)
     {
-        foreach (var ad in new[] { "Mutfak_Not", "Mutfak_Not_Hedef" })
+        foreach (var eskiG in kok.GetComponents<PencereGecis>()) Object.DestroyImmediate(eskiG);
+        foreach (var ad in new[] { "Mutfak_Not", "Mutfak_Not_Hedef", "Pencere_Hedef", "Sokak_Lamba", "Sokak_Dolgu" })
         {
             var t = kok.transform.Find(ad);
             if (t != null) Object.DestroyImmediate(t.gameObject);
@@ -78,5 +79,34 @@ public static class MutfakNotKur
         var lamba = GameObject.Find("Mutfak_Isigi");
         if (lamba != null) sn.FindProperty("lamp").objectReferenceValue = lamba.GetComponent<Light>();
         sn.ApplyModifiedPropertiesWithoutUndo();
+
+        // M3: pencere geçişi ve sokak ışığı
+        var ph = new GameObject("Pencere_Hedef");
+        ph.transform.SetParent(kok.transform, false);
+        ph.transform.position = new Vector3(26.05f, 1.5f, 9.55f);
+        var pc = ph.AddComponent<BoxCollider>();
+        pc.isTrigger = true; pc.size = new Vector3(1.2f, 1.1f, 0.3f);
+        ph.AddComponent<InteractionTarget>().Configure(InteractionTarget.Verb.Press, 1.7f);
+        var pg = kok.AddComponent<PencereGecis>();
+        var sg = new SerializedObject(pg);
+        sg.FindProperty("note").objectReferenceValue = n;
+        sg.FindProperty("target").objectReferenceValue = pc;
+        var oy = GameObject.Find("Oyuncu");
+        if (oy != null) sg.FindProperty("player").objectReferenceValue = oy.transform;
+        sg.ApplyModifiedPropertiesWithoutUndo();
+
+        var l1 = new GameObject("Sokak_Lamba").AddComponent<Light>();
+        l1.transform.SetParent(kok.transform, false);
+        l1.transform.SetPositionAndRotation(new Vector3(23f, 4.4f, 16.85f), Quaternion.Euler(90f, 0f, 0f));
+        l1.type = LightType.Spot; l1.spotAngle = 150f; l1.range = 20f; l1.intensity = 60f;
+        l1.color = new Color(1f, 0.72f, 0.42f); l1.shadows = LightShadows.Soft;
+        var l2 = new GameObject("Sokak_Dolgu").AddComponent<Light>();
+        l2.transform.SetParent(kok.transform, false);
+        l2.transform.position = new Vector3(25f, 3f, 13.5f);
+        l2.type = LightType.Point; l2.range = 16f; l2.intensity = 30f;
+        l2.color = new Color(0.55f, 0.65f, 0.85f); l2.shadows = LightShadows.None;
+        var kl = new SerializedObject(pg); var kp = kl.FindProperty("keepLights"); kp.arraySize = 2;
+        kp.GetArrayElementAtIndex(0).objectReferenceValue = l1; kp.GetArrayElementAtIndex(1).objectReferenceValue = l2;
+        kl.ApplyModifiedPropertiesWithoutUndo();
     }
 }

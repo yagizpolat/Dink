@@ -217,6 +217,26 @@ ModelImporter:
   - first:
       type: UnityEngine:Material
       assembly: UnityEngine.CoreModule
+      name: M_Sokak_Asfalt
+    second: {fileID: 2100000, guid: cf1203a6a2004e44da0882aff435417a, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: M_Sokak_Blok
+    second: {fileID: 2100000, guid: 452bf3fa6a808c74088bf606f6c56bf0, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: M_Sokak_Cephe
+    second: {fileID: 2100000, guid: 22d00a19f2650d547b92c6564fc5a9a2, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: M_Sokak_Kaldirim
+    second: {fileID: 2100000, guid: 454b208a710a9e149975371e0cd77e6d, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
       name: M_Supurgelik
     second: {fileID: 2100000, guid: edae6276bea0ebe4ba101273b2c6e050, type: 2}
   - first:
