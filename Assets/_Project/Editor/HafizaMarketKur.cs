@@ -434,6 +434,11 @@ public static class HafizaMarketKur
     static void Yerlestir()
     {
         var sahne = EditorSceneManager.GetActiveScene();
+        if (sahne.name != "HafizaMarket")
+        {
+            Debug.LogError($"Hafıza marketi yalnız HafizaMarket sahnesine kurulur; açık sahne: {sahne.name}. Hiçbir şey değiştirilmedi.");
+            return;
+        }
         var eski = GameObject.Find("HafizaMarket");
         Transform engel = eski != null ? eski.transform.Find("Vitrin_Engel") : null;
 
