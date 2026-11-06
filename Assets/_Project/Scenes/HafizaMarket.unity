@@ -3699,6 +3699,59 @@ Transform:
   m_CorrespondingSourceObject: {fileID: -6201657695373404276, guid: b953dbc1ca83e8442a01a2d95b4eff99, type: 3}
   m_PrefabInstance: {fileID: 1362241199}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &1446603948
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1446603950}
+  - component: {fileID: 1446603949}
+  m_Layer: 2
+  m_Name: Koli_Engel
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!65 &1446603949
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1446603948}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 0.63, y: 1.4, z: 0.52}
+  m_Center: {x: 0, y: 0, z: 0}
+--- !u!4 &1446603950
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1446603948}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 2.125, y: 0.65, z: 3.52}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1461556424
 GameObject:
   m_ObjectHideFlags: 0
@@ -4738,3 +4791,4 @@ SceneRoots:
   - {fileID: 1362241199}
   - {fileID: 462786646}
   - {fileID: 665799911}
+  - {fileID: 1446603950}

@@ -139,6 +139,10 @@ for kad, dosya in (("DepoKapi_KanatSag", "HafizaDepoKapi.fbx"), ("SinifKapi_Kana
 
 # Birleştir ve dışa aktar (dosya kaydedilmez: birleştirme yalnız aktarım için)
 meshler = [o for o in s.objects if o.type == "MESH" and o.visible_get() and o.name != "Bosluk_Zemin"]
+# UV katman adları farklıysa birleştirme ayrı kanal açar, Unity ilk kanalı okur ve doku tek renk görünür
+for o in meshler:
+    if o.data.uv_layers:
+        o.data.uv_layers[0].name = "UVMap"
 for o in s.objects:
     o.select_set(o in meshler)
 with bpy.context.temp_override(object=meshler[0], active_object=meshler[0], selected_objects=meshler, selected_editable_objects=meshler):
