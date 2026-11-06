@@ -239,6 +239,7 @@ public static class HafizaMarketKur
         var so = new SerializedObject(g);
         so.FindProperty("stocking").objectReferenceValue = d;
         so.FindProperty("leaf").objectReferenceValue = mentese;
+        so.FindProperty("pushSound").objectReferenceValue = AssetDatabase.LoadAssetAtPath<AudioClip>("Assets/_Project/Audio/Genel/Audios/Environment/Entrances/Door_Open_2.wav");
         // Tek kanat 0.5 m: oyuncu sığmaz, itilince ikinci kanat da açılır
         var solModel = AssetDatabase.LoadAssetAtPath<GameObject>("Assets/_Project/Models/HafizaMarket/HafizaDepoKapiSol.fbx");
         if (solModel != null)

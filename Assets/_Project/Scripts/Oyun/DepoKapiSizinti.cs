@@ -21,6 +21,7 @@ public class DepoKapiSizinti : MonoBehaviour
     [SerializeField] private Vector3 pushPoint = new Vector3(5.7f, 0f, 1.85f);  // kapının market yüzü
     [SerializeField] private float pushRadius = 0.9f;
     [SerializeField] private float pushAngle = -82f;
+    [SerializeField] private AudioClip pushSound;            // itilince (ItmeKapi kapılarıyla aynı kayıt)
 
     private bool ajar, pushed;
 
@@ -74,6 +75,7 @@ public class DepoKapiSizinti : MonoBehaviour
         var d = player.position - pushPoint; d.y = 0f;
         if (d.magnitude > pushRadius) return;
         pushed = true;
+        if (pushSound != null) AudioSource.PlayClipAtPoint(pushSound, leaf.position, 0.5f);
         foreach (var c in leaf.GetComponentsInChildren<Collider>()) c.enabled = false;
         StartCoroutine(Push(leaf, pushAngle));
         if (leafB != null)
