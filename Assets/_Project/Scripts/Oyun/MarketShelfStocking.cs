@@ -48,7 +48,7 @@ public class MarketShelfStocking : MonoBehaviour
         if (cam == null) return;
         Ray ray = cam.ViewportPointToRay(new Vector3(0.5f, 0.5f, 0f));
 
-        if (!hinted && box.Raycast(ray, out _, reach + 1.5f))
+        if (!hinted && Reachable(box, ray, reach + 1.5f))
         {
             hinted = true;
             ScreenHint.Show(DinkLang.T("The shelf is missing pasta.", "Rafta makarna eksik.", "Im Regal fehlen Nudeln.", "Il manque des pâtes en rayon.",
@@ -58,8 +58,17 @@ public class MarketShelfStocking : MonoBehaviour
         if (!Input.GetMouseButtonDown(0) && !Input.GetKeyDown(KeyCode.E)) return;
         if (MektupNotHintUI.instance != null && MektupNotHintUI.instance.IsPanelOpen) return;
 
-        if (held.Count == 0 && box.Raycast(ray, out _, reach)) Take();
-        else if (held.Count > 0 && shelfGap.Raycast(ray, out _, reach)) StartCoroutine(Place());
+        if (held.Count == 0 && Reachable(box, ray, reach)) Take();
+        else if (held.Count > 0 && Reachable(shelfGap, ray, reach)) StartCoroutine(Place());
+    }
+
+    // Duvar arkasından alınıp konulamasın: hedefle göz arasında oyuncu dışında katı nesne olmamalı
+    private bool Reachable(Collider c, Ray ray, float dist)
+    {
+        if (!c.Raycast(ray, out RaycastHit hit, dist)) return false;
+        foreach (var h in Physics.RaycastAll(ray, hit.distance - 0.01f, ~(1 << 2), QueryTriggerInteraction.Ignore))
+            if (h.collider != c && !h.collider.transform.IsChildOf(cam.transform.root)) return false;
+        return true;
     }
 
     private void Take()
