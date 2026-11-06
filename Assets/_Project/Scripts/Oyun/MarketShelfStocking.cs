@@ -32,6 +32,7 @@ public class MarketShelfStocking : MonoBehaviour
 
     private void Start()
     {
+        DinkSave.SaveFloorArrival(gameObject.scene.name);
         foreach (var s in shelfSlots) s.gameObject.SetActive(false);
         // Arkadan öne doldur: raf derinliği (z) büyükten küçüğe, sonra soldan sağa
         shelfSlots.Sort((a, b) => Mathf.Abs(a.position.z - b.position.z) > 0.03f ? b.position.z.CompareTo(a.position.z) : a.position.x.CompareTo(b.position.x));

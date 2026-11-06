@@ -64,9 +64,9 @@ public static class DinkSave
         set => PlayerPrefs.SetInt(LoopKey, Mathf.Max(0, value));
     }
 
-    /// <summary>Kat sahnesi mi ("Kat1".."Kat9"); yalnız bunlarda kayıt alınır.</summary>
+    /// <summary>Kayıt alınan sahne mi (hafıza bölgesi ya da "Kat1".."Kat9").</summary>
     public static bool IsFloorScene(string sceneName) =>
-        !string.IsNullOrEmpty(sceneName) && sceneName.Length == 4 && sceneName.StartsWith("Kat") && char.IsDigit(sceneName[3]);
+        sceneName == "HafizaMarket" || !string.IsNullOrEmpty(sceneName) && sceneName.Length == 4 && sceneName.StartsWith("Kat") && char.IsDigit(sceneName[3]);
 
     /// <summary>Kata varışta çağrılır: sahne, ad ve o anki kronometre süresi yazılır.</summary>
     public static void SaveFloorArrival(string sceneName)
