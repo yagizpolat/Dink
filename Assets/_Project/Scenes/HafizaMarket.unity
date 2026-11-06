@@ -1552,7 +1552,7 @@ MonoBehaviour:
   reach: 1.8
   holdOffset: {x: 0, y: -0.01, z: 0.34}
   holdSeconds: 6
-  rustle: {fileID: 0}
+  rustle: {fileID: 8300000, guid: fc5725e878f6e5044b030dc06a4a1b64, type: 3}
   readGlow: 0.55
 --- !u!114 &462786644
 MonoBehaviour:
@@ -4387,6 +4387,7 @@ MonoBehaviour:
   carryCount: 2
   heldOffset: {x: 0.3, y: -0.42, z: 0.62}
   placeSeconds: 0.35
+  packetSound: {fileID: 8300000, guid: 30364c43ac399fc4eb4b8d0d2bcbc932, type: 3}
 --- !u!4 &1660384862
 Transform:
   m_ObjectHideFlags: 0

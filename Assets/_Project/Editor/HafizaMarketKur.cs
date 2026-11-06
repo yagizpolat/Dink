@@ -131,6 +131,7 @@ public static class HafizaMarketKur
 
         var d = oyun.AddComponent<MarketShelfStocking>();
         var so = new SerializedObject(d);
+        so.FindProperty("packetSound").objectReferenceValue = AssetDatabase.LoadAssetAtPath<AudioClip>("Assets/_Project/Audio/HafizaMarket/PaketHisirti.wav");
         so.FindProperty("box").objectReferenceValue = kb;
         so.FindProperty("shelfGap").objectReferenceValue = rb;
         void Liste(string ad, List<Transform> l) { var p = so.FindProperty(ad); p.arraySize = l.Count; for (int i = 0; i < l.Count; i++) p.GetArrayElementAtIndex(i).objectReferenceValue = l[i]; }
@@ -339,6 +340,7 @@ public static class HafizaMarketKur
         hedef.AddComponent<InteractionTarget>().Configure(InteractionTarget.Verb.Read, 1.8f);
         var sk2 = kok.AddComponent<SinifKagit>();
         var so4 = new SerializedObject(sk2);
+        so4.FindProperty("rustle").objectReferenceValue = AssetDatabase.LoadAssetAtPath<AudioClip>("Assets/_Project/Audio/HafizaMarket/KagitHisirti.wav");
         so4.FindProperty("paper").objectReferenceValue = kag.transform;
         so4.FindProperty("target").objectReferenceValue = hc;
         so4.ApplyModifiedPropertiesWithoutUndo();

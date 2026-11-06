@@ -1,3 +1,5 @@
 Hafıza marketi sesleri (CC0, freesound.org):
 - BuzdolabiVizilti.wav (sesi yükseltildi): "Large Refrigerator compressor hum 1" FOSSarts, freesound 740110
 - GeceUgultusu.wav (sesi yükseltildi): "Distant freeway at night april 2010" hz37, freesound 391680
+- KagitHisirti.wav (normalize): "Paper Rustle" BenjaminNelan, freesound 353125
+- PaketHisirti.wav (1 sn kesit, normalize): "Pasta_Shaken inside the pack" Mar.Sounds, freesound 630420

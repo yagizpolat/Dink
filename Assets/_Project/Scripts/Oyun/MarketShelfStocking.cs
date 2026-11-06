@@ -19,6 +19,7 @@ public class MarketShelfStocking : MonoBehaviour
     [SerializeField] private int carryCount = 2;
     [SerializeField] private Vector3 heldOffset = new Vector3(0.30f, -0.42f, 0.62f);
     [SerializeField] private float placeSeconds = 0.35f;
+    [SerializeField] private AudioClip packetSound;           // paket alınır/konur (gerçek kayıt)
 
     public bool Completed { get; private set; }
     public event Action OnCompleted;
@@ -73,6 +74,7 @@ public class MarketShelfStocking : MonoBehaviour
 
     private void Take()
     {
+        if (packetSound != null) AudioSource.PlayClipAtPoint(packetSound, box.bounds.center, 0.5f);
         int need = Mathf.Min(carryCount, shelfSlots.Count - nextSlot);
         for (int i = 0; i < need; i++)
         {
@@ -92,6 +94,7 @@ public class MarketShelfStocking : MonoBehaviour
     private IEnumerator Place()
     {
         busy = true;
+        if (packetSound != null) AudioSource.PlayClipAtPoint(packetSound, shelfGap.bounds.center, 0.35f);
         foreach (var p in held)
         {
             var slot = shelfSlots[nextSlot++];
