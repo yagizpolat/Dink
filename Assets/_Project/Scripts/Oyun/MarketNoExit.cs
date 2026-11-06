@@ -12,6 +12,7 @@ public class MarketNoExit : MonoBehaviour
     [SerializeField] private Transform player;
     [SerializeField] private Vector3 marketCenter = new Vector3(3f, 0f, 2f);
     [SerializeField] private float escapeRadius = 22f;
+    [SerializeField] private float freeRadius = 150f;
 
     public int Returns { get; private set; }
 
@@ -31,10 +32,11 @@ public class MarketNoExit : MonoBehaviour
 
     private void LateUpdate()
     {
-        if (!active || player == null) return;
+        if (player == null) return;
         Vector3 away = player.position - marketCenter; away.y = 0f;
         float r = away.magnitude;
-        if (r < escapeRadius) return;
+        // raf dolmadan boşluk serbest, ama zeminin kenarına (300 m) varıp düşmeden geri gelir
+        if (r < (active ? escapeRadius : freeRadius)) return;
 
         // Market yalnız önden (ışıklı vitrin) görünür: oyuncu hep ön cepheye konur ve bakışı,
         // kaçtığı yön marketin içine bakacak biçimde döndürülür (yürüdüğü yöne göre bakış farkı korunur)

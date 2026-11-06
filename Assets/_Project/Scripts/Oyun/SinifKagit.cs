@@ -22,6 +22,7 @@ public class SinifKagit : MonoBehaviour
 
     private Camera cam;
     private bool held, busy;
+    private int holdId;
     private Vector3 restPos; private Quaternion restRot; private Transform restParent;
 
     private void Start()
@@ -68,9 +69,11 @@ public class SinifKagit : MonoBehaviour
                 "На вопрос 4 так и не ответили.", "第四题从没被回答。", "問4は答えられないままだ。", "4번 문제는 끝내 답이 없다."));
             OnRead?.Invoke();
         }
+        // indirilip yeniden alınırsa eski sayaç yenisini erken indirmesin
+        int id = ++holdId;
         float until = Time.time + holdSeconds;
-        while (held && Time.time < until) yield return null;
-        if (held && !busy) StartCoroutine(PutDown());
+        while (held && id == holdId && Time.time < until) yield return null;
+        if (held && !busy && id == holdId) StartCoroutine(PutDown());
     }
 
     private IEnumerator PutDown()
