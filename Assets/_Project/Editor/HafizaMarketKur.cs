@@ -157,7 +157,7 @@ public static class HafizaMarketKur
         var kok = new GameObject("MarketKapi");
         UnityEngine.SceneManagement.SceneManager.MoveGameObjectToScene(kok, sahne);
         var oy = Object.FindFirstObjectByType<PlayerWalker>();
-        var ses = AssetDatabase.LoadAssetAtPath<AudioClip>("Assets/gorseller/Sesler/Audios/Environment/Entrances/Door_Open_2.wav");
+        var ses = AssetDatabase.LoadAssetAtPath<AudioClip>("Assets/_Project/Audio/Genel/Audios/Environment/Entrances/Door_Open_2.wav");
         (string fbx, float x, float aci)[] kanatlar = { ("Sol", 0.545f, 85f), ("Sag", 1.455f, -85f) };
         foreach (var k in kanatlar)
         {
@@ -309,7 +309,7 @@ public static class HafizaMarketKur
             so3.FindProperty("player").objectReferenceValue = oy != null ? oy.transform : null;
             so3.FindProperty("pushPoint").vector3Value = new Vector3(23.6f, 0f, 1.85f);
             so3.FindProperty("openAngle").floatValue = 85f;
-            so3.FindProperty("openSound").objectReferenceValue = AssetDatabase.LoadAssetAtPath<AudioClip>("Assets/gorseller/Sesler/Audios/Environment/Entrances/Door_Open_2.wav");
+            so3.FindProperty("openSound").objectReferenceValue = AssetDatabase.LoadAssetAtPath<AudioClip>("Assets/_Project/Audio/Genel/Audios/Environment/Entrances/Door_Open_2.wav");
             so3.ApplyModifiedPropertiesWithoutUndo();
 
             var tl = new GameObject("Sinif_TahtaIsigi").AddComponent<Light>();
@@ -359,7 +359,7 @@ public static class HafizaMarketKur
             ol.color = new Color(0.86f, 0.93f, 1f); ol.shadows = LightShadows.Soft;
             oda.GetArrayElementAtIndex(i).objectReferenceValue = ol;
         }
-        const string Ses = "Assets/gorseller/Sesler/Audios/Environment/Entrances/";
+        const string Ses = "Assets/_Project/Audio/Genel/Audios/Environment/Entrances/";
         var sl = so5.FindProperty("slams"); sl.arraySize = 2;
         sl.GetArrayElementAtIndex(0).objectReferenceValue = AssetDatabase.LoadAssetAtPath<AudioClip>(Ses + "Door_Close_1.wav");
         sl.GetArrayElementAtIndex(1).objectReferenceValue = AssetDatabase.LoadAssetAtPath<AudioClip>(Ses + "Door_Close_2.wav");
