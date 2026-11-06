@@ -345,6 +345,7 @@ public static class HafizaMarketKur
         so4.FindProperty("target").objectReferenceValue = hc;
         so4.ApplyModifiedPropertiesWithoutUndo();
 
+        MutfakNotKur.Kur(kok);
         // S3: kâğıt okununca dolaplar sınıfa doğru çarpar, sonunda sınıf kapısı kapanır
         var dk = kok.AddComponent<DolapKapanma>();
         var so5 = new SerializedObject(dk);

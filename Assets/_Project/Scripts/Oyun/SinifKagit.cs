@@ -10,6 +10,7 @@ public class SinifKagit : MonoBehaviour
     [SerializeField] private Transform paper;
     [SerializeField] private Collider target;
     [SerializeField] private float reach = 1.8f;
+    [SerializeField] private bool showHint = true;            // sınav kâğıdının ipucu; başka notlarda kapalı
     [SerializeField] private Vector3 holdOffset = new Vector3(0f, -0.01f, 0.34f);
     [SerializeField] private float holdSeconds = 6f;
     [SerializeField] private AudioClip rustle;
@@ -64,7 +65,7 @@ public class SinifKagit : MonoBehaviour
         {
             Read = true;
             yield return new WaitForSeconds(1.2f);
-            ScreenHint.Show(DinkLang.T("Question 4 was never answered.", "Dördüncü soru hiç cevaplanmamış.", "Frage 4 wurde nie beantwortet.",
+            if (showHint) ScreenHint.Show(DinkLang.T("Question 4 was never answered.", "Dördüncü soru hiç cevaplanmamış.", "Frage 4 wurde nie beantwortet.",
                 "La question 4 n'a jamais eu de réponse.", "La pregunta 4 nunca se respondió.", "A questão 4 nunca foi respondida.",
                 "На вопрос 4 так и не ответили.", "第四题从没被回答。", "問4は答えられないままだ。", "4번 문제는 끝내 답이 없다."));
             OnRead?.Invoke();
