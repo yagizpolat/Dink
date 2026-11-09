@@ -129,5 +129,91 @@ public static class MutfakNotKur
         l3.type = LightType.Point; l3.range = 5f; l3.intensity = 3f; l3.color = new Color(1f, 0.68f, 0.34f); l3.shadows = LightShadows.None;
         kl.FindProperty("keepLights").GetArrayElementAtIndex(2).objectReferenceValue = l3;
         kl.ApplyModifiedPropertiesWithoutUndo();
+        KurGiris(kok);
+    }
+
+    /// <summary>M5: apartman giriş kapısı (kilitli, menteşeli kanat), ardındaki hol ışığı ve zil paneli.</summary>
+    static void KurGiris(GameObject kok)
+    {
+        foreach (var ad in new[] { "SokakKapi_Mentese", "SokakKapi", "Zil_Panel", "Zil_Hedef", "Hol_Isigi" })
+        {
+            var t = kok.transform.Find(ad);
+            if (t != null) Object.DestroyImmediate(t.gameObject);
+        }
+        foreach (var z in kok.GetComponents<ZilPaneli>()) Object.DestroyImmediate(z);
+
+        var km = AssetDatabase.LoadAssetAtPath<GameObject>("Assets/_Project/Models/HafizaMarket/HafizaSokakKapi.fbx");
+        if (km == null) { Debug.LogWarning("HafizaSokakKapi.fbx yok: Blender aktarımını çalıştır."); return; }
+        var mentese = new GameObject("SokakKapi_Mentese").transform;      // Blender (19.2, 19.1, 0.12)
+        mentese.SetParent(kok.transform, false);
+        mentese.SetPositionAndRotation(new Vector3(19.2f, 0.12f, 19.1f), Quaternion.Euler(0f, 180f, 0f));
+        var kg = (GameObject)PrefabUtility.InstantiatePrefab(km, kok.scene);
+        kg.transform.SetParent(mentese, false); kg.transform.localPosition = Vector3.zero; kg.transform.localRotation = Quaternion.identity;
+        foreach (var r in kg.GetComponentsInChildren<MeshRenderer>(true))
+        {
+            var ms = r.sharedMaterials;
+            for (int i = 0; i < ms.Length; i++)
+            {
+                if (ms[i] == null) continue;
+                string ad = ms[i].name.StartsWith("M_") ? ms[i].name.Substring(2) : ms[i].name;
+                var hm = AssetDatabase.LoadAssetAtPath<Material>($"Assets/_Project/Materials/HafizaMarket/HM_{ad}.mat");
+                if (hm != null) ms[i] = hm;
+            }
+            r.sharedMaterials = ms;
+            r.gameObject.AddComponent<BoxCollider>();
+        }
+
+        var hol = new GameObject("Hol_Isigi").AddComponent<Light>();
+        hol.transform.SetParent(kok.transform, false);
+        hol.transform.position = new Vector3(20.0f, 2.4f, 20.9f);
+        hol.type = LightType.Point; hol.range = 4.5f; hol.intensity = 2.5f;
+        hol.color = new Color(0.86f, 0.9f, 1f); hol.shadows = LightShadows.Soft;
+
+        var tutucu = new GameObject("SokakKapi");
+        tutucu.transform.SetParent(kok.transform, false);
+        var ik = tutucu.AddComponent<ItmeKapi>();
+        var si = new SerializedObject(ik);
+        si.FindProperty("leaf").objectReferenceValue = mentese;
+        var oy = GameObject.Find("Oyuncu");
+        if (oy != null) si.FindProperty("player").objectReferenceValue = oy.transform;
+        si.FindProperty("pushPoint").vector3Value = new Vector3(20.0f, 0f, 18.5f);
+        si.FindProperty("openAngle").floatValue = -85f;
+        si.FindProperty("startLocked").boolValue = true;
+        si.FindProperty("revealLight").objectReferenceValue = hol;
+        si.FindProperty("openSound").objectReferenceValue = AssetDatabase.LoadAssetAtPath<AudioClip>("Assets/_Project/Audio/Genel/Audios/Environment/Entrances/Door_Open_2.wav");
+        si.ApplyModifiedPropertiesWithoutUndo();
+
+        // zil paneli: Prolog'daki apartmanın etiketleri (aynı bina)
+        const string zilYol = "Assets/_Project/Materials/HafizaMarket/HM_Sokak_Zil.mat";
+        var zm = AssetDatabase.LoadAssetAtPath<Material>(zilYol);
+        if (zm == null) { zm = new Material(Shader.Find("Universal Render Pipeline/Lit")); AssetDatabase.CreateAsset(zm, zilYol); }
+        var zt = AssetDatabase.LoadAssetAtPath<Texture2D>("Assets/_Project/Textures/Prolog/ZilEtiketleri.png");
+        zm.SetTexture("_BaseMap", zt);
+        zm.SetFloat("_Smoothness", 0.2f);
+        zm.EnableKeyword("_EMISSION");
+        zm.SetTexture("_EmissionMap", zt);
+        zm.SetColor("_EmissionColor", new Color(0.12f, 0.11f, 0.09f));
+        zm.globalIlluminationFlags = MaterialGlobalIlluminationFlags.None;
+        EditorUtility.SetDirty(zm);
+        var zp = GameObject.CreatePrimitive(PrimitiveType.Quad);
+        zp.name = "Zil_Panel";
+        Object.DestroyImmediate(zp.GetComponent<Collider>());
+        zp.transform.SetParent(kok.transform, false);
+        zp.transform.SetPositionAndRotation(new Vector3(21.3f, 1.4f, 18.965f), Quaternion.identity);
+        zp.transform.localScale = new Vector3(0.34f, 0.64f, 1f);
+        zp.GetComponent<MeshRenderer>().sharedMaterial = zm;
+
+        var zh = new GameObject("Zil_Hedef");
+        zh.transform.SetParent(kok.transform, false);
+        zh.transform.position = new Vector3(21.3f, 1.4f, 18.92f);
+        var zc = zh.AddComponent<BoxCollider>();
+        zc.isTrigger = true; zc.size = new Vector3(0.42f, 0.72f, 0.1f);
+        zh.AddComponent<InteractionTarget>().Configure(InteractionTarget.Verb.Press, 1.6f);
+        var zil = kok.AddComponent<ZilPaneli>();
+        var sz = new SerializedObject(zil);
+        sz.FindProperty("target").objectReferenceValue = zc;
+        sz.FindProperty("door").objectReferenceValue = ik;
+        sz.FindProperty("buzz").objectReferenceValue = AssetDatabase.LoadAssetAtPath<AudioClip>("Assets/_Project/Audio/HafizaMarket/BuzdolabiVizilti.wav");
+        sz.ApplyModifiedPropertiesWithoutUndo();
     }
 }

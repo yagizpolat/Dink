@@ -10,7 +10,7 @@ PX0, PX1 = 25.45, 26.65      # pencere
 Y_KALD, Y_YOL, Y_KARSI, Y_CEPHE = 11.2, 17.5, 19.0, 19.0
 H = 7.0
 
-for o in [o for o in col.objects if o.name.startswith("Sokak_")]:
+for o in [o for o in col.objects if o.name.startswith(("Sokak_", "SokakKapi_"))]:
     bpy.data.objects.remove(o, do_unlink=True)
 
 # oyuncu pencereden gecer: cam ve orta kayit kalkar
@@ -74,14 +74,34 @@ kutu("Sokak_KaplamaSag", (PX1, DUVAR, 0), (28.7, DUVAR + 0.01, 2.75), M_CEPHE, 3
 kutu("Sokak_KaplamaAlt", (PX0, DUVAR, 0), (PX1, DUVAR + 0.01, 0.95), M_CEPHE, 3.0)
 kutu("Sokak_KaplamaUst", (PX0, DUVAR, 2.05), (PX1, DUVAR + 0.01, 2.75), M_CEPHE, 3.0)
 # karsi cephe ve iki ucu kapatan yuksek duvarlar
-kutu("Sokak_KarsiCephe", (X0, Y_CEPHE, 0), (X1, Y_CEPHE + 0.2, H), M_CEPHE, 3.0)
+# karsi cephe giris kapisinda delikli (kapi x 19.2..20.8, z 0..2.4)
+kutu("Sokak_KarsiCephe_A", (X0, Y_CEPHE, 0), (19.2, Y_CEPHE + 0.2, H), M_CEPHE, 3.0)
+kutu("Sokak_KarsiCephe_B", (20.8, Y_CEPHE, 0), (X1, Y_CEPHE + 0.2, H), M_CEPHE, 3.0)
+kutu("Sokak_KarsiCephe_Ust", (19.2, Y_CEPHE, 2.4), (20.8, Y_CEPHE + 0.2, H), M_CEPHE, 3.0)
 kutu("Sokak_UcBati", (X0 - 0.2, DUVAR, 0), (X0, Y_CEPHE, H), M_CEPHE, 3.0)
 kutu("Sokak_UcDogu", (X1, DUVAR, 0), (X1 + 0.2, Y_CEPHE, H), M_CEPHE, 3.0)
 # apartman cephesi: giris kapisi ve kat pencereleri (yanan pencere Unity'de)
 Y = Y_CEPHE
 M_KAPI = pbr("M_Sokak_Kapi", "wooden_garage_door", (0.5, 0.42, 0.36))
-kutu("Sokak_GirisKasa", (19.1, Y - 0.08, 0.12), (20.9, Y, 2.5), "M_Aluminyum")
-kutu("Sokak_GirisKapi", (19.2, Y - 0.1, 0.12), (20.8, Y - 0.08, 2.4), M_KAPI, 2.0)
+kutu("Sokak_GirisKasaSol", (19.1, Y - 0.08, 0.12), (19.2, Y + 0.2, 2.5), "M_Aluminyum")
+kutu("Sokak_GirisKasaSag", (20.8, Y - 0.08, 0.12), (20.9, Y + 0.2, 2.5), "M_Aluminyum")
+kutu("Sokak_GirisKasaUst", (19.1, Y - 0.08, 2.4), (20.9, Y + 0.2, 2.5), "M_Aluminyum")
+# M5: kanat ayri nesne, koken mentesede (x 19.2), iceri (+y) acilir; Unity HafizaSokakKapi.fbx
+kk = bpy.data.objects.new("SokakKapi_Kanat", None); col.objects.link(kk)
+kk.location = (19.2, Y + 0.1, 0.12)
+def kp(ad, x0, z0, x1, z1, m, y0=-0.025, y1=0.025):
+    o = kutu(ad, (x0, y0, z0), (x1, y1, z1), m, 2.0); o.parent = kk; return o
+kp("Sokak_Kanat_Govde", 0.01, 0.0, 1.59, 2.27, bpy.data.materials["M_Okul_Kapi"])
+kp("Sokak_Kanat_Kol", 1.38, 1.0, 1.48, 1.04, "M_Krom", -0.075, -0.025)
+# kapinin ardinda giris holu (dar, loş; merdiven sonraki parca)
+M_HZEMIN = bpy.data.materials["M_Okul_Mozaik"]
+M_HDUVAR = bpy.data.materials["M_Okul_Siva"]
+kutu("Sokak_Hol_Zemin", (18.75, Y + 0.2, -0.1), (21.25, Y + 3.2, 0.12), M_HZEMIN, 2.0)
+kutu("Sokak_Hol_Tavan", (18.75, Y + 0.2, 2.75), (21.25, Y + 3.35, 2.85), M_HDUVAR, 2.0)
+kutu("Sokak_Hol_DuvarBati", (18.75, Y + 0.2, 0), (18.9, Y + 3.35, 2.85), M_HDUVAR, 2.0)
+kutu("Sokak_Hol_DuvarDogu", (21.1, Y + 0.2, 0), (21.25, Y + 3.35, 2.85), M_HDUVAR, 2.0)
+kutu("Sokak_Hol_DuvarArka", (18.75, Y + 3.2, 0), (21.25, Y + 3.35, 2.85), M_HDUVAR, 2.0)
+kutu("Sokak_ZilPlaka", (21.1, Y - 0.03, 1.05), (21.5, Y, 1.75), "M_Aluminyum")
 kutu("Sokak_GirisSacak", (18.8, Y - 0.6, 2.6), (21.2, Y, 2.72), M_CEPHE, 3.0)
 for kat, z in enumerate((3.6, 5.6)):
     for i, x in enumerate((19.4, 22.4, 25.4, 27.6)):
