@@ -20,7 +20,7 @@ public static class MutfakNotKur
     public static void Kur(GameObject kok)
     {
         foreach (var eskiG in kok.GetComponents<PencereGecis>()) Object.DestroyImmediate(eskiG);
-        foreach (var ad in new[] { "Mutfak_Not", "Mutfak_Not_Hedef", "Pencere_Hedef", "Sokak_Lamba", "Sokak_Dolgu" })
+        foreach (var ad in new[] { "Mutfak_Not", "Mutfak_Not_Hedef", "Pencere_Hedef", "Sokak_Lamba", "Sokak_Dolgu", "Sokak_YanikPencere", "Sokak_PencereIsik" })
         {
             var t = kok.transform.Find(ad);
             if (t != null) Object.DestroyImmediate(t.gameObject);
@@ -105,8 +105,29 @@ public static class MutfakNotKur
         l2.transform.position = new Vector3(25f, 3f, 13.5f);
         l2.type = LightType.Point; l2.range = 16f; l2.intensity = 30f;
         l2.color = new Color(0.55f, 0.65f, 0.85f); l2.shadows = LightShadows.None;
-        var kl = new SerializedObject(pg); var kp = kl.FindProperty("keepLights"); kp.arraySize = 2;
+        var kl = new SerializedObject(pg); var kp = kl.FindProperty("keepLights"); kp.arraySize = 3;
         kp.GetArrayElementAtIndex(0).objectReferenceValue = l1; kp.GetArrayElementAtIndex(1).objectReferenceValue = l2;
+        // karşı cephede tek yanan pencere: kat 1, kapının üstündeki sıra
+        var ym = AssetDatabase.LoadAssetAtPath<Material>("Assets/_Project/Materials/HafizaMarket/HM_Sokak_YanikPencere.mat");
+        if (ym == null)
+        {
+            ym = new Material(Shader.Find("Universal Render Pipeline/Unlit"));
+            AssetDatabase.CreateAsset(ym, "Assets/_Project/Materials/HafizaMarket/HM_Sokak_YanikPencere.mat");
+        }
+        ym.SetColor("_BaseColor", new Color(1f, 0.68f, 0.34f));
+        EditorUtility.SetDirty(ym);
+        var yp = GameObject.CreatePrimitive(PrimitiveType.Quad);
+        yp.name = "Sokak_YanikPencere";
+        Object.DestroyImmediate(yp.GetComponent<Collider>());
+        yp.transform.SetParent(kok.transform, false);
+        yp.transform.SetPositionAndRotation(new Vector3(25.4f, 3.6f, 18.94f), Quaternion.Euler(0f, 0f, 0f));
+        yp.transform.localScale = new Vector3(0.96f, 1.16f, 1f);
+        yp.GetComponent<MeshRenderer>().sharedMaterial = ym;
+        var l3 = new GameObject("Sokak_PencereIsik").AddComponent<Light>();
+        l3.transform.SetParent(kok.transform, false);
+        l3.transform.position = new Vector3(25.4f, 3.6f, 18.5f);
+        l3.type = LightType.Point; l3.range = 5f; l3.intensity = 3f; l3.color = new Color(1f, 0.68f, 0.34f); l3.shadows = LightShadows.None;
+        kl.FindProperty("keepLights").GetArrayElementAtIndex(2).objectReferenceValue = l3;
         kl.ApplyModifiedPropertiesWithoutUndo();
     }
 }

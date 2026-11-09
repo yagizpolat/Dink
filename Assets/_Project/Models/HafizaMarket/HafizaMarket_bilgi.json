@@ -440,17 +440,6 @@
    ],
    "alfa": false
   },
-  "M_Sokak_Blok": {
-   "metal": 0.0,
-   "normal": true,
-   "isik": 0.0,
-   "isik_renk": [
-    1.0,
-    1.0,
-    1.0
-   ],
-   "alfa": false
-  },
   "M_Sokak_Cephe": {
    "metal": 0.0,
    "normal": true,
@@ -465,6 +454,28 @@
   "M_Sokak_Kaldirim": {
    "metal": 0.0,
    "normal": true,
+   "isik": 0.0,
+   "isik_renk": [
+    1.0,
+    1.0,
+    1.0
+   ],
+   "alfa": false
+  },
+  "M_Sokak_Kapi": {
+   "metal": 0.0,
+   "normal": true,
+   "isik": 0.0,
+   "isik_renk": [
+    1.0,
+    1.0,
+    1.0
+   ],
+   "alfa": false
+  },
+  "M_Sokak_Kara": {
+   "metal": 0.0,
+   "normal": false,
    "isik": 0.0,
    "isik_renk": [
     1.0,

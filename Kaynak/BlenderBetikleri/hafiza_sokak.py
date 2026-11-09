@@ -43,6 +43,10 @@ M_KALD = pbr("M_Sokak_Kaldirim", "gravel_concrete_03", (0.75, 0.75, 0.72))
 M_CEPHE = pbr("M_Sokak_Cephe", "painted_plaster_wall", (0.55, 0.55, 0.5))
 M_BLOK = pbr("M_Sokak_Blok", "medieval_blocks_06", (0.6, 0.58, 0.55))
 
+M_KARA = bpy.data.materials.get("M_Sokak_Kara") or bpy.data.materials.new("M_Sokak_Kara")
+M_KARA.use_nodes = True
+next(n for n in M_KARA.node_tree.nodes if n.type == "BSDF_PRINCIPLED").inputs["Base Color"].default_value = (0.012, 0.014, 0.02, 1)
+
 def kutu(ad, mn, mx, m, olcek=2.0):
     me = bpy.data.meshes.new(ad)
     x0, y0, z0 = mn; x1, y1, z1 = mx
@@ -70,9 +74,19 @@ kutu("Sokak_KaplamaSag", (PX1, DUVAR, 0), (28.7, DUVAR + 0.01, 2.75), M_CEPHE, 3
 kutu("Sokak_KaplamaAlt", (PX0, DUVAR, 0), (PX1, DUVAR + 0.01, 0.95), M_CEPHE, 3.0)
 kutu("Sokak_KaplamaUst", (PX0, DUVAR, 2.05), (PX1, DUVAR + 0.01, 2.75), M_CEPHE, 3.0)
 # karsi cephe ve iki ucu kapatan yuksek duvarlar
-kutu("Sokak_KarsiCephe", (X0, Y_CEPHE, 0), (X1, Y_CEPHE + 0.2, H), M_BLOK, 3.0)
-kutu("Sokak_UcBati", (X0 - 0.2, DUVAR, 0), (X0, Y_CEPHE, H), M_BLOK, 3.0)
-kutu("Sokak_UcDogu", (X1, DUVAR, 0), (X1 + 0.2, Y_CEPHE, H), M_BLOK, 3.0)
+kutu("Sokak_KarsiCephe", (X0, Y_CEPHE, 0), (X1, Y_CEPHE + 0.2, H), M_CEPHE, 3.0)
+kutu("Sokak_UcBati", (X0 - 0.2, DUVAR, 0), (X0, Y_CEPHE, H), M_CEPHE, 3.0)
+kutu("Sokak_UcDogu", (X1, DUVAR, 0), (X1 + 0.2, Y_CEPHE, H), M_CEPHE, 3.0)
+# apartman cephesi: giris kapisi ve kat pencereleri (yanan pencere Unity'de)
+Y = Y_CEPHE
+M_KAPI = pbr("M_Sokak_Kapi", "wooden_garage_door", (0.5, 0.42, 0.36))
+kutu("Sokak_GirisKasa", (19.1, Y - 0.08, 0.12), (20.9, Y, 2.5), "M_Aluminyum")
+kutu("Sokak_GirisKapi", (19.2, Y - 0.1, 0.12), (20.8, Y - 0.08, 2.4), M_KAPI, 2.0)
+kutu("Sokak_GirisSacak", (18.8, Y - 0.6, 2.6), (21.2, Y, 2.72), M_CEPHE, 3.0)
+for kat, z in enumerate((3.6, 5.6)):
+    for i, x in enumerate((19.4, 22.4, 25.4, 27.6)):
+        kutu(f"Sokak_Pencere_{kat}_{i}", (x - 0.55, Y - 0.04, z - 0.65), (x + 0.55, Y, z + 0.65), "M_Aluminyum")
+        kutu(f"Sokak_PencereCam_{kat}_{i}", (x - 0.48, Y - 0.05, z - 0.58), (x + 0.48, Y - 0.04, z + 0.58), M_KARA)
 # sokak lambasi: karsi kaldirimda direk ve armatur (isik Unity'de)
 kutu("Sokak_Direk", (22.94, 18.1, 0.12), (23.06, 18.22, 4.6), "M_Aluminyum")
 kutu("Sokak_Kol", (22.97, 16.9, 4.5), (23.03, 18.2, 4.58), "M_Aluminyum")

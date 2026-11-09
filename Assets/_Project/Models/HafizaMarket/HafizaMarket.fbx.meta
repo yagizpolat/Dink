@@ -237,6 +237,16 @@ ModelImporter:
   - first:
       type: UnityEngine:Material
       assembly: UnityEngine.CoreModule
+      name: M_Sokak_Kapi
+    second: {fileID: 2100000, guid: d3b5ed330a48b944394de93be9c697f3, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: M_Sokak_Kara
+    second: {fileID: 2100000, guid: d5c84daf4baa741408d7cbf22dca25f8, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
       name: M_Supurgelik
     second: {fileID: 2100000, guid: edae6276bea0ebe4ba101273b2c6e050, type: 2}
   - first:
