@@ -93,14 +93,29 @@ def kp(ad, x0, z0, x1, z1, m, y0=-0.025, y1=0.025):
     o = kutu(ad, (x0, y0, z0), (x1, y1, z1), m, 2.0); o.parent = kk; return o
 kp("Sokak_Kanat_Govde", 0.01, 0.0, 1.59, 2.27, bpy.data.materials["M_Okul_Kapi"])
 kp("Sokak_Kanat_Kol", 1.38, 1.0, 1.48, 1.04, "M_Krom", -0.075, -0.025)
-# kapinin ardinda giris holu (dar, loş; merdiven sonraki parca)
+# kapinin ardinda giris holu; M6: hol arkasindan yukari merdiven, ustte sahanlik ve Daire 11 kapisi
 M_HZEMIN = bpy.data.materials["M_Okul_Mozaik"]
 M_HDUVAR = bpy.data.materials["M_Okul_Siva"]
-kutu("Sokak_Hol_Zemin", (18.75, Y + 0.2, -0.1), (21.25, Y + 3.2, 0.12), M_HZEMIN, 2.0)
-kutu("Sokak_Hol_Tavan", (18.75, Y + 0.2, 2.75), (21.25, Y + 3.35, 2.85), M_HDUVAR, 2.0)
-kutu("Sokak_Hol_DuvarBati", (18.75, Y + 0.2, 0), (18.9, Y + 3.35, 2.85), M_HDUVAR, 2.0)
-kutu("Sokak_Hol_DuvarDogu", (21.1, Y + 0.2, 0), (21.25, Y + 3.35, 2.85), M_HDUVAR, 2.0)
-kutu("Sokak_Hol_DuvarArka", (18.75, Y + 3.2, 0), (21.25, Y + 3.35, 2.85), M_HDUVAR, 2.0)
+YS, ADIM, YUK, BASAMAK = Y + 1.0, 0.225, 0.17, 16          # merdiven y 20.0'dan baslar
+YL = YS + ADIM * BASAMAK                                   # sahanlik basi (23.6)
+ZL = 0.12 + YUK * BASAMAK                                  # sahanlik zemini (2.84)
+YA = YL + 1.6                                              # arka duvar ic yuzu (25.2)
+kutu("Sokak_Hol_Zemin", (18.75, Y + 0.2, -0.1), (21.25, YL, 0.12), M_HZEMIN, 2.0)
+kutu("Sokak_Hol_Tavan", (18.75, Y + 0.2, 2.75), (21.25, YS, 2.85), M_HDUVAR, 2.0)
+kutu("Sokak_Hol_TavanUst", (18.75, Y + 0.2, ZL + 2.75), (21.25, YA + 0.15, ZL + 2.85), M_HDUVAR, 2.0)
+kutu("Sokak_Hol_DuvarBati", (18.75, Y + 0.2, 0), (18.9, YA + 0.15, ZL + 2.85), M_HDUVAR, 2.0)
+kutu("Sokak_Hol_DuvarDogu", (21.1, Y + 0.2, 0), (21.25, YA + 0.15, ZL + 2.85), M_HDUVAR, 2.0)
+kutu("Sokak_Hol_DuvarArka", (18.75, YA, 0), (21.25, YA + 0.15, ZL + 2.85), M_HDUVAR, 2.0)
+for i in range(BASAMAK):
+    kutu("Sokak_Basamak_%02d" % i, (18.9, YS + i * ADIM, 0.12), (21.1, YS + (i + 1) * ADIM, 0.12 + (i + 1) * YUK), M_HZEMIN, 1.0)
+kutu("Sokak_Sahanlik", (18.9, YL, 0.12), (21.1, YA, ZL), M_HZEMIN, 2.0)
+# Daire 11 kapisi (simdilik kapali, M7'de acilir): kasa + kanat, numara Unity'de
+kutu("Sokak_D11_KasaSol", (19.45, YA - 0.06, ZL), (19.55, YA, ZL + 2.15), "M_Aluminyum")
+kutu("Sokak_D11_KasaSag", (20.45, YA - 0.06, ZL), (20.55, YA, ZL + 2.15), "M_Aluminyum")
+kutu("Sokak_D11_KasaUst", (19.45, YA - 0.06, ZL + 2.05), (20.55, YA, ZL + 2.15), "M_Aluminyum")
+kutu("Sokak_D11_Kanat", (19.55, YA - 0.05, ZL), (20.45, YA - 0.01, ZL + 2.05), bpy.data.materials["M_Okul_Kapi"], 2.0)
+kutu("Sokak_D11_Kol", (20.3, YA - 0.1, ZL + 1.0), (20.4, YA - 0.05, ZL + 1.04), "M_Krom")
+kutu("Sokak_D11_Paspas", (19.5, YA - 0.75, ZL), (20.5, YA - 0.1, ZL + 0.015), M_KALD, 1.0)
 kutu("Sokak_ZilPlaka", (21.1, Y - 0.03, 1.05), (21.5, Y, 1.75), "M_Aluminyum")
 kutu("Sokak_GirisSacak", (18.8, Y - 0.6, 2.6), (21.2, Y, 2.72), M_CEPHE, 3.0)
 for kat, z in enumerate((3.6, 5.6)):

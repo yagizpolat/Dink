@@ -135,7 +135,7 @@ public static class MutfakNotKur
     /// <summary>M5: apartman giriş kapısı (kilitli, menteşeli kanat), ardındaki hol ışığı ve zil paneli.</summary>
     static void KurGiris(GameObject kok)
     {
-        foreach (var ad in new[] { "SokakKapi_Mentese", "SokakKapi", "Zil_Panel", "Zil_Hedef", "Hol_Isigi" })
+        foreach (var ad in new[] { "SokakKapi_Mentese", "SokakKapi", "Zil_Panel", "Zil_Hedef", "Hol_Isigi", "D11_Numara", "Sahanlik_Isigi" })
         {
             var t = kok.transform.Find(ad);
             if (t != null) Object.DestroyImmediate(t.gameObject);
@@ -215,5 +215,25 @@ public static class MutfakNotKur
         sz.FindProperty("door").objectReferenceValue = ik;
         sz.FindProperty("buzz").objectReferenceValue = AssetDatabase.LoadAssetAtPath<AudioClip>("Assets/_Project/Audio/HafizaMarket/BuzdolabiVizilti.wav");
         sz.ApplyModifiedPropertiesWithoutUndo();
+
+        // M6: merdiven üstündeki sahanlık ışığı ve Daire 11 kapısının pirinç numarası
+        var sl = new GameObject("Sahanlik_Isigi").AddComponent<Light>();
+        sl.transform.SetParent(kok.transform, false);
+        sl.transform.position = new Vector3(20.0f, 5.2f, 24.3f);
+        sl.type = LightType.Point; sl.range = 5.5f; sl.intensity = 3f;
+        sl.color = new Color(1f, 0.84f, 0.62f); sl.shadows = LightShadows.Soft;
+        const string numYol = "Assets/_Project/Materials/HafizaMarket/HM_D11_Numara.mat";
+        var nm = AssetDatabase.LoadAssetAtPath<Material>(numYol);
+        if (nm == null) { nm = new Material(Shader.Find("Universal Render Pipeline/Lit")); AssetDatabase.CreateAsset(nm, numYol); }
+        nm.SetTexture("_BaseMap", AssetDatabase.LoadAssetAtPath<Texture2D>("Assets/_Project/Textures/HafizaMarket/HM_D11_Numara_Renk.png"));
+        nm.SetFloat("_Metallic", 0.6f); nm.SetFloat("_Smoothness", 0.45f);
+        EditorUtility.SetDirty(nm);
+        var no = GameObject.CreatePrimitive(PrimitiveType.Quad);
+        no.name = "D11_Numara";
+        Object.DestroyImmediate(no.GetComponent<Collider>());
+        no.transform.SetParent(kok.transform, false);
+        no.transform.SetPositionAndRotation(new Vector3(20.0f, 4.42f, 25.14f), Quaternion.identity);
+        no.transform.localScale = new Vector3(0.16f, 0.1f, 1f);
+        no.GetComponent<MeshRenderer>().sharedMaterial = nm;
     }
 }
